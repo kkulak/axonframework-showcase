@@ -1,0 +1,13 @@
+{
+  "name": "knbit-events-bc",
+  "description": "Events organization and management subsystem",
+  "version": "0.0.0",
+  "homepage": "https://bitbucket.org/aghbit/knbit-events-bc",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "jquery": "latest",
+    "bootstrap": "latest"
+  }
+}

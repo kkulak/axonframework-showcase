@@ -1,0 +1,78 @@
+[
+  {
+    "id": 0,
+    "name": "To do",
+    "description": "Backlog for todos",
+    "tasks": [
+      {
+        "id": 0,
+        "name": "Task 0 in todo",
+        "description": "Task 0 description",
+        "columnId": 0
+      },
+      {
+        "id": 1,
+        "name": "Task 1 in todo",
+        "description": "Task 1 description",
+        "columnId": 0
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "In progress",
+    "description": "Columns for in progress tasks",
+    "tasks": [
+      {
+        "id": 2,
+        "name": "Task 2 in progress",
+        "description": "Task 2 description",
+        "columnId": 1
+      },
+      {
+        "id": 3,
+        "name": "Task 3 in progress",
+        "description": "Task 3 description",
+        "columnId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "In test",
+    "description": "test column",
+    "tasks": [
+      {
+        "id": 5,
+        "name": "Task 5 in test",
+        "description": "Task 5 description",
+        "columnId": 2
+      },
+      {
+        "id": 6,
+        "name": "Task 6 in test",
+        "description": "Task 6 description",
+        "columnId": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Done",
+    "description": "Done column",
+    "tasks": [
+      {
+        "id": 7,
+        "name": "Task 7 in todo",
+        "description": "Task 7 description",
+        "columnId": 3
+      },
+      {
+        "id": 8,
+        "name": "Task 8 in todo",
+        "description": "Task 8 description",
+        "columnId": 3
+      }
+    ]
+  }
+]
