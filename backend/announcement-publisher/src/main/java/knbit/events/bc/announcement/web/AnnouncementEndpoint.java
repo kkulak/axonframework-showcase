@@ -1,14 +1,16 @@
-package knbit.events.bc.announcement;
+package knbit.events.bc.announcement.web;
 
+import knbit.events.bc.announcement.Announcement;
+import knbit.events.bc.announcement.AnnouncementException;
+import knbit.events.bc.announcement.Publisher;
 import knbit.events.bc.announcement.config.Publishers;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by novy on 03.04.15.
@@ -25,6 +27,7 @@ public class AnnouncementEndpoint {
         this.publisher = publisher;
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(value = "/announcements", method = RequestMethod.POST)
     public void postAnnouncement(@RequestBody AnnouncementDTO announcementDTO) {
         publisher.publish(
@@ -32,10 +35,18 @@ public class AnnouncementEndpoint {
         );
     }
 
+    @ExceptionHandler(AnnouncementException.class)
+    public ResponseEntity<ErrorResponse> handle(AnnouncementException exception) {
+
+        final ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
     // todo: probably unnecessary right now
     @Data
     @NoArgsConstructor
-    private static class AnnouncementDTO {
+    static class AnnouncementDTO {
         private String title;
         private String content;
     }
