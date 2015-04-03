@@ -3,7 +3,9 @@ package knbit.events.bc;
 import com.google.common.collect.ImmutableList;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,7 @@ import java.util.Collection;
 
 
 @RestController
-@Api(value = "foo_endpoint")
+@Api(value = "/foo_endpoint")
 public class SwaggerDummyEndpoint {
 
     @RequestMapping(value = "/foo", method = RequestMethod.GET)
@@ -46,13 +48,13 @@ public class SwaggerDummyEndpoint {
     public void deleteFoo(@PathVariable(value = "id") String id) {
     }
 
-    @Value
-    private class Foo {
-
-        private final String id;
-        private final String foo;
-        private final String bar;
-
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Foo {
+        private String id;
+        private String foo;
+        private String bar;
     }
 
 }
