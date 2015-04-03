@@ -1,19 +1,17 @@
-package knbit.events.bc.announcment.composite
+package knbit.events.bc.announcement.coordinator
 
-import knbit.events.bc.announcment.AnnouncementBuilder
+import knbit.events.bc.AnnouncementBuilder
 import knbit.events.bc.announcement.Publisher
-import knbit.events.bc.announcement.composite.CompositePublisher
-import knbit.events.bc.announcement.composite.NoPublisherSpecifiedException
 import spock.lang.Specification
 
 /**
  * Created by novy on 02.04.15.
  */
-class CompositePublisherTest extends Specification {
+class PublisherCoordinatorTest extends Specification {
 
     def "should thrown an exception when no publisher specified"() {
         given:
-        def objectUnderTest = new CompositePublisher();
+        def objectUnderTest = new PublisherCoordinator();
 
         when:
         objectUnderTest.publish(
@@ -28,7 +26,7 @@ class CompositePublisherTest extends Specification {
 
     def "should dispatch publish request to all children otherwise"() {
         given:
-        def objectUnderTest = new CompositePublisher();
+        def objectUnderTest = new PublisherCoordinator();
         def firstPublisherMock = Mock(Publisher.class)
         def secondPublisherMock = Mock(Publisher.class)
 

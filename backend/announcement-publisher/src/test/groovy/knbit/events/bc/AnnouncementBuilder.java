@@ -1,4 +1,4 @@
-package knbit.events.bc.announcment;
+package knbit.events.bc;
 
 import knbit.events.bc.announcement.Announcement;
 import lombok.NoArgsConstructor;

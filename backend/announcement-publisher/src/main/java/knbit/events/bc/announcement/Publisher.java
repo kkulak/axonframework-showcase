@@ -5,5 +5,5 @@ package knbit.events.bc.announcement;
  */
 public interface Publisher {
 
-    void publish(Announcement announcement);
+    void publish(Announcement announcement) throws AnnouncementException;
 }

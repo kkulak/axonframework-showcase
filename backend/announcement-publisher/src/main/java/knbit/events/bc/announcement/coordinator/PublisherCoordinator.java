@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.composite;
+package knbit.events.bc.announcement.coordinator;
 
 import com.google.common.collect.Lists;
 import knbit.events.bc.announcement.Announcement;
@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Created by novy on 02.04.15.
  */
-public class CompositePublisher implements Publisher {
+public class PublisherCoordinator implements Publisher {
 
     private final Collection<Publisher> publishers = Lists.newLinkedList();
 
@@ -24,7 +24,7 @@ public class CompositePublisher implements Publisher {
 
     }
 
-    public CompositePublisher register(Publisher publisher) {
+    public PublisherCoordinator register(Publisher publisher) {
         publishers.add(publisher);
         return this;
     }
