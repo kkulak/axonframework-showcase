@@ -1,14 +1,16 @@
 'use strict';
 
-var appRouting = angular.module('appRouting', ['ngRoute']);
+var appRouting = angular.module('appRouting', ['ui.router']);
 
-appRouting.config(function($routeProvider) {
-    $routeProvider
-        .when('/kanban-board', {
-            templateUrl : 'app/components/kanbanboard/kanbanBoardView.html',
-            controller  : 'boardController'
-        })
-        .otherwise({
-            redirectTo  : '/kanban-board'
-        })
+appRouting.config(function($stateProvider, $urlRouterProvider) {
+
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('home', {
+            url         :   '/',
+            templateUrl :   'app/components/kanbanboard/kanbanBoardView.html',
+            controller  :   'boardController'
+        });
+
 });
