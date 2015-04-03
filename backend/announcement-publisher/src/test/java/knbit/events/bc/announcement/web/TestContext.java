@@ -17,8 +17,8 @@ class TestContext {
 
     @Bean
     @Autowired
-    public  AnnouncementEndpoint announcementEndpoint(Publisher publisher) {
-        return new AnnouncementEndpoint(publisher);
+    public AnnouncementController announcementController(Publisher publisher) {
+        return new AnnouncementController(publisher);
     }
 
     @Bean(name = Publishers.COORDINATOR)

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
 import knbit.events.bc.announcement.config.Publishers;
-import knbit.events.bc.announcement.web.AnnouncementEndpoint.AnnouncementDTO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,15 +17,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -38,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {
         TestContext.class
 })
-public class AnnouncementEndpointTest {
+public class AnnouncementControllerTest {
 
     private static final String URL_PATH = "/announcements";
 
@@ -52,7 +49,7 @@ public class AnnouncementEndpointTest {
     private Publisher coordinatorMock;
 
     @Autowired
-    private AnnouncementEndpoint objectUnderTest;
+    private AnnouncementController objectUnderTest;
 
     @Before
     public void setUp() throws Exception {
@@ -120,7 +117,7 @@ public class AnnouncementEndpointTest {
                         status().isInternalServerError()
                 )
                 .andExpect(
-                       jsonPath("$.error", is(SomethingWentWrongException.ERROR_MESSAGE))
+                        jsonPath("$.error", is(SomethingWentWrongException.ERROR_MESSAGE))
                 );
     }
 
