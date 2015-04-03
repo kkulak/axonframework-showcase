@@ -21,7 +21,7 @@ class GoogleGroupPublisherTest extends Specification {
         def googleGroupEmailAddress = "knbit@googlegroup.com"
         def senderMock = Mock(MailSender.class)
 
-        senderMock.send(_ as SimpleMailMessage) >> { throw Mock(MailException.class)}
+        senderMock.send(_ as SimpleMailMessage) >> { throw Mock(MailException.class) }
 
         def objectUnderTest = new GoogleGroupPublisher(
                 googleGroupEmailAddress, senderMock

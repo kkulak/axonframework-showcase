@@ -6,10 +6,6 @@ import knbit.events.bc.announcement.Publisher;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import java.util.Properties;
 
 /**
  * Created by novy on 03.04.15.
@@ -31,6 +27,7 @@ public class GoogleGroupPublisher implements Publisher {
                     messageFrom(googleGroupEmailAddress, announcement)
             );
         } catch (MailException cause) {
+            cause.printStackTrace();
             throw new CannotPostOnGoogleGroupException(cause);
         }
 
