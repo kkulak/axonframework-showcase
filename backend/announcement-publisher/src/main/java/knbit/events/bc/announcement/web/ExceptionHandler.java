@@ -41,8 +41,6 @@ public class ExceptionHandler {
                 constraintViolation -> joiner.add(constraintViolation.getMessage())
         );
 
-        System.out.println(joiner.toString());
-
         return new ErrorResponse(
                 joiner.toString()
         );
