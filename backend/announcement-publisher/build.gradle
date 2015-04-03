@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
+}
+
+dependencies {
+
+    compile 'com.google.guava:guava:18.0'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.projectlombok:lombok:1.16.2'
+    compile 'org.twitter4j:twitter4j-core:4.0.3'
+    compile 'org.facebook4j:facebook4j-core:2.2.2'
+    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    // spock
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'cglib:cglib-nodep:3.1'          // allows mocking of classes (in addition to interfaces)
+    testCompile 'org.objenesis:objenesis:2.1'    // allows mocking of classes without default constructor (together with CGLIB)
+    testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
+    testCompile 'com.jayway.jsonpath:json-path:0.9.1'
+
+}
