@@ -9,7 +9,7 @@ public class CannotPostOnFacebookException extends AnnouncementException {
 
     private static final String ERROR_MESSAGE = "Cannot post on facebook!";
 
-    public CannotPostOnFacebookException() {
-        super(ERROR_MESSAGE);
+    public CannotPostOnFacebookException(Throwable cause) {
+        super(ERROR_MESSAGE, cause);
     }
 }

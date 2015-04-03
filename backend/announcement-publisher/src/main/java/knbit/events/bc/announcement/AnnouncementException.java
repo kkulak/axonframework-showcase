@@ -5,6 +5,10 @@ package knbit.events.bc.announcement;
  */
 public class AnnouncementException extends RuntimeException {
 
+    public AnnouncementException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public AnnouncementException(String message) {
         super(message);
     }

@@ -20,8 +20,8 @@ public class TwitterPublisher implements Publisher {
     public void publish(Announcement announcement) {
         try {
             twitter.updateStatus(announcement.content());
-        } catch (TwitterException e) {
-            throw new CannotPostOnTwitterException();
+        } catch (TwitterException cause) {
+            throw new CannotPostOnTwitterException(cause);
         }
     }
 }

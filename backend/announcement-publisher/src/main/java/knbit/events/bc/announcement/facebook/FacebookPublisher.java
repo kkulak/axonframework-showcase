@@ -20,8 +20,8 @@ public class FacebookPublisher implements Publisher {
     public void publish(Announcement announcement) {
         try {
             facebook.postStatusMessage(announcement.content());
-        } catch (FacebookException e) {
-            throw new CannotPostOnFacebookException();
+        } catch (FacebookException cause) {
+            throw new CannotPostOnFacebookException(cause);
         }
     }
 }

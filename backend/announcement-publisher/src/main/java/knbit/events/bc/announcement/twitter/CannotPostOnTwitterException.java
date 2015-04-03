@@ -9,7 +9,7 @@ public class CannotPostOnTwitterException extends AnnouncementException {
 
     private static final String ERROR_MESSAGE = "Cannot post on Twitter!";
 
-    public CannotPostOnTwitterException() {
-        super(ERROR_MESSAGE);
+    public CannotPostOnTwitterException(Throwable cause) {
+        super(ERROR_MESSAGE, cause);
     }
 }
