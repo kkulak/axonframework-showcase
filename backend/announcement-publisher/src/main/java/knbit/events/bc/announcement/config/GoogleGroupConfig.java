@@ -16,7 +16,7 @@ class GoogleGroupConfig {
 
     private final String googleGroupAddress = "knbittestgroup@googlegroups.com";
 
-    @Bean
+    @Bean(name = Publishers.GOOGLE_GROUP)
     @Autowired
     public Publisher googleGroupPublisher(JavaMailSender mailSender) {
         return new GoogleGroupPublisher(
