@@ -23,6 +23,9 @@ $RECYCLE.BIN/
 ### Gradle template
 .gradle
 build/
+events-bc-core/build
+events-bc-announcement/build
+events-bc-app/build
 
 # Ignore Gradle GUI config
 gradle-app.setting

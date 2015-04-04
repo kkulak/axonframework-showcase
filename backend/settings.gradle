@@ -1,4 +1,6 @@
 rootProject.name = 'knbit-events-bc'
 
-include 'announcement-publisher'
+include 'events-bc-core'
+include 'events-bc-announcement'
+include 'events-bc-app'
 
