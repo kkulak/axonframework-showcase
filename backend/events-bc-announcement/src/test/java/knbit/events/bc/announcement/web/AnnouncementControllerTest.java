@@ -3,7 +3,7 @@ package knbit.events.bc.announcement.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
-import knbit.events.bc.announcement.config.Publishers;
+import knbit.events.bc.announcement.testcontext.TestContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -45,8 +44,7 @@ public class AnnouncementControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @Autowired
-    @Qualifier(Publishers.COORDINATOR)
-    private Publisher coordinatorMock;
+    private Publisher publisherMock;
 
     @Autowired
     private AnnouncementController objectUnderTest;
@@ -61,17 +59,17 @@ public class AnnouncementControllerTest {
 
     @After
     public void tearDown() throws Exception {
-        Mockito.reset(coordinatorMock);
+        Mockito.reset(publisherMock);
     }
 
     @Test
-    public void shouldDispatchRequestToCoordinator() throws Exception {
+    public void shouldDispatchRequestToPublisher() throws Exception {
 
         final AnnouncementDTO dto = dtoOf("title", "content");
 
         objectUnderTest.postAnnouncement(dto);
 
-        verify(coordinatorMock, times(1)).publish(
+        verify(publisherMock, times(1)).publish(
                 new Announcement(dto.getTitle(), dto.getContent())
         );
 
@@ -99,7 +97,7 @@ public class AnnouncementControllerTest {
     public void shouldReturnInternalErrorWithProperMessageWhenCoordinatorFails() throws Exception {
 
         doThrow(new SomethingWentWrongException())
-                .when(coordinatorMock)
+                .when(publisherMock)
                 .publish(
                         any(Announcement.class)
                 );

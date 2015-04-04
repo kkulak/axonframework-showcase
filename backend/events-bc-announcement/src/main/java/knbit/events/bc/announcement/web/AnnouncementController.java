@@ -20,7 +20,7 @@ public class AnnouncementController {
     private final Publisher publisher;
 
     @Autowired
-    public AnnouncementController(@Qualifier(Publishers.COORDINATOR) Publisher publisher) {
+    public AnnouncementController(@Qualifier(Publishers.IIET_BOARD) Publisher publisher) {
         this.publisher = publisher;
     }
 

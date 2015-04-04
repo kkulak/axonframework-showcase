@@ -1,10 +1,12 @@
-package knbit.events.bc.announcement.web;
+package knbit.events.bc.announcement.testcontext;
 
 import knbit.events.bc.announcement.Publisher;
-import knbit.events.bc.announcement.config.Publishers;
+import knbit.events.bc.announcement.web.AnnouncementController;
+import knbit.events.bc.announcement.web.ExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 import static org.mockito.Mockito.mock;
 
@@ -13,7 +15,8 @@ import static org.mockito.Mockito.mock;
  */
 
 @SpringBootApplication
-class TestContext {
+@ComponentScan(basePackages = "knbit.events.bc.announcement.testcontext")
+public class TestContext {
 
     @Bean
     @Autowired
@@ -21,8 +24,13 @@ class TestContext {
         return new AnnouncementController(publisher);
     }
 
-    @Bean(name = Publishers.COORDINATOR)
-    public Publisher coordinatorMock() {
+    @Bean
+    public Publisher publisherMock() {
         return mock(Publisher.class);
+    }
+
+    @Bean
+    public ExceptionHandler exceptionHandler() {
+        return new ExceptionHandler();
     }
 }
