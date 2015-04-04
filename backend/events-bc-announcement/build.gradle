@@ -1,0 +1,28 @@
+apply plugin: 'spring-boot'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+    }
+}
+
+dependencies {
+    // knbit-events-bc
+    compile project(':events-bc-core')
+
+    // cos tam
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.twitter4j:twitter4j-core:4.0.3'
+    compile 'org.facebook4j:facebook4j-core:2.2.2'
+    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+
+    // spring-test
+    testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
+    testCompile 'com.jayway.jsonpath:json-path:0.9.1'
+}
