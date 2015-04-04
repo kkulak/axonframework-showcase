@@ -8,6 +8,7 @@
     <script src="assets/libs/jquery/dist/jquery.js"></script>
     <script src="assets/libs/angular/angular.js"></script>
     <script src="assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="assets/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
     <!-- knbit-events-bc libs -->
     <script src="app/app.module.js"></script>
@@ -25,6 +26,46 @@
 
 </head>
 <body>
+
+    <nav class="navbar navbar-default">
+
+        <div class="container">
+
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">KNBIT</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Sections</a></li>
+                <li><a href="#">Members</a></li>
+                <li class="active"><a href="#">Events</a></li>
+                <li><a href="#">Timeline</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" dropdown>
+                    <a href="#" class="dropdown-toggle" dropdown-toggle>
+                        More <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </form>
+
+        </div>
+
+    </nav>
 
     <div ui-view></div>
 
