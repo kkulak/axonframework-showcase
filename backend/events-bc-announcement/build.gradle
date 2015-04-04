@@ -16,11 +16,13 @@ dependencies {
     // knbit-events-bc
     compile project(':events-bc-core')
 
-    // cos tam
+    // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+
+    // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'org.facebook4j:facebook4j-core:2.2.2'
-    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
 
     // spring-test
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
