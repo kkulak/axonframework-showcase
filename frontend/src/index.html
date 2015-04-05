@@ -27,7 +27,8 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-default">
+    <!-- Menu bar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
 
         <div class="container">
 
@@ -66,6 +67,30 @@
         </div>
 
     </nav>
+    <!-- menu bar -->
+
+    <!-- jumbotron -->
+    <div class="jumbotron" style="padding-bottom: 10px;">
+        <div class="container">
+            <h2>Manage your events</h2>
+            <hr/>
+            <div class="row">
+                <div class="col-md-4">
+                    <p>
+                        <a class="btn btn-primary btn-default" href="#" role="button">Create event &raquo;</a>
+                        <a class="btn btn-primary btn-default" href="#" role="button">Publish message &raquo;</a>
+                    </p>
+                </div>
+                <div class="col-md-3 col-md-offset-5">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Left'" uncheckable>Archive events</label>
+                        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Middle'" uncheckable>Current events</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- jumbotron -->
 
     <div ui-view></div>
 
