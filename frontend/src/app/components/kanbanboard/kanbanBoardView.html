@@ -1,7 +1,8 @@
-<div style="width:80%; margin: 0 auto 0 auto;">
+<div class="container-fluid">
+
     <div class="row" ng-controller="boardController" ng-init="refreshBoard()">
 
-        <div class="col-lg-3 panel panel-primary colStyle" id="{{col.id}}"
+        <div class="col-md-2 panel panel-primary colStyle" id="{{col.id}}"
              kanban-board-drop="over" ng-repeat="col in columns">
 
             <div class="panel-heading" style="margin-bottom: 10px;">
