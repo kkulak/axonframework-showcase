@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html ng-app="knbitEventsBc">
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>knbit-events-bc</title>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>knbit-events-bc</title>
 
-    <!-- external libs -->
-    <script src="assets/libs/jquery/dist/jquery.js"></script>
-    <script src="assets/libs/angular/angular.js"></script>
-    <script src="assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
+        <!-- external libs -->
+        <script src="assets/libs/jquery/dist/jquery.js"></script>
+        <script src="assets/libs/angular/angular.js"></script>
+        <script src="assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="assets/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
-    <!-- knbit-events-bc libs -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.route.js"></script>
+        <!-- knbit-events-bc libs -->
+        <script src="app/app.module.js"></script>
+        <script src="app/app.route.js"></script>
 
-    <script src="app/components/kanbanboard/kanbanBoardController.js"></script>
-    <script src="app/components/kanbanboard/kanbanBoardService.js"></script>
-    <script src="app/components/kanbanboard/kanbanBoardDirective.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardController.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardService.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardDirective.js"></script>
 
-    <!-- external stylesheets -->
-    <link href="assets/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <!-- external stylesheets -->
+        <link href="assets/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 
-    <!-- knbit-events-bc stylesheets -->
-    <link href="assets/css/app.css" rel="stylesheet" type="text/css"/>
+        <!-- knbit-events-bc stylesheets -->
+        <link href="assets/css/app.css" rel="stylesheet" type="text/css"/>
 
-</head>
-<body>
+    </head>
+    <body>
+    
+        <!-- menu bar -->
+        <nav ui-view="menu-navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+        <!-- menu bar -->
 
-    <div ui-view></div>
+        <!-- jumbotron -->
+        <header ui-view="jumbotron"></header>
+        <!-- jumbotron -->
 
-</body>
+        <!-- content -->
+        <main ui-view="content"></main>
+        <!-- content -->
+
+    </body>
 </html>

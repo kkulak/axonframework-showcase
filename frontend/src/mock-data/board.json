@@ -1,7 +1,7 @@
 [
   {
     "id": 0,
-    "name": "To do",
+    "name": "Event backlog",
     "description": "Backlog for todos",
     "tasks": [
       {
@@ -20,7 +20,7 @@
   },
   {
     "id": 1,
-    "name": "In progress",
+    "name": "Surveying interest",
     "description": "Columns for in progress tasks",
     "tasks": [
       {
@@ -39,7 +39,7 @@
   },
   {
     "id": 2,
-    "name": "In test",
+    "name": "Choosing term",
     "description": "test column",
     "tasks": [
       {
@@ -58,7 +58,7 @@
   },
   {
     "id": 3,
-    "name": "Done",
+    "name": "Room booking",
     "description": "Done column",
     "tasks": [
       {
@@ -72,6 +72,44 @@
         "name": "Task 8 in todo",
         "description": "Task 8 description",
         "columnId": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Event took place",
+    "description": "Done column",
+    "tasks": [
+      {
+        "id": 9,
+        "name": "Task 7 in todo",
+        "description": "Task 7 description",
+        "columnId": 4
+      },
+      {
+        "id": 10,
+        "name": "Task 8 in todo",
+        "description": "Task 8 description",
+        "columnId": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "In summary",
+    "description": "Done column",
+    "tasks": [
+      {
+        "id": 11,
+        "name": "Task 7 in todo",
+        "description": "Task 7 description",
+        "columnId": 4
+      },
+      {
+        "id": 12,
+        "name": "Task 8 in todo",
+        "description": "Task 8 description",
+        "columnId": 4
       }
     ]
   }

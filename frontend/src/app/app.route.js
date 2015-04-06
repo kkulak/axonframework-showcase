@@ -9,8 +9,18 @@ appRouting.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('home', {
             url         :   '/',
-            templateUrl :   'app/components/kanbanboard/kanbanBoardView.html',
-            controller  :   'boardController'
+            views       :   {
+                'menu-navbar': {
+                    templateUrl :  'app/shared/menu-bar/menu-bar.html'
+                },
+                'jumbotron': {
+                    templateUrl :   'app/shared/jumbotron/jumbotron.html'
+                },
+                'content': {
+                    templateUrl :  'app/components/kanbanboard/kanbanBoardView.html',
+                    controller  :  'boardController'
+                }
+            }
         });
 
 });
