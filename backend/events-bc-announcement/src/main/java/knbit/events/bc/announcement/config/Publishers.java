@@ -9,6 +9,7 @@ public class Publishers {
     public static final String FACEBOOK = "facebook";
     public static final String GOOGLE_GROUP = "googlegroup";
     public static final String COORDINATOR = "coordinator";
+    public static final String IIET_BOARD = "iietboard";
 
     private Publishers() {
     }

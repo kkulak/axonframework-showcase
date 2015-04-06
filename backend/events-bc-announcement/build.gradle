@@ -5,6 +5,7 @@ buildscript {
         mavenCentral()
         mavenLocal()
         maven { url "http://repo.spring.io/milestone" }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
     }
 
     dependencies {
@@ -23,6 +24,7 @@ dependencies {
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'org.facebook4j:facebook4j-core:2.2.2'
+    compile 'net.sourceforge.htmlunit:htmlunit:2.15'
 
     // spring-test
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
