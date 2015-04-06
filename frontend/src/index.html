@@ -1,98 +1,43 @@
 <!DOCTYPE html>
 <html ng-app="knbitEventsBc">
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>knbit-events-bc</title>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>knbit-events-bc</title>
 
-    <!-- external libs -->
-    <script src="assets/libs/jquery/dist/jquery.js"></script>
-    <script src="assets/libs/angular/angular.js"></script>
-    <script src="assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="assets/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <!-- external libs -->
+        <script src="assets/libs/jquery/dist/jquery.js"></script>
+        <script src="assets/libs/angular/angular.js"></script>
+        <script src="assets/libs/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="assets/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
-    <!-- knbit-events-bc libs -->
-    <script src="app/app.module.js"></script>
-    <script src="app/app.route.js"></script>
+        <!-- knbit-events-bc libs -->
+        <script src="app/app.module.js"></script>
+        <script src="app/app.route.js"></script>
 
-    <script src="app/components/kanbanboard/kanbanBoardController.js"></script>
-    <script src="app/components/kanbanboard/kanbanBoardService.js"></script>
-    <script src="app/components/kanbanboard/kanbanBoardDirective.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardController.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardService.js"></script>
+        <script src="app/components/kanbanboard/kanbanBoardDirective.js"></script>
 
-    <!-- external stylesheets -->
-    <link href="assets/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <!-- external stylesheets -->
+        <link href="assets/libs/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 
-    <!-- knbit-events-bc stylesheets -->
-    <link href="assets/css/app.css" rel="stylesheet" type="text/css"/>
+        <!-- knbit-events-bc stylesheets -->
+        <link href="assets/css/app.css" rel="stylesheet" type="text/css"/>
 
-</head>
-<body>
+    </head>
+    <body>
+    
+        <!-- menu bar -->
+        <nav ui-view="menu-navbar" class="navbar navbar-default navbar-fixed-top"></nav>
+        <!-- menu bar -->
 
-    <!-- Menu bar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+        <!-- jumbotron -->
+        <header ui-view="jumbotron"></header>
+        <!-- jumbotron -->
 
-        <div class="container">
+        <!-- content -->
+        <main ui-view="content"></main>
+        <!-- content -->
 
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">KNBIT</a>
-            </div>
-
-            <ul class="nav navbar-nav">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Sections</a></li>
-                <li><a href="#">Members</a></li>
-                <li class="active"><a href="#">Events</a></li>
-                <li><a href="#">Timeline</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" dropdown>
-                    <a href="#" class="dropdown-toggle" dropdown-toggle>
-                        More <span class="glyphicon glyphicon-chevron-down"></span>
-                    </a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Help</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Log out</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-            </form>
-
-        </div>
-
-    </nav>
-    <!-- menu bar -->
-
-    <!-- jumbotron -->
-    <div class="jumbotron" style="padding-bottom: 10px; margin-bottom: 5px;">
-        <div class="container">
-            <h2>Manage your events</h2>
-            <hr/>
-            <div class="row">
-                <div class="col-md-4">
-                    <p>
-                        <a class="btn btn-primary btn-default" href="#" role="button">Create event &raquo;</a>
-                        <a class="btn btn-primary btn-default" href="#" role="button">Publish message &raquo;</a>
-                    </p>
-                </div>
-                <div class="col-md-3 col-md-offset-5">
-                    <div class="btn-group">
-                        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Left'" uncheckable>Archive events</label>
-                        <label class="btn btn-primary" ng-model="radioModel" btn-radio="'Middle'" uncheckable>Current events</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- jumbotron -->
-
-    <div ui-view></div>
-
-</body>
+    </body>
 </html>
