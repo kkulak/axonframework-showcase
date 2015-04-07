@@ -9,6 +9,7 @@
     "angular-ui-router": "latest",
     "jquery": "latest",
     "bootstrap": "latest",
-    "angular-bootstrap": "latest"
+    "angular-bootstrap": "latest",
+    "angular-ui-router-tabs": "latest"
   }
 }
