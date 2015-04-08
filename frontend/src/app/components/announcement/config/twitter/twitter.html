@@ -5,14 +5,14 @@
     </div>
 
     <div>
-        <form class="form">
+        <form class="form" ng-submit="updateProperties()">
             <div class="form-group">
-                <label for="clientId">Client ID:</label>
-                <input name="clientID" id="clientID" class="form-control" required="true">
+                <label for="consumerKey">Consumer Key:</label>
+                <input name="consumerKey" id="consumerKey" ng-model="properties.consumerKey" class="form-control" required="true">
             </div>
             <div class="form-group">
-                <label for="clientSecret">Client Secret:</label>
-                <input name="clientSecret" id="clientSecret" class="form-control" type="password" required="true">
+                <label for="consumerSecret">Consumer Secret:</label>
+                <input name="consumerSecret" id="consumerSecret" ng-model="properties.consumerSecret" class="form-control" type="password" required="true">
             </div>
             <div class="btn-block">
                 <button type="submit" class="btn btn-primary">Save!</button>

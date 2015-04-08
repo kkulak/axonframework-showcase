@@ -6,5 +6,7 @@ var knbitEventsBc = angular.module('knbitEventsBc', [
     'ui.router.tabs',
     'kanbanBoardController',
     'kanbanBoardDirective',
-    'announcementConfigController'
+    'announcementConfigController',
+    'publisherConfigResources',
+    'publisherConfigControllers'
 ]);

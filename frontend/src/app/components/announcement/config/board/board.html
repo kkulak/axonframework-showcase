@@ -6,26 +6,26 @@
     </div>
 
     <div>
-        <form class="form">
+        <form class="form" ng-submit="updateProperties()">
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input name="username" id="username" class="form-control" required="true">
+                <input name="username" id="username" ng-model="properties.username" class="form-control" required="true">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input name="password" id="password" class="form-control" type="password" required="true">
+                <input name="password" id="password" ng-model="properties.password" class="form-control" type="password" required="true">
             </div>
             <div class="form-group">
                 <label for="loginUrl">Login URL:</label>
-                <input name="loginUrl" id="loginUrl" class="form-control" type="url" required="true">
+                <input name="loginUrl" id="loginUrl" ng-model="properties.loginUrl" class="form-control" type="url" required="true">
             </div>
             <div class="form-group">
-                <label for="boardID">Posting board ID:</label>
-                <input name="boardID" id="boardID" class="form-control" required="true">
+                <label for="boardId">Posting board ID:</label>
+                <input name="boardId" id="boardId" ng-model="properties.boardId" class="form-control" required="true">
             </div>
             <div class="form-group">
                 <label for="boardUrl">Board URL:</label>
-                <input name="boardUrl" id="boardUrl" class="form-control" type="url" required="true">
+                <input name="boardUrl" id="boardUrl" ng-model="properties.boardUrl" class="form-control" type="url" required="true">
             </div>
 
             <div class="btn-block">

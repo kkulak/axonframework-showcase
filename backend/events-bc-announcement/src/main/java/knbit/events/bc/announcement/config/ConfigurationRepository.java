@@ -10,6 +10,7 @@ import java.util.Map;
  * Created by novy on 07.04.15.
  */
 
+// todo: this is only a prototype!
 @Repository
 public class ConfigurationRepository {
 
