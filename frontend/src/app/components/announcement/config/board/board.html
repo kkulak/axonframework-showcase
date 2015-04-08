@@ -1,0 +1,39 @@
+<div class="container">
+    <div>
+        <br/>
+
+        <p class="text-info lead">Set up IIET Board properties: </p>
+    </div>
+
+    <div>
+        <form class="form" ng-submit="updateProperties()">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input name="username" id="username" ng-model="properties.username" class="form-control" required="true">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input name="password" id="password" ng-model="properties.password" class="form-control" type="password" required="true">
+            </div>
+            <div class="form-group">
+                <label for="loginUrl">Login URL:</label>
+                <input name="loginUrl" id="loginUrl" ng-model="properties.loginUrl" class="form-control" type="url" required="true">
+            </div>
+            <div class="form-group">
+                <label for="boardId">Posting board ID:</label>
+                <input name="boardId" id="boardId" ng-model="properties.boardId" class="form-control" required="true">
+            </div>
+            <div class="form-group">
+                <label for="boardUrl">Board URL:</label>
+                <input name="boardUrl" id="boardUrl" ng-model="properties.boardUrl" class="form-control" type="url" required="true">
+            </div>
+
+            <div class="btn-block">
+                <button type="submit" class="btn btn-primary">Save!</button>
+                <button type="reset" class="btn btn-danger">Reset!</button>
+            </div>
+        </form>
+    </div>
+
+    <toaster-container></toaster-container>
+</div>

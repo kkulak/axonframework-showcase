@@ -1,0 +1,35 @@
+<div class="container">
+    <div>
+        <br/>
+
+        <p class="text-info lead">Set up Google Group Publisher properties: </p>
+    </div>
+
+    <div>
+        <form class="form" ng-submit="updateProperties()">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input name="username" id="username" ng-model="properties.username" class="form-control" required="true">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input name="password" id="password" ng-model="properties.password" class="form-control" type="password" required="true">
+            </div>
+            <div class="form-group">
+                <label for="host">Host:</label>
+                <input name="host" id="host" ng-model="properties.host" class="form-control" required="true">
+            </div>
+            <div class="form-group">
+                <label for="googleGroupAddress">Google group address:</label>
+                <input name="googleGroupAddress" ng-model="properties.googleGroupAddress" id="googleGroupAddress" class="form-control" type="email" required="true">
+            </div>
+
+            <div class="btn-block">
+                <button type="submit" class="btn btn-primary">Save!</button>
+                <button type="reset" class="btn btn-danger">Reset!</button>
+            </div>
+        </form>
+    </div>
+
+    <toaster-container></toaster-container>
+</div>
