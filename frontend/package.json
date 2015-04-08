@@ -13,7 +13,8 @@
     "karma-jasmine": "latest",
     "requirejs": "latest",
     "karma-requirejs": "latest",
-    "karma-chrome-launcher": "latest"
+    "karma-chrome-launcher": "latest",
+    "angular-mocks": "latest"
   },
   "scripts": {
     "postinstall": "bower install",
