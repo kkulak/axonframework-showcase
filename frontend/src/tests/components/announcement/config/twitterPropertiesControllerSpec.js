@@ -6,7 +6,6 @@
  * Created by novy on 08.04.15.
  */
 
-
 describe('twitterPropertiesController should', function () {
 
     var twitterProperties = {
@@ -16,16 +15,19 @@ describe('twitterPropertiesController should', function () {
 
     var scope;
     var TwitterPropertiesMock;
+    var ToastingServiceMock;
 
     beforeEach(module('publisherConfigControllers'));
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         TwitterPropertiesMock = jasmine.createSpyObj('TwitterProperties', ['get', 'update']);
+        ToastingServiceMock = jasmine.createSpyObj('ToastingService', ['showSuccessToast', 'showErrorToast'])
 
         $controller('twitterPropertiesController', {
             $scope: scope,
-            TwitterProperties: TwitterPropertiesMock
+            TwitterProperties: TwitterPropertiesMock,
+            ToastingService: ToastingServiceMock
         });
 
     }));
@@ -46,7 +48,29 @@ describe('twitterPropertiesController should', function () {
 
         scope.updateProperties();
 
-        expect(TwitterPropertiesMock.update).toHaveBeenCalledWith(twitterProperties);
+        expect(TwitterPropertiesMock.update).toHaveBeenCalled();
+    });
+
+    it("should display success toast after successful update", function () {
+
+        TwitterPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+           successCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showSuccessToast).toHaveBeenCalled();
+    });
+
+    it("should display error toast when update fails", function () {
+
+        TwitterPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+            errorCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showErrorToast).toHaveBeenCalled();
     });
 
 });

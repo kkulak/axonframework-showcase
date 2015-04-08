@@ -18,6 +18,8 @@ module.exports = function (config) {
             'test-main.js',
             'src/assets/libs/angular/angular.js',
             'node_modules/angular-mocks/angular-mocks.js',
+            'src/assets/libs/angularjs-toaster/toaster.min.js',
+            'src/assets/libs/angular-animate/angular-animate.min.js',
             'src/app/components/announcement/config/publisherConfigControllers.js',
             {pattern: 'src/app/**/*.js', included: false},
             {pattern: 'src/tests/**/*.js', included: false}

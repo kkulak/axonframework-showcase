@@ -13,16 +13,19 @@ describe('googleGroupPropertiesController should', function () {
 
     var scope;
     var GoogleGroupPropertiesMock;
+    var ToastingServiceMock;
 
     beforeEach(module('publisherConfigControllers'));
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         GoogleGroupPropertiesMock = jasmine.createSpyObj('GoogleGroupProperties', ['get', 'update']);
+        ToastingServiceMock = jasmine.createSpyObj('ToastingService', ['showSuccessToast', 'showErrorToast'])
 
         $controller('googlegroupPropertiesController', {
             $scope: scope,
-            GoogleGroupProperties: GoogleGroupPropertiesMock
+            GoogleGroupProperties: GoogleGroupPropertiesMock,
+            ToastingService: ToastingServiceMock
         });
 
     }));
@@ -43,7 +46,29 @@ describe('googleGroupPropertiesController should', function () {
 
         scope.updateProperties();
 
-        expect(GoogleGroupPropertiesMock.update).toHaveBeenCalledWith(googleGroupProperties);
+        expect(GoogleGroupPropertiesMock.update).toHaveBeenCalled();
+    });
+
+    it("should display success toast after successful update", function () {
+
+        GoogleGroupPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+            successCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showSuccessToast).toHaveBeenCalled();
+    });
+
+    it("should display error toast when update fails", function () {
+
+        GoogleGroupPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+            errorCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showErrorToast).toHaveBeenCalled();
     });
 
 });

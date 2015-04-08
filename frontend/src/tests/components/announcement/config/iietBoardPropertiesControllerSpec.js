@@ -17,16 +17,19 @@ describe('iietBoardPropertiesController should', function () {
 
     var scope;
     var IIETBoardPropertiesMock;
+    var ToastingServiceMock;
 
     beforeEach(module('publisherConfigControllers'));
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
 
         IIETBoardPropertiesMock = jasmine.createSpyObj('IIETBoardProperties', ['get', 'update']);
+        ToastingServiceMock = jasmine.createSpyObj('ToastingService', ['showSuccessToast', 'showErrorToast'])
 
         $controller('boardPropertiesController', {
             $scope: scope,
-            IIETBoardProperties: IIETBoardPropertiesMock
+            IIETBoardProperties: IIETBoardPropertiesMock,
+            ToastingService: ToastingServiceMock
         });
 
     }));
@@ -47,7 +50,29 @@ describe('iietBoardPropertiesController should', function () {
 
         scope.updateProperties();
 
-        expect(IIETBoardPropertiesMock.update).toHaveBeenCalledWith(iietBoardProperties);
+        expect(IIETBoardPropertiesMock.update).toHaveBeenCalled();
+    });
+
+    it("should display success toast after successful update", function () {
+
+        IIETBoardPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+            successCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showSuccessToast).toHaveBeenCalled();
+    });
+
+    it("should display error toast when update fails", function () {
+
+        IIETBoardPropertiesMock.update.and.callFake(function (properties, successCallback, errorCallback){
+            errorCallback();
+        });
+
+        scope.updateProperties();
+
+        expect(ToastingServiceMock.showErrorToast).toHaveBeenCalled();
     });
 
 });
