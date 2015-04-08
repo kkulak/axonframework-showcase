@@ -39,22 +39,22 @@ appRouting.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
         .state('root.announcement.config.facebook', {
-            url: '/announcement/config/facebook',
+            url: '/facebook',
             templateUrl: 'app/components/announcement/config/facebook/facebook.html',
             controller: 'facebookPropertiesController'
         })
         .state('root.announcement.config.twitter', {
-            url: '/announcement/config/twitter',
+            url: '/twitter',
             templateUrl: 'app/components/announcement/config/twitter/twitter.html',
             controller: 'twitterPropertiesController'
         })
         .state('root.announcement.config.googlegroup', {
-            url: '/announcement/config/googlegroup',
+            url: '/googlegroup',
             templateUrl: 'app/components/announcement/config/googlegroup/googlegroup.html',
             controller: 'googlegroupPropertiesController'
         })
         .state('root.announcement.config.board', {
-            url: '/announcement/config/board',
+            url: '/board',
             templateUrl: 'app/components/announcement/config/board/board.html',
             controller: 'boardPropertiesController'
         })
