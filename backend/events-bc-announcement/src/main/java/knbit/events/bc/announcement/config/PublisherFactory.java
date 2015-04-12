@@ -1,0 +1,137 @@
+package knbit.events.bc.announcement.config;
+
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.google.common.base.Preconditions;
+import facebook4j.Facebook;
+import facebook4j.FacebookFactory;
+import knbit.events.bc.announcement.Publisher;
+import knbit.events.bc.announcement.facebook.FacebookPublisher;
+import knbit.events.bc.announcement.googlegroup.GoogleGroupPublisher;
+import knbit.events.bc.announcement.iietboard.BoardPublisherConfiguration;
+import knbit.events.bc.announcement.iietboard.IIETBoardPublisher;
+import knbit.events.bc.announcement.twitter.TwitterPublisher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Component;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+
+import java.util.Collection;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
+/**
+ * Created by novy on 11.04.15.
+ */
+
+@Component
+public class PublisherFactory {
+
+    private final ConfigurationRepository configurationRepository;
+
+    @Autowired
+    public PublisherFactory(ConfigurationRepository configurationRepository) {
+        this.configurationRepository = configurationRepository;
+    }
+
+    public Publisher byVendor(Publishers vendor) {
+        Preconditions.checkNotNull(vendor);
+
+        switch (vendor) {
+            case FACEBOOK:
+                return facebookPublisher();
+            case TWITTER:
+                return twitterPublisher();
+            case GOOGLE_GROUP:
+                return googleGroupPublisher();
+            case IIET_BOARD:
+                return iietBoardPublisher();
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    public Collection<Publisher> byVendors(Collection<Publishers> vendors) {
+        return vendors
+                .stream()
+                .map(this::byVendor)
+                .collect(Collectors.toList());
+    }
+
+    private Publisher iietBoardPublisher() {
+        final IIETBoardProperties iietBoardProperties = configurationRepository.iietBoardProperties();
+
+        final BoardPublisherConfiguration configuration = new BoardPublisherConfiguration(
+                iietBoardProperties.username(),
+                iietBoardProperties.password(),
+                iietBoardProperties.loginUrl(),
+                iietBoardProperties.boardUrl(),
+                iietBoardProperties.boardId()
+        );
+
+        final WebClient webClient = new WebClient();
+
+        return new IIETBoardPublisher(
+                configuration, webClient
+        );
+    }
+
+    private Publisher googleGroupPublisher() {
+        final GoogleGroupProperties googleGroupProperties = configurationRepository.googleGroupProperties();
+        final MailSender mailSender = mailSenderForProps(googleGroupProperties);
+
+        return new GoogleGroupPublisher(
+                googleGroupProperties.googleGroupAddress(), mailSender
+        );
+    }
+
+    private MailSender mailSenderForProps(GoogleGroupProperties properties) {
+        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        mailSender.setHost(properties.host());
+        mailSender.setUsername(properties.username());
+        mailSender.setPassword(properties.password());
+
+        Properties mailProperties = new Properties();
+        mailProperties.put("mail.smtp.auth", true);
+        mailProperties.put("mail.smtp.starttls.enable", true);
+
+        mailSender.setJavaMailProperties(mailProperties);
+
+        return mailSender;
+    }
+
+    private Publisher twitterPublisher() {
+        final TwitterProperties twitterProperties = configurationRepository.twitterProperties();
+
+        final twitter4j.conf.Configuration twitterFactoryConfiguration = new twitter4j.conf.ConfigurationBuilder()
+                .setOAuthConsumerKey(twitterProperties.consumerKey())
+                .setOAuthConsumerSecret(twitterProperties.consumerSecret())
+                        // todo: fix
+                .setOAuthAccessToken(null)
+                .build();
+
+        final Twitter twitter = new TwitterFactory(twitterFactoryConfiguration)
+                .getInstance();
+
+        return new TwitterPublisher(twitter);
+
+    }
+
+    private Publisher facebookPublisher() {
+        final FacebookProperties facebookProperties = configurationRepository.facebookProperties();
+
+        final facebook4j.conf.Configuration facebookFactoryConfiguration = new facebook4j.conf.ConfigurationBuilder()
+                .setOAuthAppId(facebookProperties.appId())
+                .setOAuthAppSecret(facebookProperties.appSecret())
+                        // todo: fix
+                .setOAuthAccessToken(null)
+                .build();
+
+        final Facebook facebook = new FacebookFactory(facebookFactoryConfiguration)
+                .getInstance();
+
+        return new FacebookPublisher(facebook);
+    }
+}

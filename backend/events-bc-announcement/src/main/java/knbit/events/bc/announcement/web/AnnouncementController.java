@@ -2,9 +2,7 @@ package knbit.events.bc.announcement.web;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
-import knbit.events.bc.announcement.config.Publishers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +18,7 @@ public class AnnouncementController {
     private final Publisher publisher;
 
     @Autowired
-    public AnnouncementController(@Qualifier(Publishers.IIET_BOARD) Publisher publisher) {
+    public AnnouncementController(Publisher publisher) {
         this.publisher = publisher;
     }
 
