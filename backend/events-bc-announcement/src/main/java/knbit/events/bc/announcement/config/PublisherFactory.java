@@ -63,11 +63,11 @@ public class PublisherFactory {
         final IIETBoardProperties iietBoardProperties = configurationRepository.iietBoardProperties();
 
         final BoardPublisherConfiguration configuration = new BoardPublisherConfiguration(
-                iietBoardProperties.username(),
-                iietBoardProperties.password(),
-                iietBoardProperties.loginUrl(),
-                iietBoardProperties.boardUrl(),
-                iietBoardProperties.boardId()
+                iietBoardProperties.getUsername(),
+                iietBoardProperties.getPassword(),
+                iietBoardProperties.getLoginUrl(),
+                iietBoardProperties.getBoardUrl(),
+                iietBoardProperties.getBoardId()
         );
 
         final WebClient webClient = new WebClient();
@@ -82,16 +82,16 @@ public class PublisherFactory {
         final MailSender mailSender = mailSenderForProps(googleGroupProperties);
 
         return new GoogleGroupPublisher(
-                googleGroupProperties.googleGroupAddress(), mailSender
+                googleGroupProperties.getGoogleGroupAddress(), mailSender
         );
     }
 
     private MailSender mailSenderForProps(GoogleGroupProperties properties) {
         final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        mailSender.setHost(properties.host());
-        mailSender.setUsername(properties.username());
-        mailSender.setPassword(properties.password());
+        mailSender.setHost(properties.getHost());
+        mailSender.setUsername(properties.getUsername());
+        mailSender.setPassword(properties.getPassword());
 
         Properties mailProperties = new Properties();
         mailProperties.put("mail.smtp.auth", true);
@@ -106,8 +106,8 @@ public class PublisherFactory {
         final TwitterProperties twitterProperties = configurationRepository.twitterProperties();
 
         final twitter4j.conf.Configuration twitterFactoryConfiguration = new twitter4j.conf.ConfigurationBuilder()
-                .setOAuthConsumerKey(twitterProperties.consumerKey())
-                .setOAuthConsumerSecret(twitterProperties.consumerSecret())
+                .setOAuthConsumerKey(twitterProperties.getConsumerKey())
+                .setOAuthConsumerSecret(twitterProperties.getConsumerSecret())
                         // todo: fix
                 .setOAuthAccessToken(null)
                 .build();
@@ -123,8 +123,8 @@ public class PublisherFactory {
         final FacebookProperties facebookProperties = configurationRepository.facebookProperties();
 
         final facebook4j.conf.Configuration facebookFactoryConfiguration = new facebook4j.conf.ConfigurationBuilder()
-                .setOAuthAppId(facebookProperties.appId())
-                .setOAuthAppSecret(facebookProperties.appSecret())
+                .setOAuthAppId(facebookProperties.getAppId())
+                .setOAuthAppSecret(facebookProperties.getAppSecret())
                         // todo: fix
                 .setOAuthAccessToken(null)
                 .build();

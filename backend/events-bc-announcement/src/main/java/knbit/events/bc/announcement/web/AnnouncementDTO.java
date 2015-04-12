@@ -1,7 +1,8 @@
 package knbit.events.bc.announcement.web;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.google.common.base.Preconditions;
+import knbit.events.bc.announcement.config.Publishers;
+import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Collection;
@@ -9,8 +10,9 @@ import java.util.Collection;
 /**
  * Created by novy on 03.04.15.
  */
-@Data
-@NoArgsConstructor
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnnouncementDTO {
 
     private Collection<String> publishers;
@@ -20,4 +22,20 @@ public class AnnouncementDTO {
 
     @NotBlank
     private String content;
+
+    public AnnouncementDTO(Collection<String> publishers, String title, String content) {
+        setPublishers(publishers);
+        this.title = title;
+        this.content = content;
+    }
+
+    private void setPublishers(Collection<String> publishers) {
+        Preconditions.checkArgument(containsOnlyAllowedPublishers(publishers));
+        this.publishers = publishers;
+    }
+
+    private boolean containsOnlyAllowedPublishers(Collection<String> publishers) {
+        return Publishers.stringValues().containsAll(publishers);
+    }
+
 }

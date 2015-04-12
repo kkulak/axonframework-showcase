@@ -2,11 +2,14 @@ package knbit.events.bc.announcement.web;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
+import knbit.events.bc.announcement.config.PublisherFactory;
+import knbit.events.bc.announcement.config.Publishers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
 
 /**
  * Created by novy on 03.04.15.
@@ -15,18 +18,28 @@ import javax.validation.Valid;
 @RestController
 public class AnnouncementController {
 
-    private final Publisher publisher;
+    private final PublisherFactory factory;
 
     @Autowired
-    public AnnouncementController(Publisher publisher) {
-        this.publisher = publisher;
+    public AnnouncementController(PublisherFactory factory) {
+        this.factory = factory;
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(value = "/announcements", method = RequestMethod.POST)
     public void postAnnouncement(@RequestBody @Valid AnnouncementDTO announcementDTO) {
-        publisher.publish(
-                new Announcement(announcementDTO.getTitle(), announcementDTO.getContent())
+        final Collection<Publisher> publishers = factory.byVendors(
+                Publishers.fromStringValues(
+                        announcementDTO.getPublishers()
+                )
+        );
+
+        final Announcement announcement = new Announcement(
+                announcementDTO.getTitle(), announcementDTO.getContent()
+        );
+
+        publishers.forEach(
+                publisher -> publisher.publish(announcement)
         );
     }
 

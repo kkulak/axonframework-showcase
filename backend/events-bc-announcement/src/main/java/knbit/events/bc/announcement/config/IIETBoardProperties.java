@@ -1,19 +1,20 @@
 package knbit.events.bc.announcement.config;
 
-import lombok.Value;
-import lombok.experimental.Accessors;
+import lombok.*;
 
 /**
  * Created by novy on 11.04.15.
  */
-@Value
-@Accessors(fluent = true)
+@Getter
+@Setter(AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class IIETBoardProperties {
 
-    private final String username;
-    private final String password;
-    private final String loginUrl;
-    private final String boardUrl;
-    private final String boardId;
+    private String username;
+    private String password;
+    private String loginUrl;
+    private String boardUrl;
+    private String boardId;
 
 }
