@@ -1,0 +1,30 @@
+<div class="container">
+    <div>
+        <form class="form" ng-submit="publishAnnouncement()">
+            <div class="form-group">
+                <label for="announcementTitle">Title: </label>
+                <input id="announcementTitle" class="form-control" ng-model="announcement.title" required="true">
+            </div>
+            <div>
+                <label for="announcementContent">Message: </label>
+                <input id="announcementContent" class="form-control" ng-model="announcement.content" required="true">
+            </div>
+            <div isteven-multi-select
+                 input-model="availablePublishers"
+                 output-model="announcement.publishers"
+                 button-label="name"
+                 item-label="name"
+                 tick-property="ticked">
+
+            </div>
+
+            <div class="btn-block">
+                <button type="submit" class="btn btn-primary">Publish!</button>
+                <button type="reset" class="btn btn-danger">Clear!</button>
+            </div>
+        </form>
+
+    </div>
+
+
+</div>
