@@ -13,25 +13,6 @@ var toastData = {
     }
 };
 
-var ToastingService = function (toaster) {
-
-    this.showToast = function (toastType, toastData) {
-        toaster.pop({
-                type: toastType, title: toastData.title, body: toastData.message
-            }
-        )
-    };
-
-    this.showSuccessToast = function (toastData) {
-        this.showToast('success', toastData)
-    };
-
-    this.showErrorToast = function (toastData) {
-        this.showToast('error', toastData)
-    };
-
-};
-
 var PublisherPropertiesController = function (scope, propertiesResource, ToastingService, toastData) {
     this.fetchProperties = function () {
         propertiesResource.get(function (fetchedProperties) {
@@ -75,9 +56,8 @@ var boardPropertiesController = function ($scope, IIETBoardProperties, ToastingS
     new PublisherPropertiesController($scope, IIETBoardProperties, ToastingService, toastData);
 };
 
-angular.module('publisherConfigControllers', ['toaster'])
+angular.module('publisherConfigControllers', ['toastingService'])
     .controller('facebookPropertiesController', facebookPropertiesController)
     .controller('twitterPropertiesController', twitterPropertiesController)
     .controller('googlegroupPropertiesController', googlegroupPropertiesController)
     .controller('boardPropertiesController', boardPropertiesController)
-    .service('ToastingService', ToastingService);

@@ -5,17 +5,19 @@
                 <label for="announcementTitle">Title: </label>
                 <input id="announcementTitle" class="form-control" ng-model="announcement.title" required="true">
             </div>
-            <div>
+            <div class="form-group">
                 <label for="announcementContent">Message: </label>
                 <input id="announcementContent" class="form-control" ng-model="announcement.content" required="true">
             </div>
-            <div isteven-multi-select
-                 input-model="availablePublishers"
-                 output-model="announcement.publishers"
-                 button-label="name"
-                 item-label="name"
-                 tick-property="ticked">
-
+            <div class="form-group">
+                <label for="publishers">Publishers: </label>
+                <div id="publishers" isteven-multi-select
+                     input-model="availablePublishers"
+                     output-model="announcement.publishers"
+                     button-label="name"
+                     item-label="name"
+                     tick-property="ticked">
+                </div>
             </div>
 
             <div class="btn-block">
@@ -26,5 +28,6 @@
 
     </div>
 
+    <toaster-container></toaster-container>
 
 </div>

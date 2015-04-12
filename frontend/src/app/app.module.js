@@ -8,6 +8,7 @@ var knbitEventsBc = angular.module('knbitEventsBc', [
     'kanbanBoardDirective',
     'announcementConfigController',
     'publisherConfigResources',
+    'toastingService',
     'publisherConfigControllers',
     'announcementPublishingController',
     'isteven-multi-select'
