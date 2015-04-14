@@ -1,7 +1,6 @@
 package knbit.events.bc.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;

@@ -28,7 +28,15 @@ appRouting.config(function ($stateProvider, $urlRouterProvider) {
                 }
             }
         })
-        .state('root.announcement', {})
+        .state('root.announcement', {
+            url: 'announcement',
+            views: {
+                'content@': {
+                    templateUrl: 'app/components/announcement/publishing/publishForm.html',
+                    controller: 'announcementPublishingController'
+                }
+            }
+        })
         .state('root.announcement.config', {
             url: '/announcement/config',
             views: {
