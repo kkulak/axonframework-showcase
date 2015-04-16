@@ -1,4 +1,5 @@
 apply plugin: 'spring-boot'
+apply plugin: 'docker'
 
 buildscript {
     repositories {
@@ -9,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -24,4 +26,18 @@ dependencies {
     compile "org.ajar:swagger-spring-mvc-ui:0.4"
     compile 'com.mangofactory:swagger-springmvc:1.0.2'
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+}
+
+group = 'knbiteventsbc'
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = true
+    applicationName = 'backend'
+    dockerfile = file('.docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
 }
