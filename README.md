@@ -33,7 +33,6 @@ http://localhost:8000/src/
 
 ```
 #!python
-
+cd backend/
 ./gradlew :events-bc-app:build :events-bc-app:buildDocker
 ```
-
