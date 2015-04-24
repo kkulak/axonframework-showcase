@@ -26,6 +26,8 @@ dependencies {
     compile 'org.facebook4j:facebook4j-core:2.2.2'
     compile 'net.sourceforge.htmlunit:htmlunit:2.15'
 
+    compile 'commons-validator:commons-validator:1.4.0'
+
     // spring-test
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
     testCompile 'com.jayway.jsonpath:json-path:0.9.1'

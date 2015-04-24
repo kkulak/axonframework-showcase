@@ -35,7 +35,7 @@ public class AnnouncementController {
         );
 
         final Announcement announcement = new Announcement(
-                announcementDTO.getTitle(), announcementDTO.getContent()
+                announcementDTO.getTitle(), announcementDTO.getContent(), announcementDTO.getImageUrl()
         );
 
         publishers.forEach(

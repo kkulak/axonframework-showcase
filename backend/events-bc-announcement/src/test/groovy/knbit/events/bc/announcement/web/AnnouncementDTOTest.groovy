@@ -14,7 +14,7 @@ class AnnouncementDTOTest extends Specification {
         when:
         new AnnouncementDTO(
                 ImmutableList.of("facebook", "some not allowed publisher", "twitter"),
-                "title", "content"
+                "title", "content", "http://valid.url.com"
         )
 
         then:
@@ -25,7 +25,7 @@ class AnnouncementDTOTest extends Specification {
 
         given:
         def objectUnderTest = new AnnouncementDTO(
-                Publishers.stringValues(), "title", "content"
+                Publishers.stringValues(), "title", "content", "http://valid.url.com"
         )
 
         expect:
