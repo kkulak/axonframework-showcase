@@ -2,6 +2,7 @@ package knbit.events.bc.announcement.facebook
 
 import facebook4j.Facebook
 import facebook4j.FacebookException
+import facebook4j.PostUpdate
 import knbit.events.bc.AnnouncementBuilder
 import spock.lang.Specification
 
@@ -17,7 +18,7 @@ class FacebookPublisherTest extends Specification {
                 .build()
 
         def facebookMock = Mock(Facebook.class)
-        facebookMock.postStatusMessage(_ as String) >> { throw new FacebookException("failed") }
+        facebookMock.postFeed(_ as PostUpdate) >> { throw new FacebookException("failed") }
 
         def objectUnderTest = new FacebookPublisher(facebookMock)
 
@@ -41,8 +42,6 @@ class FacebookPublisherTest extends Specification {
         objectUnderTest.publish(announcement)
 
         then:
-        1 * facebookMock.postStatusMessage(
-                announcement.content()
-        )
+        1 * facebookMock.postFeed(_ as PostUpdate);
     }
 }
