@@ -2,6 +2,7 @@ package knbit.events.bc.announcement.twitter
 
 import knbit.events.bc.AnnouncementBuilder
 import spock.lang.Specification
+import twitter4j.StatusUpdate
 import twitter4j.Twitter
 import twitter4j.TwitterException
 
@@ -17,7 +18,7 @@ class TwitterPublisherTest extends Specification {
                 .build()
 
         def twitterMock = Mock(Twitter.class)
-        twitterMock.updateStatus(_ as String) >> { throw new TwitterException("failed") }
+        twitterMock.updateStatus(_ as StatusUpdate) >> { throw new TwitterException("failed") }
 
         def objectUnderTest = new TwitterPublisher(twitterMock)
 
@@ -41,8 +42,6 @@ class TwitterPublisherTest extends Specification {
         objectUnderTest.publish(announcement)
 
         then:
-        1 * twitterMock.updateStatus(
-                announcement.content()
-        )
+        1 * twitterMock.updateStatus(_ as StatusUpdate)
     }
 }
