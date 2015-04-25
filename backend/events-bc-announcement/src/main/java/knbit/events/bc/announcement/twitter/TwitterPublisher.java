@@ -43,12 +43,9 @@ public class TwitterPublisher implements Publisher {
 
             twitter.updateStatus(newStatus);
 
-        } catch (TwitterException cause) {
+        } catch (TwitterException | IOException cause) {
             log.error(cause);
             throw new CannotPostOnTwitterException(cause);
-        } catch (IOException e) {
-            // todo: fix!!
-            e.printStackTrace();
         }
     }
 

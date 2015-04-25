@@ -33,18 +33,17 @@ public class FacebookPublisher implements Publisher {
 
             final Optional<String> possibleImageUrl = announcement.imageUrl();
             if (possibleImageUrl.isPresent()) {
-                final URL imageUrl = new URL(possibleImageUrl.get());
+                final URL imageUrl = new URL(
+                        possibleImageUrl.get()
+                );
                 newPost.setPicture(imageUrl);
             }
 
             facebook.postFeed(newPost);
 
-        } catch (FacebookException cause) {
+        } catch (FacebookException | MalformedURLException cause) {
             log.error(cause);
             throw new CannotPostOnFacebookException(cause);
-        } catch (MalformedURLException e) {
-            // todo: fix
-            e.printStackTrace();
         }
     }
 }
