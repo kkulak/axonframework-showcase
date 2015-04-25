@@ -1,11 +1,12 @@
 package knbit.events.bc.announcement.googlegroup
 
 import knbit.events.bc.AnnouncementBuilder
-import knbit.events.bc.announcement.MessageBuilder
 import org.springframework.mail.MailException
-import org.springframework.mail.MailSender
-import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import spock.lang.Specification
+
+import javax.mail.Session
+import javax.mail.internet.MimeMessage
 
 /**
  * Created by novy on 03.04.15.
@@ -19,9 +20,9 @@ class GoogleGroupPublisherTest extends Specification {
                 .build()
 
         def googleGroupEmailAddress = "knbit@googlegroup.com"
-        def senderMock = Mock(MailSender.class)
+        def senderMock = Stub(JavaMailSender.class)
 
-        senderMock.send(_ as SimpleMailMessage) >> { throw Mock(MailException.class) }
+        senderMock.send(_ as MimeMessage) >> { throw Mock(MailException.class) }
 
         def objectUnderTest = new GoogleGroupPublisher(
                 googleGroupEmailAddress, senderMock
@@ -41,7 +42,9 @@ class GoogleGroupPublisherTest extends Specification {
                 .build()
 
         def googleGroupEmailAddress = "knbit@googlegroup.com"
-        def senderMock = Mock(MailSender.class)
+        def senderMock = Mock(JavaMailSender.class)
+        senderMock.createMimeMessage() >> new MimeMessage(null as Session)
+
         def objectUnderTest = new GoogleGroupPublisher(
                 googleGroupEmailAddress, senderMock
         )
@@ -50,14 +53,7 @@ class GoogleGroupPublisherTest extends Specification {
         objectUnderTest.publish(announcement)
 
         then:
-        1 * senderMock.send(
-                MessageBuilder
-                        .newMessage()
-                        .recipient(googleGroupEmailAddress)
-                        .subject(announcement.title())
-                        .content(announcement.content())
-                        .build()
-        )
+        1 * senderMock.send(_ as MimeMessage)
 
     }
 }

@@ -11,7 +11,7 @@ import knbit.events.bc.announcement.iietboard.BoardPublisherConfiguration;
 import knbit.events.bc.announcement.iietboard.IIETBoardPublisher;
 import knbit.events.bc.announcement.twitter.TwitterPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 import twitter4j.Twitter;
@@ -79,14 +79,14 @@ public class PublisherFactory {
 
     private Publisher googleGroupPublisher() {
         final GoogleGroupProperties googleGroupProperties = configurationRepository.googleGroupProperties();
-        final MailSender mailSender = mailSenderForProps(googleGroupProperties);
+        final JavaMailSender mailSender = mailSenderForProps(googleGroupProperties);
 
         return new GoogleGroupPublisher(
                 googleGroupProperties.getGoogleGroupAddress(), mailSender
         );
     }
 
-    private MailSender mailSenderForProps(GoogleGroupProperties properties) {
+    private JavaMailSender mailSenderForProps(GoogleGroupProperties properties) {
         final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(properties.getHost());

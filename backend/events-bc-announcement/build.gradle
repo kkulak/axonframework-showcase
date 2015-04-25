@@ -27,6 +27,7 @@ dependencies {
     compile 'net.sourceforge.htmlunit:htmlunit:2.15'
 
     compile 'commons-validator:commons-validator:1.4.0'
+    compile 'org.apache.commons:commons-imaging:1.0-SNAPSHOT'
 
     // spring-test
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'

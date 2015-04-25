@@ -3,8 +3,8 @@ package knbit.events.bc.announcement;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
-import lombok.experimental.Accessors;
+import org.apache.commons.imaging.Imaging;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.Optional;
@@ -18,6 +18,9 @@ public class Announcement {
 
     private static final int CONTENT_LENGTH_THRESHOLD = 140;
     private static final UrlValidator urlValidator = UrlValidator.getInstance();
+
+    static String IMAGE_NAME_PREFIX = "event";
+    static String IMAGE_NAME_SUFFIX = "jpeg";
 
     private final String title;
     private final String content;
@@ -47,6 +50,23 @@ public class Announcement {
     public Optional<String> imageUrl() {
         return Strings.isNullOrEmpty(imageUrl) ? Optional.empty() : Optional.of(imageUrl);
     }
+
+    public Optional<String> imageName() {
+        return imageUrl()
+                .map(url -> Imaging.hasImageFileExtension(url) ?
+                                withCustomExtension(FilenameUtils.getExtension(url)) : defaultFilename()
+                );
+
+    }
+
+    private String withCustomExtension(String extension) {
+        return IMAGE_NAME_PREFIX + "." + extension;
+    }
+
+    private String defaultFilename() {
+        return IMAGE_NAME_PREFIX + "." + IMAGE_NAME_SUFFIX;
+    }
+
 
     private boolean hasValidUrlStructure(String imageUrl) {
         return urlValidator.isValid(imageUrl);

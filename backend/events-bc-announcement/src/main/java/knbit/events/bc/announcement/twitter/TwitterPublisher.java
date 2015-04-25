@@ -35,10 +35,12 @@ public class TwitterPublisher implements Publisher {
             final Optional<String> possibleImageUrl = announcement.imageUrl();
             if (possibleImageUrl.isPresent()) {
 
+                final String imageName = announcement.imageName().get();
+
                 final InputStream imageStream = createImageStreamFrom(
                         possibleImageUrl.get()
                 );
-                newStatus.setMedia(announcement.title(), imageStream);
+                newStatus.setMedia(imageName, imageStream);
             }
 
             twitter.updateStatus(newStatus);

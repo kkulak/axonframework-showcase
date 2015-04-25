@@ -16,7 +16,7 @@ public class AnnouncementBuilder {
 
     private String title = "title";
     private String content = "content";
-    private String imageUrl = "";
+    private String imageUrl = "http://valid.url.com/image.png";
 
     public Announcement build() {
         return new Announcement(title, content, imageUrl);

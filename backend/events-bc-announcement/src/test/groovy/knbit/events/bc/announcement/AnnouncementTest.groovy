@@ -74,4 +74,74 @@ class AnnouncementTest extends Specification {
         then:
         thrown(IllegalArgumentException.class)
     }
+
+    def "should return empty optional when asked about image name and there is no url present"() {
+
+        given:
+        def objectUnderTest = AnnouncementBuilder
+                .newAnnouncement()
+                .imageUrl("")
+                .build()
+
+        expect:
+        !objectUnderTest.imageName().isPresent()
+
+    }
+
+    def "if url contains an extension, it should take a prefix and append this extension"() {
+
+        given:
+        def objectUnderTest = AnnouncementBuilder
+                .newAnnouncement()
+                .imageUrl("http://valid.url.com/file.jpg")
+                .build()
+
+        when:
+        def expectedImageName = Announcement.IMAGE_NAME_PREFIX + ".jpg"
+
+        then:
+        objectUnderTest.imageName().get() == expectedImageName
+    }
+
+    def "it should compose default prefix and suffix given non image extension"() {
+
+        given:
+        def objectUnderTest = AnnouncementBuilder
+                .newAnnouncement()
+                .imageUrl("http://valid.url.com/file.php")
+                .build()
+
+        expect:
+        objectUnderTest.imageName().get() ==
+                Announcement.IMAGE_NAME_PREFIX + "." + Announcement.IMAGE_NAME_SUFFIX
+
+    }
+
+    def "it should compose default prefix and suffix given non image extension with random string afterwards"() {
+
+        given:
+        def objectUnderTest = AnnouncementBuilder
+                .newAnnouncement()
+                .imageUrl("http://valid.url.com/file.php?param=value")
+                .build()
+
+        expect:
+        objectUnderTest.imageName().get() ==
+                Announcement.IMAGE_NAME_PREFIX + "." + Announcement.IMAGE_NAME_SUFFIX
+
+    }
+
+    def "it should compose default prefix and suffix given no extension"() {
+
+        given:
+        def objectUnderTest = AnnouncementBuilder
+                .newAnnouncement()
+                .imageUrl("http://valid.url.com/file")
+                .build()
+
+        expect:
+        objectUnderTest.imageName().get() ==
+                Announcement.IMAGE_NAME_PREFIX + "." + Announcement.IMAGE_NAME_SUFFIX
+
+    }
 }

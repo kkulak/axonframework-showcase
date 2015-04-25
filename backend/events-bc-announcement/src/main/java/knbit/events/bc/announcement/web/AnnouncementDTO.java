@@ -2,7 +2,10 @@ package knbit.events.bc.announcement.web;
 
 import com.google.common.base.Preconditions;
 import knbit.events.bc.announcement.config.Publishers;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Collection;
@@ -31,7 +34,6 @@ public class AnnouncementDTO {
         this.content = content;
         this.imageUrl = imageUrl;
     }
-
 
 
     private void setPublishers(Collection<String> publishers) {
