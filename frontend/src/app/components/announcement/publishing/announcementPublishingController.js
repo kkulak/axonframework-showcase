@@ -23,6 +23,7 @@ var announcementPublishingController = function ($scope, announcementPublishingS
     $scope.announcement = {
         title: "",
         content: "",
+        imageUrl: "",
         publishers: []
     };
 
@@ -30,9 +31,10 @@ var announcementPublishingController = function ($scope, announcementPublishingS
         announcementPublishingService.publishAnnouncement({
                 title: $scope.announcement.title,
                 content: $scope.announcement.content,
+                imageUrl: $scope.announcement.imageUrl,
                 publishers: getPublisherValues($scope.announcement.publishers)
             },
-            function(data) {
+            function (data) {
                 ToastingService.showSuccessToast(toastData.success)
             },
             function (data) {
@@ -43,7 +45,7 @@ var announcementPublishingController = function ($scope, announcementPublishingS
 
     function getPublisherValues(publishers) {
         return publishers.map(
-            function(publisher) {
+            function (publisher) {
                 return publisher.value;
             }
         )

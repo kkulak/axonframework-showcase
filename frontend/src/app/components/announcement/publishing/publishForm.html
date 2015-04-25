@@ -3,11 +3,15 @@
         <form class="form" ng-submit="publishAnnouncement()">
             <div class="form-group">
                 <label for="announcementTitle">Title: </label>
-                <input id="announcementTitle" class="form-control" ng-model="announcement.title" required="true">
+                <input id="announcementTitle" class="form-control" ng-model="announcement.title" ng-required="true">
             </div>
             <div class="form-group">
                 <label for="announcementContent">Message: </label>
-                <input id="announcementContent" class="form-control" ng-model="announcement.content" required="true">
+                <textarea id="announcementContent" class="form-control" ng-model="announcement.content" maxlength="140" ng-required="true"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="announcementImageUrl">Image URL: </label>
+                <input type="url" id="announcementImageUrl" class="form-control" ng-model="announcement.imageUrl" ng-required="false">
             </div>
             <div class="form-group">
                 <label for="publishers">Publishers: </label>
