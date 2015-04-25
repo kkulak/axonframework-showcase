@@ -7,6 +7,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.Publisher;
+import lombok.extern.log4j.Log4j;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import java.util.Optional;
 /**
  * Created by novy on 03.04.15.
  */
+
+@Log4j
 public class IIETBoardPublisher implements Publisher {
 
     private final BoardPublisherConfiguration configuration;
@@ -49,6 +52,7 @@ public class IIETBoardPublisher implements Publisher {
             postScrapper.post(announcement);
 
         } catch (IOException cause) {
+            log.error(cause);
             throw new CannotPostOnBoardException(cause);
         }
     }
