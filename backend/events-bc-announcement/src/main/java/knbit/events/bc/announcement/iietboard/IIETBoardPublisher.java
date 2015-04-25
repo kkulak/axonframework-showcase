@@ -7,12 +7,16 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.Publisher;
+import lombok.extern.log4j.Log4j;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by novy on 03.04.15.
  */
+
+@Log4j
 public class IIETBoardPublisher implements Publisher {
 
     private final BoardPublisherConfiguration configuration;
@@ -48,6 +52,7 @@ public class IIETBoardPublisher implements Publisher {
             postScrapper.post(announcement);
 
         } catch (IOException cause) {
+            log.error(cause);
             throw new CannotPostOnBoardException(cause);
         }
     }
@@ -100,7 +105,10 @@ public class IIETBoardPublisher implements Publisher {
             final HtmlPage postingPage = webClient.getPage(postUrl);
             final HtmlForm postForm = postingPage.getFormByName(POST_FORM_NAME);
             postForm.getInputByName(SUBJECT_INPUT_NAME).setValueAttribute(announcement.title());
-            postForm.getTextAreaByName(MESSAGE_INPUT_NAME).setText(announcement.content());
+
+            final String messageContent = determineMessageContent(announcement);
+
+            postForm.getTextAreaByName(MESSAGE_INPUT_NAME).setText(messageContent);
             final HtmlSubmitInput sendPostButton = postForm.getInputByName(SUBMIT_BUTTON_NAME);
 
             // http://stackoverflow.com/questions/8513134/i-cant-create-thread-on-phpbb3-forum/11713867#11713867
@@ -110,6 +118,29 @@ public class IIETBoardPublisher implements Publisher {
                 e.printStackTrace();
             }
             sendPostButton.click();
+        }
+
+        private String determineMessageContent(Announcement announcement) {
+            final Optional<String> possibleImageUrl = announcement.imageUrl();
+
+            String messageContent;
+            if (possibleImageUrl.isPresent()) {
+                messageContent = withMessageUrlAppended(
+                        announcement.content(), possibleImageUrl.get()
+                );
+            } else {
+                messageContent = announcement.content();
+            }
+
+            return messageContent;
+        }
+
+        private String withMessageUrlAppended(String messageContent, String imageUrl) {
+            return messageContent
+                    + "\n\n"
+                    + "[img]"
+                    + imageUrl
+                    + "[/img]";
         }
 
     }

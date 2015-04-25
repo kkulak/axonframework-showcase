@@ -2,7 +2,10 @@ package knbit.events.bc.announcement.web;
 
 import com.google.common.base.Preconditions;
 import knbit.events.bc.announcement.config.Publishers;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Collection;
@@ -23,11 +26,15 @@ public class AnnouncementDTO {
     @NotBlank
     private String content;
 
-    public AnnouncementDTO(Collection<String> publishers, String title, String content) {
+    private String imageUrl;
+
+    public AnnouncementDTO(Collection<String> publishers, String title, String content, String imageUrl) {
         setPublishers(publishers);
         this.title = title;
         this.content = content;
+        this.imageUrl = imageUrl;
     }
+
 
     private void setPublishers(Collection<String> publishers) {
         Preconditions.checkArgument(containsOnlyAllowedPublishers(publishers));
@@ -37,5 +44,4 @@ public class AnnouncementDTO {
     private boolean containsOnlyAllowedPublishers(Collection<String> publishers) {
         return Publishers.stringValues().containsAll(publishers);
     }
-
 }

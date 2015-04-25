@@ -10,6 +10,7 @@ subprojects {
         mavenCentral()
         mavenLocal()
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://repository.apache.org/content/repositories/snapshots/" }
         jcenter()
     }
 

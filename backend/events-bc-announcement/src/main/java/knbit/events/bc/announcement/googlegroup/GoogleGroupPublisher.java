@@ -3,19 +3,30 @@ package knbit.events.bc.announcement.googlegroup;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.Publisher;
+import lombok.extern.log4j.Log4j;
+import org.springframework.core.io.UrlResource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Optional;
 
 /**
  * Created by novy on 03.04.15.
  */
+
+@Log4j
 public class GoogleGroupPublisher implements Publisher {
 
     private final String googleGroupEmailAddress;
-    private final MailSender sender;
+    private final JavaMailSender sender;
 
-    public GoogleGroupPublisher(String googleGroupEmailAddress, MailSender sender) {
+    public GoogleGroupPublisher(String googleGroupEmailAddress, JavaMailSender sender) {
         this.googleGroupEmailAddress = googleGroupEmailAddress;
         this.sender = sender;
     }
@@ -26,20 +37,41 @@ public class GoogleGroupPublisher implements Publisher {
             sender.send(
                     messageFrom(googleGroupEmailAddress, announcement)
             );
-        } catch (MailException cause) {
-            cause.printStackTrace();
+        } catch (MailException | MessagingException | IOException cause) {
+            log.error(cause);
             throw new CannotPostOnGoogleGroupException(cause);
         }
 
     }
 
-    private SimpleMailMessage messageFrom(String googleGroupAddress, Announcement announcement) {
-        final SimpleMailMessage message = new SimpleMailMessage();
+    private MimeMessage messageFrom(String googleGroupAddress, Announcement announcement) throws MessagingException, MalformedURLException {
+        final MimeMessage message = sender.createMimeMessage();
 
-        message.setTo(googleGroupAddress);
-        message.setSubject(announcement.title());
-        message.setText(announcement.content());
+        final boolean multipart = true;
+        final MimeMessageHelper messageHelper = new MimeMessageHelper(message, multipart);
+
+        messageHelper.setTo(googleGroupAddress);
+        messageHelper.setSubject(announcement.title());
+        messageHelper.setText(announcement.content());
+
+        final Optional<String> possibleImageUrl = announcement.imageUrl();
+        if (possibleImageUrl.isPresent()) {
+
+            final String imageUrlString = possibleImageUrl.get();
+            final String imageName = announcement.imageName().get();
+            messageHelper.addAttachment(
+                    imageName, createUrlResourceFrom(imageUrlString)
+            );
+
+        }
 
         return message;
+    }
+
+    private UrlResource createUrlResourceFrom(String imageUrlString) throws MalformedURLException {
+        return new UrlResource(
+                new URL(imageUrlString)
+        );
+
     }
 }
