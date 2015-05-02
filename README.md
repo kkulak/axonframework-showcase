@@ -16,15 +16,7 @@ Frontend
 ```
 #!python
 
-cd frontend/
-npm start
-```
-Application should be available under
-
-```
-#!python
-
-http://localhost:8000/src/
+https://bitbucket.org/aghbit/knbit-system-front-end
 ```
 
 
