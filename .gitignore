@@ -87,7 +87,7 @@ crashlytics-build.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
+gradle/wrapper/gradle-wrapper.jar
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 *.war
