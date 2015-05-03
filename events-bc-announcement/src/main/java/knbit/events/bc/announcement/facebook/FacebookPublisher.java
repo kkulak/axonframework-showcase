@@ -5,7 +5,7 @@ import facebook4j.FacebookException;
 import facebook4j.PostUpdate;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +15,7 @@ import java.util.Optional;
  * Created by novy on 02.04.15.
  */
 
-@Log4j
+@Slf4j
 public class FacebookPublisher implements Publisher {
 
     private Facebook facebook;
@@ -42,7 +42,7 @@ public class FacebookPublisher implements Publisher {
             facebook.postFeed(newPost);
 
         } catch (FacebookException | MalformedURLException cause) {
-            log.error(cause);
+            log.error("CannotPostOnFacebook", cause);
             throw new CannotPostOnFacebookException(cause);
         }
     }

@@ -3,7 +3,7 @@ package knbit.events.bc.announcement.googlegroup;
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.Publisher;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.UrlResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +20,7 @@ import java.util.Optional;
  * Created by novy on 03.04.15.
  */
 
-@Log4j
+@Slf4j
 public class GoogleGroupPublisher implements Publisher {
 
     private final String googleGroupEmailAddress;
@@ -38,7 +38,7 @@ public class GoogleGroupPublisher implements Publisher {
                     messageFrom(googleGroupEmailAddress, announcement)
             );
         } catch (MailException | MessagingException | IOException cause) {
-            log.error(cause);
+            log.error("CannotPostOnGoogleGroup", cause);
             throw new CannotPostOnGoogleGroupException(cause);
         }
 

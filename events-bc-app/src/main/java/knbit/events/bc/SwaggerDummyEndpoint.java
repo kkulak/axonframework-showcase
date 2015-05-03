@@ -6,6 +6,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +19,13 @@ import java.util.Collection;
 
 @RestController
 @Api(value = "/foo_endpoint")
+@Slf4j
 public class SwaggerDummyEndpoint {
 
     @RequestMapping(value = "/foo", method = RequestMethod.GET)
     @ApiOperation(value = "This method returns all foos")
     public Collection<Foo> allFoos() {
+        log.info("Returning all foos");
         return ImmutableList.of(
                 new Foo("1", "foo1", "bar1"),
                 new Foo("2", "foo2", "bar2")
