@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * Created by novy on 07.04.15.
  */
@@ -27,7 +29,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/facebook", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void facebookConfiguration(@RequestBody FacebookProperties facebookProperties) {
+    public void facebookConfiguration(@RequestBody @Valid FacebookProperties facebookProperties) {
         configurationRepository.facebookProperties(facebookProperties);
     }
 
@@ -38,7 +40,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/twitter", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void twitterConfiguration(@RequestBody TwitterProperties twitterProperties) {
+    public void twitterConfiguration(@RequestBody @Valid TwitterProperties twitterProperties) {
         configurationRepository.twitterProperties(twitterProperties);
     }
 
@@ -49,7 +51,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/googlegroup", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void googleGroupConfiguration(@RequestBody GoogleGroupProperties googleGroupProperties) {
+    public void googleGroupConfiguration(@RequestBody @Valid GoogleGroupProperties googleGroupProperties) {
         configurationRepository.googleGroupProperties(googleGroupProperties);
     }
 
@@ -60,7 +62,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/iietboard", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void iietBoardConfiguration(@RequestBody IIETBoardProperties iietBoardProperties) {
+    public void iietBoardConfiguration(@RequestBody @Valid IIETBoardProperties iietBoardProperties) {
         configurationRepository.iietBoardProperties(iietBoardProperties);
     }
 
