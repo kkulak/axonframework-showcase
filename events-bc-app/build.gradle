@@ -26,6 +26,11 @@ dependencies {
     compile "org.ajar:swagger-spring-mvc-ui:0.4"
     compile 'com.mangofactory:swagger-springmvc:1.0.2'
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    // axon
+    compile 'org.axonframework:axon-core:2.4'
+    testCompile 'org.axonframework:axon-test:2.4'
+
 }
 
 group = 'knbiteventsbc'
