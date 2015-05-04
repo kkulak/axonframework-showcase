@@ -29,6 +29,7 @@ dependencies {
 
     // axon
     compile 'org.axonframework:axon-core:2.4'
+    compile 'org.springframework:spring-tx:4.1.6.RELEASE'
     testCompile 'org.axonframework:axon-test:2.4'
 
 }
