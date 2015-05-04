@@ -30,6 +30,7 @@ dependencies {
     // axon
     compile 'org.axonframework:axon-core:2.4'
     compile 'org.springframework:spring-tx:4.1.6.RELEASE'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
     testCompile 'org.axonframework:axon-test:2.4'
 
 }

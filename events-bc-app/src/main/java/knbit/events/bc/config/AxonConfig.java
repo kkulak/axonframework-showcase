@@ -1,5 +1,6 @@
 package knbit.events.bc.config;
 
+import knbit.events.bc.axon.dummy.FooAggregate;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.SimpleCommandBus;
 import org.axonframework.commandhandling.annotation.AnnotationCommandHandlerBeanPostProcessor;
@@ -10,10 +11,12 @@ import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.java.SimpleEventSchedulerFactoryBean;
+import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.axonframework.eventstore.EventStore;
 import org.axonframework.eventstore.fs.EventFileResolver;
 import org.axonframework.eventstore.fs.FileSystemEventStore;
 import org.axonframework.eventstore.fs.SimpleEventFileResolver;
+import org.axonframework.repository.Repository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -77,6 +80,15 @@ public class AxonConfig {
         return new FileSystemEventStore(
                 eventFileResolver
         );
+    }
+
+    //todo: temporary
+    @Bean
+    public Repository<FooAggregate> fooAggregateRepository() {
+        EventSourcingRepository<FooAggregate> repository = new EventSourcingRepository<>(
+                FooAggregate.class, eventStore());
+        repository.setEventBus(eventBus());
+        return repository;
     }
 
 }
