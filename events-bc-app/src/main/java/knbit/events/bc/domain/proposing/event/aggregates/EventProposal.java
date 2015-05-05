@@ -1,6 +1,7 @@
 package knbit.events.bc.domain.proposing.event.aggregates;
 
 import knbit.events.bc.domain.common.IdentifiedDomainAggregateRoot;
+import knbit.events.bc.domain.proposing.event.EventType;
 import knbit.events.bc.domain.proposing.event.valueobjects.Description;
 import knbit.events.bc.domain.proposing.event.valueobjects.EventProposalId;
 import knbit.events.bc.domain.proposing.event.valueobjects.Name;
@@ -20,9 +21,9 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     private Description description;
     private ProposalState state;
 
-    EventProposal(EventProposalId eventProposalId, Name name, Description description) {
+    EventProposal(EventProposalId eventProposalId, Name name, Description description, EventType eventType) {
         apply(new EventProposed(
-                        eventProposalId, name, description, ProposalState.PENDING
+                        eventProposalId, name, description, eventType, ProposalState.PENDING
                 )
         );
     }

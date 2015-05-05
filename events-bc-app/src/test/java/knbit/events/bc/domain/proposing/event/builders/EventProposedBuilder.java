@@ -1,5 +1,6 @@
 package knbit.events.bc.domain.proposing.event.builders;
 
+import knbit.events.bc.domain.proposing.event.EventType;
 import knbit.events.bc.domain.proposing.event.valueobjects.Description;
 import knbit.events.bc.domain.proposing.event.valueobjects.EventProposalId;
 import knbit.events.bc.domain.proposing.event.valueobjects.Name;
@@ -20,6 +21,7 @@ public class EventProposedBuilder {
     private EventProposalId eventProposalId = EventProposalId.of("id");
     private Name name = Name.of("name");
     private Description description = Description.of("description");
+    private EventType eventType = EventType.LECTURE;
     private ProposalState proposalState = ProposalState.PENDING;
 
     public EventProposedBuilder eventProposalId(EventProposalId eventProposalId) {
@@ -42,7 +44,13 @@ public class EventProposedBuilder {
         return this;
     }
 
+
+    public EventProposedBuilder eventType(EventType eventType) {
+        this.eventType = eventType;
+        return this;
+    }
+
     public EventProposed build() {
-        return new EventProposed(eventProposalId, name, description, proposalState);
+        return new EventProposed(eventProposalId, name, description, eventType, proposalState);
     }
 }

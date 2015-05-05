@@ -1,5 +1,6 @@
 package knbit.events.bc.domain.proposing.event.valueobjects.commands;
 
+import knbit.events.bc.domain.proposing.event.EventType;
 import knbit.events.bc.domain.proposing.event.valueobjects.EventProposalId;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -15,4 +16,5 @@ public class ProposeEventCommand {
     private final EventProposalId id;
     private final String name;
     private final String description;
+    private final EventType eventType;
 }

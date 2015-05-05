@@ -1,5 +1,6 @@
 package knbit.events.bc.domain.proposing.event.aggregates;
 
+import knbit.events.bc.domain.proposing.event.EventType;
 import knbit.events.bc.domain.proposing.event.valueobjects.Description;
 import knbit.events.bc.domain.proposing.event.valueobjects.EventProposalId;
 import knbit.events.bc.domain.proposing.event.valueobjects.Name;
@@ -9,9 +10,9 @@ import knbit.events.bc.domain.proposing.event.valueobjects.Name;
  */
 public class EventProposalFactory {
 
-    public static EventProposal newEventProposal(EventProposalId anId, String name, String description) {
+    public static EventProposal newEventProposal(EventProposalId anId, String name, String description, EventType eventType) {
         return new EventProposal(
-                anId, Name.of(name), Description.of(description)
+                anId, Name.of(name), Description.of(description), eventType
         );
     }
 

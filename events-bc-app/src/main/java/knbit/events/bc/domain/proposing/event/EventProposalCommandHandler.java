@@ -27,7 +27,7 @@ public class EventProposalCommandHandler {
     public void handle(ProposeEventCommand command) {
         repository.add(
                 EventProposalFactory.newEventProposal(
-                        command.id(), command.name(), command.description()
+                        command.id(), command.name(), command.description(), command.eventType()
                 )
         );
     }

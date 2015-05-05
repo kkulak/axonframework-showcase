@@ -1,16 +1,21 @@
 package knbit.events.bc.domain.proposing.event.valueobjects;
 
-import knbit.events.bc.domain.common.DomainIdentifier;
-import lombok.Value;
-import lombok.experimental.Accessors;
+import knbit.events.bc.domain.common.UUIDBasedIdentifier;
 
 /**
  * Created by novy on 05.05.15.
  */
 
-@Value(staticConstructor = "of")
-@Accessors
-public class EventProposalId implements DomainIdentifier<String> {
+public class EventProposalId extends UUIDBasedIdentifier {
 
-    private final String id;
+    public EventProposalId() {
+    }
+
+    protected EventProposalId(String id) {
+        super(id);
+    }
+
+    public static EventProposalId of(String id) {
+        return new EventProposalId(id);
+    }
 }
