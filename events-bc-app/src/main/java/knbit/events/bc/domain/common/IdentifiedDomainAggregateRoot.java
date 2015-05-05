@@ -1,4 +1,4 @@
-package knbit.events.bc.common;
+package knbit.events.bc.domain.common;
 
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
@@ -11,13 +11,6 @@ public abstract class IdentifiedDomainAggregateRoot<ID extends DomainIdentifier>
 
     @AggregateIdentifier
     protected ID id;
-
-    protected IdentifiedDomainAggregateRoot() {
-    }
-
-    public IdentifiedDomainAggregateRoot(ID id) {
-        this.id = id;
-    }
 
     @Override
     public ID id() {

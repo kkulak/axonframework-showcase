@@ -1,4 +1,4 @@
-package knbit.events.bc.common;
+package knbit.events.bc.domain.common;
 
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedEntity;
 
