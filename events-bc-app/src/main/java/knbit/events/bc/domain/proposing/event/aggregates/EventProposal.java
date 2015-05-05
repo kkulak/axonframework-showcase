@@ -13,16 +13,17 @@ import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
  */
 public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId> {
 
-    public EventProposal() {
+    private EventProposal() {
     }
 
     private Name name;
     private Description description;
     private ProposalState state;
 
-    public EventProposal(EventProposalId eventProposalId, Name name, Description description) {
-        apply(
-                new EventProposed(eventProposalId, name, description, ProposalState.PENDING)
+    EventProposal(EventProposalId eventProposalId, Name name, Description description) {
+        apply(new EventProposed(
+                        eventProposalId, name, description, ProposalState.PENDING
+                )
         );
     }
 

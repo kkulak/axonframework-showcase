@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class ProposeEventCommandBuilder {
 
     private EventProposalId eventProposalId = EventProposalId.of("id");
-    private Name name = Name.of("name");
-    private Description description = Description.of("description");
+    private String name = "name";
+    private String description = "description";
 
     public ProposeEventCommandBuilder eventProposalId(EventProposalId eventProposalId) {
         this.eventProposalId = eventProposalId;
@@ -23,12 +23,12 @@ public class ProposeEventCommandBuilder {
     }
 
     public ProposeEventCommandBuilder name(String name) {
-        this.name = Name.of(name);
+        this.name = name;
         return this;
     }
 
     public ProposeEventCommandBuilder description(String description) {
-        this.description = Description.of(description);
+        this.description = description;
         return this;
     }
 

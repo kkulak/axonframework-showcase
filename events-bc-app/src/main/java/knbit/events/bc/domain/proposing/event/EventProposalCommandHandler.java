@@ -1,6 +1,7 @@
 package knbit.events.bc.domain.proposing.event;
 
 import knbit.events.bc.domain.proposing.event.aggregates.EventProposal;
+import knbit.events.bc.domain.proposing.event.aggregates.EventProposalFactory;
 import knbit.events.bc.domain.proposing.event.valueobjects.commands.ProposeEventCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
@@ -25,7 +26,9 @@ public class EventProposalCommandHandler {
     @CommandHandler
     public void handle(ProposeEventCommand command) {
         repository.add(
-                new EventProposal(command.id(), command.name(), command.description())
+                EventProposalFactory.newEventProposal(
+                        command.id(), command.name(), command.description()
+                )
         );
     }
 }
