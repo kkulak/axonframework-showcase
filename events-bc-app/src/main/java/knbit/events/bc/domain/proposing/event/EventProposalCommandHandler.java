@@ -2,7 +2,7 @@ package knbit.events.bc.domain.proposing.event;
 
 import knbit.events.bc.domain.proposing.event.aggregates.EventProposal;
 import knbit.events.bc.domain.proposing.event.valueobjects.commands.ProposeEventCommand;
-import org.axonframework.eventhandling.annotation.EventHandler;
+import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +22,10 @@ public class EventProposalCommandHandler {
         this.repository = repository;
     }
 
-    @EventHandler
+    @CommandHandler
     public void handle(ProposeEventCommand command) {
-
+        repository.add(
+                new EventProposal(command.id(), command.name(), command.description())
+        );
     }
 }
