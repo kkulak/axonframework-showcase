@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
  */
 
 @Value(staticConstructor = "of")
-@Accessors
+@Accessors(fluent = true)
 public class Name {
 
     private final String value;

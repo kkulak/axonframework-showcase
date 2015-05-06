@@ -24,7 +24,6 @@ public class ProposalController {
         this.commandGateway = commandGateway;
     }
 
-    // todo: location?
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
     public void proposeAnEvent(@RequestBody @Valid EventProposalDto proposalDto) {

@@ -1,5 +1,7 @@
-package knbit.events.bc.eventproposal.readmodel;
+package knbit.events.bc.eventproposal.readmodel.web;
 
+import knbit.events.bc.eventproposal.readmodel.EventProposalReadModelRepository;
+import knbit.events.bc.eventproposal.readmodel.EventProposalViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

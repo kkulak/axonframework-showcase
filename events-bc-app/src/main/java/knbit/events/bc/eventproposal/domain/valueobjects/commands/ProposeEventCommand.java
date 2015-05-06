@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  */
 
 @Value
-@Accessors
+@Accessors(fluent = true)
 public class ProposeEventCommand {
 
     private final EventProposalId eventProposalId;
