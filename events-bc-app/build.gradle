@@ -33,6 +33,11 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
     testCompile 'org.axonframework:axon-test:2.4'
 
+    // view-model persistence
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
+    compile 'hsqldb:hsqldb:1.8.0.10'
+
+
 }
 
 group = 'knbiteventsbc'

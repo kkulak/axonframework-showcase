@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by novy on 05.05.15.
  */
@@ -22,6 +24,6 @@ public class EventProposalDto {
     @NotBlank
     private String description;
 
-    @NotBlank
+    @NotNull
     private EventType eventType;
 }
