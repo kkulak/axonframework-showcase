@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  */
 @Value
 @Accessors(fluent = true)
-public class ProposalRejectedEvent {
+public class ProposalRejectedEvent implements ProposalStateChanged {
 
     private final EventProposalId eventProposalId;
     private final ProposalState state;

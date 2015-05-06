@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventProposalReadModelRepository
         extends CrudRepository<EventProposalViewModel, Long> {
+
+        EventProposalViewModel findByDomainId(String domainId);
 }
