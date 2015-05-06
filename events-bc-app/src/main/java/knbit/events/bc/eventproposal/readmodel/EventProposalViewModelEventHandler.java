@@ -50,5 +50,6 @@ public class EventProposalViewModelEventHandler {
                 event.eventProposalId().value()
         );
         viewModel.setState(event.state());
+        repository.save(viewModel);
     }
 }
