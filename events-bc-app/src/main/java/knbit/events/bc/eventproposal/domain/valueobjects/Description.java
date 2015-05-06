@@ -11,5 +11,5 @@ import lombok.experimental.Accessors;
 @Accessors
 public class Description {
 
-    private final String description;
+    private final String value;
 }

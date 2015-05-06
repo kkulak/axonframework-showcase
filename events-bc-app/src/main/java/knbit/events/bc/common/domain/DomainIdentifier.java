@@ -5,6 +5,6 @@ package knbit.events.bc.common.domain;
  */
 public interface DomainIdentifier<ID> {
 
-    ID id();
+    ID value();
 
 }

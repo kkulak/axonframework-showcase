@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Accessors
 public class ProposeEventCommand {
 
-    private final EventProposalId id;
+    private final EventProposalId eventProposalId;
     private final String name;
     private final String description;
     private final EventType eventType;

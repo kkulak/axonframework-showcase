@@ -15,7 +15,7 @@ public class IdentifiedDomainEntity<ID extends DomainIdentifier> extends Abstrac
     }
 
     @Override
-    public ID id() {
+    public ID value() {
         return id;
     }
 

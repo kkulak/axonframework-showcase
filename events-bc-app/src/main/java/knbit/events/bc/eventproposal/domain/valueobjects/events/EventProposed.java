@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors
 public class EventProposed {
 
-    private final EventProposalId id;
+    private final EventProposalId eventProposalId;
     private final Name name;
     private final Description description;
     private final EventType eventType;

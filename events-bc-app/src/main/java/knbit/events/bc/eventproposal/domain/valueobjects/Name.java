@@ -11,6 +11,6 @@ import lombok.experimental.Accessors;
 @Accessors
 public class Name {
 
-    private final String name;
+    private final String value;
 
 }

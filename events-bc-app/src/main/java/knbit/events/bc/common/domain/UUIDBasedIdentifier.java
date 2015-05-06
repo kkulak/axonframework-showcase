@@ -8,14 +8,14 @@ import java.util.UUID;
 
 public class UUIDBasedIdentifier implements DomainIdentifier<String> {
 
-    private final String id;
+    private final String value;
 
     public UUIDBasedIdentifier() {
-        this.id = randomUUIDString();
+        this.value = randomUUIDString();
     }
 
-    protected UUIDBasedIdentifier(String id) {
-        this.id = id;
+    protected UUIDBasedIdentifier(String value) {
+        this.value = value;
     }
 
     private String randomUUIDString() {
@@ -23,8 +23,8 @@ public class UUIDBasedIdentifier implements DomainIdentifier<String> {
     }
 
     @Override
-    public String id() {
-        return id;
+    public String value() {
+        return value;
     }
 
     @Override
@@ -34,20 +34,20 @@ public class UUIDBasedIdentifier implements DomainIdentifier<String> {
 
         UUIDBasedIdentifier that = (UUIDBasedIdentifier) o;
 
-        if (!id.equals(that.id)) return false;
+        if (!value.equals(that.value)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return value.hashCode();
     }
 
     @Override
     public String toString() {
         return "UUIDBasedId{" +
-                "id='" + id + '\'' +
+                "value='" + value + '\'' +
                 '}';
     }
 }

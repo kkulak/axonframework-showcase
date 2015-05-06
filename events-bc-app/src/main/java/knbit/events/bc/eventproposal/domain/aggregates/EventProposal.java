@@ -30,7 +30,7 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
 
     @EventSourcingHandler
     public void on(EventProposed event) {
-        this.id = event.id();
+        this.id = event.eventProposalId();
         this.name = event.name();
         this.description = event.description();
         this.state = event.proposalState();

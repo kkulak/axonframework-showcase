@@ -23,9 +23,9 @@ public class EventProposalViewModelEventHandler {
     public void handle(EventProposed event) {
         repository.save(
                 new EventProposalViewModel(
-                        event.id().id(),
-                        event.name().name(),
-                        event.description().description(),
+                        event.eventProposalId().value(),
+                        event.name().value(),
+                        event.description().value(),
                         event.eventType(),
                         event.proposalState()
                 )
