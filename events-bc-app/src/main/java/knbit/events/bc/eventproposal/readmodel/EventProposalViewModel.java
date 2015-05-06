@@ -1,0 +1,29 @@
+package knbit.events.bc.eventproposal.readmodel;
+
+import knbit.events.bc.common.readmodel.AbstractEntity;
+import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.eventproposal.domain.enums.ProposalState;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+
+/**
+ * Created by novy on 06.05.15.
+ */
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+public class EventProposalViewModel extends AbstractEntity {
+
+    private String domainId;
+    private String name;
+    private String description;
+    private EventType eventType;
+    private ProposalState state;
+
+}

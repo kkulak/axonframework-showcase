@@ -1,4 +1,4 @@
-package knbit.events.bc.config;
+package knbit.events.bc.common.infrastructure.config;
 
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import org.ajar.swaggermvcui.SwaggerSpringMvcUi;
