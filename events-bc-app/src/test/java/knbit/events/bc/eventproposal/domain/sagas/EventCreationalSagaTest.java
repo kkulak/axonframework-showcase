@@ -7,11 +7,9 @@ import knbit.events.bc.eventproposal.domain.builders.ProposalAcceptedEventBuilde
 import knbit.events.bc.eventproposal.domain.builders.ProposalRejectedEventBuilder;
 import knbit.events.bc.eventproposal.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import static knbit.events.bc.eventproposal.domain.sagas.WithoutIdentifierMatcher.matchesExactlyOmittingId;
 
@@ -26,8 +24,6 @@ public class EventCreationalSagaTest {
     @Before
     public void setUp() throws Exception {
         fixture = new AnnotatedSagaTestFixture(EventCreationalSaga.class);
-        final CommandGateway commandGatewayMock = Mockito.mock(CommandGateway.class);
-        fixture.registerCommandGateway(CommandGateway.class, commandGatewayMock);
     }
 
     @Test

@@ -31,14 +31,6 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     private transient CommandGateway commandGateway;
 
-    public EventCreationalSaga() {
-    }
-
-    @Autowired
-    public EventCreationalSaga(CommandGateway commandGateway) {
-        this.commandGateway = commandGateway;
-    }
-
     @StartSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(EventProposed event) {
@@ -65,5 +57,10 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(ProposalRejectedEvent event) {
+    }
+
+    @Autowired
+    public void setCommandGateway(CommandGateway commandGateway) {
+        this.commandGateway = commandGateway;
     }
 }
