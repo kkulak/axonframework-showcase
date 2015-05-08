@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by novy on 05.05.15.
  */
 
-@Configuration
+@Configuration(value = "eventProposalRepositories")
 public class Repositories {
 
     @Autowired
