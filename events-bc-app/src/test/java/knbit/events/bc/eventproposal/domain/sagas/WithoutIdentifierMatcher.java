@@ -9,6 +9,7 @@ import org.hamcrest.Matcher;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 07.05.15.
@@ -20,21 +21,24 @@ class WithoutIdentifierMatcher {
             @Override
             public boolean matches(Object item) {
                 @SuppressWarnings("unchecked")
-                Collection<GenericCommandMessage<CreateEventCommand>> theseCommands =
-                        (Collection<GenericCommandMessage<CreateEventCommand>>) item;
+                Collection<CreateEventCommand> theseCommands =
+                        ((Collection<GenericCommandMessage<CreateEventCommand>>) item)
+                                .stream()
+                                .map(GenericCommandMessage::getPayload)
+                                .collect(Collectors.toList());
 
                 boolean bothHaveSameSize = theseCommands.size() == thoseCommands.size();
                 return bothHaveSameSize && containSameCommandsOmittingId(theseCommands, thoseCommands);
             }
 
-            private boolean containSameCommandsOmittingId(Collection<GenericCommandMessage<CreateEventCommand>> theseCommands,
+            private boolean containSameCommandsOmittingId(Collection<CreateEventCommand> theseCommands,
                                                           Collection<CreateEventCommand> thoseCommands) {
 
-                final Iterator<GenericCommandMessage<CreateEventCommand>> thisIterator = theseCommands.iterator();
+                final Iterator<CreateEventCommand> thisIterator = theseCommands.iterator();
                 final Iterator<CreateEventCommand> thatIterator = thoseCommands.iterator();
 
                 while (thisIterator.hasNext() && thatIterator.hasNext()) {
-                    final CreateEventCommand thisCommand = thisIterator.next().getPayload();
+                    final CreateEventCommand thisCommand = thisIterator.next();
                     final CreateEventCommand thatCommand = thatIterator.next();
 
                     if (!EqualsBuilder.reflectionEquals(thisCommand, thatCommand, "eventId")) {
@@ -48,7 +52,7 @@ class WithoutIdentifierMatcher {
 
             @Override
             public void describeTo(Description description) {
-            // todo: implement
+                // todo: implement
             }
         };
     }
