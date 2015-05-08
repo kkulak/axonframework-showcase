@@ -1,7 +1,8 @@
 package knbit.events.bc.eventproposal.domain.aggregates;
 
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.exceptions.CannotAcceptRejectedProposalException;
 import knbit.events.bc.eventproposal.domain.exceptions.CannotRejectAcceptedProposalException;
@@ -26,11 +27,13 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     private Name name;
     private Description description;
     private EventType eventType;
+    private EventFrequency eventFrequency;
     private ProposalState state;
 
-    EventProposal(EventProposalId eventProposalId, Name name, Description description, EventType eventType) {
+    EventProposal(
+            EventProposalId eventProposalId, Name name, Description description, EventType eventType, EventFrequency eventFrequency) {
         apply(new EventProposed(
-                        eventProposalId, name, description, eventType, ProposalState.PENDING
+                        eventProposalId, name, description, eventType, eventFrequency, ProposalState.PENDING
                 )
         );
     }
@@ -51,7 +54,7 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     }
 
     @EventSourcingHandler
-    public void on(ProposalAcceptedEvent event) {
+    private void on(ProposalAcceptedEvent event) {
         this.state = event.state();
     }
 
@@ -71,16 +74,17 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
 
 
     @EventSourcingHandler
-    public void on(ProposalRejectedEvent event) {
+    private void on(ProposalRejectedEvent event) {
         this.state = event.state();
     }
 
     @EventSourcingHandler
-    public void on(EventProposed event) {
+    private void on(EventProposed event) {
         this.id = event.eventProposalId();
         this.name = event.name();
         this.description = event.description();
         this.eventType = event.eventType();
+        this.eventFrequency = event.eventFrequency();
         this.state = event.proposalState();
     }
 }

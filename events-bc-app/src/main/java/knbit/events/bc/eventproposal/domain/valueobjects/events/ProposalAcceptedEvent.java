@@ -1,6 +1,6 @@
 package knbit.events.bc.eventproposal.domain.valueobjects.events;
 
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import lombok.Value;

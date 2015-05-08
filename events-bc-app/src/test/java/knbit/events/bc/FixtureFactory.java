@@ -1,5 +1,7 @@
 package knbit.events.bc;
 
+import knbit.events.bc.event.domain.EventCommandHandler;
+import knbit.events.bc.event.domain.aggregates.AbstractEvent;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
 import org.axonframework.test.FixtureConfiguration;
@@ -20,4 +22,5 @@ public class FixtureFactory {
         fixture.registerAnnotatedCommandHandler(commandHandler);
         return fixture;
     }
+
 }

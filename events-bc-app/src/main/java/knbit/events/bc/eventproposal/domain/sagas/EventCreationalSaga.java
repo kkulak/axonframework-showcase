@@ -1,8 +1,9 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.valueobjects.commands.CreateEventCommand;
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.Description;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.Name;
@@ -28,6 +29,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     private Name proposalName;
     private Description proposalDescription;
     private EventType proposalType;
+    private EventFrequency eventFrequency;
 
     private transient CommandGateway commandGateway;
 
@@ -38,6 +40,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
         this.proposalName = event.name();
         this.proposalDescription = event.description();
         this.proposalType = event.eventType();
+        this.eventFrequency = event.eventFrequency();
     }
 
     @EndSaga
@@ -49,7 +52,8 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
                         new EventId(),
                         proposalName.value(),
                         proposalDescription.value(),
-                        proposalType
+                        proposalType,
+                        eventFrequency
                 )
         );
     }

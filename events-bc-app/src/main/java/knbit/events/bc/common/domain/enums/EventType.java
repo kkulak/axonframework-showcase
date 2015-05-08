@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.domain.enums;
+package knbit.events.bc.common.domain.enums;
 
 /**
  * Created by novy on 05.05.15.

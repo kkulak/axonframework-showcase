@@ -1,7 +1,8 @@
 package knbit.events.bc.event.domain.valueobjects.commands;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventType;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -12,9 +13,10 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class CreateEventCommand {
 
-    // todo: MOOOAAR props
     private final EventId eventId;
     private final String name;
     private final String description;
     private final EventType eventType;
+    private final EventFrequency eventFrequency;
+
 }

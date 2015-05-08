@@ -1,8 +1,9 @@
 package knbit.events.bc.event.domain.builders;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.valueobjects.commands.CreateEventCommand;
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventType;
 import lombok.NoArgsConstructor;
 
 /**
@@ -16,6 +17,7 @@ public class CreateEventCommandBuilder {
     private String name = "name";
     private String description = "description";
     private EventType eventType = EventType.LECTURE;
+    private EventFrequency eventFrequency = EventFrequency.ONE_OFF;
 
     public CreateEventCommandBuilder eventId(EventId eventId) {
         this.eventId = eventId;
@@ -37,7 +39,12 @@ public class CreateEventCommandBuilder {
         return this;
     }
 
+    public CreateEventCommandBuilder eventFrequency(EventFrequency eventFrequency) {
+        this.eventFrequency = eventFrequency;
+        return this;
+    }
+
     public CreateEventCommand build() {
-        return new CreateEventCommand(eventId, name, description, eventType);
+        return new CreateEventCommand(eventId, name, description, eventType, eventFrequency);
     }
 }

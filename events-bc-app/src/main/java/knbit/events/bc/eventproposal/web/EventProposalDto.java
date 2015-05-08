@@ -1,6 +1,7 @@
 package knbit.events.bc.eventproposal.web;
 
-import knbit.events.bc.eventproposal.domain.enums.EventType;
+import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.common.domain.enums.EventType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,8 @@ public class EventProposalDto {
 
     @NotNull
     private EventType eventType;
+
+    @NotNull
+    private EventFrequency eventFrequency;
+
 }
