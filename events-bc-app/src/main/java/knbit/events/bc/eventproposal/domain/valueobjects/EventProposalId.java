@@ -9,6 +9,7 @@ import knbit.events.bc.common.domain.UUIDBasedIdentifier;
 public class EventProposalId extends UUIDBasedIdentifier {
 
     public EventProposalId() {
+        super();
     }
 
     protected EventProposalId(String id) {
