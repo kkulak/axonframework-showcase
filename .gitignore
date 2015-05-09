@@ -30,6 +30,7 @@ events-bc-app/build
 # Logs directory
 events-bc-app/logs
 notification-bc/logs
+events-bc-announcement/logs
 
 # Ignore Gradle GUI config
 gradle-app.setting
