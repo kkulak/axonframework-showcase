@@ -21,6 +21,7 @@ dependencies {
 
     // spring-boot
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
 
     // swagger
     compile "org.ajar:swagger-spring-mvc-ui:0.4"
