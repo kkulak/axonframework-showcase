@@ -29,10 +29,10 @@ public class ProposalListener {
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
     public void receiveMessage(Message message) {
-        log.debug("Received message: " + String.valueOf(message.getBody()));
+        log.debug("Received message: " + new String(message.getBody()));
 
         final MessageWrapper messageWrapper = messageRepository.save(
-                new MessageWrapper(MessageType.EVENT_PROPOSED, String.valueOf(message.getBody()))
+                new MessageWrapper(MessageType.EVENT_PROPOSED, new String(message.getBody()))
         );
         notificationService.publish(messageWrapper);
     }
