@@ -37,7 +37,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
     compile 'hsqldb:hsqldb:1.8.0.10'
 
-
+    // others:
+    testCompile 'org.apache.commons:commons-lang3:3.3.1'
 }
 
 group = 'knbiteventsbc'

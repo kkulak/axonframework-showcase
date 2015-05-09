@@ -1,5 +1,8 @@
 apply plugin: 'spring-boot'
 
+bootRepackage.enabled = false;
+bootRun.enabled = false;
+
 buildscript {
 
     repositories {
