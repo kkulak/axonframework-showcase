@@ -31,9 +31,10 @@ public class ProposalListener {
     public void receiveMessage(Message message) {
         log.debug("Received message: " + new String(message.getBody()));
 
-        final MessageWrapper messageWrapper = messageRepository.save(
-                new MessageWrapper(MessageType.EVENT_PROPOSED, new String(message.getBody()))
+        final MessageWrapper messageWrapper = new MessageWrapper(
+                MessageType.EVENT_PROPOSED, new String(message.getBody())
         );
+        messageRepository.save(messageWrapper);
         notificationService.publish(messageWrapper);
     }
 }
