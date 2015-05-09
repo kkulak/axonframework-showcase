@@ -32,4 +32,13 @@ dependencies {
     // spring-test
     testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
     testCompile 'com.jayway.jsonpath:json-path:0.9.1'
+
+    // swagger
+    compile "org.ajar:swagger-spring-mvc-ui:0.4"
+    compile 'com.mangofactory:swagger-springmvc:1.0.2'
+    runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+}
+
+springBoot {
+    requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
 }
