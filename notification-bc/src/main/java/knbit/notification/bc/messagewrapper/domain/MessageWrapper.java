@@ -1,23 +1,32 @@
 package knbit.notification.bc.messagewrapper.domain;
 
-import knbit.notification.bc.AbstractEntity;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
-public class MessageWrapper extends AbstractEntity {
+@EqualsAndHashCode
+public class MessageWrapper {
 
+    @Id
+    private String id;
     @Enumerated(EnumType.STRING)
     private MessageType type;
     @Column
     private String payload;
+
+    public MessageWrapper(MessageType type, String payload) {
+        this.id = generateId();
+        this.type = type;
+        this.payload = payload;
+    }
+
+    private String generateId() {
+        return UUID.randomUUID().toString();
+    }
 
 }
