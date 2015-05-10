@@ -1,5 +1,6 @@
 package knbit.notification.bc.messagewrapper.web;
 
+import com.google.common.base.Preconditions;
 import knbit.notification.bc.config.Endpoint;
 import knbit.notification.bc.config.Topic;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
@@ -7,6 +8,7 @@ import knbit.notification.bc.messagewrapper.domain.dispatcherpolicy.DispatcherPo
 import knbit.notification.bc.messagewrapper.infrastructure.persistence.MessageWrapperRepository;
 import knbit.notification.bc.messagewrapper.web.forms.MessageAssembler;
 import knbit.notification.bc.messagewrapper.web.forms.MessageDTO;
+import knbit.notification.bc.messagewrapper.web.forms.MessageIdentity;
 import knbit.notification.bc.messagewrapper.web.forms.PageRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -43,6 +45,15 @@ public class NotificationController {
         return MessageAssembler.fromMessageWrappers(
                 messageWrappers
         );
+    }
+
+    @MessageMapping(Endpoint.MESSAGE_STATE)
+    @SendTo(Topic.MESSAGE_STATE)
+    public MessageWrapper markRead(MessageIdentity identity) {
+        final MessageWrapper message = messageRepository.findOne(identity.id());
+        Preconditions.checkArgument(message != null, "Given message does not exist!");
+        message.markRead();
+        return messageRepository.save(message);
     }
 
 }
