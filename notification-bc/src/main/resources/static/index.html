@@ -43,7 +43,7 @@
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';
             p.appendChild(document.createTextNode('id: ' + message.id + ', type: ' + message.type +
-                ' , payload: ' + message.payload));
+                ', read: ' + message.read + ' , payload: ' + message.payload));
             response.appendChild(p);
         }
     </script>

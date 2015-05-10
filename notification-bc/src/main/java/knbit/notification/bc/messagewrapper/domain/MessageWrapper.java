@@ -1,5 +1,6 @@
 package knbit.notification.bc.messagewrapper.domain;
 
+import com.google.common.base.Preconditions;
 import knbit.notification.bc.messagewrapper.infrastructure.persistence.LocalDateTimePersistenceConverter;
 import lombok.*;
 
@@ -22,17 +23,25 @@ public class MessageWrapper {
     @Enumerated(EnumType.STRING)
     private MessageType type;
     @Column
+    private boolean read;
+    @Column
     private String payload;
 
     public MessageWrapper(MessageType type, String payload) {
         this.id = generateId();
         this.createdOn = LocalDateTime.now();
+        this.read = false;
         this.type = type;
         this.payload = payload;
     }
 
     private String generateId() {
         return UUID.randomUUID().toString();
+    }
+
+    public void markRead() {
+        Preconditions.checkState(read == false, "Message already marked as read!");
+        read = true;
     }
 
 }

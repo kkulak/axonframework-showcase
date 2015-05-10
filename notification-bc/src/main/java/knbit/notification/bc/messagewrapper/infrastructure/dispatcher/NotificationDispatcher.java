@@ -18,7 +18,7 @@ public class NotificationDispatcher {
     public void dispatch(MessageWrapper message) {
         final String topic = TopicMatcher.match(message.getType());
         final MessageDTO messageDTO = MessageDTO.of(
-                message.getId(), message.getType(), message.getPayload()
+                message.getId(), message.getType(), message.isRead(), message.getPayload()
         );
         messagingTemplate.convertAndSend(
                 topic, messageDTO

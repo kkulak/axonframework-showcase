@@ -26,7 +26,9 @@ public class NotificationController {
         return dispatcherPolicy
                 .oldMessages()
                 .stream()
-                .map(mw -> MessageDTO.of(mw.getId(), mw.getType(), mw.getPayload()))
+                .map(mw -> MessageDTO.of(
+                        mw.getId(), mw.getType(), mw.isRead(), mw.getPayload()
+                ))
                 .collect(Collectors.toList());
     }
 
