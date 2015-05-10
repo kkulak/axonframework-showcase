@@ -1,6 +1,6 @@
 package knbit.notification.bc.messagewrapper.domain;
 
-import knbit.notification.bc.messagewrapper.infrastructure.LocalDateTimePersistenceConverter;
+import knbit.notification.bc.messagewrapper.infrastructure.persistence.LocalDateTimePersistenceConverter;
 import lombok.*;
 
 import javax.persistence.*;

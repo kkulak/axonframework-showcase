@@ -1,4 +1,4 @@
-package knbit.notification.bc.messagewrapper.service;
+package knbit.notification.bc.messagewrapper.infrastructure.dispatcher;
 
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
 import knbit.notification.bc.messagewrapper.web.MessageDTO;
@@ -7,15 +7,15 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotificationService {
+public class NotificationDispatcher {
     private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public NotificationService(SimpMessagingTemplate messagingTemplate) {
+    public NotificationDispatcher(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void publish(MessageWrapper message) {
+    public void dispatch(MessageWrapper message) {
         final String topic = TopicMatcher.match(message.getType());
         final MessageDTO messageDTO = MessageDTO.of(
                 message.getId(), message.getType(), message.getPayload()

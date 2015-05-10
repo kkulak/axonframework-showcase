@@ -1,4 +1,4 @@
-package knbit.notification.bc.messagewrapper.infrastructure;
+package knbit.notification.bc.messagewrapper.infrastructure.persistence;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

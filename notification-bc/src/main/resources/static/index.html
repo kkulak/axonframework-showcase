@@ -14,12 +14,12 @@
         }
 
         function connect() {
-            var socket = new SockJS('/eventproposal');
+            var socket = new SockJS('/initial');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/event-proposal', function(message){
+                stompClient.subscribe('/message/initial', function(message){
                     showEventProposal(JSON.parse(message.body));
                 });
                 requestOldMessages();
@@ -35,7 +35,7 @@
         }
 
         function requestOldMessages() {
-            stompClient.send("/app/eventproposal", {}, {});
+            stompClient.send("/notification-bc/initial", {}, {});
         }
 
         function showEventProposal(message) {

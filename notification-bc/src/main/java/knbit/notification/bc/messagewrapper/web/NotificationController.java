@@ -1,7 +1,8 @@
 package knbit.notification.bc.messagewrapper.web;
 
-import knbit.notification.bc.messagewrapper.infrastructure.MessageWrapperRepository;
-import knbit.notification.bc.config.Topics;
+import knbit.notification.bc.config.Endpoint;
+import knbit.notification.bc.config.Topic;
+import knbit.notification.bc.messagewrapper.domain.dispatcherpolicy.DispatcherPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,19 +13,18 @@ import java.util.stream.Collectors;
 
 @Controller
 public class NotificationController {
-    private final MessageWrapperRepository messageWrapperRepository;
+    private final DispatcherPolicy dispatcherPolicy;
 
     @Autowired
-    public NotificationController(MessageWrapperRepository messageWrapperRepository) {
-        this.messageWrapperRepository = messageWrapperRepository;
+    public NotificationController(DispatcherPolicy dispatcherPolicy) {
+        this.dispatcherPolicy = dispatcherPolicy;
     }
 
-    // TODO: separate topic for batch messages
-    @MessageMapping("/eventproposal")
-    @SendTo(Topics.EVENT_PROPOSED)
-    public List<MessageDTO> eventProposals() {
-        return messageWrapperRepository
-                .findAll()
+    @MessageMapping(Endpoint.INITIAL)
+    @SendTo(Topic.INITIAL)
+    public List<MessageDTO> initialMessages() {
+        return dispatcherPolicy
+                .oldMessages()
                 .stream()
                 .map(mw -> MessageDTO.of(mw.getId(), mw.getType(), mw.getPayload()))
                 .collect(Collectors.toList());

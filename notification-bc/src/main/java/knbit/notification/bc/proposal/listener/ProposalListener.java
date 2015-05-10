@@ -3,8 +3,8 @@ package knbit.notification.bc.proposal.listener;
 import knbit.notification.bc.config.RabbitMQConfig;
 import knbit.notification.bc.messagewrapper.domain.MessageType;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
-import knbit.notification.bc.messagewrapper.infrastructure.MessageWrapperRepository;
-import knbit.notification.bc.messagewrapper.service.NotificationService;
+import knbit.notification.bc.messagewrapper.infrastructure.persistence.MessageWrapperRepository;
+import knbit.notification.bc.messagewrapper.infrastructure.dispatcher.NotificationDispatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -19,12 +19,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ProposalListener {
     private final MessageWrapperRepository messageRepository;
-    private final NotificationService notificationService;
+    private final NotificationDispatcher notificationDispatcher;
 
     @Autowired
-    public ProposalListener(MessageWrapperRepository messageRepository, NotificationService notificationService) {
+    public ProposalListener(MessageWrapperRepository messageRepository, NotificationDispatcher notificationDispatcher) {
         this.messageRepository = messageRepository;
-        this.notificationService = notificationService;
+        this.notificationDispatcher = notificationDispatcher;
     }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
@@ -35,6 +35,6 @@ public class ProposalListener {
                 MessageType.EVENT_PROPOSED, new String(message.getBody())
         );
         messageRepository.save(messageWrapper);
-        notificationService.publish(messageWrapper);
+        notificationDispatcher.dispatch(messageWrapper);
     }
 }

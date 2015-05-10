@@ -1,6 +1,6 @@
-package knbit.notification.bc.messagewrapper.service;
+package knbit.notification.bc.messagewrapper.infrastructure.dispatcher;
 
-import knbit.notification.bc.config.Topics;
+import knbit.notification.bc.config.Topic;
 import knbit.notification.bc.messagewrapper.domain.MessageType;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ public class TopicMatcher {
     private static final Map<MessageType, String> maps = new HashMap<>();
 
     static {
-        maps.put(MessageType.EVENT_PROPOSED, Topics.EVENT_PROPOSED);
+        maps.put(MessageType.EVENT_PROPOSED, Topic.INITIAL);
     }
 
     public static String match(MessageType type) {
