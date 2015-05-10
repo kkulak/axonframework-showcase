@@ -1,6 +1,6 @@
 package knbit.notification.bc.messagewrapper.web;
 
-import knbit.notification.bc.messagewrapper.repository.MessageWrapperRepository;
+import knbit.notification.bc.messagewrapper.infrastructure.MessageWrapperRepository;
 import knbit.notification.bc.config.Topics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -26,7 +26,7 @@ public class NotificationController {
         return messageWrapperRepository
                 .findAll()
                 .stream()
-                .map(mw -> MessageDTO.of(mw.getId(), mw.getPayload()))
+                .map(mw -> MessageDTO.of(mw.getId(), mw.getType(), mw.getPayload()))
                 .collect(Collectors.toList());
     }
 

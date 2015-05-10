@@ -19,8 +19,8 @@
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/event-proposal', function(greeting){
-                    showEventProposal(JSON.parse(greeting.body));
+                stompClient.subscribe('/topic/event-proposal', function(message){
+                    showEventProposal(JSON.parse(message.body));
                 });
                 requestOldMessages();
             });
@@ -42,7 +42,8 @@
             var response = document.getElementById('response');
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode('id: ' + message.id + ' , payload: ' + message.payload));
+            p.appendChild(document.createTextNode('id: ' + message.id + ', type: ' + message.type +
+                ' , payload: ' + message.payload));
             response.appendChild(p);
         }
     </script>

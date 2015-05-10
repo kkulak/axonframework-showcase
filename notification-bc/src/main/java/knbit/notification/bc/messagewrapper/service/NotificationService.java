@@ -18,7 +18,7 @@ public class NotificationService {
     public void publish(MessageWrapper message) {
         final String topic = TopicMatcher.match(message.getType());
         final MessageDTO messageDTO = MessageDTO.of(
-                message.getId(), message.getPayload()
+                message.getId(), message.getType(), message.getPayload()
         );
         messagingTemplate.convertAndSend(
                 topic, messageDTO

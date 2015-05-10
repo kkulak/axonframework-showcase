@@ -3,7 +3,7 @@ package knbit.notification.bc.proposal.listener;
 import knbit.notification.bc.config.RabbitMQConfig;
 import knbit.notification.bc.messagewrapper.domain.MessageType;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
-import knbit.notification.bc.messagewrapper.repository.MessageWrapperRepository;
+import knbit.notification.bc.messagewrapper.infrastructure.MessageWrapperRepository;
 import knbit.notification.bc.messagewrapper.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
