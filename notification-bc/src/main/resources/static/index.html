@@ -14,13 +14,22 @@
         }
 
         function connect() {
-            var socket = new SockJS('/eventproposal');
+            var socket = new SockJS('/initial');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/event-proposal', function(greeting){
-                    showEventProposal(JSON.parse(greeting.body));
+                stompClient.subscribe('/message/initial', function(messages){
+                    console.log('Received messages from message/initial topic!');
+                    showEventProposal(JSON.parse(messages.body));
+                });
+                stompClient.subscribe('/message/current', function(message) {
+                    console.log('Received message from message/current topic!');
+                    showEventProposal(JSON.parse(message.body));
+                });
+                stompClient.subscribe('/message/batch', function(messages) {
+                    console.log('Received messages from message/batch topic');
+                    showEventProposal(JSON.parse(messages.body));
                 });
                 requestOldMessages();
             });
@@ -35,14 +44,19 @@
         }
 
         function requestOldMessages() {
-            stompClient.send("/app/eventproposal", {}, {});
+            stompClient.send("/notification-bc/initial", {}, {});
+        }
+
+        function batch() {
+            stompClient.send("/notification-bc/batch", {}, JSON.stringify({start: 0, end: 10}));
         }
 
         function showEventProposal(message) {
             var response = document.getElementById('response');
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode('id: ' + message.id + ' , payload: ' + message.payload));
+            p.appendChild(document.createTextNode('id: ' + message.id + ', type: ' + message.type +
+                ', read: ' + message.read + ' , payload: ' + message.payload));
             response.appendChild(p);
         }
     </script>
@@ -54,6 +68,7 @@
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+        <button id="batch" onclick="batch();">Batch</button>
     </div>
     <p id="response"></p>
 </div>

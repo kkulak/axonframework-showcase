@@ -1,27 +1,27 @@
-package knbit.notification.bc.messagewrapper.service;
+package knbit.notification.bc.messagewrapper.infrastructure.dispatcher;
 
+import knbit.notification.bc.config.Topic;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
-import knbit.notification.bc.messagewrapper.web.MessageDTO;
+import knbit.notification.bc.messagewrapper.web.forms.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NotificationService {
+public class NotificationDispatcher {
     private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public NotificationService(SimpMessagingTemplate messagingTemplate) {
+    public NotificationDispatcher(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void publish(MessageWrapper message) {
-        final String topic = TopicMatcher.match(message.getType());
+    public void dispatch(MessageWrapper message) {
         final MessageDTO messageDTO = MessageDTO.of(
-                message.getId(), message.getPayload()
+                message.getId(), message.getType(), message.isRead(), message.getPayload()
         );
         messagingTemplate.convertAndSend(
-                topic, messageDTO
+                Topic.CURRENT, messageDTO
         );
     }
 

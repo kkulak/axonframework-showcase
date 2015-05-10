@@ -1,7 +1,9 @@
-package knbit.notification.bc.messagewrapper.repository;
+package knbit.notification.bc.messagewrapper.infrastructure.persistence;
 
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MessageWrapperRepository extends JpaRepository<MessageWrapper, String> {
 }

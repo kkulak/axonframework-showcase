@@ -9,16 +9,19 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
+    private static final String APP_PREFIX = "/notification-bc";
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker(Topic.PREFIX);
+        config.setApplicationDestinationPrefixes(APP_PREFIX);
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/eventproposal").withSockJS();
+        registry.addEndpoint(Endpoint.INITIAL).withSockJS();
+        registry.addEndpoint(Endpoint.BATCH).withSockJS();
+        registry.addEndpoint(Endpoint.MESSAGE_STATE).withSockJS();
     }
 
 }
