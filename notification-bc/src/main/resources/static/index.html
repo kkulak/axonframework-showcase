@@ -19,7 +19,12 @@
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/message/initial', function(message){
+                stompClient.subscribe('/message/initial', function(messages){
+                    console.log('Received messages from message/initial topic!');
+                    showEventProposal(JSON.parse(messages.body));
+                });
+                stompClient.subscribe('message/current', function(message) {
+                    console.log('Received message from message/current topic!');
                     showEventProposal(JSON.parse(message.body));
                 });
                 requestOldMessages();

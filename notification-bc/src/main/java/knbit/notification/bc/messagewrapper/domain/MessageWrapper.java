@@ -40,7 +40,7 @@ public class MessageWrapper {
     }
 
     public void markRead() {
-        Preconditions.checkState(read == false, "Message already marked as read!");
+        Preconditions.checkState(!read, "Message already marked as read!");
         read = true;
     }
 
