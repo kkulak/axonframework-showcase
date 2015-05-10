@@ -1,4 +1,4 @@
-package knbit.notification.bc.messagewrapper.web;
+package knbit.notification.bc.messagewrapper.web.forms;
 
 import knbit.notification.bc.messagewrapper.domain.MessageType;
 import lombok.Value;

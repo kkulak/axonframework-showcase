@@ -2,7 +2,7 @@ package knbit.notification.bc.messagewrapper.infrastructure.dispatcher;
 
 import knbit.notification.bc.config.Topic;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
-import knbit.notification.bc.messagewrapper.web.MessageDTO;
+import knbit.notification.bc.messagewrapper.web.forms.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;

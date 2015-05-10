@@ -23,9 +23,13 @@
                     console.log('Received messages from message/initial topic!');
                     showEventProposal(JSON.parse(messages.body));
                 });
-                stompClient.subscribe('message/current', function(message) {
+                stompClient.subscribe('/message/current', function(message) {
                     console.log('Received message from message/current topic!');
                     showEventProposal(JSON.parse(message.body));
+                });
+                stompClient.subscribe('/message/batch', function(messages) {
+                    console.log('Received messages from message/batch topic');
+                    showEventProposal(JSON.parse(messages.body));
                 });
                 requestOldMessages();
             });
@@ -41,6 +45,10 @@
 
         function requestOldMessages() {
             stompClient.send("/notification-bc/initial", {}, {});
+        }
+
+        function batch() {
+            stompClient.send("/notification-bc/batch", {}, JSON.stringify({start: 0, end: 10}));
         }
 
         function showEventProposal(message) {
@@ -60,6 +68,7 @@
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
+        <button id="batch" onclick="batch();">Batch</button>
     </div>
     <p id="response"></p>
 </div>
