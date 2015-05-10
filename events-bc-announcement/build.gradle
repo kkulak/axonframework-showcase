@@ -1,4 +1,5 @@
 apply plugin: 'spring-boot'
+mainClassName = 'knbit.events.bc.Application'
 
 buildscript {
     repositories {

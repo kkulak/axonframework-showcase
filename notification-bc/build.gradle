@@ -1,4 +1,5 @@
 apply plugin: 'spring-boot'
+mainClassName = 'knbit.notification.bc.Application'
 
 buildscript {
     repositories {

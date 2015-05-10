@@ -1,5 +1,6 @@
 apply plugin: 'spring-boot'
 apply plugin: 'docker'
+mainClassName = 'knbit.events.bc.Application'
 
 buildscript {
     repositories {
