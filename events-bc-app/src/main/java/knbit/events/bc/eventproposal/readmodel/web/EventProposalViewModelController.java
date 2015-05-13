@@ -29,8 +29,8 @@ public class EventProposalViewModelController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public EventProposalViewModel eventProposalOf(@PathVariable Long id) {
-        return repository.findOne(id);
+    public EventProposalViewModel eventProposalOf(@PathVariable String id) {
+        return repository.findByDomainId(id);
     }
 
 }

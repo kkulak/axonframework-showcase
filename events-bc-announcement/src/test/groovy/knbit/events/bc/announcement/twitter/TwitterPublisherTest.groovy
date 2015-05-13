@@ -1,6 +1,7 @@
 package knbit.events.bc.announcement.twitter
 
 import knbit.events.bc.AnnouncementBuilder
+import knbit.events.bc.announcement.twitter.TwitterPublisher.ImageStreamReader
 import spock.lang.Specification
 import twitter4j.StatusUpdate
 import twitter4j.Twitter
@@ -36,7 +37,10 @@ class TwitterPublisherTest extends Specification {
                 .build()
 
         def twitterMock = Mock(Twitter.class)
-        def objectUnderTest = new TwitterPublisher(twitterMock)
+        def imageStreamReaderMock = Mock(ImageStreamReader.class)
+        imageStreamReaderMock.createImageStreamFrom(_ as String) >> new ByteArrayInputStream("url".getBytes())
+
+        def objectUnderTest = new TwitterPublisher(twitterMock, imageStreamReaderMock)
 
         when:
         objectUnderTest.publish(announcement)

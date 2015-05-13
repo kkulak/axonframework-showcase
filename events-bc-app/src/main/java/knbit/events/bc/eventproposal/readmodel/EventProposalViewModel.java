@@ -1,5 +1,6 @@
 package knbit.events.bc.eventproposal.readmodel;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.readmodel.AbstractEntity;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
@@ -22,6 +23,7 @@ public class EventProposalViewModel extends AbstractEntity {
     private String name;
     private String description;
     private EventType eventType;
+    private EventFrequency eventFrequency;
     private ProposalState state;
 
 }

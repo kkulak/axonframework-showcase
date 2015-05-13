@@ -24,7 +24,9 @@ public class ProposalNotificationEventHandler {
         final ProposalNotification proposalNotification = new ProposalNotification(
                 event.eventProposalId().value(),
                 event.name().value(),
-                event.description().value()
+                event.description().value(),
+                event.eventType(),
+                event.eventFrequency()
         );
 
         dispatcher.dispatch(proposalNotification);

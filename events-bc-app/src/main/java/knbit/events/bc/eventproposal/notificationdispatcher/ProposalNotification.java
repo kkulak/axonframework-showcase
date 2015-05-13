@@ -1,5 +1,7 @@
 package knbit.events.bc.eventproposal.notificationdispatcher;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.common.domain.enums.EventType;
 import lombok.*;
 
 /**
@@ -15,4 +17,6 @@ public class ProposalNotification {
     private String eventProposalId;
     private String name;
     private String description;
+    private EventType eventType;
+    private EventFrequency eventFrequency;
 }

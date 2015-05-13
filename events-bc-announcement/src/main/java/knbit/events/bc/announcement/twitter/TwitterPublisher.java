@@ -2,7 +2,6 @@ package knbit.events.bc.announcement.twitter;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -21,9 +20,16 @@ import java.util.Optional;
 public class TwitterPublisher implements Publisher {
 
     private Twitter twitter;
+    private ImageStreamReader imageStreamReader;
 
     public TwitterPublisher(Twitter twitter) {
         this.twitter = twitter;
+        this.imageStreamReader = new ImageStreamReader();
+    }
+
+    public TwitterPublisher(Twitter twitter, ImageStreamReader imageStreamReader) {
+        this.twitter = twitter;
+        this.imageStreamReader = imageStreamReader;
     }
 
     @Override
@@ -38,7 +44,7 @@ public class TwitterPublisher implements Publisher {
 
                 final String imageName = announcement.imageName().get();
 
-                final InputStream imageStream = createImageStreamFrom(
+                final InputStream imageStream = imageStreamReader.createImageStreamFrom(
                         possibleImageUrl.get()
                 );
                 newStatus.setMedia(imageName, imageStream);
@@ -52,8 +58,12 @@ public class TwitterPublisher implements Publisher {
         }
     }
 
-    private InputStream createImageStreamFrom(String imageUrlString) throws IOException {
-        return new URL(imageUrlString).openStream();
 
+    static class ImageStreamReader {
+
+        public InputStream createImageStreamFrom(String imageUrlString) throws IOException {
+            return new URL(imageUrlString).openStream();
+
+        }
     }
 }

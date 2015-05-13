@@ -30,6 +30,7 @@ public class EventProposalViewModelEventHandler {
                         event.name().value(),
                         event.description().value(),
                         event.eventType(),
+                        event.eventFrequency(),
                         event.proposalState()
                 )
         );
