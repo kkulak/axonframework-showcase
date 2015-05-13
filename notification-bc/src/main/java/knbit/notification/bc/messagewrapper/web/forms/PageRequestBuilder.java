@@ -6,24 +6,23 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Getter
 @Accessors(fluent = true)
 public class PageRequestBuilder {
-    private final int start;
-    private final int end;
+    private final int page;
+    private final int size;
 
     @JsonCreator
-    public PageRequestBuilder(@JsonProperty("start") int start,
-                              @JsonProperty("end") int end) {
-        Preconditions.checkArgument(end > start, "End less than start!");
-
-        this.start = start;
-        this.end = end;
+    public PageRequestBuilder(@JsonProperty("page") int page,
+                              @JsonProperty("size") int size) {
+        this.page = page;
+        this.size = size;
     }
 
     public PageRequest build() {
-        return new PageRequest(start, end);
+        return new PageRequest(page, size, Sort.Direction.DESC, "createdOn");
     }
 
 }
