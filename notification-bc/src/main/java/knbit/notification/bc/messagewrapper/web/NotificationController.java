@@ -48,7 +48,7 @@ public class NotificationController {
     }
 
     @MessageMapping(Endpoint.MESSAGE_STATE)
-    @SendTo(Topic.MESSAGE_STATE)
+    @SendTo(Topic.CURRENT)
     public MessageWrapper markRead(MessageIdentity identity) {
         final MessageWrapper message = messageRepository.findOne(identity.id());
         Preconditions.checkArgument(message != null, "Given message does not exist!");
