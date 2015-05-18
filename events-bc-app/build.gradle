@@ -1,5 +1,9 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
 apply plugin: 'spring-boot'
-apply plugin: 'docker'
+apply plugin: 'com.bmuschko.docker-java-application'
 mainClassName = 'knbit.events.bc.Application'
 
 buildscript {
@@ -11,7 +15,7 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
-        classpath('se.transmode.gradle:gradle-docker:1.2')
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
     }
 }
 
@@ -42,18 +46,33 @@ dependencies {
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
 }
 
-group = 'knbiteventsbc'
-
-task buildDocker(type: Docker, dependsOn: build) {
-    push = true
-    applicationName = 'backend'
-    dockerfile = file('.docker/Dockerfile')
-    doFirst {
-        copy {
-            from jar
-            into stageDir
-        }
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
     }
+}
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/events-bc-app-*.jar', 'events-bc.jar'
+    runCommand 'bash -c "touch /events-bc.jar"'
+    entryPoint 'java', '-jar', '/events-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/events-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/events-bc'
 }
 
 springBoot {

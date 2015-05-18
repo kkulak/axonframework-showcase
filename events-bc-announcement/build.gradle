@@ -1,16 +1,25 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+
 apply plugin: 'spring-boot'
+apply plugin: 'com.bmuschko.docker-java-application'
 mainClassName = 'knbit.events.bc.Application'
 
 buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
+        jcenter()
         maven { url "http://repo.spring.io/milestone" }
         maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
+
     }
 }
 
@@ -39,6 +48,35 @@ dependencies {
     compile 'com.mangofactory:swagger-springmvc:1.0.2'
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 }
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/events-bc-announcement-*.jar', 'announcement-bc.jar'
+    runCommand 'bash -c "touch /announcement-bc.jar"'
+    entryPoint 'java', '-jar', '/announcement-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/announcement-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/announcement-bc'
+}
+
 
 springBoot {
     requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']

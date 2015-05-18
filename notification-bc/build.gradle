@@ -1,4 +1,9 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
 apply plugin: 'spring-boot'
+apply plugin: 'com.bmuschko.docker-java-application'
 mainClassName = 'knbit.notification.bc.Application'
 
 buildscript {
@@ -10,6 +15,7 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
     }
 }
 
@@ -28,4 +34,33 @@ dependencies {
     // spring-data
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
     compile 'hsqldb:hsqldb:1.8.0.10'
+}
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/notification-bc-*.jar', 'notification-bc.jar'
+    runCommand 'bash -c "touch /notification-bc.jar"'
+    entryPoint 'java', '-jar', '/notification-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/notification-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/notification-bc'
 }
