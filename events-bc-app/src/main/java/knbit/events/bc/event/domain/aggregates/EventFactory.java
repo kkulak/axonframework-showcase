@@ -10,10 +10,13 @@ public class EventFactory {
 
     public static AbstractEvent newEvent(
             EventId id, String name, String description, EventType eventType, EventFrequency eventFrequency) {
-        if(eventFrequency == EventFrequency.ONE_OFF) {
-            return new OneOffEvent(id, eventType, Name.of(name), Description.of(description));
-        } else {
-            return new CyclicEvent(id, eventType, Name.of(name), Description.of(description));
+        switch (eventFrequency) {
+            case ONE_OFF:
+                return new OneOffEvent(id, eventType, Name.of(name), Description.of(description), eventFrequency);
+            case CYCLIC:
+                return new CyclicEvent(id, eventType, Name.of(name), Description.of(description), eventFrequency);
+            default:
+                throw new IllegalArgumentException();
         }
     }
 

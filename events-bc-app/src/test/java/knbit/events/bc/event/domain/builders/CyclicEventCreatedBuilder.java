@@ -1,5 +1,6 @@
 package knbit.events.bc.event.domain.builders;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.event.domain.enums.EventState;
 import knbit.events.bc.event.domain.valueobjects.Description;
@@ -19,9 +20,10 @@ public class CyclicEventCreatedBuilder {
     private Name name = Name.of("name");
     private Description description = Description.of("description");
     private EventState state = EventState.CREATED;
+    private EventFrequency frequency = EventFrequency.ONE_OFF;
 
     public CyclicEventCreated build() {
-        return CyclicEventCreated.of(eventId, type, name, description, state);
+        return CyclicEventCreated.of(eventId, type, name, description, state, frequency);
     }
 
 }
