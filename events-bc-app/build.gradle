@@ -1,0 +1,81 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+apply plugin: 'spring-boot'
+apply plugin: 'com.bmuschko.docker-java-application'
+mainClassName = 'knbit.events.bc.Application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url "http://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
+    }
+}
+
+dependencies {
+    // knbit-events-bc
+    compile project(':events-bc-core')
+
+    // spring-boot
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
+
+    // swagger
+    compile "org.ajar:swagger-spring-mvc-ui:0.4"
+    compile 'com.mangofactory:swagger-springmvc:1.0.2'
+    runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+    // axon
+    compile 'org.axonframework:axon-core:2.4'
+    compile 'org.springframework:spring-tx:4.1.6.RELEASE'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
+    testCompile 'org.axonframework:axon-test:2.4'
+
+    // view-model persistence
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
+    compile 'hsqldb:hsqldb:1.8.0.10'
+
+    // others:
+    testCompile 'org.apache.commons:commons-lang3:3.3.1'
+}
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/events-bc-app-*.jar', 'events-bc.jar'
+    runCommand 'bash -c "touch /events-bc.jar"'
+    entryPoint 'java', '-jar', '/events-bc.jar'
+    exposePort 5672
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/events-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/events-bc'
+}
+
+springBoot {
+    requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
+}

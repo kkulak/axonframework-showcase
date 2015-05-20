@@ -1,0 +1,83 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+
+apply plugin: 'spring-boot'
+apply plugin: 'com.bmuschko.docker-java-application'
+mainClassName = 'knbit.events.bc.Application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
+
+    }
+}
+
+dependencies {
+    // knbit-events-bc
+    compile project(':events-bc-core')
+
+    // spring
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+
+    // publishers
+    compile 'org.twitter4j:twitter4j-core:4.0.3'
+    compile 'org.facebook4j:facebook4j-core:2.2.2'
+    compile 'net.sourceforge.htmlunit:htmlunit:2.15'
+
+    compile 'commons-validator:commons-validator:1.4.0'
+    compile 'org.apache.commons:commons-imaging:1.0-SNAPSHOT'
+
+    // spring-test
+    testCompile 'org.springframework:spring-test:4.1.1.RELEASE'
+    testCompile 'com.jayway.jsonpath:json-path:0.9.1'
+
+    // swagger
+    compile "org.ajar:swagger-spring-mvc-ui:0.4"
+    compile 'com.mangofactory:swagger-springmvc:1.0.2'
+    runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+}
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/events-bc-announcement-*.jar', 'announcement-bc.jar'
+    runCommand 'bash -c "touch /announcement-bc.jar"'
+    entryPoint 'java', '-jar', '/announcement-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/announcement-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/announcement-bc'
+}
+
+
+springBoot {
+    requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
+}

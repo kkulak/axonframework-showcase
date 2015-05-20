@@ -1,0 +1,40 @@
+package knbit.notification.bc.proposal.listener;
+
+import knbit.notification.bc.config.RabbitMQConfig;
+import knbit.notification.bc.messagewrapper.domain.MessageType;
+import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
+import knbit.notification.bc.messagewrapper.infrastructure.persistence.MessageWrapperRepository;
+import knbit.notification.bc.messagewrapper.infrastructure.dispatcher.NotificationDispatcher;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by novy on 09.05.15.
+ */
+
+@Component
+@Slf4j
+public class ProposalListener {
+    private final MessageWrapperRepository messageRepository;
+    private final NotificationDispatcher notificationDispatcher;
+
+    @Autowired
+    public ProposalListener(MessageWrapperRepository messageRepository, NotificationDispatcher notificationDispatcher) {
+        this.messageRepository = messageRepository;
+        this.notificationDispatcher = notificationDispatcher;
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    public void receiveMessage(Message message) {
+        log.debug("Received message: " + new String(message.getBody()));
+
+        final MessageWrapper messageWrapper = new MessageWrapper(
+                MessageType.EVENT_PROPOSED, new String(message.getBody())
+        );
+        messageRepository.save(messageWrapper);
+        notificationDispatcher.dispatch(messageWrapper);
+    }
+}

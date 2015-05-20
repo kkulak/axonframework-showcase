@@ -1,8 +1,0 @@
-# NodeJS modules
-node_modules/
-
-# Bower components
-src/assets/libs/
-
-# Webstorm
-.idea
