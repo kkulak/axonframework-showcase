@@ -1,6 +1,6 @@
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
@@ -52,6 +52,7 @@ task createDockerfile(type: Dockerfile) {
     addFile 'libs/notification-bc-*.jar', 'notification-bc.jar'
     runCommand 'bash -c "touch /notification-bc.jar"'
     entryPoint 'java', '-jar', '/notification-bc.jar'
+    exposePort 5672
 }
 
 task buildImage(type: DockerBuildImage) {
