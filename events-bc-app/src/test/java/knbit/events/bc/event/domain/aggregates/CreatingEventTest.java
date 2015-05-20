@@ -44,6 +44,7 @@ public class CreatingEventTest {
                 .expectEvents(
                         CyclicEventCreatedBuilder
                             .instance()
+                            .frequency(EventFrequency.CYCLIC)
                             .build()
                 );
     }

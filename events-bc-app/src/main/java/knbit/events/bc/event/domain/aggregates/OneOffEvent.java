@@ -1,5 +1,6 @@
 package knbit.events.bc.event.domain.aggregates;
 
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.event.domain.valueobjects.Description;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.enums.EventState;
@@ -12,9 +13,9 @@ public class OneOffEvent extends AbstractEvent {
 
     public OneOffEvent() { }
 
-    public OneOffEvent(EventId id, EventType type, Name name, Description description) {
+    public OneOffEvent(EventId id, EventType type, Name name, Description description, EventFrequency frequency) {
         apply(
-                OneOffEventCreated.of(id, type, name, description, EventState.CREATED)
+                OneOffEventCreated.of(id, type, name, description, EventState.CREATED, frequency)
         );
     }
 
@@ -25,6 +26,7 @@ public class OneOffEvent extends AbstractEvent {
         name = event.name();
         description = event.description();
         state = event.eventState();
+        frequency = event.eventFrequency();
     }
 
 }

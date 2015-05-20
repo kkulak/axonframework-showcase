@@ -1,6 +1,7 @@
 package knbit.events.bc.event.domain.aggregates;
 
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
+import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.event.domain.valueobjects.Description;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.enums.EventState;
@@ -12,6 +13,7 @@ public abstract class AbstractEvent extends IdentifiedDomainAggregateRoot<EventI
     protected Description description;
     protected EventState state;
     protected EventType type;
+    protected EventFrequency frequency;
 
     protected AbstractEvent() { }
 
