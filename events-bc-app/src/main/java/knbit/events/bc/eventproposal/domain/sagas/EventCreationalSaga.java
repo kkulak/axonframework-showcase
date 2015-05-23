@@ -1,9 +1,9 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.valueobjects.commands.CreateEventCommand;
-import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.Description;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.Name;
@@ -16,13 +16,11 @@ import org.axonframework.saga.annotation.EndSaga;
 import org.axonframework.saga.annotation.SagaEventHandler;
 import org.axonframework.saga.annotation.StartSaga;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Created by novy on 07.05.15.
  */
 
-@Component
 public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     private EventProposalId eventProposalId;
@@ -46,7 +44,6 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(ProposalAcceptedEvent event) {
-
         commandGateway.send(
                 new CreateEventCommand(
                         new EventId(),

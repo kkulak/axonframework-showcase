@@ -1,4 +1,4 @@
-package knbit.events.bc.common.infrastructure.config;
+package knbit.events.bc.common.infrastructure.config.axon;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.SimpleCommandBus;
@@ -14,6 +14,8 @@ import org.axonframework.eventstore.EventStore;
 import org.axonframework.eventstore.fs.EventFileResolver;
 import org.axonframework.eventstore.fs.FileSystemEventStore;
 import org.axonframework.eventstore.fs.SimpleEventFileResolver;
+import org.axonframework.saga.SagaManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,13 +26,16 @@ import java.io.File;
  */
 
 @Configuration
-public class AxonConfig {
-
+public class AppConfig {
+    @Autowired
+    private SagaManager sagaManager;
     private static final String EVENTSTORE_FILEPATH = "data/eventstore";
 
     @Bean
     public EventBus eventBus() {
-        return new SimpleEventBus();
+        final SimpleEventBus eventBus = new SimpleEventBus();
+        eventBus.subscribe(sagaManager);
+        return eventBus;
     }
 
     @Bean
@@ -78,4 +83,5 @@ public class AxonConfig {
                 eventFileResolver
         );
     }
+
 }

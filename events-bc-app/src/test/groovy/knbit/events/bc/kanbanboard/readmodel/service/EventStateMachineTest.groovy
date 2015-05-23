@@ -25,18 +25,18 @@ class EventStateMachineTest extends Specification {
         def reachableStates = EventStateMachine.match(status)
 
         then:
-        reachableStates == [BACKLOG, SURVEYING_INTEREST, CHOOSING_TERM]
+        reachableStates == [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
     }
 
     def "should return reachable states from SurveyingInterest state"() {
         given:
-        def status = SURVEYING_INTEREST
+        def status = SURVEY_INTEREST
 
         when:
         def reachableStates = EventStateMachine.match(status)
 
         then:
-        reachableStates == [SURVEYING_INTEREST, CHOOSING_TERM]
+        reachableStates == [SURVEY_INTEREST, CHOOSING_TERM]
     }
 
     def "should return reachable states from ChoosingTerm state"() {
