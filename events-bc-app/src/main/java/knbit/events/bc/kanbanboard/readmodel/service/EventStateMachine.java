@@ -14,8 +14,8 @@ public class EventStateMachine {
     private static final Map<EventStatus, List<EventStatus>> reachableStates = Maps.newHashMap();
 
     static {
-        reachableStates.put(BACKLOG, Arrays.asList(BACKLOG, SURVEYING_INTEREST, CHOOSING_TERM));
-        reachableStates.put(SURVEYING_INTEREST, Arrays.asList(SURVEYING_INTEREST, CHOOSING_TERM));
+        reachableStates.put(BACKLOG, Arrays.asList(BACKLOG, SURVEY_INTEREST, CHOOSING_TERM));
+        reachableStates.put(SURVEY_INTEREST, Arrays.asList(SURVEY_INTEREST, CHOOSING_TERM));
         reachableStates.put(CHOOSING_TERM, Arrays.asList(CHOOSING_TERM, ROOM_BOOKING));
     }
 
