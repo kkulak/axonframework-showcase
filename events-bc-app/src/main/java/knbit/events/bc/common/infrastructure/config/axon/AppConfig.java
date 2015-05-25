@@ -27,22 +27,19 @@ import java.io.File;
 
 @Configuration
 public class AppConfig {
-    @Autowired
-    private SagaManager sagaManager;
+
     private static final String EVENTSTORE_FILEPATH = "data/eventstore";
 
     @Bean
     public EventBus eventBus() {
-        final SimpleEventBus eventBus = new SimpleEventBus();
-        eventBus.subscribe(sagaManager);
-        return eventBus;
+        return new SimpleEventBus();
     }
 
     @Bean
-    public AnnotationEventListenerBeanPostProcessor annotationEventListenerBeanPostProcessor() {
+    public AnnotationEventListenerBeanPostProcessor annotationEventListenerBeanPostProcessor(EventBus eventBus) {
         AnnotationEventListenerBeanPostProcessor processor = new AnnotationEventListenerBeanPostProcessor();
         processor.setEventBus(
-                eventBus()
+                eventBus
         );
         return processor;
     }
@@ -53,27 +50,23 @@ public class AppConfig {
     }
 
     @Bean
-    public AnnotationCommandHandlerBeanPostProcessor annotationCommandHandlerBeanPostProcessor() {
+    public AnnotationCommandHandlerBeanPostProcessor annotationCommandHandlerBeanPostProcessor(CommandBus commandBus) {
         AnnotationCommandHandlerBeanPostProcessor processor = new AnnotationCommandHandlerBeanPostProcessor();
         processor.setCommandBus(
-                commandBus()
+                commandBus
         );
         return processor;
     }
 
     @Bean
-    public CommandGatewayFactoryBean<CommandGateway> commandGatewayFactoryBean() {
+    public CommandGatewayFactoryBean<CommandGateway> commandGatewayFactoryBean(CommandBus commandBus) {
         CommandGatewayFactoryBean<CommandGateway> factory = new CommandGatewayFactoryBean<>();
         factory.setCommandBus(
-                commandBus()
+                commandBus
         );
         return factory;
     }
 
-    @Bean
-    public EventScheduler eventScheduler() throws Exception {
-        return new SimpleEventSchedulerFactoryBean().getObject();
-    }
 
     @Bean
     public EventStore eventStore() {

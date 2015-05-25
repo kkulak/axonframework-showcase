@@ -36,6 +36,8 @@ dependencies {
     compile 'org.axonframework:axon-core:2.4'
     compile 'org.springframework:spring-tx:4.1.6.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
+    compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
+    compile 'org.quartz-scheduler:quartz:2.2.1'
     testCompile 'org.axonframework:axon-test:2.4'
 
     // view-model persistence
@@ -44,6 +46,7 @@ dependencies {
 
     // others:
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
+
 }
 
 docker {
