@@ -1,5 +1,7 @@
 package knbit.events.bc.questionnaire.domain.entities;
 
+import knbit.events.bc.questionnaire.domain.enums.QuestionType;
+import knbit.events.bc.questionnaire.domain.exceptions.IncorrectChoiceException;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionDescription;
@@ -24,7 +26,21 @@ public class SingleChoiceQuestion extends Question {
 
     @Override
     public AnsweredQuestion check(SingleChoiceAnswer answer) {
-        return super.check(answer);
+        checkForIdEquality(answer);
+        checkForChoiceCorrectness(answer);
+
+        return AnsweredQuestion.of(
+                id, title, description, QuestionType.SINGLE_CHOICE,
+                possibleAnswers, answer.unwrap()
+        );
+    }
+
+    private void checkForChoiceCorrectness(SingleChoiceAnswer answer) {
+        final DomainAnswer selectedAnswer = DomainAnswer.of(answer.value());
+        if (!possibleAnswers.contains(selectedAnswer)) {
+            throw new IncorrectChoiceException(id);
+        }
+
     }
 
     @Override
