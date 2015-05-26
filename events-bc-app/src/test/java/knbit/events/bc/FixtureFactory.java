@@ -5,6 +5,8 @@ import knbit.events.bc.event.domain.aggregates.AbstractEvent;
 import knbit.events.bc.event.infrastructure.config.AxonEventFactory;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
+import knbit.events.bc.questionnaire.domain.QuestionnaireCommandHandler;
+import knbit.events.bc.questionnaire.domain.aggregates.Questionnaire;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 
@@ -28,6 +30,17 @@ public class FixtureFactory {
         FixtureConfiguration<AbstractEvent> fixture = Fixtures.newGivenWhenThenFixture(AbstractEvent.class);
         fixture.registerAggregateFactory(new AxonEventFactory());
         final EventCommandHandler handler = new EventCommandHandler(fixture.getRepository());
+        fixture.registerAnnotatedCommandHandler(handler);
+        return fixture;
+    }
+
+    public static FixtureConfiguration<Questionnaire> questionnaireFixtureConfiguration() {
+        FixtureConfiguration<Questionnaire> fixture = Fixtures.newGivenWhenThenFixture(Questionnaire.class);
+
+        final QuestionnaireCommandHandler handler = new QuestionnaireCommandHandler(
+                fixture.getRepository()
+        );
+
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
     }
