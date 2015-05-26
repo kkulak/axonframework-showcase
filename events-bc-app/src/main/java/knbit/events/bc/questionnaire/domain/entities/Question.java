@@ -2,7 +2,9 @@ package knbit.events.bc.questionnaire.domain.entities;
 
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.questionnaire.domain.exceptions.IncorrectAnswerTypeException;
-import knbit.events.bc.questionnaire.domain.valueobjects.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionDescription;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionTitle;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.MultipleChoiceAnswer;
@@ -14,8 +16,13 @@ import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.TextAns
  */
 public abstract class Question extends IdentifiedDomainEntity<QuestionId> implements AnswerChecker {
 
-    public Question(QuestionId questionId) {
+    protected final QuestionTitle title;
+    protected final QuestionDescription description;
+
+    public Question(QuestionId questionId, QuestionTitle title, QuestionDescription description) {
         super(questionId);
+        this.title = title;
+        this.description = description;
     }
 
     @Override

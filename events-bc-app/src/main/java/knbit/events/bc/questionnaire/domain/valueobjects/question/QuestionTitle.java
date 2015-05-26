@@ -1,9 +1,10 @@
-package knbit.events.bc.questionnaire.domain.valueobjects;
+package knbit.events.bc.questionnaire.domain.valueobjects.question;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -13,18 +14,20 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Getter
 @EqualsAndHashCode
-public class DomainAnswer {
+@ToString
+public class QuestionTitle {
 
     private final String value;
 
-    private DomainAnswer(String value) {
+    private QuestionTitle(String value) {
+        // todo: length?
         Preconditions.checkArgument(
                 !Strings.isNullOrEmpty(value)
         );
         this.value = value;
     }
 
-    public static DomainAnswer of(String value) {
-        return new DomainAnswer(value);
+    public static QuestionTitle of(String value) {
+        return new QuestionTitle(value);
     }
 }

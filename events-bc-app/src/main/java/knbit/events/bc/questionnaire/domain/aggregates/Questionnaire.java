@@ -5,14 +5,20 @@ import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.questionnaire.domain.entities.Question;
+import knbit.events.bc.questionnaire.domain.entities.QuestionFactory;
 import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.NegativeVote;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.PositiveVote;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.Vote;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 25.05.15.
@@ -26,11 +32,21 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
     public Questionnaire() {
     }
 
-    public Questionnaire(QuestionnaireId questionnaireId, EventId eventId) {
-        apply(
-                QuestionnaireCreatedEvent.of(questionnaireId,eventId)
-        );
+    public Questionnaire(QuestionnaireId questionnaireId, EventId eventId, List<QuestionData> questions) {
+        final List<IdentifiedQuestionData> identifiedQuestionData = identifyQuestions(questions);
 
+        apply(QuestionnaireCreatedEvent.of(questionnaireId, eventId, identifiedQuestionData));
+    }
+
+    private List<IdentifiedQuestionData> identifyQuestions(List<QuestionData> questions) {
+        return questions
+                .stream()
+                .map(questionData -> IdentifiedQuestionData.of(randomQuestionId(), questionData))
+                .collect(Collectors.toList());
+    }
+
+    private QuestionId randomQuestionId() {
+        return new QuestionId();
     }
 
     @EventSourcingHandler
@@ -38,6 +54,12 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
         id = event.questionnaireId();
         eventId = event.eventId();
 
+        questions.addAll(
+                event.questions()
+                        .stream()
+                        .map(QuestionFactory::newQuestion)
+                        .collect(Collectors.toList())
+        );
     }
 
 

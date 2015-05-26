@@ -1,6 +1,6 @@
 package knbit.events.bc.questionnaire.domain.entities;
 
-import knbit.events.bc.questionnaire.domain.valueobjects.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.MultipleChoiceAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.SingleChoiceAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.TextAnswer;

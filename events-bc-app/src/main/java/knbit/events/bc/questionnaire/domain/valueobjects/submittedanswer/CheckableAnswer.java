@@ -1,8 +1,8 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer;
 
 import knbit.events.bc.questionnaire.domain.entities.AnswerChecker;
-import knbit.events.bc.questionnaire.domain.valueobjects.AnsweredQuestion;
-import knbit.events.bc.questionnaire.domain.valueobjects.DomainAnswer;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 
 import java.util.List;

@@ -52,7 +52,7 @@ class WithoutIdentifierMatcher {
 
             @Override
             public void describeTo(Description description) {
-                // todo: implement
+                description.appendValue(thoseCommands);
             }
         };
     }

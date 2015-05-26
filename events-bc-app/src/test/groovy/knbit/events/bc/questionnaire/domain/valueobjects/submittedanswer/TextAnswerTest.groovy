@@ -1,6 +1,6 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer
 
-import knbit.events.bc.questionnaire.domain.valueobjects.DomainAnswer
+import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId
 import spock.lang.Specification
 

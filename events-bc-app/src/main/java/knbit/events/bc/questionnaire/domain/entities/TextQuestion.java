@@ -1,6 +1,8 @@
 package knbit.events.bc.questionnaire.domain.entities;
 
-import knbit.events.bc.questionnaire.domain.valueobjects.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionDescription;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionTitle;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.TextAnswer;
@@ -10,8 +12,8 @@ import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.TextAns
  */
 public class TextQuestion extends Question {
 
-    public TextQuestion(QuestionId questionId) {
-        super(questionId);
+    public TextQuestion(QuestionId questionId, QuestionTitle title, QuestionDescription description) {
+        super(questionId, title, description);
     }
 
     @Override

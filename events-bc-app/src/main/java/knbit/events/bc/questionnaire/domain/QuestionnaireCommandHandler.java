@@ -20,7 +20,6 @@ public class QuestionnaireCommandHandler {
 
     @Autowired
     public QuestionnaireCommandHandler(@Qualifier("questionnaireRepository") Repository<Questionnaire> repository) {
-        System.out.println("injected " + repository);
         this.repository = repository;
     }
 
@@ -28,7 +27,7 @@ public class QuestionnaireCommandHandler {
     @CommandHandler
     public void handle(CreateQuestionnaireCommand command) {
         final Questionnaire newQuestionnaire = QuestionnaireFactory.newQuestionnaire(
-                command.questionnaireId(), command.eventId()
+                command.questionnaireId(), command.eventId(), command.questions()
         );
 
         repository.add(newQuestionnaire);
