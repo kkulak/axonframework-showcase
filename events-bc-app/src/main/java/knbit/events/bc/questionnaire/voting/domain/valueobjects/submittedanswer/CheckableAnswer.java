@@ -5,7 +5,7 @@ import knbit.events.bc.questionnaire.voting.domain.valueobjects.AnsweredQuestion
 import knbit.events.bc.questionnaire.voting.domain.valueobjects.DomainAnswer;
 import knbit.events.bc.questionnaire.voting.domain.valueobjects.QuestionnaireId;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by novy on 25.05.15.
@@ -14,7 +14,7 @@ public interface CheckableAnswer {
 
     QuestionnaireId questionnaireId();
 
-    Collection<DomainAnswer> unwrap();
+    List<DomainAnswer> unwrap();
 
     AnsweredQuestion allowCheckingBy(AnswerChecker checker);
 }

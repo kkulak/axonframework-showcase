@@ -1,5 +1,7 @@
 package knbit.events.bc.questionnaire.questions;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -9,7 +11,8 @@ import lombok.experimental.Accessors;
 
 
 @Accessors(fluent = true)
-@Value
+@Getter
+@RequiredArgsConstructor
 abstract public class Question {
 
     private final String title;

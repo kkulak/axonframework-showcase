@@ -2,6 +2,7 @@ package knbit.events.bc.questionnaire.voting.domain.valueobjects.vote;
 
 import knbit.events.bc.questionnaire.voting.domain.valueobjects.QuestionnaireId;
 import knbit.events.bc.questionnaire.voting.domain.valueobjects.Attendee;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -11,6 +12,7 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value
+@EqualsAndHashCode(callSuper = false)
 public class PositiveVote extends Vote {
 
 
