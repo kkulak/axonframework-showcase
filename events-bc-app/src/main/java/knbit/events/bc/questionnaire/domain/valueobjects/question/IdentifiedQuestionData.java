@@ -24,6 +24,18 @@ public class IdentifiedQuestionData {
     private final QuestionId questionId;
     private final QuestionData questionData;
 
+    public static IdentifiedQuestionData of(QuestionId questionId, QuestionTitle title, QuestionDescription description,
+                                            QuestionType questionType, List<DomainAnswer> possibleAnswers) {
+        return new IdentifiedQuestionData(questionId, title, description, questionType, possibleAnswers);
+    }
+
+    private IdentifiedQuestionData(QuestionId questionId, QuestionTitle title, QuestionDescription description,
+                                   QuestionType questionType, List<DomainAnswer> possibleAnswers) {
+
+        this.questionId = questionId;
+        this.questionData = QuestionData.of(title, description, questionType, possibleAnswers);
+    }
+
     public QuestionTitle title() {
         return questionData.title();
     }

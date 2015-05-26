@@ -2,6 +2,7 @@ package knbit.events.bc.questionnaire.domain.entities;
 
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.questionnaire.domain.exceptions.IncorrectAnswerTypeException;
+import knbit.events.bc.questionnaire.domain.exceptions.QuestionIdDoesNotMatchException;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionDescription;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionTitle;
@@ -44,6 +45,12 @@ public abstract class Question extends IdentifiedDomainEntity<QuestionId> implem
         throw new IncorrectAnswerTypeException(
                 id, expectedAnswerClass(), TextAnswer.class
         );
+    }
+
+    protected void checkForIdEquality(CheckableAnswer answer) {
+        if (!id.equals(answer.questionId())) {
+            throw new QuestionIdDoesNotMatchException(id, answer.questionId());
+        }
     }
 
     protected abstract Class<? extends CheckableAnswer> expectedAnswerClass();

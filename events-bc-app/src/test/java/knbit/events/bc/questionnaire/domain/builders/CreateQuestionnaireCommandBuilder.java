@@ -23,7 +23,7 @@ import java.util.List;
 public class CreateQuestionnaireCommandBuilder {
 
     @Setter
-    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
     @Setter
     private EventId eventId = EventId.of("eventId");
 

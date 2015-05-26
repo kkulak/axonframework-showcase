@@ -1,8 +1,6 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.vote;
 
-import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.questionnaire.domain.valueobjects.Attendee;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -12,10 +10,11 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value
-@EqualsAndHashCode(callSuper = false)
-public class NegativeVote extends Vote {
+public class NegativeVote {
 
-    public NegativeVote(Attendee attendee, QuestionnaireId questionnaireId) {
-        super(attendee, questionnaireId);
+    private final Attendee attendee;
+
+    public NegativeVote(Attendee attendee) {
+        this.attendee = attendee;
     }
 }

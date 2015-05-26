@@ -1,6 +1,7 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer;
 
 import knbit.events.bc.questionnaire.domain.entities.AnswerChecker;
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface CheckableAnswer {
 
-    QuestionnaireId questionnaireId();
+    QuestionId questionId();
 
     List<DomainAnswer> unwrap();
 

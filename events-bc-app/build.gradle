@@ -45,6 +45,7 @@ dependencies {
     compile 'hsqldb:hsqldb:1.8.0.10'
 
     // others:
+    compile 'com.codepoetics:protonpack:1.7'
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
 
 }

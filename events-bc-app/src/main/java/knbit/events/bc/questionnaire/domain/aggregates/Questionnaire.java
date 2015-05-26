@@ -1,5 +1,7 @@
 package knbit.events.bc.questionnaire.domain.aggregates;
 
+import com.codepoetics.protonpack.StreamUtils;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
@@ -10,10 +12,14 @@ import knbit.events.bc.questionnaire.domain.exceptions.QuestionnaireAlreadyVoted
 import knbit.events.bc.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireVotedDownEvent;
+import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireVotedEvent;
+import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireVotedUpEvent;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
+import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.NegativeVote;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.PositiveVote;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.Vote;
@@ -29,7 +35,7 @@ import java.util.stream.Collectors;
 public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId> {
 
     private EventId eventId;
-    private Collection<Vote> votes = Sets.newHashSet();
+    private Collection<Attendee> voters = Sets.newHashSet();
     private Collection<Question> questions = Lists.newLinkedList();
 
     public Questionnaire() {
@@ -67,27 +73,40 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
 
 
     public void voteUp(PositiveVote vote) {
+        checkIfAttendeeAlreadyVoted(vote.attendee());
+
+        final List<CheckableAnswer> answers = vote.answers();
+        Preconditions.checkArgument(answers.size() == questions.size());
+
+        final List<AnsweredQuestion> answeredQuestions = StreamUtils.zip(
+
+                questions.stream(),
+                answers.stream(),
+                (checker, answer) -> answer.allowCheckingBy(checker)
+
+        ).collect(Collectors.toList());
+
+        apply(new QuestionnaireVotedUpEvent(id, vote.attendee(), answeredQuestions));
+
     }
 
     public void voteDown(NegativeVote vote) {
-        final Attendee attendee = vote.attendee();
+        checkIfAttendeeAlreadyVoted(vote.attendee());
+        apply(new QuestionnaireVotedDownEvent(id, vote.attendee()));
+    }
+
+    private void checkIfAttendeeAlreadyVoted(Attendee attendee) {
         if (attendeeAlreadyVoted(attendee)) {
             throw new QuestionnaireAlreadyVotedException(id, attendee);
         }
-
-        apply(new QuestionnaireVotedDownEvent(id, attendee));
     }
 
     @EventSourcingHandler
-    private void on(QuestionnaireVotedDownEvent event) {
-        votes.add(new NegativeVote(event.attendee(), id));
+    private void on(QuestionnaireVotedEvent event) {
+        voters.add(event.attendee());
     }
 
     private boolean attendeeAlreadyVoted(Attendee attendee) {
-        return votes
-                .stream()
-                .anyMatch(
-                        vote -> vote.attendee().equals(attendee)
-                );
+        return voters.contains(attendee);
     }
 }

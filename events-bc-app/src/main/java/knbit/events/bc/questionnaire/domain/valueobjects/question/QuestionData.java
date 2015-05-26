@@ -25,18 +25,29 @@ public class QuestionData {
         return new QuestionData(title, description, questionType, possibleAnswers);
     }
 
-    private QuestionData(String title, String description, QuestionType questionType, List<String> possibleAnswers) {
+    public static QuestionData of(QuestionTitle title, QuestionDescription description, QuestionType questionType, List<DomainAnswer> possibleAnswers) {
+        return new QuestionData(title, description, questionType, possibleAnswers);
+    }
+
+    private QuestionData(QuestionTitle title, QuestionDescription description, QuestionType questionType, List<DomainAnswer> possibleAnswers) {
         Preconditions.checkNotNull(questionType);
 
         checkPossibleAnswersAccordingToQuestionType(possibleAnswers, questionType);
 
-        this.title = QuestionTitle.of(title);
-        this.description = QuestionDescription.of(description);
+        this.title = title;
+        this.description = description;
         this.questionType = questionType;
-        this.possibleAnswers = toDomainAnswers(possibleAnswers);
+        this.possibleAnswers = possibleAnswers;
     }
 
-    private void checkPossibleAnswersAccordingToQuestionType(List<String> possibleAnswers, QuestionType questionType) {
+    private QuestionData(String title, String description, QuestionType questionType, List<String> possibleAnswers) {
+        this(
+                QuestionTitle.of(title), QuestionDescription.of(description),
+                questionType, toDomainAnswers(possibleAnswers)
+        );
+    }
+
+    private void checkPossibleAnswersAccordingToQuestionType(List<DomainAnswer> possibleAnswers, QuestionType questionType) {
         if (questionType == QuestionType.TEXT) {
             Preconditions.checkArgument(
                     possibleAnswers.isEmpty()
@@ -48,7 +59,7 @@ public class QuestionData {
         }
     }
 
-    private List<DomainAnswer> toDomainAnswers(List<String> possibleAnswers) {
+    private static List<DomainAnswer> toDomainAnswers(List<String> possibleAnswers) {
         return possibleAnswers
                 .stream()
                 .map(DomainAnswer::of)

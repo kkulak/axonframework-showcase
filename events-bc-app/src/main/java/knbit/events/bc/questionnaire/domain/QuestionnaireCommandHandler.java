@@ -44,7 +44,7 @@ public class QuestionnaireCommandHandler {
     public void handle(VoteQuestionnaireDownCommand command) {
         final Questionnaire questionnaire = repository.load(command.questionnaireId());
         questionnaire.voteDown(
-                new NegativeVote(command.attendee(), command.questionnaireId())
+                new NegativeVote(command.attendee())
         );
     }
 }

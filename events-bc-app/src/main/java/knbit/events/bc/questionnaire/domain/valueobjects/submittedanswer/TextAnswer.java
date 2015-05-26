@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.questionnaire.domain.entities.AnswerChecker;
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
@@ -24,8 +25,8 @@ public class TextAnswer extends SubmittedAnswer {
 
     private final String value;
 
-    public TextAnswer(QuestionnaireId questionnaireId, String value) {
-        super(questionnaireId);
+    public TextAnswer(QuestionId questionId, String value) {
+        super(questionId);
 
         Preconditions.checkArgument(
                 !Strings.isNullOrEmpty(value)

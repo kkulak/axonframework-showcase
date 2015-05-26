@@ -1,6 +1,5 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.vote;
 
-import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.questionnaire.domain.valueobjects.Attendee;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,5 @@ import lombok.experimental.Accessors;
 public class Vote {
 
     private final Attendee attendee;
-    private final QuestionnaireId questionnaireId;
 
 }

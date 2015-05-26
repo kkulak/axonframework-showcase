@@ -27,7 +27,7 @@ public class VotingDownTest {
     @Test
     public void shouldProduceQuestionnaireVotedDownEventWhenVoteQuestionnaireDownCommandInvoked() throws Exception {
 
-        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         fixture
@@ -56,7 +56,7 @@ public class VotingDownTest {
     @Test
     public void shouldNotBeAbleToVoteUpMoreThanOnce() throws Exception {
 
-        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         fixture

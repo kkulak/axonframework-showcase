@@ -1,6 +1,7 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer;
 
 import com.google.common.base.Preconditions;
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 
 /**
@@ -8,14 +9,14 @@ import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
  */
 public abstract class SubmittedAnswer implements CheckableAnswer {
 
-    private final QuestionnaireId questionnaireId;
+    private final QuestionId questionId;
 
-    public SubmittedAnswer(QuestionnaireId questionnaireId) {
-        this.questionnaireId = Preconditions.checkNotNull(questionnaireId);
+    public SubmittedAnswer(QuestionId questionId) {
+        this.questionId = Preconditions.checkNotNull(questionId);
     }
 
     @Override
-    public QuestionnaireId questionnaireId() {
-        return questionnaireId;
+    public QuestionId questionId() {
+        return questionId;
     }
 }

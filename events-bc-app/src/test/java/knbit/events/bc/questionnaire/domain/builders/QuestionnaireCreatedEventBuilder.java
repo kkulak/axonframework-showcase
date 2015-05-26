@@ -24,7 +24,7 @@ import java.util.List;
 public class QuestionnaireCreatedEventBuilder {
 
     @Setter
-    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
     @Setter
     private EventId eventId = EventId.of("eventId");
 
@@ -49,6 +49,11 @@ public class QuestionnaireCreatedEventBuilder {
         questions.add(
                 IdentifiedQuestionData.of(questionId, questionData)
         );
+        return this;
+    }
+
+    public QuestionnaireCreatedEventBuilder question(IdentifiedQuestionData questionData) {
+        questions.add(questionData);
         return this;
     }
 

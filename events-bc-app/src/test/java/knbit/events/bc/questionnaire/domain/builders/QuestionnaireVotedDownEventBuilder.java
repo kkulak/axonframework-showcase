@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(staticName = "instance")
 public class QuestionnaireVotedDownEventBuilder {
 
-    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
     public QuestionnaireVotedDownEvent build() {

@@ -3,6 +3,7 @@ package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import knbit.events.bc.questionnaire.domain.entities.AnswerChecker;
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
@@ -25,8 +26,8 @@ public class MultipleChoiceAnswer extends SubmittedAnswer {
 
     private final List<String> submittedAnswers;
 
-    public MultipleChoiceAnswer(QuestionnaireId questionnaireId, List<String> submittedAnswers) {
-        super(questionnaireId);
+    public MultipleChoiceAnswer(QuestionId questionId, List<String> submittedAnswers) {
+        super(questionId);
 
         Preconditions.checkArgument(!submittedAnswers.isEmpty());
         Preconditions.checkArgument(hasNonEmptyAnswers(submittedAnswers));

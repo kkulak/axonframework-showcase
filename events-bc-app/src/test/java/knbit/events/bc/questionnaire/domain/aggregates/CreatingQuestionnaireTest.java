@@ -32,7 +32,7 @@ public class CreatingQuestionnaireTest {
     @Test
     public void shouldCreateQuestionnaireGivenCreateQuestionnaireCommand() throws Exception {
 
-        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
         final EventId eventId = EventId.of("eventId");
 
         final QuestionData singleChoiceQuestion = QuestionData.of(
