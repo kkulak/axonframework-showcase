@@ -1,7 +1,7 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer
 
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer
-import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId
 import spock.lang.Specification
 
 /**
@@ -13,7 +13,7 @@ class TextAnswerTest extends Specification {
 
         given:
         def objectUnderTest = new TextAnswer(
-                QuestionnaireId.of("id"), "this is a fancy answer!"
+                QuestionId.of("id"), "this is a fancy answer!"
         )
 
         expect:

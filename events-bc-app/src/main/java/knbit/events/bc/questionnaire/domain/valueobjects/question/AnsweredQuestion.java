@@ -12,11 +12,20 @@ import java.util.List;
  */
 
 @Accessors(fluent = true)
-@Value(staticConstructor = "of")
+@Value
 public class AnsweredQuestion {
 
     private final IdentifiedQuestionData questionData;
     private final List<DomainAnswer> answers;
+
+    public static AnsweredQuestion of(IdentifiedQuestionData questionData, List<DomainAnswer> answers) {
+        return new AnsweredQuestion(questionData, answers);
+    }
+
+    private AnsweredQuestion(IdentifiedQuestionData questionData, List<DomainAnswer> answers) {
+        this.questionData = questionData;
+        this.answers = answers;
+    }
 
     public static AnsweredQuestion of(QuestionId questionId, QuestionTitle title,
                                       QuestionDescription description, QuestionType questionType,

@@ -24,7 +24,7 @@ import java.util.List;
 public class QuestionnaireCreatedEventBuilder {
 
     @Setter
-    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
+    private QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
     @Setter
     private EventId eventId = EventId.of("eventId");
 

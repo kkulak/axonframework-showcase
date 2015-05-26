@@ -1,7 +1,7 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer
 
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer
-import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId
 import spock.lang.Specification
 
 /**
@@ -13,7 +13,7 @@ class MultipleChoiceAnswerTest extends Specification {
 
         when:
         new MultipleChoiceAnswer(
-                QuestionnaireId.of("id"), []
+                QuestionId.of("id"), []
         )
 
         then:
@@ -25,7 +25,7 @@ class MultipleChoiceAnswerTest extends Specification {
 
         when:
         new MultipleChoiceAnswer(
-                QuestionnaireId.of("id"), ["ONE", "", "THREE"]
+                QuestionId.of("id"), ["ONE", "", "THREE"]
         )
 
         then:
@@ -37,7 +37,7 @@ class MultipleChoiceAnswerTest extends Specification {
 
         when:
         new MultipleChoiceAnswer(
-                QuestionnaireId.of("id"), ["ONE", null, "THREE"]
+                QuestionId.of("id"), ["ONE", null, "THREE"]
         )
 
         then:
@@ -49,7 +49,7 @@ class MultipleChoiceAnswerTest extends Specification {
 
         given:
         def objectUnderTest = new MultipleChoiceAnswer(
-                QuestionnaireId.of("id"), ["ONE", "TWO", "THREE"]
+                QuestionId.of("id"), ["ONE", "TWO", "THREE"]
         )
 
         expect:

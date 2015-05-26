@@ -6,6 +6,7 @@ import knbit.events.bc.questionnaire.domain.valueobjects.commands.CreateQuestion
 import knbit.events.bc.questionnaire.domain.valueobjects.commands.VoteQuestionnaireDownCommand;
 import knbit.events.bc.questionnaire.domain.valueobjects.commands.VoteQuestionnaireUpCommand;
 import knbit.events.bc.questionnaire.domain.valueobjects.vote.NegativeVote;
+import knbit.events.bc.questionnaire.domain.valueobjects.vote.PositiveVote;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,10 @@ public class QuestionnaireCommandHandler {
 
     @CommandHandler
     public void handle(VoteQuestionnaireUpCommand command) {
+        final Questionnaire questionnaire = repository.load(command.questionnaireId());
+        questionnaire.voteUp(
+                new PositiveVote(command.attendee(), command.answers())
+        );
     }
 
     @CommandHandler

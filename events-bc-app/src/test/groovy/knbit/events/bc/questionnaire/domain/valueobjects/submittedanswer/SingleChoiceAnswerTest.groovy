@@ -1,7 +1,7 @@
 package knbit.events.bc.questionnaire.domain.valueobjects.submittedanswer
 
 import knbit.events.bc.questionnaire.domain.valueobjects.question.DomainAnswer
-import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId
+import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId
 import spock.lang.Specification
 
 /**
@@ -13,7 +13,7 @@ class SingleChoiceAnswerTest extends Specification {
 
         given:
         def objectUnderTest = new SingleChoiceAnswer(
-                QuestionnaireId.of("id"), "ANSWER"
+                QuestionId.of("id"), "ANSWER"
         )
 
         expect:
