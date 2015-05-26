@@ -6,7 +6,10 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.questionnaire.domain.entities.Question;
 import knbit.events.bc.questionnaire.domain.entities.QuestionFactory;
+import knbit.events.bc.questionnaire.domain.exceptions.QuestionnaireAlreadyVotedException;
+import knbit.events.bc.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
+import knbit.events.bc.questionnaire.domain.valueobjects.events.QuestionnaireVotedDownEvent;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
@@ -67,6 +70,24 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
     }
 
     public void voteDown(NegativeVote vote) {
+        final Attendee attendee = vote.attendee();
+        if (attendeeAlreadyVoted(attendee)) {
+            throw new QuestionnaireAlreadyVotedException(id, attendee);
+        }
 
+        apply(new QuestionnaireVotedDownEvent(id, attendee));
+    }
+
+    @EventSourcingHandler
+    private void on(QuestionnaireVotedDownEvent event) {
+        votes.add(new NegativeVote(event.attendee(), id));
+    }
+
+    private boolean attendeeAlreadyVoted(Attendee attendee) {
+        return votes
+                .stream()
+                .anyMatch(
+                        vote -> vote.attendee().equals(attendee)
+                );
     }
 }
