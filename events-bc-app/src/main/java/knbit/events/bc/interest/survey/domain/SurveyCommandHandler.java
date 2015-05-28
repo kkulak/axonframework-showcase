@@ -2,6 +2,7 @@ package knbit.events.bc.interest.survey.domain;
 
 import knbit.events.bc.interest.survey.domain.aggreagates.Survey;
 import knbit.events.bc.interest.survey.domain.aggreagates.SurveyFactory;
+import knbit.events.bc.interest.survey.domain.valueobjects.commands.CloseSurveyCommand;
 import knbit.events.bc.interest.survey.domain.valueobjects.commands.CreateSurveyCommand;
 import knbit.events.bc.interest.survey.domain.valueobjects.commands.VoteDownCommand;
 import knbit.events.bc.interest.survey.domain.valueobjects.commands.VoteUpCommand;
@@ -47,5 +48,11 @@ public class SurveyCommandHandler {
         final Survey survey = repository.load(command.surveyId());
 
         survey.voteDown(command.attendee());
+    }
+
+    @CommandHandler
+    public void handle(CloseSurveyCommand command) {
+        final Survey survey = repository.load(command.surveyId());
+        survey.close();
     }
 }

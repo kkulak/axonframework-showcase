@@ -2,13 +2,15 @@ package knbit.events.bc.interest.survey.domain.aggreagates;
 
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.survey.domain.builders.SurveyVotedUpEventBuilder;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
+import knbit.events.bc.interest.survey.domain.builders.SurveyVotedUpEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.VoteDownCommandBuilder;
+import knbit.events.bc.interest.survey.domain.exceptions.CannotVoteOnClosedSurveyException;
 import knbit.events.bc.interest.survey.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.survey.domain.valueobjects.events.SurveyClosedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -117,6 +119,27 @@ public class VotingDownTest {
                 )
                 .expectException(SurveyAlreadyVotedException.class);
 
+    }
+
+    @Test
+    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
+
+        fixture
+                .given(
+                        SurveyCreatedEventBuilder
+                                .instance()
+                                .surveyId(surveyId)
+                                .build(),
+
+                        new SurveyClosedEvent(surveyId)
+                )
+                .when(
+                        VoteDownCommandBuilder
+                                .instance()
+                                .surveyId(surveyId)
+                                .build()
+                )
+                .expectException(CannotVoteOnClosedSurveyException.class);
     }
 
 }

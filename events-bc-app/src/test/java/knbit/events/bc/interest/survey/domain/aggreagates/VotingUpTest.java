@@ -6,11 +6,13 @@ import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedUpEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.VoteUpCommandBuilder;
+import knbit.events.bc.interest.survey.domain.exceptions.CannotVoteOnClosedSurveyException;
 import knbit.events.bc.interest.survey.domain.valueobjects.events.InterestThresholdReachedEvent;
 import knbit.events.bc.interest.survey.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.survey.domain.policies.WithFixedThresholdPolicy;
 import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.survey.domain.valueobjects.events.SurveyClosedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -231,5 +233,26 @@ public class VotingUpTest {
                                 .build()
                 );
 
+    }
+
+    @Test
+    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
+
+        fixture
+                .given(
+                        SurveyCreatedEventBuilder
+                                .instance()
+                                .surveyId(surveyId)
+                                .build(),
+
+                        new SurveyClosedEvent(surveyId)
+                )
+                .when(
+                        VoteUpCommandBuilder
+                                .instance()
+                                .surveyId(surveyId)
+                                .build()
+                )
+                .expectException(CannotVoteOnClosedSurveyException.class);
     }
 }
