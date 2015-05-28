@@ -17,6 +17,6 @@ public class WithFixedThresholdPolicy implements InterestPolicy {
 
     @Override
     public boolean reachedBy(int actualInterest) {
-        return actualInterest >= minimalInterestThreshold;
+        return actualInterest == minimalInterestThreshold;
     }
 }

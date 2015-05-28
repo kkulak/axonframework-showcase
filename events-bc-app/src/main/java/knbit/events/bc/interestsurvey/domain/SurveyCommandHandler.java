@@ -3,6 +3,8 @@ package knbit.events.bc.interestsurvey.domain;
 import knbit.events.bc.interestsurvey.domain.aggreagates.Survey;
 import knbit.events.bc.interestsurvey.domain.aggreagates.SurveyFactory;
 import knbit.events.bc.interestsurvey.domain.valueobjects.commands.CreateSurveyCommand;
+import knbit.events.bc.interestsurvey.domain.valueobjects.commands.VoteDownCommand;
+import knbit.events.bc.interestsurvey.domain.valueobjects.commands.VoteUpCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,19 @@ public class SurveyCommandHandler {
         );
 
         repository.add(survey);
+    }
+
+    @CommandHandler
+    public void handle(VoteUpCommand command) {
+        final Survey survey = repository.load(command.surveyId());
+
+        survey.voteUp(command.attendee());
+    }
+
+    @CommandHandler
+    public void handle(VoteDownCommand command) {
+        final Survey survey = repository.load(command.surveyId());
+
+        survey.voteDown(command.attendee());
     }
 }
