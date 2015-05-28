@@ -5,10 +5,10 @@ import knbit.events.bc.event.domain.aggregates.AbstractEvent;
 import knbit.events.bc.event.infrastructure.config.AxonEventFactory;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
-import knbit.events.bc.interestsurvey.domain.SurveyCommandHandler;
-import knbit.events.bc.interestsurvey.domain.aggreagates.Survey;
-import knbit.events.bc.questionnaire.domain.QuestionnaireCommandHandler;
-import knbit.events.bc.questionnaire.domain.aggregates.Questionnaire;
+import knbit.events.bc.interest.survey.domain.SurveyCommandHandler;
+import knbit.events.bc.interest.survey.domain.aggreagates.Survey;
+import knbit.events.bc.interest.questionnaire.domain.QuestionnaireCommandHandler;
+import knbit.events.bc.interest.questionnaire.domain.aggregates.Questionnaire;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 
