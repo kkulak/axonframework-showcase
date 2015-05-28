@@ -1,7 +1,7 @@
 package knbit.events.bc.interestsurvey.domain.valueobjects.events.surveycreation;
 
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interestsurvey.domain.policies.InterestThresholdPolicy;
+import knbit.events.bc.interestsurvey.domain.policies.InterestPolicy;
 import knbit.events.bc.interestsurvey.domain.valueobjects.SurveyId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,9 +22,9 @@ public class SurveyWithEndingDateCreatedEvent extends SurveyCreatedEvent {
     private final DateTime endingSurveyDate;
 
     public SurveyWithEndingDateCreatedEvent(SurveyId surveyId, EventId eventId,
-                                            InterestThresholdPolicy interestThresholdPolicy,
+                                            InterestPolicy interestPolicy,
                                             DateTime endingSurveyDate) {
-        super(surveyId, eventId, interestThresholdPolicy);
+        super(surveyId, eventId, interestPolicy);
         this.endingSurveyDate = endingSurveyDate;
     }
 }

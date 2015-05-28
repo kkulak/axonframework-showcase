@@ -1,9 +1,8 @@
 package knbit.events.bc.interestsurvey.domain.valueobjects.events.surveycreation;
 
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interestsurvey.domain.policies.InterestThresholdPolicy;
+import knbit.events.bc.interestsurvey.domain.policies.InterestPolicy;
 import knbit.events.bc.interestsurvey.domain.valueobjects.SurveyId;
-import knbit.events.bc.interestsurvey.domain.valueobjects.commands.CreateSurveyCommand;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -20,5 +19,5 @@ public class SurveyCreatedEvent {
 
     private final SurveyId surveyId;
     private final EventId eventId;
-    private final InterestThresholdPolicy interestThresholdPolicy;
+    private final InterestPolicy interestPolicy;
 }

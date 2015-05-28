@@ -1,7 +1,7 @@
 package knbit.events.bc.interestsurvey.domain.valueobjects.events.surveycreation;
 
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interestsurvey.domain.policies.InterestThresholdPolicy;
+import knbit.events.bc.interestsurvey.domain.policies.InterestPolicy;
 import knbit.events.bc.interestsurvey.domain.valueobjects.SurveyId;
 
 /**
@@ -10,7 +10,7 @@ import knbit.events.bc.interestsurvey.domain.valueobjects.SurveyId;
 public class BasicSurveyCreatedEventFactory implements SurveyCreatedEventFactory {
 
     @Override
-    public SurveyCreatedEvent newSurveyCreatedEvent(SurveyId surveyId, EventId eventId, InterestThresholdPolicy thresholdPolicy) {
+    public SurveyCreatedEvent newSurveyCreatedEvent(SurveyId surveyId, EventId eventId, InterestPolicy thresholdPolicy) {
         return new SurveyCreatedEvent(surveyId, eventId, thresholdPolicy);
     }
 }
