@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class Repositories {
 
     @Bean
-    public Repository<Survey> questionnaireRepository(EventStore eventStore, EventBus eventBus) {
+    public Repository<Survey> surveyRepository(EventStore eventStore, EventBus eventBus) {
         EventSourcingRepository<Survey> repository = new EventSourcingRepository<>(
                 Survey.class, eventStore);
 

@@ -1,6 +1,7 @@
 package knbit.events.bc.common.infrastructure.config.axon;
 
 import knbit.events.bc.eventproposal.domain.sagas.EventCreationalSaga;
+import knbit.events.bc.interest.common.domain.sagas.InterestSaga;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.quartz.QuartzEventScheduler;
@@ -25,7 +26,8 @@ public class SagaConfig {
     @Bean
     public AnnotatedSagaManager sagaManager(SagaRepository sagaRepository, SagaFactory sagaFactory, EventBus eventBus) {
         final AnnotatedSagaManager annotatedSagaManager = new AnnotatedSagaManager(
-                sagaRepository, sagaFactory, EventCreationalSaga.class
+                sagaRepository, sagaFactory,
+                EventCreationalSaga.class, InterestSaga.class
         );
         eventBus.subscribe(annotatedSagaManager);
         return annotatedSagaManager;
