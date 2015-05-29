@@ -3,6 +3,7 @@ package knbit.events.bc.interest.common.domain.sagas;
 import knbit.events.bc.event.domain.builders.OneOffEventCreatedBuilder;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.builders.SurveyingTimeExceededEventBuilder;
+import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingInterestStoppedEvent;
 import knbit.events.bc.interest.survey.domain.builders.SurveyWithEndingDateCreatedEventBuilder;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;
@@ -67,6 +68,57 @@ public class InterestSagaTest {
                                 .surveyingEndTime(surveyEndDate)
                                 .build()
                 );
+
+    }
+
+    @Test
+    public void shouldEndWhenSurveyingHasBeenStopped() throws Exception {
+
+        final EventId eventId = EventId.of("eventId");
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        OneOffEventCreatedBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .whenPublishingA(
+                        new SurveyingInterestStoppedEvent(eventId)
+                )
+                .expectActiveSagas(0);
+
+    }
+
+    @Test
+    public void shouldEndWhenTimeoutOccurred() throws Exception {
+
+        final EventId eventId = EventId.of("eventId");
+        final DateTime surveyingEndDate = DateTime.now();
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        OneOffEventCreatedBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        SurveyWithEndingDateCreatedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .endingSurveyDate(surveyingEndDate)
+                                .build()
+                )
+                .whenPublishingA(
+                        SurveyingTimeExceededEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .surveyingEndTime(surveyingEndDate)
+                                .build()
+                )
+                .expectActiveSagas(0);
 
     }
 }

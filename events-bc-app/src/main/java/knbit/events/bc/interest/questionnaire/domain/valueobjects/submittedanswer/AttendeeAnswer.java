@@ -1,4 +1,4 @@
-package knbit.events.bc.interest.questionnaire.domain.valueobjects.vote;
+package knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer;
 
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
@@ -13,12 +13,12 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @Value
-public class PositiveVote {
+public class AttendeeAnswer {
 
     private final Attendee attendee;
     private final List<CheckableAnswer> answers;
 
-    public PositiveVote(Attendee attendee, List<CheckableAnswer> answers) {
+    public AttendeeAnswer(Attendee attendee, List<CheckableAnswer> answers) {
         this.attendee = attendee;
         this.answers = answers;
     }

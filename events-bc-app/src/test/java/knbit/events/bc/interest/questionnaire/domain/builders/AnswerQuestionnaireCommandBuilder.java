@@ -3,7 +3,7 @@ package knbit.events.bc.interest.questionnaire.domain.builders;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.VoteQuestionnaireUpCommand;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.AnswerQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @NoArgsConstructor(staticName = "instance")
-public class VoteQuestionnaireUpCommandBuilder {
+public class AnswerQuestionnaireCommandBuilder {
 
     @Setter
     private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
@@ -37,12 +37,12 @@ public class VoteQuestionnaireUpCommandBuilder {
 
     private final List<CheckableAnswer> answers = Lists.newLinkedList();
 
-    public VoteQuestionnaireUpCommandBuilder answer(CheckableAnswer answer) {
+    public AnswerQuestionnaireCommandBuilder answer(CheckableAnswer answer) {
         answers.add(answer);
         return this;
     }
 
-    public VoteQuestionnaireUpCommand build() {
-        return new VoteQuestionnaireUpCommand(questionnaireId, attendee, answers.isEmpty() ? defaultAnswers : answers);
+    public AnswerQuestionnaireCommand build() {
+        return new AnswerQuestionnaireCommand(questionnaireId, attendee, answers.isEmpty() ? defaultAnswers : answers);
     }
 }

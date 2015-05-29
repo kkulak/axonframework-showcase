@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireVotedUpEvent;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireAnsweredEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Accessors(fluent = true)
 @NoArgsConstructor(staticName = "instance")
-public class QuestionnaireVotedUpEventBuilder {
+public class QuestionnaireAnsweredEventBuilder {
 
     @Setter
     private QuestionnaireId questionnaireId = QuestionnaireId.of("questionId");
@@ -49,13 +49,13 @@ public class QuestionnaireVotedUpEventBuilder {
 
     private final List<AnsweredQuestion> answeredQuestions = Lists.newLinkedList();
 
-    public QuestionnaireVotedUpEventBuilder answeredQuestion(AnsweredQuestion answeredQuestion) {
+    public QuestionnaireAnsweredEventBuilder answeredQuestion(AnsweredQuestion answeredQuestion) {
         answeredQuestions.add(answeredQuestion);
         return this;
     }
 
-    public QuestionnaireVotedUpEvent build() {
-        return new QuestionnaireVotedUpEvent(
+    public QuestionnaireAnsweredEvent build() {
+        return new QuestionnaireAnsweredEvent(
                 questionnaireId, attendee, answeredQuestions.isEmpty() ? defaultAnsweredQuestions : answeredQuestions
         );
     }

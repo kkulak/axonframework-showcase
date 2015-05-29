@@ -1,8 +1,8 @@
-package knbit.events.bc.interest.questionnaire.domain.valueobjects.commands;
+package knbit.events.bc.interest.questionnaire.domain.valueobjects.events;
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -14,9 +14,10 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @Value
-public class VoteQuestionnaireUpCommand {
+public class QuestionnaireAnsweredEvent {
 
     private final QuestionnaireId questionnaireId;
     private final Attendee attendee;
-    private final List<CheckableAnswer> answers;
+    private final List<AnsweredQuestion> answeredQuestions;
+
 }

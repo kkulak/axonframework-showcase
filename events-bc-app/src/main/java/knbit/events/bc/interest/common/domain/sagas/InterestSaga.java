@@ -4,6 +4,7 @@ import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.valueobjects.events.EventCreated;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingInterestStoppedEvent;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
@@ -66,19 +67,25 @@ public class InterestSaga extends AbstractAnnotatedSaga {
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyingTimeExceededEvent event) {
-        cancelSurveyAndQuestionnaire();
+        closeSurveyAndQuestionnaire();
+        end();
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyingInterestStoppedEvent event) {
-        cancelSurveyAndQuestionnaire();
+        closeSurveyAndQuestionnaire();
+        end();
     }
 
-    private void cancelSurveyAndQuestionnaire() {
+    private void closeSurveyAndQuestionnaire() {
         commandGateway.send(
                 new CloseSurveyCommand(surveyId)
         );
-        // todo: implement closing questionnaire
+        if (questionnaireId.isPresent()) {
+            commandGateway.send(
+                    new CloseQuestionnaireCommand(questionnaireId.get())
+            );
+        }
     }
 
     @Autowired

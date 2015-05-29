@@ -2,12 +2,14 @@ package knbit.events.bc.interest.questionnaire.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.interest.questionnaire.domain.builders.QuestionnaireVotedUpEventBuilder;
+import knbit.events.bc.interest.questionnaire.domain.builders.AnswerQuestionnaireCommandBuilder;
+import knbit.events.bc.interest.questionnaire.domain.builders.QuestionnaireAnsweredEventBuilder;
 import knbit.events.bc.interest.questionnaire.domain.builders.QuestionnaireCreatedEventBuilder;
-import knbit.events.bc.interest.questionnaire.domain.builders.VoteQuestionnaireUpCommandBuilder;
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
-import knbit.events.bc.interest.questionnaire.domain.exceptions.QuestionnaireAlreadyVotedException;
+import knbit.events.bc.interest.questionnaire.domain.exceptions.CannotAnswerClosedQuestionnaireException;
+import knbit.events.bc.interest.questionnaire.domain.exceptions.QuestionnaireAlreadyAnsweredException;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireClosedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
@@ -25,7 +27,7 @@ import java.util.Collections;
 /**
  * Created by novy on 26.05.15.
  */
-public class VotingUpTest {
+public class AnsweringQuestionnaireTest {
 
     private FixtureConfiguration<Questionnaire> fixture;
 
@@ -35,9 +37,9 @@ public class VotingUpTest {
     }
 
     @Test
-    public void shouldProduceEventVotedUpWhenVoteUpCommandInvoked() throws Exception {
+    public void shouldProduceQuestionnaireAnsweredEventWhenAnswerQuestionnaireCommandInvoked() throws Exception {
 
-        final QuestionnaireId questionId = QuestionnaireId.of("questionId");
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         final IdentifiedQuestionData textQuestion = IdentifiedQuestionData.of(
@@ -50,22 +52,19 @@ public class VotingUpTest {
                 QuestionData.of("t2", "d2", QuestionType.MULTIPLE_CHOICE, ImmutableList.of("opt1", "opt2", "opt3"))
         );
 
-
-        // todo: refactor
         fixture
                 .given(
                         QuestionnaireCreatedEventBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .question(textQuestion)
                                 .question(multiChoiceQuestion)
                                 .build()
-
                 )
                 .when(
-                        VoteQuestionnaireUpCommandBuilder
+                        AnswerQuestionnaireCommandBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .attendee(attendee)
                                 .answer(
                                         new TextAnswer(QuestionId.of("id1"), "answer")
@@ -79,9 +78,9 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectEvents(
-                        QuestionnaireVotedUpEventBuilder
+                        QuestionnaireAnsweredEventBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .attendee(attendee)
                                 .answeredQuestion(
                                         AnsweredQuestion.of(
@@ -105,9 +104,9 @@ public class VotingUpTest {
     }
 
     @Test
-    public void shouldNotBeAbleToVoteDownMoreThanOnce() throws Exception {
+    public void shouldNotBeAbleToAnswerMoreThanOnce() throws Exception {
 
-        final QuestionnaireId questionId = QuestionnaireId.of("questionId");
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         final IdentifiedQuestionData textQuestion = IdentifiedQuestionData.of(
@@ -119,13 +118,13 @@ public class VotingUpTest {
                 .given(
                         QuestionnaireCreatedEventBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .question(textQuestion)
                                 .build(),
 
-                        QuestionnaireVotedUpEventBuilder
+                        QuestionnaireAnsweredEventBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .attendee(attendee)
                                 .answeredQuestion(
                                         AnsweredQuestion.of(
@@ -136,16 +135,51 @@ public class VotingUpTest {
                                 .build()
                 )
                 .when(
-                        VoteQuestionnaireUpCommandBuilder
+                        AnswerQuestionnaireCommandBuilder
                                 .instance()
-                                .questionnaireId(questionId)
+                                .questionnaireId(questionnaireId)
                                 .attendee(attendee)
                                 .answer(
                                         new TextAnswer(QuestionId.of("id1"), "another answer")
                                 )
                                 .build()
                 )
-                .expectException(QuestionnaireAlreadyVotedException.class);
+                .expectException(QuestionnaireAlreadyAnsweredException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToAnswerClosedQuestionnaire() throws Exception {
+
+        final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
+        final Attendee attendee = Attendee.of("firstname", "lastname");
+
+        final IdentifiedQuestionData textQuestion = IdentifiedQuestionData.of(
+                QuestionId.of("id1"),
+                QuestionData.of("t1", "d1", QuestionType.TEXT, Collections.emptyList())
+        );
+
+        fixture
+                .given(
+                        QuestionnaireCreatedEventBuilder
+                                .instance()
+                                .questionnaireId(questionnaireId)
+                                .question(textQuestion)
+                                .build(),
+
+                        new QuestionnaireClosedEvent(questionnaireId)
+                )
+                .when(
+                        AnswerQuestionnaireCommandBuilder
+                                .instance()
+                                .questionnaireId(questionnaireId)
+                                .attendee(attendee)
+                                .answer(
+                                        new TextAnswer(QuestionId.of("id1"), "another answer")
+                                )
+                                .build()
+                )
+                .expectException(CannotAnswerClosedQuestionnaireException.class);
 
     }
 }

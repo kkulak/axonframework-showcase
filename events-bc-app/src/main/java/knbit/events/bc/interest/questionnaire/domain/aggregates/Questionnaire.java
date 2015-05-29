@@ -6,22 +6,22 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.questionnaire.domain.entities.Question;
-import knbit.events.bc.interest.questionnaire.domain.exceptions.QuestionnaireAlreadyVotedException;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireVotedDownEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireVotedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireVotedUpEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.vote.NegativeVote;
 import knbit.events.bc.interest.questionnaire.domain.entities.QuestionFactory;
+import knbit.events.bc.interest.questionnaire.domain.exceptions.CannotAnswerClosedQuestionnaireException;
+import knbit.events.bc.interest.questionnaire.domain.exceptions.QuestionnaireAlreadyAnsweredException;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireAnsweredEvent;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireClosedEvent;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.vote.PositiveVote;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
@@ -33,11 +33,13 @@ import java.util.stream.Collectors;
  */
 public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId> {
 
+    private State state;
+
     private EventId eventId;
-    private Collection<Attendee> voters = Sets.newHashSet();
+    private Collection<Attendee> interviewees = Sets.newHashSet();
     private Collection<Question> questions = Lists.newLinkedList();
 
-    public Questionnaire() {
+    private Questionnaire() {
     }
 
     public Questionnaire(QuestionnaireId questionnaireId, EventId eventId, List<QuestionData> questions) {
@@ -68,13 +70,21 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
                         .map(QuestionFactory::newQuestion)
                         .collect(Collectors.toList())
         );
+
+        state = State.PENDING;
+    }
+
+    @EventSourcingHandler
+    private void on(QuestionnaireClosedEvent event) {
+        state = State.CLOSED;
     }
 
 
-    public void voteUp(PositiveVote vote) {
-        checkIfAttendeeAlreadyVoted(vote.attendee());
+    public void answerQuestion(AttendeeAnswer attendeeAnswer) {
+        rejectOnClosed();
+        checkIfAttendeeAlreadyAnswered(attendeeAnswer.attendee());
 
-        final List<CheckableAnswer> answers = vote.answers();
+        final List<CheckableAnswer> answers = attendeeAnswer.answers();
         Preconditions.checkArgument(answers.size() == questions.size());
 
         final List<AnsweredQuestion> answeredQuestions = StreamUtils.zip(
@@ -85,27 +95,29 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
 
         ).collect(Collectors.toList());
 
-        apply(new QuestionnaireVotedUpEvent(id, vote.attendee(), answeredQuestions));
+        apply(new QuestionnaireAnsweredEvent(id, attendeeAnswer.attendee(), answeredQuestions));
 
     }
 
-    public void voteDown(NegativeVote vote) {
-        checkIfAttendeeAlreadyVoted(vote.attendee());
-        apply(new QuestionnaireVotedDownEvent(id, vote.attendee()));
+    private void checkIfAttendeeAlreadyAnswered(Attendee attendee) {
+        if (interviewees.contains(attendee)) {
+            throw new QuestionnaireAlreadyAnsweredException(id, attendee);
+        }
     }
 
-    private void checkIfAttendeeAlreadyVoted(Attendee attendee) {
-        if (attendeeAlreadyVoted(attendee)) {
-            throw new QuestionnaireAlreadyVotedException(id, attendee);
+    private void rejectOnClosed() {
+        if (state == State.CLOSED) {
+            throw new CannotAnswerClosedQuestionnaireException(id);
         }
     }
 
     @EventSourcingHandler
-    private void on(QuestionnaireVotedEvent event) {
-        voters.add(event.attendee());
+    private void on(QuestionnaireAnsweredEvent event) {
+        interviewees.add(event.attendee());
     }
 
-    private boolean attendeeAlreadyVoted(Attendee attendee) {
-        return voters.contains(attendee);
+    public void close() {
+        Preconditions.checkState(state == State.PENDING, "Questionnaire already closed!");
+        apply(new QuestionnaireClosedEvent(id));
     }
 }
