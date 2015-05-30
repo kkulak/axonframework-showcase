@@ -2,10 +2,10 @@ package knbit.events.bc.event.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.readmodel.EventStatus;
-import knbit.events.bc.event.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.event.domain.enums.EventState;
-import knbit.events.bc.event.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.common.domain.enums.EventType;
 import lombok.*;
 import lombok.experimental.Accessors;
