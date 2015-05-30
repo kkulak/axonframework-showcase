@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects.commands;
 
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -13,6 +13,6 @@ import lombok.experimental.Accessors;
 @Value
 public class VoteDownCommand {
 
-    private final SurveyId surveyId;
+    private final EventId eventId;
     private final Attendee attendee;
 }

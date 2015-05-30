@@ -6,13 +6,8 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
-import knbit.events.bc.interest.domain.enums.VoteType;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.valueobjects.Vote;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingStartedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
@@ -26,8 +21,8 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     private EventDetails eventDetails;
 
-    private Collection<Vote> votes = Sets.newHashSet();
-    private int actualInterest;
+    private Collection<Attendee> positiveVoters = Sets.newHashSet();
+    private Collection<Attendee> negativeVoters = Sets.newHashSet();
     private InterestPolicy interestPolicy;
 
     private State state;
@@ -48,41 +43,26 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         this.id = event.eventId();
         this.eventDetails = event.eventDetails();
 
-        this.actualInterest = 0;
         this.state = State.PENDING;
-    }
-
-    @EventSourcingHandler
-    private void on(SurveyingStartedEvent event) {
-        this.interestPolicy = event.interestPolicy();
     }
 
     public void voteUp(Attendee attendee) {
         rejectOnClosed();
         checkIfAttendeeAlreadyVoted(attendee);
 
-        if (interestPolicy.reachedBy(actualInterest + 1)) {
-            apply(
-                    InterestThresholdReachedEvent.of(id)
-            );
+        if (interestPolicy.reachedBy(positiveVoters.size() + 1)) {
+            apply(InterestThresholdReachedEvent.of(id));
         }
 
-        apply(
-                SurveyVotedEvent.of(
-                        id, Vote.of(attendee, VoteType.POSITIVE)
-                )
-        );
+        apply(SurveyVotedUpEvent.of(id, attendee));
 
     }
 
     public void voteDown(Attendee attendee) {
         rejectOnClosed();
         checkIfAttendeeAlreadyVoted(attendee);
-//
-//        apply(
-//                new SurveyVotedDownEvent(id, attendee)
-//        );
 
+        apply(SurveyVotedDownEvent.of(id, attendee));
     }
 
     public void close() {
@@ -91,9 +71,18 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     @EventSourcingHandler
-    private void on(SurveyVotedEvent event) {
-        votes.add(event.vote());
-        actualInterest++;
+    private void on(SurveyingStartedEvent event) {
+        this.interestPolicy = event.interestPolicy();
+    }
+
+    @EventSourcingHandler
+    private void on(SurveyVotedUpEvent event) {
+        positiveVoters.add(event.attendee());
+    }
+
+    @EventSourcingHandler
+    private void on(SurveyVotedDownEvent event) {
+        negativeVoters.add(event.attendee());
     }
 
     private void checkIfAttendeeAlreadyVoted(Attendee attendee) {
@@ -103,10 +92,18 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     private boolean attendeeAlreadyVoted(Attendee attendee) {
-        return votes
-                .stream()
-                .anyMatch(vote -> vote.attendee().equals(attendee));
+        return votedUp(attendee) || votedDown(attendee);
     }
+
+    private boolean votedUp(Attendee attendee) {
+        return positiveVoters.contains(attendee);
+    }
+
+    private boolean votedDown(Attendee attendee) {
+        return negativeVoters.contains(attendee);
+    }
+
+
 
 
     private void rejectOnClosed() {

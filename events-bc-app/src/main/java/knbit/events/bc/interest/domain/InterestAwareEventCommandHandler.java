@@ -2,6 +2,7 @@ package knbit.events.bc.interest.domain;
 
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.VoteDownCommand;
 import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
@@ -48,12 +49,12 @@ public class InterestAwareEventCommandHandler {
         interestAwareEvent.voteUp(command.attendee());
     }
 
-//    @CommandHandler
-//    public void handle(VoteDownCommand command) {
-//        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
-//
-//        interestAwareEvent.voteDown(command.attendee());
-//    }
+    @CommandHandler
+    public void handle(VoteDownCommand command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+
+        interestAwareEvent.voteDown(command.attendee());
+    }
 //
 //    @CommandHandler
 //    public void handle(CloseSurveyCommand command) {

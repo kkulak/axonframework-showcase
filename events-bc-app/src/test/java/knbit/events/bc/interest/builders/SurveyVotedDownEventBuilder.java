@@ -1,9 +1,7 @@
 package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.enums.VoteType;
-import knbit.events.bc.interest.domain.valueobjects.Vote;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,16 +14,13 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "instance")
-public class SurveyVotedEventBuilder {
+public class SurveyVotedDownEventBuilder {
 
     private EventId eventId = EventId.of("eventId");
-    private Vote vote = Vote.of(
-            Attendee.of("firstname", "lastname"), VoteType.POSITIVE
-    );
+    private Attendee attendee = Attendee.of("firstname", "lastname");
 
-
-    public SurveyVotedEvent build() {
-        return SurveyVotedEvent.of(eventId, vote);
+    public SurveyVotedDownEvent build() {
+        return SurveyVotedDownEvent.of(eventId, attendee);
     }
 
 }

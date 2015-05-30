@@ -1,6 +1,6 @@
-package knbit.events.bc.interest.survey.domain.builders;
+package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.VoteDownCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;
@@ -16,11 +16,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(staticName = "instance")
 public class VoteDownCommandBuilder {
 
-    private SurveyId surveyId = SurveyId.of("surveyId");
+    private EventId eventId = EventId.of("eventId");
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
     public VoteDownCommand build() {
-        return new VoteDownCommand(surveyId, attendee);
+        return new VoteDownCommand(eventId, attendee);
     }
 
 }

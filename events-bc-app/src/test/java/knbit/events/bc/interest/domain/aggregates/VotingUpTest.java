@@ -7,15 +7,13 @@ import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.interest.builders.SurveyVotedEventBuilder;
+import knbit.events.bc.interest.builders.SurveyVotedUpEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
-import knbit.events.bc.interest.domain.enums.VoteType;
+import knbit.events.bc.interest.builders.VoteUpCommandBuilder;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.valueobjects.Vote;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.survey.domain.builders.VoteUpCommandBuilder;
 import knbit.events.bc.interest.survey.domain.policies.WithFixedThresholdPolicy;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -43,7 +41,7 @@ public class VotingUpTest {
     }
 
     @Test
-    public void shouldProduceSurveyVotedEventWithCorrespondingTypeGivenVoteUpCommand() throws Exception {
+    public void shouldProduceSurveyVotedUpEventGivenVoteUpCommand() throws Exception {
 
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
@@ -67,14 +65,14 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectEvents(
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(attendee, VoteType.POSITIVE)
-                                )
+                                .attendee(attendee)
                                 .build()
+
                 );
+
 
     }
 
@@ -94,12 +92,10 @@ public class VotingUpTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(attendee, VoteType.POSITIVE)
-                                )
+                                .attendee(attendee)
                                 .build()
                 )
                 .when(
@@ -129,12 +125,10 @@ public class VotingUpTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(attendee, VoteType.NEGATIVE)
-                                )
+                                .attendee(attendee)
                                 .build()
                 )
                 .when(
@@ -165,25 +159,19 @@ public class VotingUpTest {
                                 .interestPolicy(new WithFixedThresholdPolicy(interestThreshold))
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(
-                                                Attendee.of("firstname1", "lastname1"),
-                                                VoteType.POSITIVE
-                                        )
+                                .attendee(
+                                        Attendee.of("firstname1", "lastname1")
                                 )
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(
-                                                Attendee.of("firstname2", "lastname2"),
-                                                VoteType.POSITIVE
-                                        )
+                                .attendee(
+                                        Attendee.of("firstname2", "lastname2")
                                 )
                                 .build()
                 )
@@ -193,21 +181,17 @@ public class VotingUpTest {
                                 .eventId(eventId)
                                 .attendee(
                                         Attendee.of("firstname3", "lastname3")
-
                                 )
                                 .build()
                 )
                 .expectEvents(
                         InterestThresholdReachedEvent.of(eventId),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(
-                                                Attendee.of("firstname3", "lastname3"),
-                                                VoteType.POSITIVE
-                                        )
+                                .attendee(
+                                        Attendee.of("firstname3", "lastname3")
                                 )
                                 .build()
                 );
@@ -229,14 +213,11 @@ public class VotingUpTest {
                                 .interestPolicy(new WithFixedThresholdPolicy(1))
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
                                 .eventId(eventId)
-                                .vote(
-                                        Vote.of(
-                                                Attendee.of("firstname1", "lastname1"),
-                                                VoteType.POSITIVE
-                                        )
+                                .attendee(
+                                        Attendee.of("firstname1", "lastname1")
                                 )
                                 .build(),
 
@@ -253,13 +234,10 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectEvents(
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
-                                .vote(
-                                        Vote.of(
-                                                Attendee.of("firstname2", "lastname2"),
-                                                VoteType.POSITIVE
-                                        )
+                                .attendee(
+                                        Attendee.of("firstname2", "lastname2")
                                 )
                                 .build()
                 );

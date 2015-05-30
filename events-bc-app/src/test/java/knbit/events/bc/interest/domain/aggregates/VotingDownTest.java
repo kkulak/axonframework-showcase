@@ -1,16 +1,19 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.common.domain.enums.EventType;
+import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.builders.SurveyVotedEventBuilder;
-import knbit.events.bc.interest.domain.exceptions.CannotVoteOnClosedSurveyException;
+import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.interest.builders.SurveyVotedDownEventBuilder;
+import knbit.events.bc.interest.builders.SurveyVotedUpEventBuilder;
+import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
+import knbit.events.bc.interest.builders.VoteDownCommandBuilder;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyClosedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
-import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
-import knbit.events.bc.interest.survey.domain.builders.VoteDownCommandBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,74 +24,86 @@ import org.junit.Test;
 public class VotingDownTest {
 
     private FixtureConfiguration<InterestAwareEvent> fixture;
-    private SurveyId surveyId;
     private EventId eventId;
+    private EventDetails eventDetails;
 
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
-        surveyId = SurveyId.of("surveyId");
         eventId = EventId.of("eventId");
+        eventDetails = EventDetails.of(
+                Name.of("name"),
+                Description.of("desc"),
+                EventType.WORKSHOP,
+                EventFrequency.ONE_OFF
+        );
     }
 
     @Test
-    public void shouldProduceSurveyVotedDownEventGivenVoteDownCommand() throws Exception {
+    public void shouldProduceSurveyVotedDwonEventGivenVoteDownCommand() throws Exception {
 
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         fixture
                 .given(
-                        SurveyCreatedEventBuilder
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        ),
+
+                        SurveyingStartedEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
                                 .eventId(eventId)
                                 .build()
+
                 )
                 .when(
                         VoteDownCommandBuilder
                                 .instance()
-                                .surveyId(surveyId)
+                                .eventId(eventId)
                                 .attendee(attendee)
                                 .build()
                 )
                 .expectEvents(
                         SurveyVotedDownEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
+                                .eventId(eventId)
                                 .attendee(attendee)
                                 .build()
                 );
 
+
     }
 
     @Test
-    public void shouldNotBeAbleToVoteUpTwice() throws Exception {
+    public void shouldNotBeAbleToVoteDownTwice() throws Exception {
 
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
         fixture
                 .given(
-                        SurveyCreatedEventBuilder
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        ),
+
+                        SurveyingStartedEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
                                 .eventId(eventId)
                                 .build(),
 
                         SurveyVotedDownEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
+                                .eventId(eventId)
                                 .attendee(attendee)
                                 .build()
                 )
                 .when(
                         VoteDownCommandBuilder
                                 .instance()
-                                .surveyId(surveyId)
+                                .eventId(eventId)
                                 .attendee(attendee)
                                 .build()
                 )
                 .expectException(SurveyAlreadyVotedException.class);
-
     }
 
     @Test
@@ -98,46 +113,51 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        SurveyCreatedEventBuilder
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        ),
+
+                        SurveyingStartedEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyVotedEventBuilder
+                        SurveyVotedUpEventBuilder
                                 .instance()
+                                .eventId(eventId)
+                                .attendee(attendee)
                                 .build()
                 )
                 .when(
                         VoteDownCommandBuilder
                                 .instance()
-                                .surveyId(surveyId)
+                                .eventId(eventId)
                                 .attendee(attendee)
                                 .build()
                 )
                 .expectException(SurveyAlreadyVotedException.class);
 
     }
-
-    @Test
-    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
-
-        fixture
-                .given(
-                        SurveyCreatedEventBuilder
-                                .instance()
-                                .surveyId(surveyId)
-                                .build(),
-
-                        new SurveyClosedEvent(surveyId)
-                )
-                .when(
-                        VoteDownCommandBuilder
-                                .instance()
-                                .surveyId(surveyId)
-                                .build()
-                )
-                .expectException(CannotVoteOnClosedSurveyException.class);
-    }
+//
+//    @Test
+//    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
+//
+//        fixture
+//                .given(
+//                        SurveyCreatedEventBuilder
+//                                .instance()
+//                                .surveyId(surveyId)
+//                                .build(),
+//
+//                        new SurveyClosedEvent(surveyId)
+//                )
+//                .when(
+//                        VoteDownCommandBuilder
+//                                .instance()
+//                                .surveyId(surveyId)
+//                                .build()
+//                )
+//                .expectException(CannotVoteOnClosedSurveyException.class);
+//    }
 
 }

@@ -1,7 +1,7 @@
-package knbit.events.bc.interest.survey.domain.builders;
+package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,13 +14,14 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "instance")
-public class VoteUpCommandBuilder {
+public class SurveyVotedUpEventBuilder {
 
     private EventId eventId = EventId.of("eventId");
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
-    public VoteUpCommand build() {
-        return new VoteUpCommand(eventId, attendee);
+
+    public SurveyVotedUpEvent build() {
+        return SurveyVotedUpEvent.of(eventId, attendee);
     }
 
 }
