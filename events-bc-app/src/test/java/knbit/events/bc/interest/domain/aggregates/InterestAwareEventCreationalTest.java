@@ -40,10 +40,10 @@ public class InterestAwareEventCreationalTest {
         fixture
                 .givenNoPriorActivity()
                 .when(
-                        new CreateInterestAwareEventCommand(eventId, eventDetails)
+                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
                 )
                 .expectEvents(
-                        new InterestAwareEventCreated(eventId, eventDetails)
+                        InterestAwareEventCreated.of(eventId, eventDetails)
                 );
 
     }

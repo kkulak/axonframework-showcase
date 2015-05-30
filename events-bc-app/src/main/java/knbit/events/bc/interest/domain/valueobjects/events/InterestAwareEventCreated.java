@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
  */
 
 @Accessors(fluent = true)
-@Value
+@Value(staticConstructor = "of")
 public class InterestAwareEventCreated {
 
     private final EventId eventId;

@@ -43,21 +43,21 @@ public class InterestAwareEventCommandHandler {
 
     @CommandHandler
     public void handle(VoteUpCommand command) {
-        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
 
         interestAwareEvent.voteUp(command.attendee());
     }
 
-    @CommandHandler
-    public void handle(VoteDownCommand command) {
-        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
-
-        interestAwareEvent.voteDown(command.attendee());
-    }
-
-    @CommandHandler
-    public void handle(CloseSurveyCommand command) {
-        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
-        interestAwareEvent.close();
-    }
+//    @CommandHandler
+//    public void handle(VoteDownCommand command) {
+//        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
+//
+//        interestAwareEvent.voteDown(command.attendee());
+//    }
+//
+//    @CommandHandler
+//    public void handle(CloseSurveyCommand command) {
+//        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
+//        interestAwareEvent.close();
+//    }
 }

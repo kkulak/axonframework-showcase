@@ -1,7 +1,7 @@
-package knbit.events.bc.interest.domain.valueobjects.commands;
+package knbit.events.bc.interest.domain.valueobjects.events;
 
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -11,9 +11,9 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value(staticConstructor = "of")
-public class CreateInterestAwareEventCommand {
+public class SurveyingStartedEvent {
 
     private final EventId eventId;
-    private final EventDetails eventDetails;
+    private final InterestPolicy interestPolicy;
 
 }

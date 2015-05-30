@@ -1,12 +1,11 @@
-package knbit.events.bc.interest.survey.domain.aggreagates;
+package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
-import knbit.events.bc.interest.survey.domain.builders.SurveyVotedUpEventBuilder;
+import knbit.events.bc.interest.builders.SurveyVotedEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.VoteDownCommandBuilder;
 import knbit.events.bc.interest.domain.exceptions.CannotVoteOnClosedSurveyException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
@@ -105,10 +104,8 @@ public class VotingDownTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyVotedUpEventBuilder
+                        SurveyVotedEventBuilder
                                 .instance()
-                                .surveyId(surveyId)
-                                .attendee(attendee)
                                 .build()
                 )
                 .when(

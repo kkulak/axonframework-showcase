@@ -1,6 +1,7 @@
 package knbit.events.bc.interest.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
+import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 
@@ -10,9 +11,9 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 public class SurveyAlreadyVotedException extends DomainException {
 
     private static final String ERROR_MESSAGE_TEMPLATE =
-            "Survey with id %s already voted by attendee %s";
+            "Survey for event with id %s already voted by attendee %s";
 
-    public SurveyAlreadyVotedException(SurveyId surveyId, Attendee attendee) {
-        super(String.format(ERROR_MESSAGE_TEMPLATE, surveyId, attendee));
+    public SurveyAlreadyVotedException(EventId eventId, Attendee attendee) {
+        super(String.format(ERROR_MESSAGE_TEMPLATE, eventId, attendee));
     }
 }

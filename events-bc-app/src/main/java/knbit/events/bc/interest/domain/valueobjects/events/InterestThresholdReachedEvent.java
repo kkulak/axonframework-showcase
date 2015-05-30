@@ -1,5 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects.events;
 
+import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -9,8 +10,8 @@ import lombok.experimental.Accessors;
  */
 
 @Accessors(fluent = true)
-@Value
+@Value(staticConstructor = "of")
 public class InterestThresholdReachedEvent {
 
-    private final SurveyId surveyId;
+    private final EventId eventId;
 }

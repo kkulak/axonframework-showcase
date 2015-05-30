@@ -6,11 +6,15 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
+import knbit.events.bc.interest.domain.enums.VoteType;
+import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
+import knbit.events.bc.interest.domain.valueobjects.Vote;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyClosedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyingStartedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
@@ -22,12 +26,11 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     private EventDetails eventDetails;
 
-    private Collection<Attendee> voters = Sets.newHashSet();
+    private Collection<Vote> votes = Sets.newHashSet();
     private int actualInterest;
+    private InterestPolicy interestPolicy;
 
     private State state;
-
-//    private InterestPolicy interestPolicy;
 
     private InterestAwareEvent() {
     }
@@ -35,7 +38,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     public InterestAwareEvent(EventId eventId, EventDetails eventDetails) {
 
         apply(
-                new InterestAwareEventCreated(eventId, eventDetails)
+                InterestAwareEventCreated.of(eventId, eventDetails)
         );
     }
 
@@ -49,19 +52,26 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         this.state = State.PENDING;
     }
 
+    @EventSourcingHandler
+    private void on(SurveyingStartedEvent event) {
+        this.interestPolicy = event.interestPolicy();
+    }
+
     public void voteUp(Attendee attendee) {
         rejectOnClosed();
         checkIfAttendeeAlreadyVoted(attendee);
 
-//        if (interestPolicy.reachedBy(actualInterest + 1)) {
-//            apply(
-//                    new InterestThresholdReachedEvent(id)
-//            );
-//        }
-//
-//        apply(
-//                new SurveyVotedUpEvent(id, attendee)
-//        );
+        if (interestPolicy.reachedBy(actualInterest + 1)) {
+            apply(
+                    InterestThresholdReachedEvent.of(id)
+            );
+        }
+
+        apply(
+                SurveyVotedEvent.of(
+                        id, Vote.of(attendee, VoteType.POSITIVE)
+                )
+        );
 
     }
 
@@ -81,31 +91,28 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     @EventSourcingHandler
-    private void on(SurveyVotedUpEvent event) {
-        voters.add(event.attendee());
+    private void on(SurveyVotedEvent event) {
+        votes.add(event.vote());
         actualInterest++;
     }
 
-    @EventSourcingHandler
-    private void on(SurveyVotedDownEvent event) {
-        voters.add(event.attendee());
-    }
-
-    @EventSourcingHandler
-    private void on(SurveyClosedEvent event) {
-        this.state = State.CLOSED;
-    }
-
     private void checkIfAttendeeAlreadyVoted(Attendee attendee) {
-        if (voters.contains(attendee)) {
-//            throw new SurveyAlreadyVotedException(id, attendee);
+        if (attendeeAlreadyVoted(attendee)) {
+            throw new SurveyAlreadyVotedException(id, attendee);
         }
     }
+
+    private boolean attendeeAlreadyVoted(Attendee attendee) {
+        return votes
+                .stream()
+                .anyMatch(vote -> vote.attendee().equals(attendee));
+    }
+
 
     private void rejectOnClosed() {
-        if (state == State.CLOSED) {
+//        if (state == State.CLOSED) {
 //            throw new CannotVoteOnClosedSurveyException(id);
-        }
+//        }
 
     }
 }
