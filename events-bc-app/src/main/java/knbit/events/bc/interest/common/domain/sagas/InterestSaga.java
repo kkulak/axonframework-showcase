@@ -4,10 +4,7 @@ import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreat
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingInterestStoppedEvent;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.domain.valueobjects.commands.CloseSurveyCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyCreatedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyWithEndingDateCreatedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
@@ -29,7 +26,6 @@ public class InterestSaga extends AbstractAnnotatedSaga {
     private static final String EVENT_ID_PROPERTY = "eventId";
 
     private EventId eventId;
-    private SurveyId surveyId;
     private Optional<QuestionnaireId> questionnaireId = Optional.empty();
 
     private transient EventScheduler eventScheduler;
@@ -42,15 +38,15 @@ public class InterestSaga extends AbstractAnnotatedSaga {
         eventId = event.eventId();
     }
 
-    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(SurveyCreatedEvent event) {
-        surveyId = event.surveyId();
+//    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
+//    public void on(SurveyCreatedEvent event) {
+//        surveyId = event.surveyId();
+//
+//    }
 
-    }
-
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(SurveyWithEndingDateCreatedEvent event) {
-        surveyId = event.surveyId();
+    public void on(SurveyingInterestWithEndingDateStartedEvent event) {
+//        surveyId = event.surveyId();
 
         scheduleToken = eventScheduler.schedule(
                 event.endingSurveyDate(),
@@ -78,9 +74,9 @@ public class InterestSaga extends AbstractAnnotatedSaga {
     }
 
     private void closeSurveyAndQuestionnaire() {
-        commandGateway.send(
-                new CloseSurveyCommand(surveyId)
-        );
+//        commandGateway.send(
+//                new EndSurveyingInterest(surveyId)
+//        );
         if (questionnaireId.isPresent()) {
             commandGateway.send(
                     new CloseQuestionnaireCommand(questionnaireId.get())

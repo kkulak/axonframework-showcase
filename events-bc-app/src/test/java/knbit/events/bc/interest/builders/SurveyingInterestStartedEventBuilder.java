@@ -1,8 +1,7 @@
-package knbit.events.bc.interest.survey.domain.builders;
+package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyCreatedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;
 import lombok.NoArgsConstructor;
@@ -15,13 +14,12 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "instance")
-public class SurveyCreatedEventBuilder {
+public class SurveyingInterestStartedEventBuilder {
 
-    private SurveyId surveyId = SurveyId.of("surveyId");
     private EventId eventId = EventId.of("eventId");
     private InterestPolicy thresholdPolicy = new InterestThresholdTurnedOffPolicy();
 
-    public SurveyCreatedEvent build() {
-        return new SurveyCreatedEvent(surveyId, eventId, thresholdPolicy);
+    public SurveyingInterestStartedEvent build() {
+        return SurveyingInterestStartedEvent.of(eventId, thresholdPolicy);
     }
 }

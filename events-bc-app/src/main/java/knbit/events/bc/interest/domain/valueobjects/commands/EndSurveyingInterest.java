@@ -1,7 +1,6 @@
-package knbit.events.bc.interest.domain.valueobjects.events;
+package knbit.events.bc.interest.domain.valueobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -10,8 +9,8 @@ import lombok.experimental.Accessors;
  */
 
 @Accessors(fluent = true)
-@Value(staticConstructor = "of")
-public class SurveyClosedEvent {
+@Value
+public class EndSurveyingInterest {
 
     private final EventId eventId;
 }

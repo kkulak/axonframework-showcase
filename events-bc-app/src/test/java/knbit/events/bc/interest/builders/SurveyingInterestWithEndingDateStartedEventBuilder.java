@@ -1,8 +1,7 @@
-package knbit.events.bc.interest.survey.domain.builders;
+package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyWithEndingDateCreatedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEvent;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;
 import lombok.NoArgsConstructor;
@@ -16,15 +15,14 @@ import org.joda.time.DateTime;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "instance")
-public class SurveyWithEndingDateCreatedEventBuilder {
+public class SurveyingInterestWithEndingDateStartedEventBuilder {
 
-    private SurveyId surveyId = SurveyId.of("surveyId");
     private EventId eventId = EventId.of("eventId");
     private InterestPolicy thresholdPolicy = new InterestThresholdTurnedOffPolicy();
     private DateTime endingSurveyDate = DateTime.now();
 
-    public SurveyWithEndingDateCreatedEvent build() {
-        return new SurveyWithEndingDateCreatedEvent(surveyId, eventId, thresholdPolicy, endingSurveyDate);
+    public SurveyingInterestWithEndingDateStartedEvent build() {
+        return SurveyingInterestWithEndingDateStartedEvent.of(eventId, thresholdPolicy, endingSurveyDate);
     }
 
 }

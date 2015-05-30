@@ -1,9 +1,8 @@
-package knbit.events.bc.interest.survey.domain.builders;
+package knbit.events.bc.interest.builders;
 
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateSurveyCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -18,15 +17,14 @@ import java.util.Optional;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "instance")
-public class CreateSurveyCommandBuilder {
+public class StartSurveyingInterestCommandBuilder {
 
-    private SurveyId surveyId = SurveyId.of("surveyId");
     private EventId eventId = EventId.of("eventId");
     private Optional<Integer> minimalInterestThreshold = Optional.empty();
     private Optional<DateTime> endingSurveyDate = Optional.empty();
 
-    public CreateSurveyCommand build() {
-        return new CreateSurveyCommand(surveyId, eventId, minimalInterestThreshold, endingSurveyDate);
+    public StartSurveyingInterestCommand build() {
+        return StartSurveyingInterestCommand.of(eventId, minimalInterestThreshold, endingSurveyDate);
     }
 
 }

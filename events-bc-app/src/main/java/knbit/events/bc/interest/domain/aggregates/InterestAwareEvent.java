@@ -5,9 +5,13 @@ import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.valueobjects.events.*;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
 import knbit.events.bc.interest.enums.InterestAwareEventState;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
@@ -66,8 +70,10 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         apply(SurveyVotedDownEvent.of(id, attendee));
     }
 
-    public void startSurveying() {
-//        todo: implement
+    public void startSurveying(InterestPolicy interestPolicy, SurveyingInterestStartedEventFactory factory) {
+        apply(
+                factory.newSurveyingInterestStartedEvent(id, interestPolicy)
+        );
     }
 
     public void endSurveying() {
@@ -76,7 +82,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     @EventSourcingHandler
-    private void on(SurveyingStartedEvent event) {
+    private void on(SurveyingInterestStartedEvent event) {
         this.interestPolicy = event.interestPolicy();
     }
 
@@ -107,8 +113,6 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     private boolean votedDown(Attendee attendee) {
         return negativeVoters.contains(attendee);
     }
-
-
 
 
     private void rejectOnClosed() {

@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingStartedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class SurveyingStartedEventBuilder {
     private EventId eventId = EventId.of("eventId");
     private InterestPolicy interestPolicy = new InterestThresholdTurnedOffPolicy();
 
-    public SurveyingStartedEvent build() {
-        return SurveyingStartedEvent.of(eventId, interestPolicy);
+    public SurveyingInterestStartedEvent build() {
+        return SurveyingInterestStartedEvent.of(eventId, interestPolicy);
     }
 }

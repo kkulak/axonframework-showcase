@@ -1,7 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import org.joda.time.DateTime;
@@ -13,10 +12,9 @@ import java.util.Optional;
  */
 
 @Accessors(fluent = true)
-@Value
-public class CreateSurveyCommand {
+@Value(staticConstructor = "of")
+public class StartSurveyingInterestCommand {
 
-    private final SurveyId surveyId;
     private final EventId eventId;
     private final Optional<Integer> minimalInterestThreshold;
     private final Optional<DateTime> endingSurveyDate;
