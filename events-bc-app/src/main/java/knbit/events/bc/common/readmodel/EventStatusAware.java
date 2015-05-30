@@ -1,6 +1,6 @@
 package knbit.events.bc.common.readmodel;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 
 public interface EventStatusAware {
 

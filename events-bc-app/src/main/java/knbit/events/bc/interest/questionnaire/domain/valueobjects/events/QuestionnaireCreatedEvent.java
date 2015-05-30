@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.events;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
 import lombok.Value;

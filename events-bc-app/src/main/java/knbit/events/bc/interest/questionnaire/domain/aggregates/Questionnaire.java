@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.questionnaire.domain.entities.Question;
 import knbit.events.bc.interest.questionnaire.domain.entities.QuestionFactory;

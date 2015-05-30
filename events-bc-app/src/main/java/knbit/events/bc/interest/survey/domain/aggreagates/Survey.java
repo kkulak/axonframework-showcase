@@ -3,7 +3,7 @@ package knbit.events.bc.interest.survey.domain.aggreagates;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.exceptions.CannotVoteOnClosedSurveyException;

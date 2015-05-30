@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.common.domain.valueobjects.events;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 import lombok.Value;
 import lombok.experimental.Accessors;
 

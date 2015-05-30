@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.common.domain.sagas;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.event.domain.valueobjects.events.EventCreated;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingInterestStoppedEvent;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
@@ -38,7 +38,7 @@ public class InterestSaga extends AbstractAnnotatedSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(EventCreated event) {
+    public void on(BacklogEventCreated event) {
         eventId = event.eventId();
     }
 

@@ -2,8 +2,6 @@ package knbit.events.bc.eventproposal.domain.sagas;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.event.domain.valueobjects.commands.CreateEventCommand;
 import knbit.events.bc.eventproposal.domain.valueobjects.Description;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.Name;
@@ -44,15 +42,15 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(ProposalAcceptedEvent event) {
-        commandGateway.send(
-                new CreateEventCommand(
+/*        commandGateway.send(
+                new CreateBacklogEventCommand(
                         new EventId(),
                         proposalName.value(),
                         proposalDescription.value(),
                         proposalType,
                         eventFrequency
                 )
-        );
+        );*/
     }
 
     @EndSaga

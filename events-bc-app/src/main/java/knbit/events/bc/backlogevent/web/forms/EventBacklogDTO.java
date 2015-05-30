@@ -1,4 +1,4 @@
-package knbit.events.bc.event.web.forms;
+package knbit.events.bc.backlogevent.web.forms;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class EventDTO {
+public class EventBacklogDTO {
 
     @NotBlank private String name;
     @NotBlank private String description;

@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.survey.domain.aggreagates;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.backlogevent.domain.valueobjects.EventId;
 import knbit.events.bc.interest.survey.domain.valueobjects.events.surveycreation.EndingDateAwareSurveyCreatedEventFactory;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;

@@ -1,14 +1,13 @@
 package knbit.events.bc;
 
-import knbit.events.bc.event.domain.EventCommandHandler;
-import knbit.events.bc.event.domain.aggregates.AbstractEvent;
-import knbit.events.bc.event.infrastructure.config.AxonEventFactory;
+import knbit.events.bc.backlogevent.domain.EventCommandHandler;
+import knbit.events.bc.backlogevent.domain.aggregates.BacklogEvent;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
-import knbit.events.bc.interest.survey.domain.SurveyCommandHandler;
-import knbit.events.bc.interest.survey.domain.aggreagates.Survey;
 import knbit.events.bc.interest.questionnaire.domain.QuestionnaireCommandHandler;
 import knbit.events.bc.interest.questionnaire.domain.aggregates.Questionnaire;
+import knbit.events.bc.interest.survey.domain.SurveyCommandHandler;
+import knbit.events.bc.interest.survey.domain.aggreagates.Survey;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 
@@ -28,9 +27,8 @@ public class FixtureFactory {
         return fixture;
     }
 
-    public static FixtureConfiguration<AbstractEvent> eventFixtureConfiguration() {
-        FixtureConfiguration<AbstractEvent> fixture = Fixtures.newGivenWhenThenFixture(AbstractEvent.class);
-        fixture.registerAggregateFactory(new AxonEventFactory());
+    public static FixtureConfiguration<BacklogEvent> backlogEventFixtureConfiguration() {
+        FixtureConfiguration<BacklogEvent> fixture = Fixtures.newGivenWhenThenFixture(BacklogEvent.class);
         final EventCommandHandler handler = new EventCommandHandler(fixture.getRepository());
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
