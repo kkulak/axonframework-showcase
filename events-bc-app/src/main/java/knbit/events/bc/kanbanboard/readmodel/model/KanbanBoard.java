@@ -1,9 +1,9 @@
 package knbit.events.bc.kanbanboard.readmodel.model;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
-import knbit.events.bc.common.readmodel.EventStatus;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.readmodel.AbstractEntity;
+import knbit.events.bc.common.readmodel.EventStatus;
 import lombok.*;
 
 import javax.persistence.ElementCollection;

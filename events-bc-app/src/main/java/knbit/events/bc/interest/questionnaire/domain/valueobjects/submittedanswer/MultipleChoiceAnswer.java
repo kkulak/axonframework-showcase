@@ -2,9 +2,9 @@ package knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedansw
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.entities.AnswerChecker;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

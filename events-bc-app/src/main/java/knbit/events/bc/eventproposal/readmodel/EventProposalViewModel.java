@@ -1,8 +1,8 @@
 package knbit.events.bc.eventproposal.readmodel;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
-import knbit.events.bc.common.readmodel.AbstractEntity;
 import knbit.events.bc.common.domain.enums.EventType;
+import knbit.events.bc.common.readmodel.AbstractEntity;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import lombok.*;
 

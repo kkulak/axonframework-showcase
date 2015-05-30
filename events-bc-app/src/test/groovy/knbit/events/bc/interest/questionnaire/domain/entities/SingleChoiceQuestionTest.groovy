@@ -1,6 +1,5 @@
 package knbit.events.bc.interest.questionnaire.domain.entities
 
-import knbit.events.bc.interest.questionnaire.domain.entities.SingleChoiceQuestion
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType
 import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectAnswerTypeException
 import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectChoiceException

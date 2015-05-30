@@ -1,8 +1,8 @@
 package knbit.events.bc.interest.questionnaire.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 
 /**
  * Created by novy on 26.05.15.

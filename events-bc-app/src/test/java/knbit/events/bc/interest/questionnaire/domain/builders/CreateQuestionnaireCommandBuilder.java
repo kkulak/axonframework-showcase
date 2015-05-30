@@ -2,7 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.builders;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CreateQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;

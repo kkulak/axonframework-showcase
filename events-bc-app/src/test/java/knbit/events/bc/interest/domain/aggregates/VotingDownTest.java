@@ -1,16 +1,16 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
-import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.SurveyVotedEventBuilder;
-import knbit.events.bc.interest.survey.domain.builders.VoteDownCommandBuilder;
 import knbit.events.bc.interest.domain.exceptions.CannotVoteOnClosedSurveyException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyClosedEvent;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
+import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
+import knbit.events.bc.interest.survey.domain.builders.VoteDownCommandBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;

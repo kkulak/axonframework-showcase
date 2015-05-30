@@ -1,10 +1,10 @@
 package knbit.events.bc.interest.survey.domain.builders;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
-import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyCreatedEvent;
+import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
+import knbit.events.bc.interest.survey.domain.policies.InterestThresholdTurnedOffPolicy;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;

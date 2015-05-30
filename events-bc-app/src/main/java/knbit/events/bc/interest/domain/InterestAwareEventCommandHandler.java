@@ -1,8 +1,8 @@
 package knbit.events.bc.interest.domain;
 
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
-import knbit.events.bc.interest.domain.aggregates.SurveyFactory;
-import knbit.events.bc.interest.domain.valueobjects.commands.*;
+import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;

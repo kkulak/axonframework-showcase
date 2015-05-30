@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.common.builders;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.survey.domain.aggreagates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import knbit.events.bc.interest.survey.domain.builders.CreateSurveyCommandBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;

@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.survey.domain.builders;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;

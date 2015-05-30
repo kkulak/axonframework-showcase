@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.enums.VoteType;
 import knbit.events.bc.interest.domain.valueobjects.Vote;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedEvent;

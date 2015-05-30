@@ -1,10 +1,10 @@
 package knbit.events.bc.kanbanboard.readmodel.eventhandler;
 
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
 import knbit.events.bc.common.readmodel.EventStatusAware;
-import knbit.events.bc.event.domain.valueobjects.events.EventCreated;
-import knbit.events.bc.kanbanboard.readmodel.service.EventStateMachine;
-import knbit.events.bc.kanbanboard.readmodel.repository.KanbanBoardRepository;
 import knbit.events.bc.kanbanboard.readmodel.model.KanbanBoard;
+import knbit.events.bc.kanbanboard.readmodel.repository.KanbanBoardRepository;
+import knbit.events.bc.kanbanboard.readmodel.service.EventStateMachine;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,14 +19,14 @@ public class KanbanBoardEventStatusHandler {
     }
 
     @EventHandler
-    private void handle(EventCreated event) {
-        kanbanBoardRepository.save(
+    private void handle(BacklogEventCreated event) {
+/*        kanbanBoardRepository.save(
             new KanbanBoard(
                     event.eventId().value(), event.name().value(),
                     event.eventType(), event.eventFrequency(), event.status(),
                     EventStateMachine.match(event.status())
             )
-        );
+        );*/
     }
 
     @EventHandler

@@ -1,8 +1,8 @@
 package knbit.events.bc.interest.questionnaire.domain.aggregates;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
 
 import java.util.List;
 

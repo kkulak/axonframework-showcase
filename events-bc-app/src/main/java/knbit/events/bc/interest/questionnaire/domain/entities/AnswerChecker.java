@@ -2,8 +2,8 @@ package knbit.events.bc.interest.questionnaire.domain.entities;
 
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.MultipleChoiceAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.TextAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SingleChoiceAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.TextAnswer;
 
 /**
  * Created by novy on 25.05.15.

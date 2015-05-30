@@ -1,6 +1,5 @@
 package knbit.events.bc.interest.questionnaire.domain.entities
 
-import knbit.events.bc.interest.questionnaire.domain.entities.MultipleChoiceQuestion
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType
 import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectAnswerTypeException
 import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectChoiceException
@@ -10,10 +9,10 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Answe
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionTitle
-import knbit.events.bc.questionnaire.domain.valueobjects.question.*
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.MultipleChoiceAnswer
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SingleChoiceAnswer
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.TextAnswer
+import knbit.events.bc.questionnaire.domain.valueobjects.question.*
 import spock.lang.Specification
 
 /**

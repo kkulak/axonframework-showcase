@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.questionnaire.domain.entities.Question;
 import knbit.events.bc.interest.questionnaire.domain.entities.QuestionFactory;
@@ -20,8 +20,8 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.Questionna
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;

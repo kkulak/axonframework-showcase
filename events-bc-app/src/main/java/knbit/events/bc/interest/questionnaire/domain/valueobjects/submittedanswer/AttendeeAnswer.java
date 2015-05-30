@@ -1,7 +1,6 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer;
 
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import lombok.Value;
 import lombok.experimental.Accessors;
 

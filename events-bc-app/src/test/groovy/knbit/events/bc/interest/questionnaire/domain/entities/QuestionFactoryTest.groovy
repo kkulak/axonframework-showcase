@@ -1,9 +1,5 @@
 package knbit.events.bc.interest.questionnaire.domain.entities
 
-import knbit.events.bc.interest.questionnaire.domain.entities.MultipleChoiceQuestion
-import knbit.events.bc.interest.questionnaire.domain.entities.QuestionFactory
-import knbit.events.bc.interest.questionnaire.domain.entities.SingleChoiceQuestion
-import knbit.events.bc.interest.questionnaire.domain.entities.TextQuestion
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData

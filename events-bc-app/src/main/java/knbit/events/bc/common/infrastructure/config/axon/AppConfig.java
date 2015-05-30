@@ -8,14 +8,10 @@ import org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.SimpleEventBus;
 import org.axonframework.eventhandling.annotation.AnnotationEventListenerBeanPostProcessor;
-import org.axonframework.eventhandling.scheduling.EventScheduler;
-import org.axonframework.eventhandling.scheduling.java.SimpleEventSchedulerFactoryBean;
 import org.axonframework.eventstore.EventStore;
 import org.axonframework.eventstore.fs.EventFileResolver;
 import org.axonframework.eventstore.fs.FileSystemEventStore;
 import org.axonframework.eventstore.fs.SimpleEventFileResolver;
-import org.axonframework.saga.SagaManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

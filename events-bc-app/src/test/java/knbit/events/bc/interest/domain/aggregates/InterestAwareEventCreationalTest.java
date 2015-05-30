@@ -5,8 +5,8 @@ import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import org.axonframework.test.FixtureConfiguration;
@@ -29,7 +29,7 @@ public class InterestAwareEventCreationalTest {
     public void shouldProduceInterestAwareEventCreatedEventGivenCorrespondingCommand() throws Exception {
 
         final EventId eventId = EventId.of("eventId");
-        final EventDetails eventDetails = new EventDetails(
+        final EventDetails eventDetails = EventDetails.of(
                 Name.of("name"),
                 Description.of("desc"),
                 EventType.WORKSHOP,

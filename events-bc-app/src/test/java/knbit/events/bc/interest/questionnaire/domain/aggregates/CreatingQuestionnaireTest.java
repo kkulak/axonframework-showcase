@@ -2,7 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.builders.CreateQuestionnaireCommandBuilder;
 import knbit.events.bc.interest.questionnaire.domain.builders.QuestionnaireCreatedEventBuilder;
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;

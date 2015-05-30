@@ -1,6 +1,6 @@
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'

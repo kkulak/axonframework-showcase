@@ -5,8 +5,8 @@ import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.event.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.SurveyVotedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
 import knbit.events.bc.interest.domain.enums.VoteType;
@@ -34,7 +34,7 @@ public class VotingUpTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = new EventDetails(
+        eventDetails = EventDetails.of(
                 Name.of("name"),
                 Description.of("desc"),
                 EventType.WORKSHOP,

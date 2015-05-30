@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects.events;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import lombok.Value;
 import lombok.experimental.Accessors;

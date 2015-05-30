@@ -2,13 +2,13 @@ package knbit.events.bc.interest.questionnaire.domain.entities;
 
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
 import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectChoiceException;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionDescription;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionTitle;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.MultipleChoiceAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
  * Created by novy on 30.05.15.
  */
 @Accessors(fluent = true)
-@Value
+@Value(staticConstructor = "of")
 public class EventDetails {
 
     private Name name;

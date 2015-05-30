@@ -2,10 +2,10 @@ package knbit.events.bc.interest.survey.domain.aggreagates;
 
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
-import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.domain.valueobjects.commands.CloseSurveyCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyClosedEvent;
+import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;

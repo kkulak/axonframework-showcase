@@ -1,6 +1,7 @@
 package knbit.events.bc.interest.domain.valueobjects.events.surveycreation;
 
-import knbit.events.bc.event.domain.valueobjects.EventId;
+
+import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import lombok.EqualsAndHashCode;
