@@ -7,7 +7,8 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.StartSurveyingInterestCommandBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class StartingInterestSurveyingTest {
 
         fixture
                 .given(
-                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
+                        InterestAwareEventCreated.of(eventId, eventDetails)
                 )
                 .when(
                         StartSurveyingInterestCommandBuilder
@@ -63,7 +64,7 @@ public class StartingInterestSurveyingTest {
 
         fixture
                 .given(
-                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
+                        InterestAwareEventCreated.of(eventId, eventDetails)
                 )
                 .when(
                         StartSurveyingInterestCommandBuilder
@@ -79,5 +80,51 @@ public class StartingInterestSurveyingTest {
                                 .endingSurveyDate(now)
                                 .build()
                 );
+    }
+
+    @Test
+    public void shouldNotBeAbleToStartSurveyBeingAlreadyInProgress() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(eventId, eventDetails),
+
+                        SurveyingInterestStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(IllegalStateException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToStartEndedSurvey() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(eventId, eventDetails),
+
+                        SurveyingInterestStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        SurveyingInterestEndedEvent.of(eventId)
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(IllegalStateException.class);
+
     }
 }

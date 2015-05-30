@@ -1,10 +1,7 @@
 package knbit.events.bc.interest.domain;
 
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
-import knbit.events.bc.interest.domain.valueobjects.commands.VoteDownCommand;
-import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.BasicSurveyingInterestStartedEventFactory;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEventFactory;
@@ -36,16 +33,6 @@ public class InterestAwareEventCommandHandler {
         this.repository = repository;
     }
 
-//    @CommandHandler
-//    public void handle(CreateSurveyCommand command) {
-//        final InterestAwareEvent interestAwareEvent = SurveyFactory.newSurvey(
-//                command.surveyId(), command.eventId(),
-//                command.minimalInterestThreshold(), command.endingSurveyDate()
-//        );
-//
-//        repository.add(interestAwareEvent);
-//    }
-
     @CommandHandler
     public void handle(CreateInterestAwareEventCommand command) {
         final InterestAwareEvent interestAwareEvent = new InterestAwareEvent(
@@ -68,7 +55,6 @@ public class InterestAwareEventCommandHandler {
         );
 
     }
-
 
     @CommandHandler
     public void handle(VoteUpCommand command) {
@@ -95,9 +81,9 @@ public class InterestAwareEventCommandHandler {
     }
 
 //
-//    @CommandHandler
-//    public void handle(CloseSurveyCommand command) {
-//        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
-//        interestAwareEvent.endSurveying();
-//    }
+    @CommandHandler
+    public void handle(EndSurveyingInterestCommand command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+        interestAwareEvent.endSurveying();
+    }
 }

@@ -6,10 +6,7 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
 import knbit.events.bc.interest.enums.InterestAwareEventState;
@@ -71,19 +68,31 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void startSurveying(InterestPolicy interestPolicy, SurveyingInterestStartedEventFactory factory) {
+        // todo: consider custom exceptions
+        Preconditions.checkState(state != InterestAwareEventState.IN_PROGRESS, "Surveying already in progress");
+        Preconditions.checkState(state != InterestAwareEventState.ENDED, "Surveying already ended");
+
         apply(
                 factory.newSurveyingInterestStartedEvent(id, interestPolicy)
         );
     }
 
     public void endSurveying() {
+        Preconditions.checkState(state != InterestAwareEventState.CREATED, "Surveying not yet started!");
         Preconditions.checkState(state != InterestAwareEventState.ENDED, "Already closed!");
-//        apply(new SurveyClosedEvent(id));
+
+        apply(SurveyingInterestEndedEvent.of(id));
     }
 
     @EventSourcingHandler
     private void on(SurveyingInterestStartedEvent event) {
         this.interestPolicy = event.interestPolicy();
+        this.state = InterestAwareEventState.IN_PROGRESS;
+    }
+
+    @EventSourcingHandler
+    private void on(SurveyingInterestEndedEvent event) {
+        this.state = InterestAwareEventState.ENDED;
     }
 
     @EventSourcingHandler
@@ -113,7 +122,6 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     private boolean votedDown(Attendee attendee) {
         return negativeVoters.contains(attendee);
     }
-
 
     private void rejectOnClosed() {
 //        if (state == State.CLOSED) {

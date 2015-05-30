@@ -9,8 +9,8 @@ import lombok.experimental.Accessors;
  */
 
 @Accessors(fluent = true)
-@Value
-public class EndSurveyingInterest {
+@Value(staticConstructor = "of")
+public class EndSurveyingInterestCommand {
 
     private final EventId eventId;
 }

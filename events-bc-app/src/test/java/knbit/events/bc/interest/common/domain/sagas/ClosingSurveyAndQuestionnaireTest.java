@@ -1,7 +1,6 @@
 package knbit.events.bc.interest.common.domain.sagas;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;
@@ -25,7 +24,7 @@ public class ClosingSurveyAndQuestionnaireTest {
     @Test
     public void shouldCloseOnlySurveyOnSurveyingInterestStoppedEventIfThereIsNoQuestionnaire() throws Exception {
 
-        final SurveyId surveyId = SurveyId.of("surveyId");
+//        final SurveyId surveyId = SurveyId.of("surveyId");
 
 /*        fixture
                 .givenAggregate(eventId)
@@ -54,7 +53,7 @@ public class ClosingSurveyAndQuestionnaireTest {
     public void shouldCloseSurveyAndQuestionnaireOnSurveyingInterestStoppedEventIfThereIsQuestionnaire()
             throws Exception {
 
-        final SurveyId surveyId = SurveyId.of("surveyId");
+//        final SurveyId surveyId = SurveyId.of("surveyId");
         final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
 
 /*
@@ -92,7 +91,7 @@ public class ClosingSurveyAndQuestionnaireTest {
     @Test
     public void shouldCloseOnlySurveyOnTimeoutIfThereIsNoQuestionnaire() throws Exception {
 
-        final SurveyId surveyId = SurveyId.of("surveyId");
+//        final SurveyId surveyId = SurveyId.of("surveyId");
         final DateTime surveyingEndDate = DateTime.now().plusDays(15);
 
 /*        fixture
@@ -121,7 +120,7 @@ public class ClosingSurveyAndQuestionnaireTest {
     @Test
     public void shouldCloseSurveyAndQuestionnaireOnTimeoutIfThereIsQuestionnaire() throws Exception {
 
-        final SurveyId surveyId = SurveyId.of("surveyId");
+//        final SurveyId surveyId = SurveyId.of("surveyId");
         final QuestionnaireId questionnaireId = QuestionnaireId.of("questionnaireId");
         final DateTime surveyingEndDate = DateTime.now().plusDays(15);
 
