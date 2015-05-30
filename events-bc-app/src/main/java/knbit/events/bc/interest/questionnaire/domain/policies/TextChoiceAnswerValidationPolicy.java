@@ -10,11 +10,7 @@ public class TextChoiceAnswerValidationPolicy implements AnswerValidationPolicy 
 
     @Override
     public boolean validate(List<DomainAnswer> possibleAnswers, List<DomainAnswer> candidates) {
-        return hasExactlyOneAnswer(candidates);
-    }
-
-    private boolean hasExactlyOneAnswer(List<DomainAnswer> candidates) {
-        return candidates.size() == 1;
+        return candidates.isEmpty();
     }
 
 }
