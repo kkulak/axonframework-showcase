@@ -7,21 +7,19 @@ import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
-import knbit.events.bc.interest.questionnaire.domain.entities.Question;
-import knbit.events.bc.interest.questionnaire.domain.entities.QuestionFactory;
 import knbit.events.bc.interest.questionnaire.domain.exceptions.CannotAnswerClosedQuestionnaireException;
 import knbit.events.bc.interest.questionnaire.domain.exceptions.QuestionnaireAlreadyAnsweredException;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireAnsweredEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireClosedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionFactory;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.AnsweredQuestion;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SubmittedAnswer;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
@@ -43,20 +41,9 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
     }
 
     public Questionnaire(QuestionnaireId questionnaireId, EventId eventId, List<QuestionData> questions) {
-        final List<IdentifiedQuestionData> identifiedQuestionData = identifyQuestions(questions);
-
-        apply(QuestionnaireCreatedEvent.of(questionnaireId, eventId, identifiedQuestionData));
-    }
-
-    private List<IdentifiedQuestionData> identifyQuestions(List<QuestionData> questions) {
-        return questions
-                .stream()
-                .map(questionData -> IdentifiedQuestionData.of(randomQuestionId(), questionData))
-                .collect(Collectors.toList());
-    }
-
-    private QuestionId randomQuestionId() {
-        return new QuestionId();
+        apply(
+                QuestionnaireCreatedEvent.of(questionnaireId, eventId, questions)
+        );
     }
 
     @EventSourcingHandler
@@ -79,19 +66,18 @@ public class Questionnaire extends IdentifiedDomainAggregateRoot<QuestionnaireId
         state = State.CLOSED;
     }
 
-
     public void answerQuestion(AttendeeAnswer attendeeAnswer) {
         rejectOnClosed();
         checkIfAttendeeAlreadyAnswered(attendeeAnswer.attendee());
 
-        final List<CheckableAnswer> answers = attendeeAnswer.answers();
+        final List<SubmittedAnswer> answers = attendeeAnswer.submittedAnswers();
         Preconditions.checkArgument(answers.size() == questions.size());
 
         final List<AnsweredQuestion> answeredQuestions = StreamUtils.zip(
 
                 questions.stream(),
                 answers.stream(),
-                (checker, answer) -> answer.allowCheckingBy(checker)
+                Question::answer
 
         ).collect(Collectors.toList());
 

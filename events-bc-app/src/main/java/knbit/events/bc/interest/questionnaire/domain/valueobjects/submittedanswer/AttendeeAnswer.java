@@ -15,10 +15,10 @@ import java.util.List;
 public class AttendeeAnswer {
 
     private final Attendee attendee;
-    private final List<CheckableAnswer> answers;
+    private final List<SubmittedAnswer> submittedAnswers;
 
-    public AttendeeAnswer(Attendee attendee, List<CheckableAnswer> answers) {
+    public AttendeeAnswer(Attendee attendee, List<SubmittedAnswer> submittedAnswers) {
         this.attendee = attendee;
-        this.answers = answers;
+        this.submittedAnswers = submittedAnswers;
     }
 }

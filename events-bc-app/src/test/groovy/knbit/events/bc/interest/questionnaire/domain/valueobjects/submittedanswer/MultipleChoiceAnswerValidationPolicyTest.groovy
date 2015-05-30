@@ -1,15 +1,13 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer
 import spock.lang.Specification
 
 /**
  * Created by novy on 26.05.15.
  */
-class MultipleChoiceAnswerTest extends Specification {
+class MultipleChoiceAnswerValidationPolicyTest extends Specification {
 
-    def "should not allow to pass empty answer list"() {
+/*    def "should not allow to pass empty answer list"() {
 
         when:
         new MultipleChoiceAnswer(
@@ -53,11 +51,11 @@ class MultipleChoiceAnswerTest extends Specification {
         )
 
         expect:
-        objectUnderTest.unwrap() == [
+        objectUnderTest.answers() == [
                 DomainAnswer.of("ONE"),
                 DomainAnswer.of("TWO"),
                 DomainAnswer.of("THREE")
         ]
 
-    }
+    }*/
 }

@@ -2,6 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.valueobjects.question;
 
 import com.google.common.base.Preconditions;
 import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.DomainAnswer;
 import lombok.Value;
 import lombok.experimental.Accessors;
 

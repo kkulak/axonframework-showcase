@@ -2,7 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -18,6 +18,6 @@ public class QuestionnaireCreatedEvent {
 
     private final QuestionnaireId questionnaireId;
     private final EventId eventId;
-    private final List<IdentifiedQuestionData> questions;
+    private final List<QuestionData> questions;
 
 }

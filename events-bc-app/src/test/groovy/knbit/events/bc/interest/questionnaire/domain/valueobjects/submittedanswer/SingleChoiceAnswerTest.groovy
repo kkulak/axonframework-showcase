@@ -1,7 +1,5 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer
 import spock.lang.Specification
 
 /**
@@ -9,7 +7,7 @@ import spock.lang.Specification
  */
 class SingleChoiceAnswerTest extends Specification {
 
-    def "should unwrap to single element list of Domain Answers"() {
+/*    def "should unwrap to single element list of Domain Answers"() {
 
         given:
         def objectUnderTest = new SingleChoiceAnswer(
@@ -17,7 +15,7 @@ class SingleChoiceAnswerTest extends Specification {
         )
 
         expect:
-        objectUnderTest.unwrap() == [DomainAnswer.of("ANSWER")]
+        objectUnderTest.answers() == [DomainAnswer.of("ANSWER")]
 
-    }
+    }*/
 }

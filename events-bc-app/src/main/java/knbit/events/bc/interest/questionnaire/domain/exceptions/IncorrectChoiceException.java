@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.questionnaire.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
 
 /**
  * Created by novy on 26.05.15.
@@ -9,9 +9,9 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId
 public class IncorrectChoiceException extends DomainException {
 
     private static final String ERROR_MESSAGE_TEMPLATE =
-            "Incorrect answer option for question with id %s";
+            "Incorrect answer option for question: %s";
 
-    public IncorrectChoiceException(QuestionId questionId) {
-        super(String.format(ERROR_MESSAGE_TEMPLATE, questionId));
+    public IncorrectChoiceException(Question question) {
+        super(String.format(ERROR_MESSAGE_TEMPLATE, question));
     }
 }

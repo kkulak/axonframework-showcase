@@ -1,4 +1,4 @@
-package knbit.events.bc.interest.questionnaire.domain.valueobjects.question;
+package knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
