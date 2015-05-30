@@ -59,6 +59,6 @@ public class InterestAwareEventCommandHandler {
 //    @CommandHandler
 //    public void handle(CloseSurveyCommand command) {
 //        final InterestAwareEvent interestAwareEvent = repository.load(command.surveyId());
-//        interestAwareEvent.close();
+//        interestAwareEvent.endSurveying();
 //    }
 }

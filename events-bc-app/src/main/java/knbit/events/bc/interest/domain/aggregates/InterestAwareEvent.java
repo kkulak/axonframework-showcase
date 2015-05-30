@@ -8,6 +8,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.enums.State;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
+import knbit.events.bc.interest.enums.InterestAwareEventState;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
@@ -25,7 +26,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     private Collection<Attendee> negativeVoters = Sets.newHashSet();
     private InterestPolicy interestPolicy;
 
-    private State state;
+    private InterestAwareEventState state;
 
     private InterestAwareEvent() {
     }
@@ -43,7 +44,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         this.id = event.eventId();
         this.eventDetails = event.eventDetails();
 
-        this.state = State.PENDING;
+        this.state = InterestAwareEventState.CREATED;
     }
 
     public void voteUp(Attendee attendee) {
@@ -65,8 +66,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         apply(SurveyVotedDownEvent.of(id, attendee));
     }
 
-    public void close() {
-        Preconditions.checkState(state == State.PENDING, "Already closed!");
+    public void startSurveying() {
+//        todo: implement
+    }
+
+    public void endSurveying() {
+        Preconditions.checkState(state != InterestAwareEventState.ENDED, "Already closed!");
 //        apply(new SurveyClosedEvent(id));
     }
 

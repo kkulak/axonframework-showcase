@@ -1,12 +1,9 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.common.domain.enums.EventFrequency;
-import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyVotedUpEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
 import knbit.events.bc.interest.builders.VoteUpCommandBuilder;
@@ -32,12 +29,9 @@ public class VotingUpTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetails.of(
-                Name.of("name"),
-                Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
-        );
+        eventDetails = EventDetailsBuilder
+                .instance()
+                .build();
     }
 
     @Test
