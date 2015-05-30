@@ -7,10 +7,10 @@ import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeE
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.survey.domain.valueobjects.commands.CloseSurveyCommand;
-import knbit.events.bc.interest.survey.domain.valueobjects.events.surveycreation.SurveyCreatedEvent;
-import knbit.events.bc.interest.survey.domain.valueobjects.events.surveycreation.SurveyWithEndingDateCreatedEvent;
+import knbit.events.bc.interest.domain.valueobjects.SurveyId;
+import knbit.events.bc.interest.domain.valueobjects.commands.CloseSurveyCommand;
+import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyCreatedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.surveycreation.SurveyWithEndingDateCreatedEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.ScheduleToken;

@@ -1,8 +1,8 @@
 package knbit.events.bc.interest.survey.domain.builders;
 
 import knbit.events.bc.event.domain.valueobjects.EventId;
-import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
-import knbit.events.bc.interest.survey.domain.valueobjects.commands.CreateSurveyCommand;
+import knbit.events.bc.interest.domain.valueobjects.SurveyId;
+import knbit.events.bc.interest.domain.valueobjects.commands.CreateSurveyCommand;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;

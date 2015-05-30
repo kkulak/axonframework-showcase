@@ -2,17 +2,18 @@ package knbit.events.bc.interest.survey.domain.aggreagates;
 
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.event.domain.valueobjects.EventId;
+import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import knbit.events.bc.interest.survey.domain.builders.SurveyCreatedEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedDownEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.SurveyVotedUpEventBuilder;
 import knbit.events.bc.interest.survey.domain.builders.VoteUpCommandBuilder;
-import knbit.events.bc.interest.survey.domain.exceptions.CannotVoteOnClosedSurveyException;
-import knbit.events.bc.interest.survey.domain.valueobjects.events.InterestThresholdReachedEvent;
-import knbit.events.bc.interest.survey.domain.exceptions.SurveyAlreadyVotedException;
+import knbit.events.bc.interest.domain.exceptions.CannotVoteOnClosedSurveyException;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
+import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.survey.domain.policies.WithFixedThresholdPolicy;
-import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
+import knbit.events.bc.interest.domain.valueobjects.SurveyId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.survey.domain.valueobjects.events.SurveyClosedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyClosedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,13 +23,13 @@ import org.junit.Test;
  */
 public class VotingUpTest {
 
-    private FixtureConfiguration<Survey> fixture;
+    private FixtureConfiguration<InterestAwareEvent> fixture;
     private SurveyId surveyId;
     private EventId eventId;
 
     @Before
     public void setUp() throws Exception {
-        fixture = FixtureFactory.surveyFixtureConfiguration();
+        fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         surveyId = SurveyId.of("surveyId");
         eventId = EventId.of("eventId");
     }

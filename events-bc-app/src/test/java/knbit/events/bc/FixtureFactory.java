@@ -5,8 +5,8 @@ import knbit.events.bc.event.domain.aggregates.AbstractEvent;
 import knbit.events.bc.event.infrastructure.config.AxonEventFactory;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
-import knbit.events.bc.interest.survey.domain.SurveyCommandHandler;
-import knbit.events.bc.interest.survey.domain.aggreagates.Survey;
+import knbit.events.bc.interest.domain.InterestAwareEventCommandHandler;
+import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import knbit.events.bc.interest.questionnaire.domain.QuestionnaireCommandHandler;
 import knbit.events.bc.interest.questionnaire.domain.aggregates.Questionnaire;
 import org.axonframework.test.FixtureConfiguration;
@@ -47,15 +47,14 @@ public class FixtureFactory {
         return fixture;
     }
 
-    public static FixtureConfiguration<Survey> surveyFixtureConfiguration() {
-        FixtureConfiguration<Survey> fixture = Fixtures.newGivenWhenThenFixture(Survey.class);
+    public static FixtureConfiguration<InterestAwareEvent> interestAwareEventFixtureConfiguration() {
+        FixtureConfiguration<InterestAwareEvent> fixture = Fixtures.newGivenWhenThenFixture(InterestAwareEvent.class);
 
-        final SurveyCommandHandler handler = new SurveyCommandHandler(
+        final InterestAwareEventCommandHandler handler = new InterestAwareEventCommandHandler(
                 fixture.getRepository()
         );
 
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
     }
-
 }

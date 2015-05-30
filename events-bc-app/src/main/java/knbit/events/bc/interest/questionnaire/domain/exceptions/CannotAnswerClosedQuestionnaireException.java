@@ -2,7 +2,6 @@ package knbit.events.bc.interest.questionnaire.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.survey.domain.valueobjects.SurveyId;
 
 /**
  * Created by novy on 28.05.15.
