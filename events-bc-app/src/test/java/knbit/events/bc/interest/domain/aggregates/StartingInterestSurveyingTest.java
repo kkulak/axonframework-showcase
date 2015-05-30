@@ -7,6 +7,8 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.StartSurveyingInterestCommandBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import org.axonframework.test.FixtureConfiguration;
@@ -100,7 +102,7 @@ public class StartingInterestSurveyingTest {
                                 .eventId(eventId)
                                 .build()
                 )
-                .expectException(IllegalStateException.class);
+                .expectException(SurveyingInterestAlreadyInProgressException.class);
 
     }
 
@@ -124,7 +126,7 @@ public class StartingInterestSurveyingTest {
                                 .eventId(eventId)
                                 .build()
                 )
-                .expectException(IllegalStateException.class);
+                .expectException(SurveyingInterestAlreadyEndedException.class);
 
     }
 }

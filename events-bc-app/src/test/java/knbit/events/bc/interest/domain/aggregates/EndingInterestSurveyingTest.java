@@ -5,6 +5,8 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
@@ -62,7 +64,7 @@ public class EndingInterestSurveyingTest {
                 .when(
                         EndSurveyingInterestCommand.of(eventId)
                 )
-                .expectException(IllegalStateException.class);
+                .expectException(SurveyingInterestNotYetStartedException.class);
     }
 
     @Test
@@ -77,6 +79,6 @@ public class EndingInterestSurveyingTest {
                 .when(
                         EndSurveyingInterestCommand.of(eventId)
                 )
-                .expectException(IllegalStateException.class);
+                .expectException(SurveyingInterestAlreadyEndedException.class);
     }
 }

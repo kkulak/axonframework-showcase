@@ -3,13 +3,13 @@ package knbit.events.bc.interest.domain.aggregates;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.builders.EventDetailsBuilder;
-import knbit.events.bc.interest.builders.SurveyVotedUpEventBuilder;
-import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
-import knbit.events.bc.interest.builders.VoteUpCommandBuilder;
+import knbit.events.bc.interest.builders.*;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
+import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.survey.domain.policies.WithFixedThresholdPolicy;
 import org.axonframework.test.FixtureConfiguration;
@@ -237,23 +237,48 @@ public class VotingUpTest {
                 );
 
     }
-//
-//    @Test
-//    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
-//
-//        fixture
-//                .given(
-//                        SurveyCreatedEventBuilder
-//                                .instance()
-//                                .build()
-//
-////                        new SurveyClosedEvent(surveyId)
-//                )
-//                .when(
-//                        VoteUpCommandBuilder
-//                                .instance()
-//                                .build()
-//                )
-//                .expectException(CannotVoteOnClosedSurveyException.class);
-//    }
+
+
+    @Test
+    public void shouldNotBeAbleToVoteOnClosedSurvey() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        ),
+
+                        SurveyingStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        SurveyingInterestEndedEvent.of(eventId)
+                )
+                .when(
+                        VoteDownCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(SurveyingInterestAlreadyEndedException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToVoteIfSurveyingNotStarted() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        VoteDownCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(SurveyingInterestNotYetStartedException.class);
+    }
 }
