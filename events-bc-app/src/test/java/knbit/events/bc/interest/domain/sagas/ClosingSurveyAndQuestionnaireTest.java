@@ -1,6 +1,7 @@
-package knbit.events.bc.interest.common.domain.sagas;
+package knbit.events.bc.interest.domain.sagas;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.interest.domain.sagas.InterestSaga;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;

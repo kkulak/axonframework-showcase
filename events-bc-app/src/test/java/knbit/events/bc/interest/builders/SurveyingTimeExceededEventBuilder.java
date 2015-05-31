@@ -1,4 +1,4 @@
-package knbit.events.bc.interest.common.builders;
+package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
@@ -20,7 +20,7 @@ public class SurveyingTimeExceededEventBuilder {
     private DateTime surveyingEndTime = DateTime.now();
 
     public SurveyingTimeExceededEvent build() {
-        return new SurveyingTimeExceededEvent(eventId, surveyingEndTime);
+        return SurveyingTimeExceededEvent.of(eventId, surveyingEndTime);
     }
 
 }

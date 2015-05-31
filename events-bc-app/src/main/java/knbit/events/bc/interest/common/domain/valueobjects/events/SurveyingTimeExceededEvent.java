@@ -10,7 +10,7 @@ import org.joda.time.DateTime;
  */
 
 @Accessors(fluent = true)
-@Value
+@Value(staticConstructor = "of")
 public class SurveyingTimeExceededEvent {
 
     private final EventId eventId;

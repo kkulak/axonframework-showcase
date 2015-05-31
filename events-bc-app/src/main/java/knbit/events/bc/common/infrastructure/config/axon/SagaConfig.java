@@ -1,7 +1,7 @@
 package knbit.events.bc.common.infrastructure.config.axon;
 
 import knbit.events.bc.eventproposal.domain.sagas.EventCreationalSaga;
-import knbit.events.bc.interest.common.domain.sagas.InterestSaga;
+import knbit.events.bc.interest.domain.sagas.InterestSaga;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.quartz.QuartzEventScheduler;

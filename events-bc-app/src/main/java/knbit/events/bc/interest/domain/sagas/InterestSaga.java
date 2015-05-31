@@ -1,12 +1,10 @@
-package knbit.events.bc.interest.common.domain.sagas;
+package knbit.events.bc.interest.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingInterestStoppedEvent;
 import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
@@ -34,42 +32,27 @@ public class InterestSaga extends AbstractAnnotatedSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(BacklogEventCreated event) {
-        eventId = event.eventId();
-    }
-
-//    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-//    public void on(SurveyCreatedEvent event) {
-//        surveyId = event.surveyId();
-//
-//    }
-
-    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyingInterestWithEndingDateStartedEvent event) {
-//        surveyId = event.surveyId();
+
+        this.eventId = event.eventId();
 
         scheduleToken = eventScheduler.schedule(
                 event.endingSurveyDate(),
-                new SurveyingTimeExceededEvent(
+                SurveyingTimeExceededEvent.of(
                         eventId, event.endingSurveyDate()
                 )
         );
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(QuestionnaireCreatedEvent event) {
-        questionnaireId = Optional.of(event.questionnaireId());
-    }
-
-    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyingTimeExceededEvent event) {
-        closeSurveyAndQuestionnaire();
+//        closeSurveyAndQuestionnaire();
         end();
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(SurveyingInterestStoppedEvent event) {
-        closeSurveyAndQuestionnaire();
+    public void on(SurveyingInterestEndedEvent event) {
+        eventScheduler.cancelSchedule(scheduleToken);
         end();
     }
 
