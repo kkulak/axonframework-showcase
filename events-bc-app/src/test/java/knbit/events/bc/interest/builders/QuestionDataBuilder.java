@@ -2,11 +2,11 @@ package knbit.events.bc.interest.builders;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import knbit.events.bc.interest.questionnaire.domain.enums.AnswerType;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionDescription;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionTitle;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.DomainAnswer;
+import knbit.events.bc.interest.domain.enums.AnswerType;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle;
+import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;

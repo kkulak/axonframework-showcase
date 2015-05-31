@@ -14,9 +14,9 @@ import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCom
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionFactory;
+import knbit.events.bc.interest.domain.valueobjects.question.Question;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;

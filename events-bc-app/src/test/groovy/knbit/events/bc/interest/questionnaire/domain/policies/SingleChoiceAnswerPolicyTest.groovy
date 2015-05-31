@@ -1,6 +1,7 @@
 package knbit.events.bc.interest.questionnaire.domain.policies
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.DomainAnswer
+import knbit.events.bc.interest.domain.policies.completingquestionnaire.SingleChoiceAnswerPolicy
+import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
 import spock.lang.Specification
 
 class SingleChoiceAnswerPolicyTest extends Specification {

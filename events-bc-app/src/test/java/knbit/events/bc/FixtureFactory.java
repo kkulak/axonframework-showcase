@@ -6,8 +6,6 @@ import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
 import knbit.events.bc.interest.domain.InterestAwareEventCommandHandler;
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
-import knbit.events.bc.interest.questionnaire.domain.QuestionnaireCommandHandler;
-import knbit.events.bc.interest.questionnaire.domain.aggregates.Questionnaire;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 
@@ -30,17 +28,6 @@ public class FixtureFactory {
     public static FixtureConfiguration<BacklogEvent> backlogEventFixtureConfiguration() {
         FixtureConfiguration<BacklogEvent> fixture = Fixtures.newGivenWhenThenFixture(BacklogEvent.class);
         final EventCommandHandler handler = new EventCommandHandler(fixture.getRepository());
-        fixture.registerAnnotatedCommandHandler(handler);
-        return fixture;
-    }
-
-    public static FixtureConfiguration<Questionnaire> questionnaireFixtureConfiguration() {
-        FixtureConfiguration<Questionnaire> fixture = Fixtures.newGivenWhenThenFixture(Questionnaire.class);
-
-        final QuestionnaireCommandHandler handler = new QuestionnaireCommandHandler(
-                fixture.getRepository()
-        );
-
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
     }

@@ -1,11 +1,15 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.question
 
-import knbit.events.bc.interest.questionnaire.domain.enums.AnswerType
-import knbit.events.bc.interest.questionnaire.domain.exceptions.IncorrectChoiceException
-import knbit.events.bc.interest.questionnaire.domain.policies.AnswerPolicy
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.AnsweredQuestion
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.DomainAnswer
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SubmittedAnswer
+import knbit.events.bc.interest.domain.enums.AnswerType
+import knbit.events.bc.interest.domain.exceptions.IncorrectChoiceException
+import knbit.events.bc.interest.domain.policies.completingquestionnaire.AnswerPolicy
+import knbit.events.bc.interest.domain.valueobjects.question.Question
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
+import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
+import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
+import knbit.events.bc.interest.domain.valueobjects.submittedanswer.SubmittedAnswer
 import spock.lang.Specification
 
 class QuestionTest extends Specification {

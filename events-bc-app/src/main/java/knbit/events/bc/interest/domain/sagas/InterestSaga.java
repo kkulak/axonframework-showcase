@@ -1,12 +1,10 @@
 package knbit.events.bc.interest.domain.sagas;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.common.domain.valueobjects.events.SurveyingTimeExceededEvent;
+import knbit.events.bc.interest.domain.valueobjects.SurveyingTimeExceededEvent;
 import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CloseQuestionnaireCommand;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.ScheduleToken;
@@ -14,8 +12,6 @@ import org.axonframework.saga.annotation.AbstractAnnotatedSaga;
 import org.axonframework.saga.annotation.SagaEventHandler;
 import org.axonframework.saga.annotation.StartSaga;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
 
 /**
  * Created by novy on 28.05.15.

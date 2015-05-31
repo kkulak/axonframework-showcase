@@ -1,6 +1,5 @@
 package knbit.events.bc.interest.domain.aggregates;
 
-import com.codepoetics.protonpack.StreamUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -14,15 +13,15 @@ import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
-import knbit.events.bc.interest.enums.InterestAwareEventState;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionFactory;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.AnsweredQuestion;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SubmittedAnswer;
-import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
+import knbit.events.bc.interest.domain.enums.InterestAwareEventState;
+import knbit.events.bc.interest.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.domain.valueobjects.question.Question;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
+import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion;
+import knbit.events.bc.interest.domain.valueobjects.submittedanswer.AttendeeAnswer;
+import knbit.events.bc.interest.domain.valueobjects.submittedanswer.SubmittedAnswer;
+import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
