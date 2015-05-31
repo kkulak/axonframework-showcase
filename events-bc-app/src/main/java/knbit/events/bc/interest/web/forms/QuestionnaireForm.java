@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.web.forms;
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

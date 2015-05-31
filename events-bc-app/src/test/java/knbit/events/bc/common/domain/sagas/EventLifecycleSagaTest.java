@@ -1,20 +1,16 @@
 package knbit.events.bc.common.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.builders.BacklogEventCreatedBuilder;
 import knbit.events.bc.backlogevent.domain.builders.BacklogEventDeactivatedBuilder;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
-import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
-import knbit.events.bc.interest.domain.sagas.InterestSaga;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 
-import static knbit.events.bc.common.domain.enums.EventType.*;
+import static knbit.events.bc.common.domain.enums.EventType.WORKSHOP;
 
 public class EventLifecycleSagaTest {
     private AnnotatedSagaTestFixture fixture;
