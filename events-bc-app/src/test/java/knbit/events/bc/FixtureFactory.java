@@ -1,6 +1,6 @@
 package knbit.events.bc;
 
-import knbit.events.bc.backlogevent.domain.EventCommandHandler;
+import knbit.events.bc.backlogevent.domain.BacklogEventCommandHandler;
 import knbit.events.bc.backlogevent.domain.aggregates.BacklogEvent;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
@@ -27,7 +27,7 @@ public class FixtureFactory {
 
     public static FixtureConfiguration<BacklogEvent> backlogEventFixtureConfiguration() {
         FixtureConfiguration<BacklogEvent> fixture = Fixtures.newGivenWhenThenFixture(BacklogEvent.class);
-        final EventCommandHandler handler = new EventCommandHandler(fixture.getRepository());
+        final BacklogEventCommandHandler handler = new BacklogEventCommandHandler(fixture.getRepository());
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
     }
