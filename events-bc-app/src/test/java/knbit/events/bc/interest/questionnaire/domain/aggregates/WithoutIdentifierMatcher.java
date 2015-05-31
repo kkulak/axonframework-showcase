@@ -1,24 +1,11 @@
 package knbit.events.bc.interest.questionnaire.domain.aggregates;
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireCreatedEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.IdentifiedQuestionData;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.axonframework.domain.GenericEventMessage;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Created by novy on 26.05.15.
  */
 class WithoutIdentifierMatcher {
 
-    public static Matcher<Collection<GenericEventMessage<QuestionnaireCreatedEvent>>> matchesButQuestionId(Collection<QuestionnaireCreatedEvent> thoseEvents) {
+/*    public static Matcher<Collection<GenericEventMessage<QuestionnaireCreatedEvent>>> matchesButQuestionId(Collection<QuestionnaireCreatedEvent> thoseEvents) {
 
         return new BaseMatcher<Collection<GenericEventMessage<QuestionnaireCreatedEvent>>>() {
             @Override
@@ -80,6 +67,6 @@ class WithoutIdentifierMatcher {
                 description.appendValue(thoseEvents);
             }
         };
-    }
+    }*/
 
 }

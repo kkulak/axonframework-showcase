@@ -2,7 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.valueobjects.commands;
 
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.CheckableAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SubmittedAnswer;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -18,5 +18,5 @@ public class AnswerQuestionnaireCommand {
 
     private final QuestionnaireId questionnaireId;
     private final Attendee attendee;
-    private final List<CheckableAnswer> answers;
+    private final List<SubmittedAnswer> submittedAnswers;
 }

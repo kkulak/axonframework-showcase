@@ -1,22 +1,10 @@
 package knbit.events.bc.interest.questionnaire.domain.builders;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.events.QuestionnaireAnsweredEvent;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.DomainAnswer;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionDescription;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionTitle;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by novy on 26.05.15.
@@ -30,7 +18,7 @@ public class QuestionnaireAnsweredEventBuilder {
     @Setter
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
-    private final List<AnsweredQuestion> defaultAnsweredQuestions = ImmutableList.of(
+/*    private final List<AnsweredQuestion> defaultAnsweredQuestions = ImmutableList.of(
             AnsweredQuestion.of(
                     QuestionId.of("id1"), QuestionTitle.of("title1"), QuestionDescription.of("desc1"),
                     QuestionType.MULTIPLE_CHOICE, ImmutableList.of(DomainAnswer.of("opt1"), DomainAnswer.of("opt2")),
@@ -58,5 +46,5 @@ public class QuestionnaireAnsweredEventBuilder {
         return new QuestionnaireAnsweredEvent(
                 questionnaireId, attendee, answeredQuestions.isEmpty() ? defaultAnsweredQuestions : answeredQuestions
         );
-    }
+    }*/
 }

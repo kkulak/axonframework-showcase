@@ -2,7 +2,7 @@ package knbit.events.bc.interest.questionnaire.domain.valueobjects.events;
 
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.AnsweredQuestion;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.AnsweredQuestion;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
