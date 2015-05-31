@@ -32,7 +32,6 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public InterestAwareEvent(EventId eventId, EventDetails eventDetails) {
-
         apply(
                 InterestAwareEventCreated.of(eventId, eventDetails)
         );
