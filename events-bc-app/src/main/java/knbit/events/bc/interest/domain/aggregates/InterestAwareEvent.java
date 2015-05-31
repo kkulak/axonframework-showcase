@@ -5,9 +5,6 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
@@ -51,9 +48,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void voteUp(Attendee attendee) {
-        rejectOnNotYetStarted();
-        rejectOnEnded();
-        checkIfAttendeeAlreadyVoted(attendee);
+        rejectIfVotingNotAllowed(attendee);
 
         if (interestPolicy.reachedBy(positiveVoters.size() + 1)) {
             apply(InterestThresholdReachedEvent.of(id));
@@ -64,16 +59,20 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void voteDown(Attendee attendee) {
-        rejectOnNotYetStarted();
-        rejectOnEnded();
-        checkIfAttendeeAlreadyVoted(attendee);
+        rejectIfVotingNotAllowed(attendee);
 
         apply(SurveyVotedDownEvent.of(id, attendee));
     }
 
+    private void rejectIfVotingNotAllowed(Attendee attendee) {
+        rejectOn(InterestAwareEventState.CREATED);
+        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnAlreadyVoted(attendee);
+    }
+
     public void startSurveying(InterestPolicy interestPolicy, SurveyingInterestStartedEventFactory factory) {
-        rejectOnInProgress();
-        rejectOnEnded();
+        rejectOn(InterestAwareEventState.IN_PROGRESS);
+        rejectOn(InterestAwareEventState.ENDED);
 
         apply(
                 factory.newSurveyingInterestStartedEvent(id, interestPolicy)
@@ -81,8 +80,8 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void endSurveying() {
-        rejectOnNotYetStarted();
-        rejectOnEnded();
+        rejectOn(InterestAwareEventState.CREATED);
+        rejectOn(InterestAwareEventState.ENDED);
 
         apply(SurveyingInterestEndedEvent.of(id));
     }
@@ -108,7 +107,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         negativeVoters.add(event.attendee());
     }
 
-    private void checkIfAttendeeAlreadyVoted(Attendee attendee) {
+    private void rejectOnAlreadyVoted(Attendee attendee) {
         if (attendeeAlreadyVoted(attendee)) {
             throw new SurveyAlreadyVotedException(id, attendee);
         }
@@ -126,21 +125,9 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         return negativeVoters.contains(attendee);
     }
 
-    private void rejectOnNotYetStarted() {
-        if (state == InterestAwareEventState.CREATED) {
-            throw new SurveyingInterestNotYetStartedException(id);
-        }
-    }
-
-    private void rejectOnInProgress() {
-        if (state == InterestAwareEventState.IN_PROGRESS) {
-            throw new SurveyingInterestAlreadyInProgressException(id);
-        }
-    }
-
-    private void rejectOnEnded() {
-        if (state == InterestAwareEventState.ENDED) {
-            throw new SurveyingInterestAlreadyEndedException(id);
+    private void rejectOn(InterestAwareEventState incorrectState) {
+        if (state == incorrectState) {
+            throw incorrectState.correspondingIncorrectStateException(id);
         }
     }
 }
