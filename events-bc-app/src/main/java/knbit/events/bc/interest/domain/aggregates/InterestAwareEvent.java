@@ -1,19 +1,27 @@
 package knbit.events.bc.interest.domain.aggregates;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.interest.domain.exceptions.AlreadyHasQuestionnaireException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
 import knbit.events.bc.interest.enums.InterestAwareEventState;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionFactory;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 28.05.15.
@@ -25,6 +33,9 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     private Collection<Attendee> positiveVoters = Sets.newHashSet();
     private Collection<Attendee> negativeVoters = Sets.newHashSet();
     private InterestPolicy interestPolicy;
+
+    private Map<QuestionData, Question> questionnaire = Maps.newHashMap();
+    private Collection<Attendee> interviewees = Sets.newHashSet();
 
     private InterestAwareEventState state;
 
@@ -129,5 +140,39 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         if (state == incorrectState) {
             throw incorrectState.correspondingIncorrectStateException(id);
         }
+    }
+
+    public void addQuestionnaire(List<QuestionData> questionData) {
+        rejectOn(InterestAwareEventState.IN_PROGRESS);
+        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnQuestionnaireAlreadyExists();
+
+        apply(
+                QuestionnaireAddedEvent.of(questionsFrom(questionData))
+        );
+    }
+
+    @EventSourcingHandler
+    private void on(QuestionnaireAddedEvent event) {
+        event.questions()
+                .forEach(
+                        question -> questionnaire.put(
+                                question.questionData(), question
+                        )
+                );
+
+    }
+
+    private void rejectOnQuestionnaireAlreadyExists() {
+        if (!questionnaire.isEmpty()) {
+            throw new AlreadyHasQuestionnaireException(id);
+        }
+    }
+
+    private List<Question> questionsFrom(List<QuestionData> questionData) {
+        return questionData
+                .stream()
+                .map(QuestionFactory::newQuestion)
+                .collect(Collectors.toList());
     }
 }

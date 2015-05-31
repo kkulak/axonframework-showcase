@@ -48,4 +48,8 @@ public class Question {
         }
     }
 
+    public QuestionData questionData() {
+        return QuestionData.of(title, description, answerPolicy.answerType(), answerPolicy.answers());
+    }
+
 }

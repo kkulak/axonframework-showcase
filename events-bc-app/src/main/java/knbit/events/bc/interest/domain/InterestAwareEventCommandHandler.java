@@ -80,10 +80,16 @@ public class InterestAwareEventCommandHandler {
                 new SurveyingInterestWithEndingDateStartedEventFactory(endingSurveyDate.get()) : new BasicSurveyingInterestStartedEventFactory();
     }
 
-//
     @CommandHandler
     public void handle(EndSurveyingInterestCommand command) {
         final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
         interestAwareEvent.endSurveying();
+    }
+
+    @CommandHandler
+    public void handle(AddQuestionnaireCommand command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+        interestAwareEvent.addQuestionnaire(command.questions());
+
     }
 }
