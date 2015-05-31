@@ -1,10 +1,10 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.question;
 
-import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
-import knbit.events.bc.interest.questionnaire.domain.policies.AnswerValidationPolicy;
-import knbit.events.bc.interest.questionnaire.domain.policies.MultipleChoiceAnswerValidationPolicy;
-import knbit.events.bc.interest.questionnaire.domain.policies.SingleChoiceAnswerValidationPolicy;
-import knbit.events.bc.interest.questionnaire.domain.policies.TextChoiceAnswerValidationPolicy;
+import knbit.events.bc.interest.questionnaire.domain.enums.AnswerType;
+import knbit.events.bc.interest.questionnaire.domain.policies.AnswerPolicy;
+import knbit.events.bc.interest.questionnaire.domain.policies.MultipleChoiceAnswerPolicy;
+import knbit.events.bc.interest.questionnaire.domain.policies.SingleChoiceAnswerPolicy;
+import knbit.events.bc.interest.questionnaire.domain.policies.TextChoiceAnswerPolicy;
 
 /**
  * Created by novy on 26.05.15.
@@ -12,25 +12,24 @@ import knbit.events.bc.interest.questionnaire.domain.policies.TextChoiceAnswerVa
 public class QuestionFactory {
 
     public static Question newQuestion(QuestionData questionData) {
-        final QuestionType questionType = questionData.questionType();
-        final AnswerValidationPolicy validationPolicy = findPolicy(questionType);
+        final AnswerPolicy validationPolicy = findPolicy(questionData);
 
-        return new Question(
+        return Question.of(
                 questionData.title(),
                 questionData.description(),
-                validationPolicy,
-                questionData.possibleAnswers()
+                validationPolicy
         );
     }
 
-    private static AnswerValidationPolicy findPolicy(QuestionType type) {
-        switch (type) {
+    private static AnswerPolicy findPolicy(QuestionData questionData) {
+        final AnswerType answerType = questionData.answerType();
+        switch (answerType) {
             case SINGLE_CHOICE:
-                return new SingleChoiceAnswerValidationPolicy();
+                return new SingleChoiceAnswerPolicy(questionData.possibleAnswers());
             case MULTIPLE_CHOICE:
-                return new MultipleChoiceAnswerValidationPolicy();
+                return new MultipleChoiceAnswerPolicy(questionData.possibleAnswers());
             case TEXT:
-                return new TextChoiceAnswerValidationPolicy();
+                return new TextChoiceAnswerPolicy(questionData.possibleAnswers());
             default:
                 throw new IllegalArgumentException();
         }

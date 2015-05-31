@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer;
 
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Value(staticConstructor = "of")
 public class AnsweredQuestion {
 
-    private final Question question;
+    private final QuestionData questionData;
     private final List<DomainAnswer> answers;
 
 }

@@ -3,10 +3,11 @@ package knbit.events.bc.interest.questionnaire.domain.builders;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.questionnaire.domain.enums.QuestionType;
+import knbit.events.bc.interest.questionnaire.domain.enums.AnswerType;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.commands.CreateQuestionnaireCommand;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.ids.QuestionnaireId;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.DomainAnswer;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -28,9 +29,9 @@ public class CreateQuestionnaireCommandBuilder {
     private EventId eventId = EventId.of("eventId");
 
     private List<QuestionData> defaultQuestions = ImmutableList.of(
-            QuestionData.of("q1", "q2", QuestionType.SINGLE_CHOICE, ImmutableList.of("ans1", "ans2")),
-            QuestionData.of("q2", "q3", QuestionType.MULTIPLE_CHOICE, ImmutableList.of("ans1", "ans2")),
-            QuestionData.of("q3", "d3", QuestionType.TEXT, Collections.emptyList())
+/*            QuestionData.of("q1", "q2", AnswerType.SINGLE_CHOICE, ImmutableList.of(DomainAnswer.of("ans1"), DomainAnswer.of("ans2"))),
+            QuestionData.of("q2", "q3", AnswerType.MULTIPLE_CHOICE, ImmutableList.of("ans1", "ans2")),
+            QuestionData.of("q3", "d3", AnswerType.TEXT, Collections.emptyList())*/
     );
 
     private List<QuestionData> questions = Lists.newLinkedList();
