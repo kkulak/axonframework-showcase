@@ -1,11 +1,15 @@
 package knbit.events.bc.interest.domain.aggregates;
 
+import com.codepoetics.protonpack.StreamUtils;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.exceptions.AlreadyHasQuestionnaireException;
+import knbit.events.bc.interest.domain.exceptions.AttendeeAlreadyCompletedQuestionnaireException;
+import knbit.events.bc.interest.domain.exceptions.NoQuestionnaireSetException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
@@ -15,6 +19,9 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.QuestionFactory;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.answer.AnsweredQuestion;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.SubmittedAnswer;
 import knbit.events.bc.interest.survey.domain.policies.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
@@ -148,8 +155,64 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectOnQuestionnaireAlreadyExists();
 
         apply(
-                QuestionnaireAddedEvent.of(questionsFrom(questionData))
+                QuestionnaireAddedEvent.of(id, questionsFrom(questionData))
         );
+    }
+
+    public void completeQuestionnaire(AttendeeAnswer attendeeAnswer) {
+        rejectOnCompletingQuestionnaireNotAllowed(attendeeAnswer.attendee());
+
+        final List<SubmittedAnswer> answers = attendeeAnswer.submittedAnswers();
+        Preconditions.checkArgument(answers.size() == questionnaire.size(), "Wrong number of answers");
+
+        final List<AnsweredQuestion> answeredQuestions = answers
+                .stream()
+                .map(submittedAnswer -> {
+                    final Question question = questionnaire.get(submittedAnswer.questionData());
+                    return question.answer(submittedAnswer);
+                })
+                .collect(Collectors.toList());
+
+        apply(QuestionnaireCompletedEvent.of(id, attendeeAnswer.attendee(), answeredQuestions));
+    }
+
+    @EventSourcingHandler
+    private void on(QuestionnaireCompletedEvent event) {
+        interviewees.add(event.attendee());
+    }
+
+
+    private void rejectOnCompletingQuestionnaireNotAllowed(Attendee attendee) {
+        rejectOn(InterestAwareEventState.CREATED);
+        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnQuestionnaireDoesNotExist();
+        rejectOnVotedDown(attendee);
+        rejectOnNotYetVotedUp(attendee);
+        rejectOnAttendeeAlreadyCompletedQuestionnaire(attendee);
+    }
+
+    private void rejectOnQuestionnaireDoesNotExist() {
+        if (questionnaire.isEmpty()) {
+            throw new NoQuestionnaireSetException(id);
+        }
+    }
+
+    private void rejectOnAttendeeAlreadyCompletedQuestionnaire(Attendee attendee) {
+        if (interviewees.contains(attendee)) {
+            throw new AttendeeAlreadyCompletedQuestionnaireException(id, attendee);
+        }
+    }
+
+    private void rejectOnVotedDown(Attendee attendee) {
+        if (votedDown(attendee)) {
+            throw new VotedDownBeforeException(id, attendee);
+        }
+    }
+
+    private void rejectOnNotYetVotedUp(Attendee attendee) {
+        if (!votedUp(attendee)) {
+            throw new NotVotedUpException(id, attendee);
+        }
     }
 
     @EventSourcingHandler

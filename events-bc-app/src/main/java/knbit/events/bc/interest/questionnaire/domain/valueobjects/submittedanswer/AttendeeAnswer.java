@@ -11,14 +11,10 @@ import java.util.List;
  */
 
 @Accessors(fluent = true)
-@Value
+@Value(staticConstructor = "of")
 public class AttendeeAnswer {
 
     private final Attendee attendee;
     private final List<SubmittedAnswer> submittedAnswers;
 
-    public AttendeeAnswer(Attendee attendee, List<SubmittedAnswer> submittedAnswers) {
-        this.attendee = attendee;
-        this.submittedAnswers = submittedAnswers;
-    }
 }

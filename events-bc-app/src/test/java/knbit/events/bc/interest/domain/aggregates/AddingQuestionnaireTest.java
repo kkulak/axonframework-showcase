@@ -49,10 +49,6 @@ public class AddingQuestionnaireTest {
     @Test
     public void shouldNotBeAbleToAddQuestionnaireIfSurveyingInProgress() throws Exception {
 
-        QuestionData soleQuestion = QuestionDataBuilder
-                .instance()
-                .build();
-
         fixture
                 .given(
                         InterestAwareEventCreated.of(
@@ -67,7 +63,7 @@ public class AddingQuestionnaireTest {
                 .when(
                         AddQuestionnaireCommand.of(
                                 eventId,
-                                ImmutableList.of(soleQuestion)
+                                ImmutableList.of(soleQuestionData)
                         )
                 )
                 .expectException(SurveyingInterestAlreadyInProgressException.class);
@@ -109,6 +105,7 @@ public class AddingQuestionnaireTest {
                         ),
 
                         QuestionnaireAddedEvent.of(
+                                eventId,
                                 ImmutableList.of(soleQuestion)
                         )
                 )
@@ -138,6 +135,7 @@ public class AddingQuestionnaireTest {
                 )
                 .expectEvents(
                         QuestionnaireAddedEvent.of(
+                                eventId,
                                 ImmutableList.of(soleQuestion)
                         )
                 );

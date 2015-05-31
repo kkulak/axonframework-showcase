@@ -90,6 +90,11 @@ public class InterestAwareEventCommandHandler {
     public void handle(AddQuestionnaireCommand command) {
         final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
         interestAwareEvent.addQuestionnaire(command.questions());
+    }
 
+    @CommandHandler
+    public void handle(CompleteQuestionnaireCommand command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+        interestAwareEvent.completeQuestionnaire(command.answer());
     }
 }

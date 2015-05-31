@@ -1,11 +1,9 @@
-package knbit.events.bc.interest.domain.valueobjects.events;
+package knbit.events.bc.interest.domain.valueobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.questionnaire.domain.valueobjects.question.Question;
+import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswer.AttendeeAnswer;
 import lombok.Value;
 import lombok.experimental.Accessors;
-
-import java.util.List;
 
 /**
  * Created by novy on 31.05.15.
@@ -13,8 +11,9 @@ import java.util.List;
 
 @Accessors(fluent = true)
 @Value(staticConstructor = "of")
-public class QuestionnaireAddedEvent {
+public class CompleteQuestionnaireCommand {
 
     private final EventId eventId;
-    private final List<Question> questions;
+    private final AttendeeAnswer answer;
+
 }

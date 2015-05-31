@@ -40,7 +40,7 @@ public class QuestionnaireCommandHandler {
     public void handle(AnswerQuestionnaireCommand command) {
         final Questionnaire questionnaire = repository.load(command.questionnaireId());
         questionnaire.answerQuestion(
-                new AttendeeAnswer(command.attendee(), command.submittedAnswers())
+                AttendeeAnswer.of(command.attendee(), command.submittedAnswers())
         );
     }
 
