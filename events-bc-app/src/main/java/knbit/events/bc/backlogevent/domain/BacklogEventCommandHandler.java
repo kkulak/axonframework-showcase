@@ -15,7 +15,7 @@ public class BacklogEventCommandHandler {
     private final Repository<BacklogEvent> backlogEventRepository;
 
     @Autowired
-    public BacklogEventCommandHandler(@Qualifier("backlogEventRepositories") Repository<BacklogEvent> backlogEventRepository) {
+    public BacklogEventCommandHandler(@Qualifier("backlogEventRepository") Repository<BacklogEvent> backlogEventRepository) {
         this.backlogEventRepository = backlogEventRepository;
     }
 

@@ -1,10 +1,13 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.eventproposal.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
@@ -42,15 +45,17 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(ProposalAcceptedEvent event) {
-/*        commandGateway.send(
+        commandGateway.send(
                 new CreateBacklogEventCommand(
                         new EventId(),
-                        proposalName.value(),
-                        proposalDescription.value(),
-                        proposalType,
-                        eventFrequency
+                        EventDetails.of(
+                                proposalName,
+                                proposalDescription,
+                                proposalType,
+                                eventFrequency
+                        )
                 )
-        );*/
+        );
     }
 
     @EndSaga

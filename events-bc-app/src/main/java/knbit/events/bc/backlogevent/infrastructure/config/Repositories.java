@@ -17,7 +17,7 @@ public class Repositories {
     private EventBus bus;
 
     @Bean
-    public Repository<BacklogEvent> eventRepository() {
+    public Repository<BacklogEvent> backlogEventRepository() {
         EventSourcingRepository<BacklogEvent> repository = new EventSourcingRepository<>(BacklogEvent.class, store);
         repository.setEventBus(bus);
         return repository;

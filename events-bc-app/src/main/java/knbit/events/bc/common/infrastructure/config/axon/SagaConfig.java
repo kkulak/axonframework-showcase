@@ -1,5 +1,6 @@
 package knbit.events.bc.common.infrastructure.config.axon;
 
+import knbit.events.bc.common.domain.sagas.EventLifecycleSaga;
 import knbit.events.bc.eventproposal.domain.sagas.EventCreationalSaga;
 import knbit.events.bc.interest.domain.sagas.InterestSaga;
 import org.axonframework.eventhandling.EventBus;
@@ -27,7 +28,7 @@ public class SagaConfig {
     public AnnotatedSagaManager sagaManager(SagaRepository sagaRepository, SagaFactory sagaFactory, EventBus eventBus) {
         final AnnotatedSagaManager annotatedSagaManager = new AnnotatedSagaManager(
                 sagaRepository, sagaFactory,
-                EventCreationalSaga.class, InterestSaga.class
+                EventCreationalSaga.class, InterestSaga.class, EventLifecycleSaga.class
         );
         eventBus.subscribe(annotatedSagaManager);
         return annotatedSagaManager;

@@ -20,13 +20,13 @@ public class KanbanBoardEventStatusHandler {
 
     @EventHandler
     private void handle(BacklogEventCreated event) {
-/*        kanbanBoardRepository.save(
+        kanbanBoardRepository.save(
             new KanbanBoard(
-                    event.eventId().value(), event.name().value(),
-                    event.eventType(), event.eventFrequency(), event.status(),
-                    EventStateMachine.match(event.status())
+                    event.eventId().value(), event.eventDetails().name().value(),
+                    event.eventDetails().type(), event.eventDetails().frequency(),
+                    event.status(), EventStateMachine.match(event.status())
             )
-        );*/
+        );
     }
 
     @EventHandler
