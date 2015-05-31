@@ -9,9 +9,9 @@ import knbit.events.bc.interest.questionnaire.domain.valueobjects.submittedanswe
 import spock.lang.Specification
 
 class QuestionTest extends Specification {
-    def answerPolicy
-    def possibleAnswers
-    def questionData
+    def AnswerPolicy answerPolicy
+    def List<DomainAnswer> possibleAnswers
+    def QuestionData questionData
 
     void setup() {
         answerPolicy = Mock(AnswerPolicy)
@@ -23,7 +23,7 @@ class QuestionTest extends Specification {
 
     def "should thrown exception given answer not meeting answer policy"() {
         given:
-        answerPolicy.validate(_) >> { return false }
+        answerPolicy.validate(_ as List<DomainAnswer>) >> { return false }
         def submittedAnswer = SubmittedAnswer.of(questionData, [DomainAnswer.of("ans1")])
         def question = Question.of(QuestionTitle.of("title"), QuestionDescription.of("description"), answerPolicy)
 
@@ -36,7 +36,7 @@ class QuestionTest extends Specification {
 
     def "should return AnsweredQuestion fulfilled object on answer meeting answer policy"() {
         given:
-        answerPolicy.validate(_) >> { return true }
+        answerPolicy.validate(_ as List<DomainAnswer>) >> { return true }
         answerPolicy.answerType() >> { return AnswerType.SINGLE_CHOICE }
         answerPolicy.answers() >> { return [DomainAnswer.of("ans1")] }
         def submittedAnswer = SubmittedAnswer.of(questionData, [DomainAnswer.of("ans1")])
