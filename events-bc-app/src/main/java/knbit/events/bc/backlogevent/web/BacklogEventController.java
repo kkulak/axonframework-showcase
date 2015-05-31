@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/event")
+@RequestMapping(value = "/events")
 public class BacklogEventController {
 
     private final CommandGateway gateway;
