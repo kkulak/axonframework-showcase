@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +16,9 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SurveyForm {
 
-    private Optional<DateTime> endOfSurveying;
-    private Optional<Integer> minimalInterestThreshold;
-    @NotNull
-    private List<QuestionDataDTO> questions;
+    private Optional<DateTime> endOfSurveying = Optional.empty();
+    private Optional<Integer> minimalInterestThreshold = Optional.empty();
+    private List<QuestionDataDTO> questions = new LinkedList<>();
 
     @Data
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
