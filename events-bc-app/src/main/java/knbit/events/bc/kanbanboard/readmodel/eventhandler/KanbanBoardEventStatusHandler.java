@@ -32,12 +32,12 @@ public class KanbanBoardEventStatusHandler {
     @EventHandler
     private void handle(EventStatusAware event) {
         final KanbanBoard kanbanBoardEvent = kanbanBoardRepository.findByEventDomainId(
-                event.eventId().toString()
+                event.eventId().value()
         );
         kanbanBoardEvent.setEventStatus(event.status());
-        kanbanBoardEvent.setReachableStatus(
-                EventStateMachine.match(event.status())
-        );
+        kanbanBoardEvent.getReachableStatus().clear();
+        kanbanBoardEvent.getReachableStatus()
+                .addAll(EventStateMachine.match(event.status()));
         kanbanBoardRepository.save(kanbanBoardEvent);
     }
 
