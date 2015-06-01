@@ -46,6 +46,7 @@ dependencies {
 
     // others:
     compile 'com.codepoetics:protonpack:1.7'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.0-rc1'
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
 
 }
