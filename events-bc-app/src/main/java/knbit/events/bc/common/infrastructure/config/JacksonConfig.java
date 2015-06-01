@@ -2,6 +2,7 @@ package knbit.events.bc.common.infrastructure.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,10 +16,20 @@ public class JacksonConfig {
 
     @Primary
     @Bean
-    public ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper(Jdk8Module jdk8Module, JodaModule jodaModule) {
         final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new Jdk8Module());
+        objectMapper.registerModules(jdk8Module, jodaModule);
         return objectMapper;
+    }
+
+    @Bean
+    public Jdk8Module jdk8Module() {
+        return new Jdk8Module();
+    }
+
+    @Bean
+    public JodaModule jodaModule() {
+        return new JodaModule();
     }
 
 }
