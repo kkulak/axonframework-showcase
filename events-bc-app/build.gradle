@@ -26,6 +26,7 @@ dependencies {
     // spring-boot
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:1.2.3.RELEASE'
 
     // jackson-modules
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.6.0-rc1'
@@ -50,8 +51,8 @@ dependencies {
 
     // others:
     compile 'com.codepoetics:protonpack:1.7'
-
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
+    testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
 
 }
 

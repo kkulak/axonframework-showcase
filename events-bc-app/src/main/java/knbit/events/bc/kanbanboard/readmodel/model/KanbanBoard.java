@@ -6,10 +6,7 @@ import knbit.events.bc.common.readmodel.AbstractEntity;
 import knbit.events.bc.common.readmodel.EventStatus;
 import lombok.*;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -24,7 +21,7 @@ public class KanbanBoard extends AbstractEntity {
     private EventType eventType;
     private EventFrequency eventFrequency;
     private EventStatus eventStatus;
-    @ElementCollection(targetClass = EventStatus.class)
+    @ElementCollection(targetClass = EventStatus.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<EventStatus> reachableStatus;
 

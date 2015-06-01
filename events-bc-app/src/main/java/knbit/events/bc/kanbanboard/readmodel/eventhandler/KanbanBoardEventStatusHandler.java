@@ -19,7 +19,7 @@ public class KanbanBoardEventStatusHandler {
     }
 
     @EventHandler
-    private void handle(BacklogEventCreated event) {
+    public void handle(BacklogEventCreated event) {
         kanbanBoardRepository.save(
             new KanbanBoard(
                     event.eventId().value(), event.eventDetails().name().value(),
@@ -30,7 +30,7 @@ public class KanbanBoardEventStatusHandler {
     }
 
     @EventHandler
-    private void handle(EventStatusAware event) {
+    public void handle(EventStatusAware event) {
         final KanbanBoard kanbanBoardEvent = kanbanBoardRepository.findByEventDomainId(
                 event.eventId().value()
         );
