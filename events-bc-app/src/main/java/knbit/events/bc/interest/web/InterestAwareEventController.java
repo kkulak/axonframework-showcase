@@ -67,8 +67,8 @@ public class InterestAwareEventController {
                 .map(viewModelQuestionData -> QuestionData.of(
                         QuestionTitle.of(viewModelQuestionData.getTitle()),
                         QuestionDescription.of(viewModelQuestionData.getDescription()),
-                        viewModelQuestionData.getAnswerType(),
-                        viewModelQuestionData.getPossibleAnswers()
+                        viewModelQuestionData.getType(),
+                        viewModelQuestionData.getAnswers()
                                 .stream()
                                 .map(DomainAnswer::of)
                                 .collect(Collectors.toList())

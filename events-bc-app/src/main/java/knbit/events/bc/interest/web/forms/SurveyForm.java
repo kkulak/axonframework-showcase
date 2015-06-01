@@ -30,9 +30,9 @@ public class SurveyForm {
         @NotNull
         private String description;
         @NotNull
-        private AnswerType answerType;
+        private AnswerType type;
         @NotNull
-        private List<String> possibleAnswers;
+        private List<String> answers;
     }
 
 }
