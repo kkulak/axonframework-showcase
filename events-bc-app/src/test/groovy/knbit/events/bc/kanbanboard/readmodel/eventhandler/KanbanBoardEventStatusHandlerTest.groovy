@@ -37,13 +37,19 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
 
     def "should save kanbanboard entity on handling BacklogEventCreated"() {
         given:
-        def event = BacklogEventCreatedBuilder.instance().build();
+        def event = BacklogEventCreatedBuilder.instance().build()
 
         when:
-        handler.handle(event);
+        handler.handle(event)
 
         then:
-        repository.findAll().size() == 1
+        def persistentEvent = repository.findByEventDomainId(event.eventId().value())
+        persistentEvent.eventDomainId == event.eventId().value()
+        persistentEvent.eventFrequency == event.eventDetails().frequency()
+        persistentEvent.eventStatus == BACKLOG
+        persistentEvent.eventType == LECTURE
+        persistentEvent.name == event.eventDetails().name().value()
+        persistentEvent.reachableStatus == [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
     }
 
     def "should update kanbanboard entity on handling EventStatusAware"() {
@@ -55,7 +61,13 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
         handler.handle(event)
 
         then:
-        repository.findAll().size() == 1
+        def persistentEvent = repository.findByEventDomainId(event.eventId().value())
+        persistentEvent.eventDomainId == event.eventId().value()
+        persistentEvent.eventFrequency == event.eventDetails().frequency()
+        persistentEvent.eventStatus == SURVEY_INTEREST
+        persistentEvent.eventType == LECTURE
+        persistentEvent.name == event.eventDetails().name().value()
+        persistentEvent.reachableStatus == [SURVEY_INTEREST, CHOOSING_TERM]
     }
 
 }

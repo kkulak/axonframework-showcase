@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.web;
+package knbit.events.bc.eventproposal.web.forms;
 
 import lombok.*;
 

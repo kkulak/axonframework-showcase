@@ -10,7 +10,7 @@ import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStarted
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
-import knbit.events.bc.interest.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.WithFixedThresholdPolicy;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;

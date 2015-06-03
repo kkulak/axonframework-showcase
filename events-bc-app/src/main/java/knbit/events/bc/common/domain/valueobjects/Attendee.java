@@ -1,4 +1,4 @@
-package knbit.events.bc.interest.domain.valueobjects;
+package knbit.events.bc.common.domain.valueobjects;
 
 import lombok.Value;
 import lombok.experimental.Accessors;

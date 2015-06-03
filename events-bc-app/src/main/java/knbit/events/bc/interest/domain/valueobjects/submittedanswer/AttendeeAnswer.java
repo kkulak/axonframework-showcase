@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects.submittedanswer;
 
-import knbit.events.bc.interest.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import lombok.Value;
 import lombok.experimental.Accessors;
 

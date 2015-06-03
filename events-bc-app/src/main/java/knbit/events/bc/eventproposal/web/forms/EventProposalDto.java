@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.web;
+package knbit.events.bc.eventproposal.web.forms;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;

@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireCompletedEvent;
 import knbit.events.bc.interest.domain.enums.AnswerType;
-import knbit.events.bc.interest.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle;

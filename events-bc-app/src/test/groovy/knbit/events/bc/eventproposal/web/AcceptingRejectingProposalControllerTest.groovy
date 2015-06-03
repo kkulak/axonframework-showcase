@@ -2,6 +2,7 @@ package knbit.events.bc.eventproposal.web
 
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.AcceptProposalCommand
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand
+import knbit.events.bc.eventproposal.web.forms.ProposalStateDto
 import org.axonframework.commandhandling.gateway.CommandGateway
 import spock.lang.Specification
 
