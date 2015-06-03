@@ -28,11 +28,18 @@ public class SagaConfig {
     @Bean
     public AnnotatedSagaManager sagaManager(SagaRepository sagaRepository, EventBus eventBus) {
         final AnnotatedSagaManager annotatedSagaManager = new AnnotatedSagaManager(
-                sagaRepository, new GenericSagaFactory(),
+                sagaRepository, sagaFactory(),
                 EventCreationalSaga.class, InterestSaga.class, EventLifecycleSaga.class
         );
         eventBus.subscribe(annotatedSagaManager);
         return annotatedSagaManager;
+    }
+
+    @Bean
+    public SagaFactory sagaFactory() {
+        final GenericSagaFactory sagaFactory = new GenericSagaFactory();
+        sagaFactory.setResourceInjector(resourceInjector());
+        return sagaFactory;
     }
 
     @Bean
