@@ -32,6 +32,9 @@ events-bc-app/logs
 notification-bc/logs
 events-bc-announcement/logs
 
+# Axon temporary eventstore directory
+events-bc-app/data
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
