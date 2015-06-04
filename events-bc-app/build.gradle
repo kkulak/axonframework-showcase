@@ -49,6 +49,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
     compile 'hsqldb:hsqldb:1.8.0.10'
 
+    // groovy
+    compile 'org.codehaus.groovy:groovy-all:2.4.3'
+    compile 'com.gmongo:gmongo:1.5'
+    compile 'com.foursquare:fongo:1.3.0'
+
     // others:
     compile 'com.codepoetics:protonpack:1.7'
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
