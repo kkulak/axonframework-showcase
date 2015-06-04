@@ -1,33 +1,24 @@
-package knbit.events.bc.interest.viewmodel.eventmaster
+package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
+import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import org.axonframework.eventhandling.annotation.EventHandler
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 /**
  * Created by novy on 04.06.15.
  */
-class SurveyEventMasterViewModelCommandHandler {
 
-    def SurveyEventMasterViewModelResource repository
+@Component
+class QuestionnaireEventHandler {
 
-    SurveyEventMasterViewModelCommandHandler(SurveyEventMasterViewModelResource repository) {
-        this.repository = repository
-    }
+    def DBCollection collection
 
-    @EventHandler
-    def on(InterestAwareEventCreated event) {
-        def eventId = event.eventId()
-        def eventDetails = event.eventDetails()
-
-        repository.add([
-                domainId      : eventId.value(),
-                name          : eventDetails.name().value(),
-                description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency()
-        ])
+    @Autowired
+    QuestionnaireEventHandler(DBCollection collection) {
+        this.collection = collection
     }
 
     @EventHandler
@@ -35,11 +26,14 @@ class SurveyEventMasterViewModelCommandHandler {
         def domainId = event.eventId().value()
         def questions = event.questions()
 
-        repository.addQuestions(
-                domainId, prepareForAnswering(questions)
+        addQuestions(domainId, prepareForAnswering(questions))
+    }
+
+    private def addQuestions(domainId, questions) {
+        collection.update(
+                [domainId: domainId],
+                [$set: [questions: questions]]
         )
-
-
     }
 
     private static def prepareForAnswering(List<Question> questions) {
@@ -60,3 +54,5 @@ class SurveyEventMasterViewModelCommandHandler {
         }
     }
 }
+
+

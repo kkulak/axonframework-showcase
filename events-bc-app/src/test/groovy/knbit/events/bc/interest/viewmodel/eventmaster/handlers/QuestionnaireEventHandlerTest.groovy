@@ -1,18 +1,13 @@
-package knbit.events.bc.interest.viewmodel.eventmaster
+package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
 import com.foursquare.fongo.Fongo
 import com.gmongo.GMongo
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
-import knbit.events.bc.common.domain.valueobjects.Description
-import knbit.events.bc.common.domain.valueobjects.EventDetails
+import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.MultipleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.SingleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.TextChoiceAnswerPolicy
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
@@ -23,54 +18,29 @@ import spock.lang.Specification
 /**
  * Created by novy on 04.06.15.
  */
-class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
+class QuestionnaireEventHandlerTest extends Specification {
 
-    def SurveyEventMasterViewModelCommandHandler objectUnderTest
-    def SurveyEventMasterViewModelResource repository
+    def QuestionnaireEventHandler objectUnderTest
+    def DBCollection collection
 
     def EventId eventId
-    def EventDetails eventDetails
 
     void setup() {
 
         def GMongo gMongo = new GMongo(
-                new Fongo("test-db").getMongo()
+                new Fongo("test-fongo").getMongo()
         )
-        repository = new SurveyEventMasterViewModelResource(gMongo.getDB("test-db"))
-        objectUnderTest = new SurveyEventMasterViewModelCommandHandler(repository)
+        def db = gMongo.getDB("test-db")
+        collection = db.getCollection("test-collection")
+
+        objectUnderTest = new QuestionnaireEventHandler(collection)
         eventId = EventId.of("eventId")
-        eventDetails = EventDetails.of(
-                Name.of("name"),
-                Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
-        )
-    }
-
-    def "should create database entry containing only event details on InterestAwareEventCreated event"() {
-
-        given:
-        def interestAwareEventCreated = new InterestAwareEventCreated(eventId, eventDetails)
-
-        when:
-        objectUnderTest.on interestAwareEventCreated
-
-        then:
-        def interestAwareEventViewModel = repository.loadByEventDomainId(
-                eventId.value()
-        )
-
-        interestAwareEventViewModel["domainId"] == "eventId"
-        interestAwareEventViewModel["name"] == "name"
-        interestAwareEventViewModel["description"] == "desc"
-        interestAwareEventViewModel["eventType"] == EventType.WORKSHOP
-        interestAwareEventViewModel["eventFrequency"] == EventFrequency.ONE_OFF
     }
 
     def "adding questionnaire with multiple choice question should result in 0 votes stored for each answer"() {
 
         given:
-        objectUnderTest.on new InterestAwareEventCreated(eventId, eventDetails)
+        collection << [domainId: eventId.value()]
 
         when:
         objectUnderTest.on(QuestionnaireAddedEvent.of(
@@ -85,11 +55,11 @@ class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
                 )
         ]))
 
-        def interestAwareEventViewModel = repository.loadByEventDomainId(
-                eventId.value()
+        then:
+        def interestAwareEventViewModel = collection.findOne(
+                domainId: eventId.value()
         )
 
-        then:
         interestAwareEventViewModel["questions"] == [
                 [
                         title       : "title",
@@ -109,10 +79,11 @@ class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
         ]
     }
 
+
     def "adding questionnaire with single choice question should result in 0 votes stored for each answer"() {
 
         given:
-        objectUnderTest.on new InterestAwareEventCreated(eventId, eventDetails)
+        collection << [domainId: eventId.value()]
 
         when:
         objectUnderTest.on(QuestionnaireAddedEvent.of(
@@ -127,11 +98,11 @@ class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
                 )
         ]))
 
-        def interestAwareEventViewModel = repository.loadByEventDomainId(
-                eventId.value()
+        then:
+        def interestAwareEventViewModel = collection.findOne(
+                domainId: eventId.value()
         )
 
-        then:
         interestAwareEventViewModel["questions"] == [
                 [
                         title       : "title",
@@ -154,7 +125,7 @@ class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
     def "adding questionnaire with text question should result in question with no answers"() {
 
         given:
-        objectUnderTest.on new InterestAwareEventCreated(eventId, eventDetails)
+        collection << [domainId: eventId.value()]
 
         when:
         objectUnderTest.on(QuestionnaireAddedEvent.of(
@@ -166,11 +137,11 @@ class SurveyEventMasterViewModelCommandHandlerTest extends Specification {
                 )
         ]))
 
-        def interestAwareEventViewModel = repository.loadByEventDomainId(
-                eventId.value()
+        then:
+        def interestAwareEventViewModel = collection.findOne(
+                domainId: eventId.value()
         )
 
-        then:
         interestAwareEventViewModel["questions"] == [
                 [
                         title       : "title",
