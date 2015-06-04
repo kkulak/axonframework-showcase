@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class FancyController {
 
-    def SurveyEventMasterViewModelRepository repository
+    def SurveyEventMasterViewModelResource repository
 
     @Autowired
-    FancyController(SurveyEventMasterViewModelRepository repository) {
+    FancyController(SurveyEventMasterViewModelResource repository) {
         this.repository = repository
     }
 
