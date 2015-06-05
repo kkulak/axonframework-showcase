@@ -4,12 +4,8 @@ import knbit.events.bc.backlogevent.domain.valueobjects.commands.DeactivateBackl
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand;
 import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
-import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
-import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription;
-import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle;
-import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer;
+import knbit.events.bc.interest.web.forms.QuestionDataDTO;
 import knbit.events.bc.interest.web.forms.SurveyForm;
-import knbit.events.bc.interest.web.forms.SurveyForm.QuestionDataDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static knbit.events.bc.interest.web.forms.MappingUtils.toQuestionData;
 
 @RestController
 @RequestMapping(value = "/events")
@@ -48,7 +45,7 @@ public class InterestAwareEventController {
         final List<QuestionDataDTO> questions = form.getQuestions();
         if (!questions.isEmpty()) {
             gateway.sendAndWait(
-                    AddQuestionnaireCommand.of(id, toDomainRepresentation(questions))
+                    AddQuestionnaireCommand.of(id, toQuestionData(questions))
             );
         }
     }
@@ -59,21 +56,6 @@ public class InterestAwareEventController {
                         id, form.getMinimalInterestThreshold(), form.getEndOfSurveying()
                 )
         );
-    }
-
-    private List<QuestionData> toDomainRepresentation(List<QuestionDataDTO> viewModelRepresentation) {
-        return viewModelRepresentation
-                .stream()
-                .map(viewModelQuestionData -> QuestionData.of(
-                        QuestionTitle.of(viewModelQuestionData.getTitle()),
-                        QuestionDescription.of(viewModelQuestionData.getDescription()),
-                        viewModelQuestionData.getType(),
-                        viewModelQuestionData.getAnswers()
-                                .stream()
-                                .map(DomainAnswer::of)
-                                .collect(Collectors.toList())
-                ))
-                .collect(Collectors.toList());
     }
 
 }

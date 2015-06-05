@@ -9,6 +9,7 @@ import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
 import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
+import knbit.events.bc.interest.web.forms.QuestionDataDTO
 import knbit.events.bc.interest.web.forms.SurveyForm
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.joda.time.DateTime
@@ -47,7 +48,7 @@ class InterestAwareEventControllerTest extends Specification {
         def objectUnderTest = new InterestAwareEventController(commandGatewayMock)
         def surveyForm = new SurveyForm()
         surveyForm.questions = [
-                new SurveyForm.QuestionDataDTO(
+                new QuestionDataDTO(
                         "title",
                         "desc",
                         AnswerType.SINGLE_CHOICE,
