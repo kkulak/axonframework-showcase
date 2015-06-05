@@ -8,6 +8,7 @@ import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
@@ -20,7 +21,7 @@ class QuestionnaireEventHandler {
     def DBCollection collection
 
     @Autowired
-    QuestionnaireEventHandler(DBCollection collection) {
+    QuestionnaireEventHandler(@Qualifier("questionnaire") DBCollection collection) {
         this.collection = collection
     }
 

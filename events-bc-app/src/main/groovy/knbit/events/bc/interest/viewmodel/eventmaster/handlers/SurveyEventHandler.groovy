@@ -5,6 +5,8 @@ import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent
 import org.axonframework.eventhandling.annotation.EventHandler
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
@@ -16,7 +18,8 @@ class SurveyEventHandler {
 
     def DBCollection collection
 
-    SurveyEventHandler(DBCollection collection) {
+    @Autowired
+    SurveyEventHandler(@Qualifier("survey") DBCollection collection) {
         this.collection = collection
     }
 

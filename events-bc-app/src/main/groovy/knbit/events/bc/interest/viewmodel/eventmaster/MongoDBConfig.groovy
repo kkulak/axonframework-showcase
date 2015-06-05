@@ -25,8 +25,13 @@ class MongoDBConfig {
         mongo.getDB("survey-event-master-view-model")
     }
 
-    @Bean
-    def DBCollection collection(DB db) {
-        db.surveyEventMasterViewModel
+    @Bean(name = "survey")
+    def DBCollection surveyCollection(DB db) {
+        db.surveyCollection
+    }
+
+    @Bean(name = "questionnaire")
+    def DBCollection questionnaireCollection(DB db) {
+        db.questionnaireCollection
     }
 }

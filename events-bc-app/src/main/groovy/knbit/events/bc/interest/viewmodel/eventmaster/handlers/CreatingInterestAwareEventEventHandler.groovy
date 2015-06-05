@@ -4,6 +4,7 @@ import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 /**
@@ -16,7 +17,7 @@ class CreatingInterestAwareEventEventHandler {
     def DBCollection collection
 
     @Autowired
-    CreatingInterestAwareEventEventHandler(DBCollection collection) {
+    CreatingInterestAwareEventEventHandler(@Qualifier("survey") DBCollection collection) {
         this.collection = collection
     }
 
