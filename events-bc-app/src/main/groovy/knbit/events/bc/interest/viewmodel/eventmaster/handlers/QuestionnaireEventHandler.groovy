@@ -1,8 +1,11 @@
 package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
 import com.mongodb.DBCollection
+import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireCompletedEvent
 import knbit.events.bc.interest.domain.valueobjects.question.Question
+import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -26,25 +29,82 @@ class QuestionnaireEventHandler {
         def domainId = event.eventId().value()
         def questions = event.questions()
 
-        addQuestions(domainId, prepareForAnswering(questions))
+        collection << prepareForAnswering(domainId, questions)
     }
 
-    private def addQuestions(domainId, questions) {
-        collection.update(
-                [domainId: domainId],
-                [$set: [questions: questions]]
-        )
+    @EventHandler
+    def on(QuestionnaireCompletedEvent event) {
+        def eventId = event.eventId()
+        completeQuestionnaire(eventId.value(), event.answeredQuestions())
     }
 
-    private static def prepareForAnswering(List<Question> questions) {
+    private def completeQuestionnaire(String domainId, Collection<AnsweredQuestion> answeredQuestions) {
+        def textQuestions = answeredQuestions.findAll {
+            it.questionData().answerType() == AnswerType.TEXT
+        }
+
+        def singleAndMultipleChoice = answeredQuestions - textQuestions
+
+        answerTextQuestions(domainId, textQuestions)
+        answerSingleAndMultipleChoiceQuestions(domainId, singleAndMultipleChoice)
+
+    }
+
+    private def answerTextQuestions(String domainId, Collection<AnsweredQuestion> questions) {
+        // todo: $each not working ??
+        questions.each {
+            def questionData = it.questionData()
+
+            it.answers().each {
+                collection.update(
+                        [
+                                domainId    : domainId,
+                                title       : questionData.title().value(),
+                                description : questionData.description().value(),
+                                questionType: questionData.answerType()
+                        ],
+                        [
+                                $push: [
+                                        answers: it.value()
+                                ]
+                        ]
+                )
+            }
+        }
+    }
+
+    def answerSingleAndMultipleChoiceQuestions(String domainId, Collection<AnsweredQuestion> answeredQuestions) {
+
+        answeredQuestions.each {
+            def questionData = it.questionData()
+            it.answers().each {
+                collection.update(
+                        [
+                                domainId       : domainId,
+                                title          : questionData.title().value(),
+                                description    : questionData.description().value(),
+                                questionType   : questionData.answerType(),
+                                "answers.value": it.value()
+                        ],
+                        [$inc: ['answers.$.answered': 1]]
+                )
+            }
+        }
+    }
+
+    private static def prepareForAnswering(String domainId, List<Question> questions) {
+        def questionNumber = 0;
+
         questions.collect {
             def questionData = it.questionData()
 
             [
-                    title       : questionData.title().value(),
-                    description : questionData.description().value(),
-                    questionType: questionData.answerType(),
-                    answers     : questionData.possibleAnswers().collect {
+                    domainId      : domainId,
+                    questionNumber: questionNumber++,
+                    title         : questionData.title().value(),
+                    description   : questionData.description().value(),
+                    questionType  : questionData.answerType(),
+                    answers       : questionData.possibleAnswers().collect {
                         [
                                 value   : it.value(),
                                 answered: 0
