@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Created by novy on 04.06.15.
  */
-@RestController("/events")
+@RestController
+@RequestMapping("/events")
 class InterestSurveyingEventMasterViewModelController {
 
     def InterestSurveyingEventMasterViewModelRepository repository
