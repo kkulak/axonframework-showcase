@@ -29,7 +29,7 @@ public class QuestionFactory {
             case MULTIPLE_CHOICE:
                 return new MultipleChoiceAnswerPolicy(questionData.possibleAnswers());
             case TEXT:
-                return new TextChoiceAnswerPolicy(questionData.possibleAnswers());
+                return new TextChoiceAnswerPolicy();
             default:
                 throw new IllegalArgumentException();
         }
