@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.viewmodel.eventmaster
 
-import com.foursquare.fongo.Fongo
+import com.github.fakemongo.Fongo
 import com.gmongo.GMongo
 import com.mongodb.DB
 import com.mongodb.DBCollection

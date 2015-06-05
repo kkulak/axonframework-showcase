@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
-import com.foursquare.fongo.Fongo
+import com.github.fakemongo.Fongo
 import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
@@ -38,6 +38,7 @@ class SurveyEventHandlerTest extends Specification {
 
         given:
         collection << [
+                _id     : 'id',
                 domainId: eventId.value()
         ]
 
@@ -53,14 +54,19 @@ class SurveyEventHandlerTest extends Specification {
         )
 
         then:
-        interestAwareEventViewModel["votedUp"] == 0
-        interestAwareEventViewModel["votedDown"] == 0
+        interestAwareEventViewModel == [
+                _id      : 'id',
+                domainId : eventId.value(),
+                votedUp  : 0,
+                votedDown: 0
+        ]
     }
 
     def "should increase positive votes on SurveyVotedUpEvent"() {
 
         given:
         collection << [
+                _id     : 'id',
                 domainId: eventId.value(),
                 votedUp : 0
         ]
@@ -77,13 +83,18 @@ class SurveyEventHandlerTest extends Specification {
         )
 
         then:
-        interestAwareEventViewModel["votedUp"] == 1
+        interestAwareEventViewModel == [
+                _id      : 'id',
+                domainId: eventId.value(),
+                votedUp : 1
+        ]
     }
 
     def "should increase negative votes on SurveyVotedDownEvent"() {
 
         given:
         collection << [
+                _id      : 'id',
                 domainId : eventId.value(),
                 votedDown: 0
         ]
@@ -100,6 +111,10 @@ class SurveyEventHandlerTest extends Specification {
         )
 
         then:
-        interestAwareEventViewModel["votedDown"] == 1
+        interestAwareEventViewModel == [
+                _id      : 'id',
+                domainId : eventId.value(),
+                votedDown: 1
+        ]
     }
 }
