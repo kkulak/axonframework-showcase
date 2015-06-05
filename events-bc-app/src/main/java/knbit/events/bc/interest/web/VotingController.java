@@ -32,25 +32,12 @@ public class VotingController {
     @ResponseStatus(HttpStatus.CREATED)
     public void vote(@RequestBody @Valid VoteForm form,
                      @PathVariable String eventId) {
-        final Object voteCommand = prepareAppropriateVoteCommand(eventId, form.getAttendee(), form.getType());
+        final Object voteCommand = VoteCommandFactory.create(eventId, form.getAttendee(), form.getType());
         gateway.sendAndWait(voteCommand);
         form.getAnswers().ifPresent(answers -> {
             final Object command = prepareCompleteQuestionnaireCommand(eventId, form.getAttendee(), form.getAnswers());
             gateway.send(command);
         });
-    }
-
-    // factory ?
-    private Object prepareAppropriateVoteCommand(String eventId, AttendeeDTO attendeeDTO, VoteDTO type) {
-        final Attendee attendee = Attendee.of(attendeeDTO.getFirstName(), attendeeDTO.getLastName());
-        switch (type) {
-            case POSITIVE:
-                return new VoteUpCommand(EventId.of(eventId), attendee);
-            case NEGATIVE:
-                return new VoteDownCommand(EventId.of(eventId), attendee);
-            default:
-                throw new IllegalArgumentException();
-        }
     }
 
     private Object prepareCompleteQuestionnaireCommand(
