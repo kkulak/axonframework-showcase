@@ -16,7 +16,7 @@ class MongoDBConfig {
 
     @Bean
     def GMongo gMongo() {
-        def mongoClient = new Fongo("survey-event-master-view-model").getMongo()
+        def mongoClient = new Fongo("survey-event-master-view-").getMongo()
         new GMongo(mongoClient)
     }
 
@@ -34,4 +34,5 @@ class MongoDBConfig {
     def DBCollection questionnaireCollection(DB db) {
         db.questionnaireCollection
     }
+
 }
