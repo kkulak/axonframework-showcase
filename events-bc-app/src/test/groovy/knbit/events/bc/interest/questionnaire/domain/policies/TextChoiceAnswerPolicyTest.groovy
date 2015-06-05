@@ -6,19 +6,19 @@ import spock.lang.Specification
 
 class TextChoiceAnswerPolicyTest extends Specification {
 
-    def "should return false given non empty answer list"() {
+    def "should return true given non empty answer list"() {
         given:
         def validationPolicy = new TextChoiceAnswerPolicy()
 
         when:
-        def answer = [DomainAnswer.of("incorrect answer")]
+        def answer = [DomainAnswer.of("answer")]
         def isValid = validationPolicy.validate(answer)
 
         then:
-        !isValid
+        isValid
     }
 
-    def "should return true given empty answer list"() {
+    def "should return false given empty answer list"() {
         given:
         def validationPolicy = new TextChoiceAnswerPolicy()
 
@@ -27,7 +27,7 @@ class TextChoiceAnswerPolicyTest extends Specification {
         def isValid = validationPolicy.validate(answer)
 
         then:
-        isValid
+        !isValid
     }
 
 }

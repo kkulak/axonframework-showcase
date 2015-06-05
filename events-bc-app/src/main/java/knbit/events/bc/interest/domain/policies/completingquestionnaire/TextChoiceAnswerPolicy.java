@@ -12,7 +12,7 @@ public class TextChoiceAnswerPolicy implements AnswerPolicy {
 
     @Override
     public boolean validate(List<DomainAnswer> candidates) {
-        return candidates.isEmpty();
+        return !candidates.isEmpty();
     }
 
     @Override

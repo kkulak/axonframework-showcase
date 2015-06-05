@@ -61,7 +61,7 @@ class MemberSurveyEventHandler {
             questionsArray.push([
                     title       : data.title().value(),
                     description : data.description().value(),
-                    answerType  : data.answerType(),
+                    type        : data.answerType(),
                     answers     : answers
             ])
         }
