@@ -4,14 +4,14 @@ import com.mongodb.DBCollection
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 /**
  * Created by novy on 29.06.15.
  */
 
-@RestController(value = '/events')
+@RestController
+@RequestMapping(value = '/events')
 class AllEventsController {
 
     def allEventsCollection
@@ -21,7 +21,7 @@ class AllEventsController {
         this.allEventsCollection = allEventsCollection
     }
 
-    @RequestMapping(value = '/', method = RequestMethod.GET)
+    @RequestMapping
     def allEvents() {
         allEventsCollection.find().toArray()
     }
