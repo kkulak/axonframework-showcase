@@ -1,4 +1,4 @@
-package knbit.memberquestions.bc.config;
+package knbit.events.bc.common.config;
 
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import org.ajar.swaggermvcui.SwaggerSpringMvcUi;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableSwagger
 @Configuration
-@ComponentScan(basePackages = {"knbit.memberquestions.bc"})
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
 
     @Override
