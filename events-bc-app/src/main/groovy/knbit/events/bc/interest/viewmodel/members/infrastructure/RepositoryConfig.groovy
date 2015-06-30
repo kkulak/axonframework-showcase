@@ -5,7 +5,7 @@ import com.mongodb.DBCollection
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@Configuration
+@Configuration("survey-repository-configuration")
 class RepositoryConfig {
 
     @Bean(name = "survey-events")
