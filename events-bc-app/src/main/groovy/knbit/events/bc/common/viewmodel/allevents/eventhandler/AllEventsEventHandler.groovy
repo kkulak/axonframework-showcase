@@ -1,7 +1,7 @@
 package knbit.events.bc.common.viewmodel.allevents.eventhandler
 
 import com.mongodb.DBCollection
-import knbit.events.bc.common.viewmodel.allevents.EventStatus
+import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,7 +33,7 @@ class AllEventsEventHandler {
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
                 eventFrequency: eventDetails.frequency(),
-                status        : EventStatus.UNDER_SURVEYING.value
+                status        : EventStatus.SURVEY_INTEREST
         ])
     }
 
