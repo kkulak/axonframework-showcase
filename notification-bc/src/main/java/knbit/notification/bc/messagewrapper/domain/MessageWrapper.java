@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
