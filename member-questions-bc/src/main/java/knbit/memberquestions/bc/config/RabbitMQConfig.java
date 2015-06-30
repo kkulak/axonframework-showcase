@@ -1,5 +1,7 @@
 package knbit.memberquestions.bc.config;
 
+import knbit.events.bc.common.rabbitmq.HeaderNotificationTagAppender;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,7 +19,8 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String EXCHANGE = "member-questions";
+    public static final String EXCHANGE = "notifications";
+    private static final String NOTIFICATION_TYPE = "MEMBER_ASKED_QUESTION";
 
     private static final int RABBITMQ_SERVER_PORT = 5672;
     private static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
@@ -33,11 +36,19 @@ public class RabbitMQConfig {
         return environmentVariables.getOrDefault(RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE, DEFAULT_SERVER_IP);
     }
 
+    @Bean
+    MessagePostProcessor messagePostProcessor() {
+        return new HeaderNotificationTagAppender(NOTIFICATION_TYPE);
+    }
 
     @Bean
-    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+                                  MessageConverter messageConverter,
+                                  MessagePostProcessor messagePostProcessor) {
+
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setBeforePublishPostProcessors(messagePostProcessor);
         rabbitTemplate.setExchange(EXCHANGE);
         return rabbitTemplate;
     }

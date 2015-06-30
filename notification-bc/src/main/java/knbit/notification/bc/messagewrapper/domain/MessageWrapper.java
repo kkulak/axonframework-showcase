@@ -4,15 +4,20 @@ import com.google.common.base.Preconditions;
 import knbit.notification.bc.messagewrapper.infrastructure.persistence.LocalDateTimePersistenceConverter;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class MessageWrapper {
 
     @Id
@@ -20,14 +25,15 @@ public class MessageWrapper {
     @Column
     @Convert(converter = LocalDateTimePersistenceConverter.class)
     private LocalDateTime createdOn;
-    @Enumerated(EnumType.STRING)
-    private MessageType type;
+    @Column
+    private String type;
     @Column
     private boolean read;
     @Column
     private String payload;
 
-    public MessageWrapper(MessageType type, String payload) {
+
+    public MessageWrapper(String type, String payload) {
         this.id = generateId();
         this.createdOn = LocalDateTime.now();
         this.read = false;
