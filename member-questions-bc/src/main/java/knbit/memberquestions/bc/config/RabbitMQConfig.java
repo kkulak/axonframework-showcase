@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.notificationdispatcher.config;
+package knbit.memberquestions.bc.config;
 
 import knbit.events.bc.common.rabbitmq.HeaderNotificationTagAppender;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -19,8 +19,8 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
 
-    private static final String EXCHANGE = "notifications";
-    private static final String NOTIFICATION_TYPE = "EVENT_PROPOSED";
+    public static final String EXCHANGE = "notifications";
+    private static final String NOTIFICATION_TYPE = "MEMBER_ASKED_QUESTION";
 
     private static final int RABBITMQ_SERVER_PORT = 5672;
     private static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
@@ -52,6 +52,7 @@ public class RabbitMQConfig {
         rabbitTemplate.setExchange(EXCHANGE);
         return rabbitTemplate;
     }
+
 
     @Bean
     MessageConverter messageConverter() {

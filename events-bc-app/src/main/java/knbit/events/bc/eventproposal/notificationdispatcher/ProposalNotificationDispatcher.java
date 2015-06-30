@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.notificationdispatcher;
 
-import knbit.events.bc.eventproposal.notificationdispatcher.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,6 @@ public class ProposalNotificationDispatcher {
     }
 
     public void dispatch(ProposalNotification notification) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, notification);
+        rabbitTemplate.convertAndSend(notification);
     }
 }

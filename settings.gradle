@@ -3,6 +3,6 @@ rootProject.name = 'knbit-events-bc'
 include 'events-bc-core'
 include 'events-bc-announcement'
 include 'events-bc-app'
-
+include 'member-questions-bc'
 include 'notification-bc'
 
