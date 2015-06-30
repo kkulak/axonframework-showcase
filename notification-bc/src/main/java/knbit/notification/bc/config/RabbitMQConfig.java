@@ -22,7 +22,8 @@ import java.util.Map;
 public class RabbitMQConfig {
 
     public static final String QUEUE_NAME = "knbit-events-bc";
-    private static final String TOPIC_EXCHANGE = "proposal-notification";
+    private static final String PROPOSAL_TOPIC_EXCHANGE = "proposal-notification";
+    private static final String MEMBER_MESSAGES_TOPIC_EXCHANGE = "member_messages";
 
     private static final int RABBITMQ_SERVER_PORT = 5672;
     private static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
@@ -54,12 +55,12 @@ public class RabbitMQConfig {
 
     @Bean
     TopicExchange exchange() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(PROPOSAL_TOPIC_EXCHANGE);
     }
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
+        return BindingBuilder.bind(queue).to(exchange).with("");
     }
 
     @Bean

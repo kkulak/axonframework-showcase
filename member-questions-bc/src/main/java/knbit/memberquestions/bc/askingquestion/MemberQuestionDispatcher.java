@@ -1,6 +1,5 @@
 package knbit.memberquestions.bc.askingquestion;
 
-import knbit.memberquestions.bc.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,6 @@ public class MemberQuestionDispatcher {
     }
 
     public void dispatchMemberQuestion(Question question) {
-        rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_NAME, question);
+        rabbitTemplate.convertAndSend(question);
     }
 }

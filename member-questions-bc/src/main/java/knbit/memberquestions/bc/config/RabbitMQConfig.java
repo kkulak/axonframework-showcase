@@ -1,9 +1,5 @@
 package knbit.memberquestions.bc.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,9 +17,7 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
 
-    // todo: change names to more general
-    public static final String QUEUE_NAME = "knbit-events-bc";
-    private static final String TOPIC_EXCHANGE = "proposal-notification";
+    public static final String EXCHANGE = "member-questions";
 
     private static final int RABBITMQ_SERVER_PORT = 5672;
     private static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
@@ -44,24 +38,10 @@ public class RabbitMQConfig {
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setExchange(EXCHANGE);
         return rabbitTemplate;
     }
 
-    @Bean
-    Queue queue() {
-        final boolean durable = false;
-        return new Queue(QUEUE_NAME, durable);
-    }
-
-    @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(TOPIC_EXCHANGE);
-    }
-
-    @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
-    }
 
     @Bean
     MessageConverter messageConverter() {
