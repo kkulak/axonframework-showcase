@@ -1,13 +1,16 @@
 package knbit.memberquestions.bc;
 
+import knbit.events.bc.common.config.CorsFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 
 /**
  * Created by novy on 30.06.15.
  */
 
 @SpringBootApplication
+@Import(CorsFilter.class)
 public class Application {
 
     public static void main(String[] args) {
