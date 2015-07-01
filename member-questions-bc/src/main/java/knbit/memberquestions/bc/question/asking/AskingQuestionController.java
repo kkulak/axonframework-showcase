@@ -1,4 +1,4 @@
-package knbit.memberquestions.bc.askingquestion;
+package knbit.memberquestions.bc.question.asking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import javax.validation.Valid;
  */
 
 @RestController
-@RequestMapping(value = "/events/members")
+@RequestMapping(value = "/events/members/questions")
 public class AskingQuestionController {
 
     private final MemberQuestionDispatcher dispatcher;

@@ -1,4 +1,4 @@
-package knbit.memberquestions.bc.askingquestion;
+package knbit.memberquestions.bc.question.asking;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Question {
 
     @NotBlank
-    private String eventId;
+    private String eventName;
     @NotBlank
     private String topic;
     @NotBlank
