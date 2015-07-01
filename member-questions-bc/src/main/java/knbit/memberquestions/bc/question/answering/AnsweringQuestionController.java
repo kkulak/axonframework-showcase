@@ -20,7 +20,7 @@ public class AnsweringQuestionController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void askQuestion(@RequestBody @Valid Answer answer) {
+    public void answerQuestion(@RequestBody @Valid Answer answer) {
         mailService.send(
                 Email.of(answer.getEmail(), answer.getSubject(), answer.getContent())
         );
