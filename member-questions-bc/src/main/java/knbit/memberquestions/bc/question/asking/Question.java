@@ -1,4 +1,4 @@
-package knbit.memberquestions.bc.askingquestion;
+package knbit.memberquestions.bc.question.asking;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Email;
