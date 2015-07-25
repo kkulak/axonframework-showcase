@@ -72,3 +72,7 @@ task pushImage(type: DockerPushImage) {
 springBoot {
     requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
 }
+
+bootRun {
+    systemProperties = System.properties
+}
