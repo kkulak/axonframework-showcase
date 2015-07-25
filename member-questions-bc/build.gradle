@@ -1,0 +1,78 @@
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+
+apply plugin: 'spring-boot'
+apply plugin: 'com.bmuschko.docker-java-application'
+mainClassName = 'knbit.memberquestions.bc.Application'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.2.RELEASE")
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
+
+    }
+}
+
+dependencies {
+    // knbit-events-bc
+    compile project(':events-bc-core')
+
+    // spring
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
+
+    compile 'commons-validator:commons-validator:1.4.0'
+
+    // swagger
+    compile "org.ajar:swagger-spring-mvc-ui:0.4"
+    compile 'com.mangofactory:swagger-springmvc:1.0.2'
+    runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
+}
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+task createDockerfile(type: Dockerfile) {
+    dependsOn build
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/member-questions-bc-*.jar', 'member-questions-bc.jar'
+    runCommand 'bash -c "touch /member-questions-bc.jar"'
+    entryPoint 'java', '-jar', '/member-questions-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbiteventsbc/member-questions-bc' + ':' + version
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn buildImage
+    imageName 'knbiteventsbc/member-questions-bc'
+}
+
+
+springBoot {
+    requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
+}
+
+bootRun {
+    systemProperties = System.properties
+}

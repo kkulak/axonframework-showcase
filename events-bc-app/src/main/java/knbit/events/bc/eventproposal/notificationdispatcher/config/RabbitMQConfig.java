@@ -1,9 +1,7 @@
 package knbit.events.bc.eventproposal.notificationdispatcher.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import knbit.events.bc.common.rabbitmq.HeaderNotificationTagAppender;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,8 +19,8 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String QUEUE_NAME = "knbit-events-bc";
-    private static final String TOPIC_EXCHANGE = "proposal-notification";
+    private static final String EXCHANGE = "notifications";
+    private static final String NOTIFICATION_TYPE = "EVENT_PROPOSED";
 
     private static final int RABBITMQ_SERVER_PORT = 5672;
     private static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
@@ -38,28 +36,21 @@ public class RabbitMQConfig {
         return environmentVariables.getOrDefault(RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE, DEFAULT_SERVER_IP);
     }
 
+    @Bean
+    MessagePostProcessor messagePostProcessor() {
+        return new HeaderNotificationTagAppender(NOTIFICATION_TYPE);
+    }
 
     @Bean
-    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+                                  MessageConverter messageConverter,
+                                  MessagePostProcessor messagePostProcessor) {
+
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
+        rabbitTemplate.setBeforePublishPostProcessors(messagePostProcessor);
+        rabbitTemplate.setExchange(EXCHANGE);
         return rabbitTemplate;
-    }
-
-    @Bean
-    Queue queue() {
-        final boolean durable = false;
-        return new Queue(QUEUE_NAME, durable);
-    }
-
-    @Bean
-    TopicExchange exchange() {
-        return new TopicExchange(TOPIC_EXCHANGE);
-    }
-
-    @Bean
-    Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(QUEUE_NAME);
     }
 
     @Bean

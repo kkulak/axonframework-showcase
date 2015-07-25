@@ -9,5 +9,6 @@ import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 public interface ProposalStateChanged {
 
     EventProposalId eventProposalId();
+
     ProposalState state();
 }

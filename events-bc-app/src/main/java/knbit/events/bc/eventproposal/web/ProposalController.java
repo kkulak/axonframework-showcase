@@ -4,6 +4,8 @@ import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.AcceptProposalCommand;
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.ProposeEventCommand;
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand;
+import knbit.events.bc.eventproposal.web.forms.EventProposalDto;
+import knbit.events.bc.eventproposal.web.forms.ProposalStateDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

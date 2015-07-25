@@ -2,9 +2,9 @@ package knbit.events.bc.eventproposal.domain.aggregates;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.eventproposal.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.Name;
 
 /**
  * Created by novy on 05.05.15.

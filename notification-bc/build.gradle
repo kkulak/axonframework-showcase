@@ -65,3 +65,7 @@ task pushImage(type: DockerPushImage) {
     dependsOn buildImage
     imageName 'knbiteventsbc/notification-bc'
 }
+
+bootRun {
+    systemProperties = System.properties
+}

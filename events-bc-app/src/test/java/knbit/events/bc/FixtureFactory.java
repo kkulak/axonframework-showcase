@@ -1,10 +1,11 @@
 package knbit.events.bc;
 
-import knbit.events.bc.event.domain.EventCommandHandler;
-import knbit.events.bc.event.domain.aggregates.AbstractEvent;
-import knbit.events.bc.event.infrastructure.config.AxonEventFactory;
+import knbit.events.bc.backlogevent.domain.BacklogEventCommandHandler;
+import knbit.events.bc.backlogevent.domain.aggregates.BacklogEvent;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
+import knbit.events.bc.interest.domain.InterestAwareEventCommandHandler;
+import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.axonframework.test.Fixtures;
 
@@ -24,10 +25,20 @@ public class FixtureFactory {
         return fixture;
     }
 
-    public static FixtureConfiguration<AbstractEvent> eventFixtureConfiguration() {
-        FixtureConfiguration<AbstractEvent> fixture = Fixtures.newGivenWhenThenFixture(AbstractEvent.class);
-        fixture.registerAggregateFactory(new AxonEventFactory());
-        final EventCommandHandler handler = new EventCommandHandler(fixture.getRepository());
+    public static FixtureConfiguration<BacklogEvent> backlogEventFixtureConfiguration() {
+        FixtureConfiguration<BacklogEvent> fixture = Fixtures.newGivenWhenThenFixture(BacklogEvent.class);
+        final BacklogEventCommandHandler handler = new BacklogEventCommandHandler(fixture.getRepository());
+        fixture.registerAnnotatedCommandHandler(handler);
+        return fixture;
+    }
+
+    public static FixtureConfiguration<InterestAwareEvent> interestAwareEventFixtureConfiguration() {
+        FixtureConfiguration<InterestAwareEvent> fixture = Fixtures.newGivenWhenThenFixture(InterestAwareEvent.class);
+
+        final InterestAwareEventCommandHandler handler = new InterestAwareEventCommandHandler(
+                fixture.getRepository()
+        );
+
         fixture.registerAnnotatedCommandHandler(handler);
         return fixture;
     }

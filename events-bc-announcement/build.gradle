@@ -77,7 +77,10 @@ task pushImage(type: DockerPushImage) {
     imageName 'knbiteventsbc/announcement-bc'
 }
 
-
 springBoot {
     requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
+}
+
+bootRun {
+    systemProperties = System.properties
 }

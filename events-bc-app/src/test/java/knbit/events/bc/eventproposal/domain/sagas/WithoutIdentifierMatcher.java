@@ -1,6 +1,6 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
-import knbit.events.bc.event.domain.valueobjects.commands.CreateEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.axonframework.commandhandling.GenericCommandMessage;
 import org.hamcrest.BaseMatcher;
@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
  */
 class WithoutIdentifierMatcher {
 
-    public static Matcher<Collection<GenericCommandMessage<CreateEventCommand>>> matchesExactlyOmittingId(Collection<CreateEventCommand> thoseCommands) {
-        return new BaseMatcher<Collection<GenericCommandMessage<CreateEventCommand>>>() {
+    public static Matcher<Collection<GenericCommandMessage<CreateBacklogEventCommand>>> matchesExactlyOmittingId(Collection<CreateBacklogEventCommand> thoseCommands) {
+        return new BaseMatcher<Collection<GenericCommandMessage<CreateBacklogEventCommand>>>() {
             @Override
             public boolean matches(Object item) {
                 @SuppressWarnings("unchecked")
-                Collection<CreateEventCommand> theseCommands =
-                        ((Collection<GenericCommandMessage<CreateEventCommand>>) item)
+                Collection<CreateBacklogEventCommand> theseCommands =
+                        ((Collection<GenericCommandMessage<CreateBacklogEventCommand>>) item)
                                 .stream()
                                 .map(GenericCommandMessage::getPayload)
                                 .collect(Collectors.toList());
@@ -31,15 +31,15 @@ class WithoutIdentifierMatcher {
                 return bothHaveSameSize && containSameCommandsOmittingId(theseCommands, thoseCommands);
             }
 
-            private boolean containSameCommandsOmittingId(Collection<CreateEventCommand> theseCommands,
-                                                          Collection<CreateEventCommand> thoseCommands) {
+            private boolean containSameCommandsOmittingId(Collection<CreateBacklogEventCommand> theseCommands,
+                                                          Collection<CreateBacklogEventCommand> thoseCommands) {
 
-                final Iterator<CreateEventCommand> thisIterator = theseCommands.iterator();
-                final Iterator<CreateEventCommand> thatIterator = thoseCommands.iterator();
+                final Iterator<CreateBacklogEventCommand> thisIterator = theseCommands.iterator();
+                final Iterator<CreateBacklogEventCommand> thatIterator = thoseCommands.iterator();
 
                 while (thisIterator.hasNext() && thatIterator.hasNext()) {
-                    final CreateEventCommand thisCommand = thisIterator.next();
-                    final CreateEventCommand thatCommand = thatIterator.next();
+                    final CreateBacklogEventCommand thisCommand = thisIterator.next();
+                    final CreateBacklogEventCommand thatCommand = thatIterator.next();
 
                     if (!EqualsBuilder.reflectionEquals(thisCommand, thatCommand, "eventId")) {
                         return false;
@@ -52,7 +52,7 @@ class WithoutIdentifierMatcher {
 
             @Override
             public void describeTo(Description description) {
-                // todo: implement
+                description.appendValue(thoseCommands);
             }
         };
     }

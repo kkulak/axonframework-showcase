@@ -1,11 +1,11 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
 import com.google.common.collect.ImmutableList;
-import knbit.events.bc.event.domain.builders.CreateEventCommandBuilder;
+import knbit.events.bc.backlogevent.domain.builders.CreateBacklogEventCommandBuilder;
+import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.builders.EventProposedBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalAcceptedEventBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalRejectedEventBuilder;
-import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
@@ -98,8 +98,8 @@ public class EventCreationalSagaTest {
                 .expectDispatchedCommandsMatching(
                         matchesExactlyOmittingId(
                                 ImmutableList.of(
-                                        CreateEventCommandBuilder
-                                                .newCreateEventCommand()
+                                        CreateBacklogEventCommandBuilder
+                                                .newCreateBacklogEventCommand()
                                                 .name(proposalName)
                                                 .description(proposalDescription)
                                                 .eventType(proposalType)
