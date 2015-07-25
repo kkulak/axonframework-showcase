@@ -4,6 +4,7 @@ import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.client.MockRestServiceServer
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
@@ -81,6 +82,24 @@ class AuthenticationTest extends Specification {
         responseCode << HttpStatus.values().findAll { it -> it.is5xxServerError() }
     }
 
+    def "should not authorize if RestTemplate throws any other RestClientException"() {
+        given:
+        def RestTemplate restTemplateMock = Mock(RestTemplate)
+        restTemplateMock._ >> {
+            throw new RestClientException("ex")
+        }
+        objectUnderTest = new RestAABCClient(
+                "url doesnt matter",
+                "url doesnt matter",
+                "token doesnt matter",
+                restTemplateMock)
+
+        when:
+        def authenticationResult = objectUnderTest.authenticateWith("token")
+
+        then:
+        !authenticationResult.wasSuccessful()
+    }
 //    def "should POST for authentication url with token as payload"() {
 //        given:
 //        def expectedToken = "token"
