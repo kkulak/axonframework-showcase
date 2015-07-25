@@ -1,8 +1,8 @@
 package knbit.events.bc.auth.config;
 
-import knbit.events.bc.auth.aabcclient.AABCClient;
-import knbit.events.bc.auth.aabcclient.MockAABCClient;
-import knbit.events.bc.auth.aabcclient.RestAABCClient;
+import knbit.events.bc.auth.aabcclient.clients.AABCClient;
+import knbit.events.bc.auth.aabcclient.clients.mock.MockAABCClient;
+import knbit.events.bc.auth.aabcclient.clients.rest.RestAABCClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
