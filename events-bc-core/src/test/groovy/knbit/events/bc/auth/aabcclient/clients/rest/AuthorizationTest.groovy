@@ -9,8 +9,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
 
 /**
@@ -99,5 +98,30 @@ class AuthorizationTest extends Specification {
 
         then:
         !authorizationResult.wasSuccessful()
+    }
+
+    def "should POST for authorization url with permission as payload and token in header"() {
+        given:
+        def tokenHeaderKey = "knbit-aa-auth"
+        def expectedToken = "token"
+        def restTemplate = new RestTemplate()
+        mockRestServiceServer = MockRestServiceServer.createServer(restTemplate)
+        objectUnderTest = new RestAABCClient(
+                "authenticationEndpoint doesnt matter",
+                authorizationUrl,
+                tokenHeaderKey, restTemplate)
+
+        mockRestServiceServer
+                .expect(requestTo(authorizationUrl))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(header("knbit-aa-auth", expectedToken))
+                .andExpect(jsonPath("permission").value(Role.EVENT_MASTER.name()))
+                .andRespond(withStatus(HttpStatus.OK))
+
+        when:
+        objectUnderTest.authorizeWith(expectedToken, Role.EVENT_MASTER)
+
+        then:
+        mockRestServiceServer.verify()
     }
 }

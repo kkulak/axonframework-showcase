@@ -1,13 +1,17 @@
 package knbit.events.bc.auth.aabcclient.clients.rest
 
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult
+import org.hamcrest.CoreMatchers
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus
@@ -100,16 +104,20 @@ class AuthenticationTest extends Specification {
         then:
         !authenticationResult.wasSuccessful()
     }
-//    def "should POST for authentication url with token as payload"() {
-//        given:
-//        def expectedToken = "token"
-//        mockRestServiceServer
-//                .expect(requestTo(authenticationUrl))
-//                .andExpect(method(HttpMethod.POST))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$['store]", CoreMatchers.equalTo(expectedToken)))
-//                .andRespond(withStatus(HttpStatus.OK))
-//
-//
-//    }
+
+    def "should POST for authentication url with token as payload"() {
+        given:
+        def expectedToken = "token"
+        mockRestServiceServer
+                .expect(requestTo(authenticationUrl))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(jsonPath("token").value(expectedToken))
+                .andRespond(withStatus(HttpStatus.OK))
+
+        when:
+        objectUnderTest.authenticateWith(expectedToken)
+
+        then:
+        mockRestServiceServer.verify()
+    }
 }
