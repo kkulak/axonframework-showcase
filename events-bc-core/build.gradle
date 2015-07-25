@@ -32,7 +32,6 @@ dependencies {
     compile 'com.mangofactory:swagger-springmvc:1.0.2'
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
-    compile 'com.javaslang:javaslang:1.2.2'
     compile 'com.aol.cyclops:cyclops-try:5.0.0'
 
 }

@@ -16,6 +16,6 @@ public class RestAABCClient implements AABCClient {
 
     public RestAABCClient(String authenticationEndpoint, String authorizationEndpoint, String tokenHeaderKey, RestTemplate restTemplate) {
         this.authenticationClient = new AuthenticationClient(authenticationEndpoint, restTemplate);
-        this.authorizationClient = new AuthorizationClient(authorizationEndpoint, tokenHeaderKey);
+        this.authorizationClient = new AuthorizationClient(authorizationEndpoint, tokenHeaderKey, restTemplate);
     }
 }

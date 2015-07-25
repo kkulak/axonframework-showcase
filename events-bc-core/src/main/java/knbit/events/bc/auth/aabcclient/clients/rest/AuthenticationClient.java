@@ -2,6 +2,8 @@ package knbit.events.bc.auth.aabcclient.clients.rest;
 
 import com.aol.cyclops.trycatch.Try;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult;
+import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.FailureAuthentication;
+import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.SuccessfulAuthentication;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,15 +43,15 @@ class AuthenticationClient {
     private AuthenticationResult fromServerResponse(ResponseEntity<TokenDto> response, String token) {
         final HttpStatus statusCode = response.getStatusCode();
         return statusCode.is2xxSuccessful() ?
-                new AuthenticationResult.SuccessfulAuthentication(statusCode, token) : new AuthenticationResult.FailureAuthentication(statusCode);
+                new SuccessfulAuthentication(statusCode, token) : new FailureAuthentication(statusCode);
     }
 
     private AuthenticationResult handle(HttpStatusCodeException exception) {
-        return new AuthenticationResult.FailureAuthentication(exception.getStatusCode());
+        return new FailureAuthentication(exception.getStatusCode());
     }
 
     private AuthenticationResult handle(RestClientException exception) {
-        return new AuthenticationResult.FailureAuthentication(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new FailureAuthentication(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Value
