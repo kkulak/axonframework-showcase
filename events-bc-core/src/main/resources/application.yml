@@ -1,0 +1,4 @@
+aa-bc:
+  authenticationEndpoint: http://rossum.knbit.edu.pl:41000/authenticate
+  authorizationEndpoint: http://rossum.knbit.edu.pl:41000/authorize
+  authHeaderKey: knbit-aa-auth
