@@ -23,7 +23,6 @@ dependencies {
     // spring-boot
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
-    compile 'org.springframework:spring-websocket:4.1.7.RELEASE'
     testCompile 'org.springframework.boot:spring-boot-starter-test:1.2.5.RELEASE'
     testCompile 'com.jayway.jsonpath:json-path-assert:2.0.0'
 

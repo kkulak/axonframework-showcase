@@ -1,6 +1,7 @@
-package knbit.events.bc.auth
+package knbit.notification.bc.config.auth
 
 import com.google.common.collect.Maps
+import knbit.events.bc.auth.Role
 import knbit.events.bc.auth.aabcclient.clients.AABCClient
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.ServerHttpRequest

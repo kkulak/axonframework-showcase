@@ -1,6 +1,7 @@
-package knbit.events.bc.auth;
+package knbit.notification.bc.config.auth;
 
 import com.aol.cyclops.trycatch.Try;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult;
 import knbit.events.bc.auth.aabcclient.clients.AABCClient;
 import lombok.RequiredArgsConstructor;
