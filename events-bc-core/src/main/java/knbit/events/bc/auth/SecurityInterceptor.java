@@ -1,5 +1,6 @@
 package knbit.events.bc.auth;
 
+import com.google.common.collect.Iterables;
 import knbit.events.bc.auth.aabcclient.AABCResult;
 import knbit.events.bc.auth.aabcclient.clients.AABCClient;
 import org.springframework.web.method.HandlerMethod;
@@ -7,8 +8,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Created by novy on 25.07.15.
@@ -58,10 +60,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private Optional<AABCResult> findAuthenticationOrAuthorizationResult(Optional<AABCResult> possibleAuthenticationResult,
                                                                          Optional<AABCResult> possibleAuthorizationResult) {
 
-        return Stream.of(possibleAuthenticationResult, possibleAuthorizationResult)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst();
+        final Collection<Optional<AABCResult>> bothAsList =
+                Arrays.asList(possibleAuthorizationResult, possibleAuthenticationResult);
+
+        return Iterables
+                .tryFind(bothAsList, Optional::isPresent)
+                .or(Optional::empty);
     }
 
     private Optional<AABCResult> tryToAuthorizeWith(String authToken, HandlerMethod methodHandler) {
