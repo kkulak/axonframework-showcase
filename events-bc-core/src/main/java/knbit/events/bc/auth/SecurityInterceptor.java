@@ -36,44 +36,32 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         final Optional<AABCResult> possibleAuthenticationResult = tryToAuthenticateWith(authToken, methodHandler);
         final Optional<AABCResult> possibleAuthorizationResult = tryToAuthorizeWith(authToken, methodHandler);
 
-        if (!possibleAuthenticationResult.isPresent() && !possibleAuthorizationResult.isPresent()) {
-            return true;
+        Optional<AABCResult> authenticationOrAuthorizationResult =
+                findAuthenticationOrAuthorizationResult(possibleAuthenticationResult, possibleAuthorizationResult);
+
+        authenticationOrAuthorizationResult.ifPresent(aabcResult -> modifyResponseAccordingTo(aabcResult, response));
+
+        return authenticationOrAuthorizationResult
+                .map(AABCResult::wasSuccessful)
+                .orElse(Boolean.TRUE);
+
+    }
+
+    private void modifyResponseAccordingTo(AABCResult aabcResult, HttpServletResponse response) {
+        if (aabcResult.wasSuccessful()) {
+            response.setHeader(authHeaderKey, aabcResult.refreshedToken());
+        } else {
+            response.setStatus(aabcResult.statusCode().value());
         }
+    }
 
-        if (possibleAuthenticationResult.isPresent() && !possibleAuthorizationResult.isPresent()) {
-            final AABCResult aabcResult = possibleAuthenticationResult.get();
-            if (aabcResult.wasSuccessful()) {
-                response.setHeader(authHeaderKey, aabcResult.refreshedToken());
-                return true;
-            } else {
-                response.setStatus(aabcResult.statusCode().value());
-                return false;
-            }
-        }
+    private Optional<AABCResult> findAuthenticationOrAuthorizationResult(Optional<AABCResult> possibleAuthenticationResult,
+                                                                         Optional<AABCResult> possibleAuthorizationResult) {
 
-        if (possibleAuthorizationResult.isPresent()) {
-            final AABCResult aabcResult = possibleAuthorizationResult.get();
-            if (aabcResult.wasSuccessful()) {
-                response.setHeader(authHeaderKey, aabcResult.refreshedToken());
-                return true;
-            } else {
-                response.setStatus(aabcResult.statusCode().value());
-                return false;
-            }
-        }
-
-
-//
-//        Stream.of(possibleAuthenticationResult, possibleAuthorizationResult)
-//                .filter(Optional::isPresent)
-//                .map(Optional::get)
-//                .filter(AABCResult::wasSuccessful)
-//                .findFirst()
-//                .ifPresent(aabcResult -> response.addHeader(authHeaderKey, aabcResult.refreshedToken()));
-
-
-        return false;
-
+        return Stream.of(possibleAuthenticationResult, possibleAuthorizationResult)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .findFirst();
     }
 
     private Optional<AABCResult> tryToAuthorizeWith(String authToken, HandlerMethod methodHandler) {
@@ -88,6 +76,4 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
                 .map(methodHandler::getMethodAnnotation)
                 .map(authenticationAnnotation -> aabcClient.authenticateWith(authToken));
     }
-
-//    private Optional<AABCResult> findFirstMatching()
 }
