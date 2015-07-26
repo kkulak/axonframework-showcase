@@ -1,5 +1,6 @@
 package knbit.events.bc.auth.aabcclient.authorization;
 
+import knbit.events.bc.auth.aabcclient.AABCResult;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
@@ -7,13 +8,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Created by novy on 25.07.15.
  */
-public interface AuthorizationResult {
-
-    boolean wasSuccessful();
-
-    HttpStatus statusCode();
-
-    String refreshedToken();
+public interface AuthorizationResult extends AABCResult {
 
     @Value
     @Accessors(fluent = true)

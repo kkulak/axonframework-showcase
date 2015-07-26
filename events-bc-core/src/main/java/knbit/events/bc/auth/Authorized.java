@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
  * Created by novy on 25.07.15.
  */
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Authorized {
-    Role role();
+    Role value();
 }
