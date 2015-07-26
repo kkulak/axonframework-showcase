@@ -40,7 +40,6 @@ class AuthorizationClient {
 
     private ResponseEntity<PermissionDto> tryAuthorizeWith(String token, Role role) {
         final HttpEntity<PermissionDto> request = createRequestFor(token, role);
-        System.out.println(request.getHeaders());
         return restTemplate.exchange(authorizationEndpoint, HttpMethod.POST, request, PermissionDto.class);
     }
 
