@@ -1,5 +1,7 @@
 package knbit.events.bc.kanbanboard.readmodel.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.common.readmodel.EventStatus;
 import knbit.events.bc.kanbanboard.readmodel.model.KanbanBoard;
 import knbit.events.bc.kanbanboard.readmodel.repository.KanbanBoardRepository;
@@ -23,6 +25,7 @@ public class KanbanBoardController {
         this.kanbanBoardRepository = kanbanBoardRepository;
     }
 
+    @Authorized(Role.ADMIN)
     @RequestMapping(method = RequestMethod.GET)
     public Map<EventStatus, List<KanbanBoard>> kanbanBoard() {
         return StreamSupport
