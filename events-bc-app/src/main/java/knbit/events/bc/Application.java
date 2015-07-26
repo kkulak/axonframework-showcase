@@ -1,6 +1,6 @@
 package knbit.events.bc;
 
-import knbit.events.bc.auth.config.AABCClientConfig;
+import knbit.events.bc.auth.config.AAConfig;
 import knbit.events.bc.common.config.CorsFilter;
 import knbit.events.bc.common.config.SwaggerConfig;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         CorsFilter.class,
         SwaggerConfig.class,
-        AABCClientConfig.class
+        AAConfig.class
 })
 public class Application {
 

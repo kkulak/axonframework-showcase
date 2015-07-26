@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @EnableConfigurationProperties
-public class AABCPropertiesConfig {
+class AABCPropertiesConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "aa-bc")

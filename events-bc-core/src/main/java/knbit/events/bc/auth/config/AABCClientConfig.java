@@ -19,7 +19,7 @@ import static knbit.events.bc.auth.config.AABCPropertiesConfig.AABCProperties;
 @Configuration
 @Import(AABCPropertiesConfig.class)
 @Slf4j
-public class AABCClientConfig {
+class AABCClientConfig {
 
     @Bean
     @Profile("!mock")
