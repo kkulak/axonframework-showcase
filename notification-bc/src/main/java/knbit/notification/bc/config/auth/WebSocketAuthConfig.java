@@ -2,7 +2,6 @@ package knbit.notification.bc.config.auth;
 
 import knbit.events.bc.auth.Role;
 import knbit.events.bc.auth.aabcclient.clients.AABCClient;
-import knbit.events.bc.common.config.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
