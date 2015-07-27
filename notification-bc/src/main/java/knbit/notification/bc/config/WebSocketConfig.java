@@ -24,12 +24,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint(Endpoint.INITIAL).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
-//        registry.addEndpoint(Endpoint.BATCH).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
-//        registry.addEndpoint(Endpoint.MESSAGE_STATE).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
-registry.addEndpoint(Endpoint.INITIAL).setAllowedOrigins("*").withSockJS();
-        registry.addEndpoint(Endpoint.BATCH).setAllowedOrigins("*").withSockJS();
-        registry.addEndpoint(Endpoint.MESSAGE_STATE).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint(Endpoint.INITIAL).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
+        registry.addEndpoint(Endpoint.BATCH).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
+        registry.addEndpoint(Endpoint.MESSAGE_STATE).setAllowedOrigins("*").withSockJS().setInterceptors(handshakeInterceptor);
     }
 
 }
