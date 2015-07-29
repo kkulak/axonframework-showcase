@@ -32,5 +32,6 @@ dependencies {
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
     compile 'com.aol.cyclops:cyclops-try:5.0.0'
+    compile 'com.lambdista:try:0.3.0'
 
 }
