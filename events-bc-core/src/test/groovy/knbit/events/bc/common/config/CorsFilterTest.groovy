@@ -22,7 +22,7 @@ class CorsFilterTest extends Specification {
         objectUnderTest.doFilter(request, response, Mock(FilterChain))
 
         then:
-        response.getHeader("Access-Control-Allow-Origin") == "http://" +allowedDomain + ":6666"
+        response.getHeader("Access-Control-Allow-Origin") == "http://" + allowedDomain + ":6666"
 
         where:
         allowedDomain << CorsFilter.ALLOWED_DOMAINS
@@ -41,9 +41,6 @@ class CorsFilterTest extends Specification {
         then:
         def firstAllowedDomain = CorsFilter.ALLOWED_DOMAINS.first()
         response.getHeader("Access-Control-Allow-Origin") == "http://" + firstAllowedDomain
-
-        where:
-        allowedDomain << CorsFilter.ALLOWED_DOMAINS
     }
 
     def "given invalid url, it should set first allowed domain"() {
@@ -59,8 +56,5 @@ class CorsFilterTest extends Specification {
         then:
         def firstAllowedDomain = CorsFilter.ALLOWED_DOMAINS.first()
         response.getHeader("Access-Control-Allow-Origin") == "http://" + firstAllowedDomain
-
-        where:
-        allowedDomain << CorsFilter.ALLOWED_DOMAINS
     }
 }
