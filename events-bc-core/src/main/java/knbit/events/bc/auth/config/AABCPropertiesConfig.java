@@ -1,5 +1,6 @@
 package knbit.events.bc.auth.config;
 
+import knbit.events.bc.common.Profiles;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,7 +18,7 @@ class AABCPropertiesConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "aa-bc")
-    @Profile("!mock")
+    @Profile(Profiles.PROD)
     public AABCProperties aabcProperties() {
         return new AABCProperties();
     }

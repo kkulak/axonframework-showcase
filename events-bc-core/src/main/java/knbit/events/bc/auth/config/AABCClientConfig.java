@@ -3,6 +3,7 @@ package knbit.events.bc.auth.config;
 import knbit.events.bc.auth.aabcclient.clients.AABCClient;
 import knbit.events.bc.auth.aabcclient.clients.mock.MockAABCClient;
 import knbit.events.bc.auth.aabcclient.clients.rest.RestAABCClient;
+import knbit.events.bc.common.Profiles;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,13 +23,13 @@ import static knbit.events.bc.auth.config.AABCPropertiesConfig.AABCProperties;
 class AABCClientConfig {
 
     @Bean
-    @Profile("!mock")
+    @Profile(Profiles.PROD)
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
     @Bean
-    @Profile("!mock")
+    @Profile(Profiles.PROD)
     public AABCClient aabcClient(AABCProperties aabcProperties, RestTemplate restTemplate) {
         log.debug("creating rest aabcClient with props {}", aabcProperties.toString());
         return new RestAABCClient(
@@ -40,7 +41,7 @@ class AABCClientConfig {
     }
 
     @Bean
-    @Profile("mock")
+    @Profile(Profiles.DEV)
     public AABCClient mockAabcClient() {
         log.debug("creating mock aabcClient");
         return new MockAABCClient();
