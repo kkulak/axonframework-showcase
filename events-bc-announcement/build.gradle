@@ -1,6 +1,10 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 apply plugin: 'spring-boot'
@@ -69,14 +73,20 @@ task createDockerfile(type: Dockerfile) {
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'knbiteventsbc/announcement-bc' + ':' + version
+    tag = 'knbitevents/announcement-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/announcement-bc'
+    imageId = 'knbitevents/announcement-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
 task pushImage(type: DockerPushImage) {
-    dependsOn buildImage
-    imageName 'knbiteventsbc/announcement-bc'
+    dependsOn tagImage
+    imageName = 'knbitevents/announcement-bc'
 }
-
 springBoot {
     requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']
 }
