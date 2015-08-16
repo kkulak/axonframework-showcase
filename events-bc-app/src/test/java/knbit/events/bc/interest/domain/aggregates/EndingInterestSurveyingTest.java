@@ -5,10 +5,12 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -70,7 +72,6 @@ public class EndingInterestSurveyingTest {
     @Test
     public void shouldThrowAnExceptionTryingToEndEndedSurvey() throws Exception {
 
-
         fixture
                 .given(
                         InterestAwareEventCreated.of(eventId, eventDetails),
@@ -80,5 +81,22 @@ public class EndingInterestSurveyingTest {
                         EndSurveyingInterestCommand.of(eventId)
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+    }
+
+    @Test
+    public void shouldThrowAnExceptionTryingToEndEventTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(eventId, eventDetails),
+
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        EndSurveyingInterestCommand.of(eventId)
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
     }
 }
