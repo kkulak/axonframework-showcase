@@ -3,7 +3,7 @@ package knbit.events.bc.common.domain.sagas;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.CreateEventUnderChoosingTermCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateEventUnderChoosingTermCommand;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;

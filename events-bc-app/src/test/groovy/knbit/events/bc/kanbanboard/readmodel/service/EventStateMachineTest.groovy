@@ -47,7 +47,18 @@ class EventStateMachineTest extends Specification {
         def reachableStates = EventStateMachine.match(status)
 
         then:
-        reachableStates == [CHOOSING_TERM, ROOM_BOOKING]
+        reachableStates == [CHOOSING_TERM, ENROLLMENT]
+    }
+
+    def "should return reachable states from Enrollment state"() {
+        given:
+        def status = ENROLLMENT
+
+        when:
+        def reachableStates = EventStateMachine.match(status)
+
+        then:
+        reachableStates == [ENROLLMENT, READY]
     }
 
 }

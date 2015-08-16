@@ -16,7 +16,8 @@ public class EventStateMachine {
     static {
         reachableStates.put(BACKLOG, Arrays.asList(BACKLOG, SURVEY_INTEREST, CHOOSING_TERM));
         reachableStates.put(SURVEY_INTEREST, Arrays.asList(SURVEY_INTEREST, CHOOSING_TERM));
-        reachableStates.put(CHOOSING_TERM, Arrays.asList(CHOOSING_TERM, ROOM_BOOKING));
+        reachableStates.put(CHOOSING_TERM, Arrays.asList(CHOOSING_TERM, ENROLLMENT));
+        reachableStates.put(ENROLLMENT, Arrays.asList(ENROLLMENT, READY));
     }
 
     public static List<EventStatus> match(EventStatus status) {
