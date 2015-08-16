@@ -22,7 +22,7 @@ public class UnderChoosingTermEventController {
         this.commandGateway = commandGateway;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/events/{eventId}/choosing-term")
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/choosing-term")
     public void startChoosingTerm(@PathVariable("eventId") String eventId,
                                   @RequestParam("fromState") TransitFrom previousState) {
 
