@@ -28,10 +28,10 @@ public class BacklogEventController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createBacklogEvent(@RequestBody @Valid EventBacklogDTO eventBacklogDTO) {
         gateway.send(
-                new CreateBacklogEventCommand(
+                CreateBacklogEventCommand.of(
                         new EventId(), EventDetails.of(
-                        Name.of(eventBacklogDTO.getName()), Description.of(eventBacklogDTO.getDescription()),
-                        eventBacklogDTO.getEventType(), eventBacklogDTO.getEventFrequency())
+                                Name.of(eventBacklogDTO.getName()), Description.of(eventBacklogDTO.getDescription()),
+                                eventBacklogDTO.getEventType(), eventBacklogDTO.getEventFrequency())
                 )
         );
     }

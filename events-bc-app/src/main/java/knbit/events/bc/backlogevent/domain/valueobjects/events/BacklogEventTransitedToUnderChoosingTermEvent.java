@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value(staticConstructor = "of")
-public class BacklogEventTransitedToChoosingTermEvent implements BacklogEventTransitedToAnotherStateEvent {
+public class BacklogEventTransitedToUnderChoosingTermEvent implements BacklogEventTransitedToAnotherStateEvent {
 
     private final EventId eventId;
     private final EventDetails eventDetails;

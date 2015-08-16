@@ -3,9 +3,9 @@ package knbit.events.bc.backlogevent.domain.aggregates;
 import com.google.common.base.Preconditions;
 import knbit.events.bc.backlogevent.domain.valueobjects.BacklogEventState;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToAnotherStateEvent;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToChoosingTermEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -27,13 +27,13 @@ public class BacklogEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     public void transitToSurveyInterestAwareEvent() {
         transitToAnotherState(
-                BacklogEventTransitedToInterestAwareEvent.of(id, eventDetails, BacklogEventState.INACTIVE)
+                BacklogEventTransitedToInterestAwareEvent.of(id, eventDetails)
         );
     }
 
-    public void transitToUnderChoosingTerm() {
+    public void transitToUnderChoosingTermEvent() {
         transitToAnotherState(
-                BacklogEventTransitedToChoosingTermEvent.of(id, eventDetails)
+                BacklogEventTransitedToUnderChoosingTermEvent.of(id, eventDetails)
         );
     }
 

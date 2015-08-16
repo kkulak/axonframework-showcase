@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value(staticConstructor = "of")
-public class InterestAwareEventTransitedToChoosingTermEvent {
+public class InterestAwareEventTransitedToUnderChoosingTermEvent {
 
     private final EventId eventId;
     private final EventDetails eventDetails;

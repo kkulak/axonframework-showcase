@@ -1,23 +1,17 @@
 package knbit.events.bc.common.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.builders.BacklogEventCreatedBuilder;
-import knbit.events.bc.backlogevent.domain.builders.BacklogEventDeactivatedBuilder;
-import knbit.events.bc.backlogevent.domain.valueobjects.BacklogEventState;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToChoosingTermEvent;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.choosingterm.domain.valuobjects.CreateEventUnderChoosingTermCommand;
-import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToChoosingTermEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-
-import static knbit.events.bc.common.domain.enums.EventType.WORKSHOP;
 
 public class EventLifecycleSagaTest {
     private AnnotatedSagaTestFixture fixture;
@@ -51,7 +45,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventCreated.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails, BacklogEventState.INACTIVE)
+                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateInterestAwareEventCommand.of(eventId, eventDetails)
@@ -66,7 +60,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventCreated.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        BacklogEventTransitedToChoosingTermEvent.of(eventId, eventDetails)
+                        BacklogEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateEventUnderChoosingTermCommand.of(eventId, eventDetails)
@@ -81,7 +75,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventCreated.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        InterestAwareEventTransitedToChoosingTermEvent.of(eventId, eventDetails)
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateEventUnderChoosingTermCommand.of(eventId, eventDetails)

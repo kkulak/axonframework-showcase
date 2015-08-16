@@ -33,7 +33,7 @@ public class VotingDownTest {
     }
 
     @Test
-    public void shouldProduceSurveyVotedDwonEventGivenVoteDownCommand() throws Exception {
+    public void shouldProduceSurveyVotedDownEventGivenVoteDownCommand() throws Exception {
 
         final Attendee attendee = Attendee.of("firstname", "lastname");
 

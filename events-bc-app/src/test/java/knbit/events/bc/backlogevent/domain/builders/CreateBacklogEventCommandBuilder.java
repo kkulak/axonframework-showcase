@@ -48,6 +48,6 @@ public class CreateBacklogEventCommandBuilder {
     }
 
     public CreateBacklogEventCommand build() {
-        return new CreateBacklogEventCommand(eventId, EventDetails.of(name, description, eventType, eventFrequency));
+        return CreateBacklogEventCommand.of(eventId, EventDetails.of(name, description, eventType, eventFrequency));
     }
 }
