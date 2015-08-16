@@ -180,9 +180,16 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void transitToUnderChoosingTermEvent() {
-        rejectOnInvalidStates(CREATED, IN_PROGRESS, TRANSITED);
+        rejectOnInvalidStates(CREATED, TRANSITED);
+        endIfSurveyingInProgress();
 
         apply(InterestAwareEventTransitedToUnderChoosingTermEvent.of(id, eventDetails));
+    }
+
+    private void endIfSurveyingInProgress() {
+        if (state == IN_PROGRESS) {
+            endSurveying();
+        }
     }
 
     @EventSourcingHandler

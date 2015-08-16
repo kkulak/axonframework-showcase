@@ -6,7 +6,6 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.commands.TransitInterestAwareEventToUnderTermChoosingEventCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
@@ -49,7 +48,7 @@ public class TransitionToUnderChoosingTermEventTest {
     }
 
     @Test
-    public void shouldNotBeAbleToTransitIfEventSurveyingIsInProgress() throws Exception {
+    public void ifSurveyingIsInProgressItShouldEndItAndThenTransitToUnderChoosingTermEvent() throws Exception {
         fixture
                 .given(
                         InterestAwareEventCreated.of(eventId, eventDetails),
@@ -62,8 +61,10 @@ public class TransitionToUnderChoosingTermEventTest {
                 .when(
                         TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
                 )
-                .expectException(
-                        SurveyingInterestAlreadyInProgressException.class
+                .expectEvents(
+                        SurveyingInterestEndedEvent.of(eventId),
+
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
                 );
     }
 
