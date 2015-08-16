@@ -1,7 +1,7 @@
 package knbit.events.bc.backlogevent.domain.builders;
 
 import knbit.events.bc.backlogevent.domain.valueobjects.BacklogEventState;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventDeactivated;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
@@ -23,7 +23,7 @@ public class BacklogEventDeactivatedBuilder {
     private EventFrequency frequency = EventFrequency.ONE_OFF;
     private BacklogEventState state = BacklogEventState.INACTIVE;
 
-    public BacklogEventDeactivated build() {
-        return BacklogEventDeactivated.of(eventId, EventDetails.of(name, description, type, frequency), state);
+    public BacklogEventTransitedToInterestAwareEvent build() {
+        return BacklogEventTransitedToInterestAwareEvent.of(eventId, EventDetails.of(name, description, type, frequency), state);
     }
 }

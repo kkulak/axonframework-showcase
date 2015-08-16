@@ -1,17 +1,18 @@
-package knbit.events.bc.backlogevent.domain.valueobjects.events;
+package knbit.events.bc.interest.domain.valueobjects.events;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.BacklogEventState;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-@Value(staticConstructor = "of")
+/**
+ * Created by novy on 16.08.15.
+ */
+
 @Accessors(fluent = true)
-public class BacklogEventDeactivated {
+@Value(staticConstructor = "of")
+public class InterestAwareEventTransitedToChoosingTermEvent {
 
     private final EventId eventId;
     private final EventDetails eventDetails;
-    private final BacklogEventState state;
-
 }

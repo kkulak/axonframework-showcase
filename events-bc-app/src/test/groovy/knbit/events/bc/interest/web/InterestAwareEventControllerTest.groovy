@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.web
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.DeactivateBacklogEventCommand
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToSurveyInterestAwareEventCommand
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand
@@ -38,7 +38,7 @@ class InterestAwareEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                DeactivateBacklogEventCommand.of(EventId.of("eventId"))
+                TransitBacklogEventToSurveyInterestAwareEventCommand.of(EventId.of("eventId"))
         )
     }
 

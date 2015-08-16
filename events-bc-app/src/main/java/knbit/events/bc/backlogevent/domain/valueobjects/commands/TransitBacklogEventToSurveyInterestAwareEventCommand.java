@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 
 @Value(staticConstructor = "of")
 @Accessors(fluent = true)
-public class DeactivateBacklogEventCommand {
+public class TransitBacklogEventToSurveyInterestAwareEventCommand {
 
     private final EventId eventId;
 
