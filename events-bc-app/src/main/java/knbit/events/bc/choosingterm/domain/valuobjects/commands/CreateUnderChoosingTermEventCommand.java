@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Value(staticConstructor = "of")
-public class CreateEventUnderChoosingTermCommand {
+public class CreateUnderChoosingTermEventCommand {
 
     private final EventId eventId;
     private final EventDetails eventDetails;
