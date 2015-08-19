@@ -11,7 +11,7 @@ import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 
-import static knbit.events.bc.eventproposal.domain.sagas.WithoutIdentifierMatcher.matchesExactlyOmittingId;
+import static knbit.events.bc.matchers.WithoutIdentifierMatcher.matchExactlyIgnoring;
 
 /**
  * Created by novy on 07.05.15.
@@ -96,7 +96,8 @@ public class EventCreationalSagaTest {
                                 .build()
                 )
                 .expectDispatchedCommandsMatching(
-                        matchesExactlyOmittingId(
+                        matchExactlyIgnoring(
+                                "eventId",
                                 ImmutableList.of(
                                         CreateBacklogEventCommandBuilder
                                                 .newCreateBacklogEventCommand()

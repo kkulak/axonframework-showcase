@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.RemoveTermCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
@@ -64,5 +65,18 @@ public class UnderChoosingTermEventCommandHandler {
         );
 
         underChoosingTermEvent.removeTerm(termToRemove);
+    }
+
+    @CommandHandler
+    public void handle(BookRoomCommand command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        final EventDuration eventDuration = EventDuration.of(
+                command.startDate(), command.duration()
+        );
+        final Capacity capacity = Capacity.of(command.capacity());
+
+        underChoosingTermEvent.bookRoomFor(eventDuration, capacity);
     }
 }
