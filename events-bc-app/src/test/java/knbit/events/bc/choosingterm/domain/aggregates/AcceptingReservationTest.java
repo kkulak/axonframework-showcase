@@ -4,6 +4,7 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationAcceptedException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationCancelledException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
+import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationRejectedException;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.AcceptReservationCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
@@ -80,7 +81,7 @@ public class AcceptingReservationTest {
                 .when(
                         AcceptReservationCommand.of(eventId, reservationId, "3.21c")
                 )
-                .expectException(ReservationAcceptedException.class);
+                .expectException(ReservationRejectedException.class);
     }
 
     @Test
@@ -89,7 +90,7 @@ public class AcceptingReservationTest {
                 .given(
                         UnderChoosingTermEventCreated.of(eventId, eventDetails),
                         RoomRequestedEvent.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationRejectedEvent.of(eventId, reservationId)
+                        ReservationCancelledEvent.of(eventId, reservationId)
                 )
                 .when(
                         AcceptReservationCommand.of(eventId, reservationId, "3.21c")

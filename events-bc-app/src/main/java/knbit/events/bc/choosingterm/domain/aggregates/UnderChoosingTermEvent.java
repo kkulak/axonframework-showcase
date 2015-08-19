@@ -6,10 +6,8 @@ import knbit.events.bc.choosingterm.domain.entities.Reservation;
 import knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
-import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
+import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.RoomRequestedEvent;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermAddedEvent;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermRemovedEvent;
@@ -100,5 +98,21 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
                 id, reservationId, event.eventDuration(), event.capacity()
         );
         reservations.put(reservationId, reservation);
+    }
+
+    public void acceptReservationWithLocation(ReservationId reservationId, Location location) {
+        rejectOnNotExistingReservation(reservationId);
+
+        final Reservation reservation = reservations.get(reservationId);
+        reservation.accept();
+
+        final Term termFromReservation = Term.of(reservation.eventDuration(), reservation.capacity(), location);
+        apply(TermAddedEvent.of(id, termFromReservation));
+    }
+
+    private void rejectOnNotExistingReservation(ReservationId reservationId) {
+        if (!reservations.containsKey(reservationId)) {
+            throw new ReservationDoesNotExist(reservationId);
+        }
     }
 }

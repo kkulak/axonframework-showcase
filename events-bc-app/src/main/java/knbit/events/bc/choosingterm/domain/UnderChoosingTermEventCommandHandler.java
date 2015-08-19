@@ -1,14 +1,8 @@
 package knbit.events.bc.choosingterm.domain;
 
 import knbit.events.bc.choosingterm.domain.aggregates.UnderChoosingTermEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
-import knbit.events.bc.choosingterm.domain.valuobjects.Location;
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.RemoveTermCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.*;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +72,17 @@ public class UnderChoosingTermEventCommandHandler {
         final Capacity capacity = Capacity.of(command.capacity());
 
         underChoosingTermEvent.bookRoomFor(eventDuration, capacity);
+    }
+
+
+    @CommandHandler
+    public void handle(AcceptReservationCommand command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        final ReservationId reservationId = command.reservationId();
+        final Location location = Location.of(command.location());
+
+        underChoosingTermEvent.acceptReservationWithLocation(reservationId, location);
     }
 }
