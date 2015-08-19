@@ -8,9 +8,9 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
  */
 public class CannotAddOverlappingTermException extends RuntimeException {
 
-    private static final String ERROR_MESSAGE_TERMPLATE = "Cannot add overlapping term (%s) to event with id %s";
+    private static final String ERROR_MESSAGE_TEMPLATE = "Cannot add overlapping term (%s) to event with id %s";
 
     public CannotAddOverlappingTermException(EventId eventId, Term term) {
-        super(String.format(ERROR_MESSAGE_TERMPLATE, term, eventId));
+        super(String.format(ERROR_MESSAGE_TEMPLATE, term, eventId));
     }
 }

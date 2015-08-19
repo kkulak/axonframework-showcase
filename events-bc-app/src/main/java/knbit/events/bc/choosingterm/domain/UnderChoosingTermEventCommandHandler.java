@@ -7,6 +7,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.RemoveTermCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,19 @@ public class UnderChoosingTermEventCommandHandler {
         );
 
         underChoosingTermEvent.addTerm(newTerm);
+    }
+
+    @CommandHandler
+    public void handle(RemoveTermCommand command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        final Term termToRemove = Term.of(
+                EventDuration.of(command.startDate(), command.duration()),
+                Capacity.of(command.capacity()),
+                Location.of(command.location())
+        );
+
+        underChoosingTermEvent.removeTerm(termToRemove);
     }
 }

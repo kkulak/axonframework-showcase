@@ -3,8 +3,10 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 import com.google.common.collect.Sets;
 import knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
+import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermAddedEvent;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermRemovedEvent;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -60,5 +62,18 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     @EventSourcingHandler
     private void on(TermAddedEvent event) {
         terms.add(event.term());
+    }
+
+    public void removeTerm(Term termToRemove) {
+        if (!terms.contains(termToRemove)) {
+            throw new CannotRemoveNotExistingTermException(id, termToRemove);
+        }
+
+        apply(TermRemovedEvent.of(id, termToRemove));
+    }
+
+    @EventSourcingHandler
+    private void on(TermRemovedEvent event) {
+        terms.remove(event.term());
     }
 }
