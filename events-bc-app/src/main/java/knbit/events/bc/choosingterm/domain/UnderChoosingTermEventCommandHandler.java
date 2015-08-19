@@ -74,7 +74,6 @@ public class UnderChoosingTermEventCommandHandler {
         underChoosingTermEvent.bookRoomFor(eventDuration, capacity);
     }
 
-
     @CommandHandler
     public void handle(AcceptReservationCommand command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
@@ -84,5 +83,12 @@ public class UnderChoosingTermEventCommandHandler {
         final Location location = Location.of(command.location());
 
         underChoosingTermEvent.acceptReservationWithLocation(reservationId, location);
+    }
+    @CommandHandler
+    public void handle(RejectReservationCommand command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        underChoosingTermEvent.rejectReservation(command.reservationId());
     }
 }

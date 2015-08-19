@@ -42,14 +42,18 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
         this.reservationStatus = ReservationStatus.PENDING;
     }
 
-    private boolean notConcernedWith(ReservationEvent event) {
-        return !id.equals(event.reservationId());
+    private boolean concernedWith(ReservationEvent event) {
+        return id.equals(event.reservationId());
     }
 
     public void accept() {
         rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
-
         apply(ReservationAcceptedEvent.of(eventId, id));
+    }
+
+    public void reject() {
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
+        apply(ReservationRejectedEvent.of(eventId, id));
     }
 
     private void rejectOn(ReservationStatus... statuses) {
@@ -61,17 +65,23 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
 
     @EventSourcingHandler
     private void on(ReservationAcceptedEvent event) {
-        reservationStatus = ReservationStatus.ACCEPTED;
+        changeStatusTo(event, ReservationStatus.ACCEPTED);
     }
 
     @EventSourcingHandler
     private void on(ReservationRejectedEvent event) {
-        reservationStatus = ReservationStatus.REJECTED;
+        changeStatusTo(event, ReservationStatus.REJECTED);
     }
 
     @EventSourcingHandler
     private void on(ReservationCancelledEvent event) {
-        reservationStatus = ReservationStatus.CANCELLED;
+        changeStatusTo(event, ReservationStatus.CANCELLED);
+    }
+
+    private void changeStatusTo(ReservationEvent event, ReservationStatus newStatus) {
+        if (concernedWith(event)) {
+            reservationStatus = newStatus;
+        }
     }
 }
 
