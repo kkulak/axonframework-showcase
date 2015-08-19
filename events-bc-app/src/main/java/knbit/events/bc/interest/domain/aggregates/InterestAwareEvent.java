@@ -4,27 +4,30 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.interest.domain.enums.InterestAwareEventState;
 import knbit.events.bc.interest.domain.exceptions.*;
+import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
-import knbit.events.bc.interest.domain.enums.InterestAwareEventState;
-import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.AttendeeAnswer;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.SubmittedAnswer;
-import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static knbit.events.bc.interest.domain.enums.InterestAwareEventState.*;
 
 /**
  * Created by novy on 28.05.15.
@@ -51,13 +54,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         );
     }
 
-
     @EventSourcingHandler
     private void on(InterestAwareEventCreated event) {
         this.id = event.eventId();
         this.eventDetails = event.eventDetails();
 
-        this.state = InterestAwareEventState.CREATED;
+        this.state = CREATED;
     }
 
     public void voteUp(Attendee attendee) {
@@ -78,14 +80,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     private void rejectIfVotingNotAllowed(Attendee attendee) {
-        rejectOn(InterestAwareEventState.CREATED);
-        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
         rejectOnAlreadyVoted(attendee);
     }
 
     public void startSurveying(InterestPolicy interestPolicy, SurveyingInterestStartedEventFactory factory) {
-        rejectOn(InterestAwareEventState.IN_PROGRESS);
-        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
 
         apply(
                 factory.newSurveyingInterestStartedEvent(id, interestPolicy)
@@ -93,8 +93,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void endSurveying() {
-        rejectOn(InterestAwareEventState.CREATED);
-        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
 
         apply(SurveyingInterestEndedEvent.of(id));
     }
@@ -102,12 +101,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     @EventSourcingHandler
     private void on(SurveyingInterestStartedEvent event) {
         this.interestPolicy = event.interestPolicy();
-        this.state = InterestAwareEventState.IN_PROGRESS;
+        this.state = IN_PROGRESS;
     }
 
     @EventSourcingHandler
     private void on(SurveyingInterestEndedEvent event) {
-        this.state = InterestAwareEventState.ENDED;
+        this.state = ENDED;
     }
 
     @EventSourcingHandler
@@ -138,6 +137,11 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         return negativeVoters.contains(attendee);
     }
 
+    private void rejectOnInvalidStates(InterestAwareEventState... states) {
+        Stream.of(states)
+                .forEach(this::rejectOn);
+    }
+
     private void rejectOn(InterestAwareEventState incorrectState) {
         if (state == incorrectState) {
             throw incorrectState.correspondingIncorrectStateException(id);
@@ -145,8 +149,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void addQuestionnaire(List<QuestionData> questionData) {
-        rejectOn(InterestAwareEventState.IN_PROGRESS);
-        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
         rejectOnQuestionnaireAlreadyExists();
 
         apply(
@@ -176,10 +179,26 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         interviewees.add(event.attendee());
     }
 
+    public void transitToUnderChoosingTermEvent() {
+        rejectOnInvalidStates(CREATED, TRANSITED);
+        endIfSurveyingInProgress();
+
+        apply(InterestAwareEventTransitedToUnderChoosingTermEvent.of(id, eventDetails));
+    }
+
+    private void endIfSurveyingInProgress() {
+        if (state == IN_PROGRESS) {
+            endSurveying();
+        }
+    }
+
+    @EventSourcingHandler
+    private void on(InterestAwareEventTransitedToUnderChoosingTermEvent event) {
+        state = TRANSITED;
+    }
 
     private void rejectOnCompletingQuestionnaireNotAllowed(Attendee attendee) {
-        rejectOn(InterestAwareEventState.CREATED);
-        rejectOn(InterestAwareEventState.ENDED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
         rejectOnQuestionnaireDoesNotExist();
         rejectOnVotedDown(attendee);
         rejectOnNotYetVotedUp(attendee);

@@ -1,4 +1,4 @@
-package knbit.events.bc.backlogevent.domain.valueobjects.commands;
+package knbit.events.bc.choosingterm.domain.valuobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -6,13 +6,13 @@ import lombok.Value;
 import lombok.experimental.Accessors;
 
 /**
- * Created by novy on 07.05.15.
+ * Created by novy on 16.08.15.
  */
-@Value(staticConstructor = "of")
+
 @Accessors(fluent = true)
-public class CreateBacklogEventCommand {
+@Value(staticConstructor = "of")
+public class CreateUnderChoosingTermEventCommand {
 
     private final EventId eventId;
     private final EventDetails eventDetails;
-
 }

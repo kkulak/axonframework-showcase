@@ -1,16 +1,17 @@
 package knbit.events.bc.common.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.builders.BacklogEventDeactivatedBuilder;
-import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-
-import static knbit.events.bc.common.domain.enums.EventType.WORKSHOP;
 
 public class EventLifecycleSagaTest {
     private AnnotatedSagaTestFixture fixture;
@@ -27,35 +28,57 @@ public class EventLifecycleSagaTest {
     }
 
     @Test
-    public void shouldStartSagaOnBacklogEventDeactivatedEvent() throws Exception {
+    public void shouldStartSagaOnBacklogEventCreation() throws Exception {
         fixture
-                .whenAggregate(
-                        eventId
-                )
+                .whenAggregate(eventId)
                 .publishes(
-                        BacklogEventDeactivatedBuilder
-                            .instance()
-                            .build()
+                        BacklogEventCreated.of(eventId, eventDetails)
                 )
                 .expectActiveSagas(1);
     }
 
     @Test
-    public void shouldDispatchCreateInterestAwareEventOnBacklogEventDeactivatedEvent() throws Exception {
+    public void shouldDispatchCreateInterestAwareEventOnBacklogEventTransitedToInterestAwareEvent() throws Exception {
         fixture
-                .whenAggregate(
-                        eventId
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventCreated.of(eventId, eventDetails)
                 )
-                .publishes(
-                        BacklogEventDeactivatedBuilder
-                                .instance()
-                                .description(Description.of("desc"))
-                                .type(WORKSHOP)
-                                .build()
+                .whenPublishingA(
+                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateInterestAwareEventCommand.of(eventId, eventDetails)
                 );
     }
 
+    @Test
+    public void shouldDispatchCreateEventUnderChoosingTermCommandOnBacklogEventTransitedToChoosingTermEvent() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventCreated.of(eventId, eventDetails)
+                )
+                .whenPublishingA(
+                        BacklogEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                )
+                .expectDispatchedCommandsEqualTo(
+                        CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
+                );
+    }
+
+    @Test
+    public void shouldDispatchCreateEventUnderChoosingTermCommandOnInterestAwareEventTransitedToChoosingTermEvent() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventCreated.of(eventId, eventDetails)
+                )
+                .whenPublishingA(
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                )
+                .expectDispatchedCommandsEqualTo(
+                        CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
+                );
+    }
 }

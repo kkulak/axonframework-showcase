@@ -1,6 +1,5 @@
 package knbit.events.bc.backlogevent.domain.builders;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.BacklogEventState;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
@@ -23,7 +22,7 @@ public class BacklogEventCreatedBuilder {
     private EventFrequency frequency = EventFrequency.ONE_OFF;
 
     public BacklogEventCreated build() {
-        return BacklogEventCreated.of(eventId, EventDetails.of(name, description, type, frequency), BacklogEventState.ACTIVE);
+        return BacklogEventCreated.of(eventId, EventDetails.of(name, description, type, frequency));
     }
 
 }

@@ -97,4 +97,10 @@ public class InterestAwareEventCommandHandler {
         final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
         interestAwareEvent.completeQuestionnaire(command.answer());
     }
+
+    @CommandHandler
+    public void handle(TransitInterestAwareEventToUnderTermChoosingEventCommand command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+        interestAwareEvent.transitToUnderChoosingTermEvent();
+    }
 }

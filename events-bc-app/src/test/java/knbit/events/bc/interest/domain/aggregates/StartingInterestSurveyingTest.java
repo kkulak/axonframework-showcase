@@ -7,9 +7,11 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.StartSurveyingInterestCommandBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
@@ -127,6 +129,27 @@ public class StartingInterestSurveyingTest {
                                 .build()
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToStartSurveyTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(eventId, eventDetails),
+
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
 
     }
 }

@@ -8,6 +8,7 @@ import knbit.events.bc.interest.builders.*;
 import knbit.events.bc.interest.domain.exceptions.*;
 import knbit.events.bc.interest.domain.valueobjects.commands.CompleteQuestionnaireCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import knbit.events.bc.interest.domain.enums.AnswerType;
@@ -109,6 +110,27 @@ public class CompletingQuestionnaireTest {
 
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToCompleteQuestionnaireOnEventTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(
+                                eventId, eventDetails
+                        ),
+
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
 
     }
 

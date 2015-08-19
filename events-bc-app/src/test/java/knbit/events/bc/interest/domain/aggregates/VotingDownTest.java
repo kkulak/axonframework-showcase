@@ -4,10 +4,12 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.*;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import org.axonframework.test.FixtureConfiguration;
@@ -33,7 +35,7 @@ public class VotingDownTest {
     }
 
     @Test
-    public void shouldProduceSurveyVotedDwonEventGivenVoteDownCommand() throws Exception {
+    public void shouldProduceSurveyVotedDownEventGivenVoteDownCommand() throws Exception {
 
         final Attendee attendee = Attendee.of("firstname", "lastname");
 
@@ -173,5 +175,25 @@ public class VotingDownTest {
                                 .build()
                 )
                 .expectException(SurveyingInterestNotYetStartedException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToVoteIfSurveyTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEventCreated.of(eventId, eventDetails),
+
+                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        VoteDownCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
     }
 }

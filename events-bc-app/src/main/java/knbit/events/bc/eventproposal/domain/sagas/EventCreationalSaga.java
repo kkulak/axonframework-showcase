@@ -46,7 +46,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     @SagaEventHandler(associationProperty = "eventProposalId")
     public void handle(ProposalAcceptedEvent event) {
         commandGateway.send(
-                new CreateBacklogEventCommand(
+                CreateBacklogEventCommand.of(
                         new EventId(),
                         EventDetails.of(
                                 proposalName,
