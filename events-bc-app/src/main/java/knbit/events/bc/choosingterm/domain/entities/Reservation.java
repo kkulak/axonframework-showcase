@@ -56,6 +56,11 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
         apply(ReservationRejectedEvent.of(eventId, id));
     }
 
+    public void cancel() {
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
+        apply(ReservationCancelledEvent.of(eventId, id));
+    }
+
     private void rejectOn(ReservationStatus... statuses) {
         Stream.of(statuses)
                 .filter(possibleStatus -> possibleStatus == reservationStatus)

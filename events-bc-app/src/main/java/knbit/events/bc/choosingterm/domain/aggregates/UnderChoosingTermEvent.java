@@ -117,6 +117,13 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.reject();
     }
 
+    public void cancelReservation(ReservationId reservationId) {
+        rejectOnNotExistingReservation(reservationId);
+
+        final Reservation reservation = reservations.get(reservationId);
+        reservation.cancel();
+    }
+
     private void rejectOnNotExistingReservation(ReservationId reservationId) {
         if (!reservations.containsKey(reservationId)) {
             throw new ReservationDoesNotExist(reservationId);

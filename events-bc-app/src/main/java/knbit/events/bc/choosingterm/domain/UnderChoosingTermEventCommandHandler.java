@@ -84,11 +84,20 @@ public class UnderChoosingTermEventCommandHandler {
 
         underChoosingTermEvent.acceptReservationWithLocation(reservationId, location);
     }
+
     @CommandHandler
     public void handle(RejectReservationCommand command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
         underChoosingTermEvent.rejectReservation(command.reservationId());
+    }
+
+    @CommandHandler
+    public void handle(CancelReservationCommand command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        underChoosingTermEvent.cancelReservation(command.reservationId());
     }
 }
