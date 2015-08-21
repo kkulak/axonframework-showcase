@@ -1,5 +1,6 @@
 package knbit.events.bc.common.infrastructure.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -19,6 +20,7 @@ public class JacksonConfig {
     public ObjectMapper objectMapper(Jdk8Module jdk8Module, JodaModule jodaModule) {
         final ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModules(jdk8Module, jodaModule);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper;
     }
 

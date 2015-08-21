@@ -5,19 +5,20 @@ import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.Rese
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationCancelledException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationRejectedException;
-import knbit.events.bc.choosingterm.domain.valuobjects.*;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AcceptReservationCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
+import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
+import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.CancelReservationCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * Created by novy on 19.08.15.
@@ -41,7 +42,7 @@ public class CancellingReservationTest {
                 .build();
 
         reservationId = ReservationId.of("reservationId");
-        eventDuration = EventDuration.of(LocalDateTime.now(), Duration.ofHours(2));
+        eventDuration = EventDuration.of(DateTime.now(), Duration.standardDays(2));
         capacity = Capacity.of(20);
     }
 

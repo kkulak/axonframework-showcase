@@ -12,11 +12,10 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 import static knbit.events.bc.matchers.WithoutIdentifierMatcher.matchExactlyIgnoring;
 
@@ -40,7 +39,7 @@ public class RequestingRoomTest {
 
     @Test
     public void shouldProduceRoomRequestedEventWithNewlyCreatedReservationId() throws Exception {
-        final EventDuration eventDuration = EventDuration.of(LocalDateTime.now(), Duration.ofMinutes(90));
+        final EventDuration eventDuration = EventDuration.of(DateTime.now(), Duration.standardMinutes(90));
         final Capacity capacity = Capacity.of(66);
 
         fixture

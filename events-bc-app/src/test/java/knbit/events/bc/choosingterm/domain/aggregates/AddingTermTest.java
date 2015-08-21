@@ -13,11 +13,11 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * Created by novy on 19.08.15.
@@ -41,8 +41,8 @@ public class AddingTermTest {
     public void tryingToAddValidTermShouldProduceTermAddedEvent() throws Exception {
         final Term newTerm = Term.of(
                 EventDuration.of(
-                        LocalDateTime.of(2015, 1, 1, 18, 30),
-                        Duration.ofMinutes(90)
+                        new DateTime(2015, 1, 1, 18, 30),
+                        Duration.standardMinutes(90)
                 ),
                 Capacity.of(666),
                 Location.of("3.28c")
@@ -71,8 +71,8 @@ public class AddingTermTest {
     public void shouldNotBeAbleToAddOverlappingTerm() throws Exception {
         final Term existingTerm = Term.of(
                 EventDuration.of(
-                        LocalDateTime.of(2015, 1, 1, 18, 30),
-                        Duration.ofMinutes(90)
+                        new DateTime(2015, 1, 1, 18, 30),
+                        Duration.standardMinutes(90)
                 ),
                 Capacity.of(666),
                 Location.of("3.21c")
@@ -88,8 +88,8 @@ public class AddingTermTest {
                 .when(
                         AddTermCommand.of(
                                 eventId,
-                                LocalDateTime.of(2015, 1, 1, 19, 0),
-                                Duration.ofMinutes(90),
+                                new DateTime(2015, 1, 1, 19, 0),
+                                Duration.standardMinutes(90),
                                 66,
                                 "3.21c"
                         )

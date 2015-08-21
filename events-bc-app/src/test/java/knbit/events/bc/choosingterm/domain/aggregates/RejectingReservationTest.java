@@ -14,11 +14,11 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * Created by novy on 19.08.15.
@@ -42,7 +42,7 @@ public class RejectingReservationTest {
                 .build();
 
         reservationId = ReservationId.of("reservationId");
-        eventDuration = EventDuration.of(LocalDateTime.now(), Duration.ofHours(2));
+        eventDuration = EventDuration.of(DateTime.now(), Duration.standardHours(2));
         capacity = Capacity.of(20);
     }
 

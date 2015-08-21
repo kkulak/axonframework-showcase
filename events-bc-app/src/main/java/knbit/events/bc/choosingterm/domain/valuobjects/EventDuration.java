@@ -5,11 +5,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.threeten.extra.Interval;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Created by novy on 19.08.15.
@@ -21,14 +20,14 @@ import java.time.ZoneOffset;
 @Accessors(fluent = true)
 public class EventDuration {
 
-    LocalDateTime start;
+    DateTime start;
     Duration duration;
 
-    public static EventDuration of(LocalDateTime start, Duration duration) {
+    public static EventDuration of(DateTime start, Duration duration) {
         return new EventDuration(start, duration);
     }
 
-    private EventDuration(LocalDateTime start, Duration duration) {
+    private EventDuration(DateTime start, Duration duration) {
         Preconditions.checkNotNull(start);
         Preconditions.checkNotNull(duration);
 
@@ -37,7 +36,7 @@ public class EventDuration {
     }
 
     private Interval interval() {
-        return Interval.of(start.toInstant(ZoneOffset.UTC), duration);
+        return new Interval(start, duration);
     }
 
     public boolean overlaps(EventDuration another) {
