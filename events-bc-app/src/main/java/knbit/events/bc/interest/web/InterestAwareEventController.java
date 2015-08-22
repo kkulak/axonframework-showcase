@@ -2,8 +2,8 @@ package knbit.events.bc.interest.web;
 
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand;
-import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import knbit.events.bc.interest.web.forms.QuestionDataDTO;
 import knbit.events.bc.interest.web.forms.SurveyForm;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -45,14 +45,14 @@ public class InterestAwareEventController {
         final List<QuestionDataDTO> questions = form.getQuestions();
         if (!questions.isEmpty()) {
             gateway.sendAndWait(
-                    AddQuestionnaireCommand.of(id, toQuestionData(questions))
+                    QuestionnaireCommands.Add.of(id, toQuestionData(questions))
             );
         }
     }
 
     private void startSurveying(EventId id, SurveyForm form) {
         gateway.sendAndWait(
-                StartSurveyingInterestCommand.of(
+                SurveyCommands.Start.of(
                         id, form.getMinimalInterestThreshold(), form.getEndOfSurveying()
                 )
         );

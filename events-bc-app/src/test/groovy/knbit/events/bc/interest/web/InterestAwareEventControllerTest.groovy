@@ -4,8 +4,10 @@ import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCom
 
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.enums.AnswerType
-import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand
-import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand
+
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands
+
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
@@ -62,7 +64,7 @@ class InterestAwareEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                AddQuestionnaireCommand.of(
+                QuestionnaireCommands.Add.of(
                         EventId.of("eventId"),
                         [
                                 QuestionData.of(
@@ -97,7 +99,7 @@ class InterestAwareEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                StartSurveyingInterestCommand.of(
+                SurveyCommands.Start.of(
                         EventId.of("eventId"), desiredInterestThreshold, desiredEndingDate
                 )
         )

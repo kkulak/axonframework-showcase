@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,8 +19,8 @@ public class SurveyVotedDownEventBuilder {
     private EventId eventId = EventId.of("eventId");
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
-    public SurveyVotedDownEvent build() {
-        return SurveyVotedDownEvent.of(eventId, attendee);
+    public SurveyEvents.VotedDown build() {
+        return SurveyEvents.VotedDown.of(eventId, attendee);
     }
 
 }

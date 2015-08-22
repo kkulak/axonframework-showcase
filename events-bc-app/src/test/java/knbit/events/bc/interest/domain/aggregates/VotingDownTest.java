@@ -8,9 +8,8 @@ import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTrans
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -41,7 +40,7 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -76,7 +75,7 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -108,7 +107,7 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -139,7 +138,7 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -148,7 +147,7 @@ public class VotingDownTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
                         VoteDownCommandBuilder
@@ -164,7 +163,7 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         )
                 )
@@ -182,9 +181,9 @@ public class VotingDownTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
                                 eventId, eventDetails
                         )
                 )

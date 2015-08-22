@@ -39,7 +39,7 @@ public class EventProposalCommandHandler {
     }
 
     @CommandHandler
-    public void handle(EventProposalCommands.RejectProosal command) {
+    public void handle(EventProposalCommands.RejectProposal command) {
         final EventProposal eventProposal = repository.load(command.eventProposalId());
         eventProposal.reject();
     }

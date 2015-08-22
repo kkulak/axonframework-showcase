@@ -6,11 +6,8 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.*;
 import knbit.events.bc.interest.domain.exceptions.*;
-import knbit.events.bc.interest.domain.valueobjects.commands.CompleteQuestionnaireCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.*;
 import knbit.events.bc.interest.domain.enums.AnswerType;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
@@ -72,12 +69,12 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         )
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(SurveyingInterestNotYetStartedException.class);
@@ -89,11 +86,11 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         ),
@@ -103,10 +100,10 @@ public class CompletingQuestionnaireTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
@@ -118,16 +115,16 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
                                 eventId, eventDetails
                         )
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(InterestAwareEventAlreadyTransitedException.class);
@@ -139,7 +136,7 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -149,7 +146,7 @@ public class CompletingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(NoQuestionnaireSetException.class);
@@ -160,11 +157,11 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         ),
@@ -175,7 +172,7 @@ public class CompletingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(NotVotedUpException.class);
@@ -187,11 +184,11 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         ),
@@ -208,7 +205,7 @@ public class CompletingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(VotedDownBeforeException.class);
@@ -219,11 +216,11 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         ),
@@ -252,7 +249,7 @@ public class CompletingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectException(AttendeeAlreadyCompletedQuestionnaireException.class);
@@ -264,11 +261,11 @@ public class CompletingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         ),
@@ -285,7 +282,7 @@ public class CompletingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        CompleteQuestionnaireCommand.of(eventId, attendeeAnswer)
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
 
                 )
                 .expectEvents(

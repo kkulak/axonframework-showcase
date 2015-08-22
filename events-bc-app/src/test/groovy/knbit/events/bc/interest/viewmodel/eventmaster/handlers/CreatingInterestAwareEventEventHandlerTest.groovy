@@ -9,7 +9,8 @@ import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.domain.valueobjects.Name
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
+
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import spock.lang.Specification
 
 /**
@@ -44,7 +45,7 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification {
     def "should create database entry containing only event details on InterestAwareEventCreated event"() {
 
         when:
-        objectUnderTest.on InterestAwareEventCreated.of(eventId, eventDetails)
+        objectUnderTest.on InterestAwareEvents.Created.of(eventId, eventDetails)
 
         then:
         def interestAwareEventViewModel = collection.findOne(

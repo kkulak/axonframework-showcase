@@ -41,7 +41,7 @@ class AcceptingRejectingProposalControllerTest extends Specification {
         )
 
         then:
-        1 * commandGatewayMock.send(_ as EventProposalCommands.RejectProosal)
+        1 * commandGatewayMock.send(_ as EventProposalCommands.RejectProposal)
 
     }
 }

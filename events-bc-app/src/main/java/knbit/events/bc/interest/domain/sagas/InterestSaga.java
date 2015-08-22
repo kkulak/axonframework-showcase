@@ -2,9 +2,9 @@ package knbit.events.bc.interest.domain.sagas;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyingTimeExceededEvent;
-import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestWithEndingDateStartedEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
 import org.axonframework.eventhandling.scheduling.ScheduleToken;
@@ -28,7 +28,7 @@ public class InterestSaga extends AbstractAnnotatedSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(SurveyingInterestWithEndingDateStartedEvent event) {
+    public void on(SurveyStartingEvents.StartedWithEndingDate event) {
 
         this.eventId = event.eventId();
 
@@ -43,13 +43,13 @@ public class InterestSaga extends AbstractAnnotatedSaga {
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyingTimeExceededEvent event) {
         commandGateway.send(
-                EndSurveyingInterestCommand.of(eventId)
+                QuestionnaireCommands.End.of(eventId)
         );
         end();
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    public void on(SurveyingInterestEndedEvent event) {
+    public void on(SurveyEvents.Ended event) {
         eventScheduler.cancelSchedule(scheduleToken);
         end();
     }

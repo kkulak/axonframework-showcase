@@ -6,8 +6,8 @@ import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTer
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventTransitionEvents.TransitedToInterestAware.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
-                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
+                        InterestAwareEventCommands.Create.of(eventId, eventDetails)
                 );
     }
 
@@ -74,7 +74,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         UnderChoosingTermEventCommands.Create.of(eventId, eventDetails)

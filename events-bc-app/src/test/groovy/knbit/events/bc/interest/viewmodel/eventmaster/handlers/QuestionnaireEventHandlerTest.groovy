@@ -9,8 +9,8 @@ import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.MultipleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.SingleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.TextChoiceAnswerPolicy
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireCompletedEvent
+
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
@@ -44,7 +44,7 @@ class QuestionnaireEventHandlerTest extends Specification {
     def "adding questionnaire with multiple choice question should result in 0 votes stored for each answer"() {
 
         when:
-        objectUnderTest.on(QuestionnaireAddedEvent.of(
+        objectUnderTest.on(QuestionnaireEvents.Added.of(
                 eventId, [
                 Question.of(
                         QuestionTitle.of("title"),
@@ -75,7 +75,7 @@ class QuestionnaireEventHandlerTest extends Specification {
     def "adding questionnaire with single choice question should result in 0 votes stored for each answer"() {
 
         when:
-        objectUnderTest.on(QuestionnaireAddedEvent.of(
+        objectUnderTest.on(QuestionnaireEvents.Added.of(
                 eventId, [
                 Question.of(
                         QuestionTitle.of("title"),
@@ -104,7 +104,7 @@ class QuestionnaireEventHandlerTest extends Specification {
     def "adding questionnaire with text question should result in question with no answers"() {
 
         when:
-        objectUnderTest.on(QuestionnaireAddedEvent.of(
+        objectUnderTest.on(QuestionnaireEvents.Added.of(
                 eventId, [
                 Question.of(
                         QuestionTitle.of("title"),
@@ -141,7 +141,7 @@ class QuestionnaireEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                QuestionnaireCompletedEvent.of(
+                QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
                         Attendee.of("fname", "lname"),
                         [
@@ -185,7 +185,7 @@ class QuestionnaireEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                QuestionnaireCompletedEvent.of(
+                QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
                         Attendee.of("fname", "lname"),
                         [
@@ -226,7 +226,7 @@ class QuestionnaireEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                QuestionnaireCompletedEvent.of(
+                QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
                         Attendee.of("fname", "lname"),
                         [

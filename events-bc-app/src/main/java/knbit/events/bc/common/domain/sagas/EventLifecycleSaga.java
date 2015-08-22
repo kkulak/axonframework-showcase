@@ -3,8 +3,8 @@ package knbit.events.bc.common.domain.sagas;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.saga.annotation.AbstractAnnotatedSaga;
 import org.axonframework.saga.annotation.SagaEventHandler;
@@ -24,7 +24,7 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     private void on(BacklogEventTransitionEvents.TransitedToInterestAware event) {
         commandGateway.send(
-                CreateInterestAwareEventCommand.of(event.eventId(), event.eventDetails())
+                InterestAwareEventCommands.Create.of(event.eventId(), event.eventDetails())
         );
     }
 
@@ -36,7 +36,7 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
-    private void on(InterestAwareEventTransitedToUnderChoosingTermEvent event) {
+    private void on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
         commandGateway.send(
                 UnderChoosingTermEventCommands.Create.of(event.eventId(), event.eventDetails())
         );

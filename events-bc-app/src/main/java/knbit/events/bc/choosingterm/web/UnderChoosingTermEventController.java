@@ -6,7 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermProposalDTO;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.TransitInterestAwareEventToUnderTermChoosingEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class UnderChoosingTermEventController {
 
     private void transitFromInterestAwareEvent(EventId eventId) {
         commandGateway.sendAndWait(
-                TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
         );
     }
 

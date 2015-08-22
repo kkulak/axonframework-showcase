@@ -17,8 +17,8 @@ public class RejectProposalCommandBuilder {
 
     private EventProposalId eventProposalId = EventProposalId.of("id");
 
-    public EventProposalCommands.RejectProosal build() {
-        return new EventProposalCommands.RejectProosal(eventProposalId);
+    public EventProposalCommands.RejectProposal build() {
+        return new EventProposalCommands.RejectProposal(eventProposalId);
     }
 
 }

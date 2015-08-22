@@ -35,7 +35,7 @@ public final class EventProposalCommands {
 
     @Value
     @Accessors(fluent = true)
-    public static class RejectProosal {
+    public static class RejectProposal {
 
         EventProposalId eventProposalId;
     }

@@ -1,12 +1,10 @@
 package knbit.events.bc.kanbanboard.readmodel.eventhandler
 
 import knbit.events.bc.backlogevent.domain.builders.BacklogEventCreatedBuilder
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.interest.builders.EventDetailsBuilder
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
+
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.kanbanboard.readmodel.KanbanBoardContextConfiguration
 import knbit.events.bc.kanbanboard.readmodel.model.KanbanBoard
 import knbit.events.bc.kanbanboard.readmodel.repository.KanbanBoardRepository
@@ -55,7 +53,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
     def "should update kanbanboard entity on handling EventStatusAware"() {
         given:
         repository.save(new KanbanBoard("id", "name", LECTURE, ONE_OFF, BACKLOG, [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]))
-        def event = InterestAwareEventCreated.of(EventId.of("id"), EventDetailsBuilder.instance().build())
+        def event = InterestAwareEvents.Created.of(EventId.of("id"), EventDetailsBuilder.instance().build())
 
         when:
         handler.handle(event)

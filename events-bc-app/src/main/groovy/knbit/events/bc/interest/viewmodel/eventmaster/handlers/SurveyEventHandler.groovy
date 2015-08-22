@@ -1,9 +1,10 @@
 package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
 import com.mongodb.DBCollection
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent
-import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
+
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
+
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -24,20 +25,20 @@ class SurveyEventHandler {
     }
 
     @EventHandler
-    def on(SurveyingInterestStartedEvent event) {
+    def on(SurveyStartingEvents.Started event) {
         def domainId = event.eventId().value()
 
         startVoting(domainId)
     }
 
     @EventHandler
-    def on(SurveyVotedUpEvent event) {
+    def on(SurveyEvents.VotedUp event) {
         def eventId = event.eventId()
         voteUp(eventId.value())
     }
 
     @EventHandler
-    def on(SurveyVotedDownEvent event) {
+    def on(SurveyEvents.VotedDown event) {
         def eventId = event.eventId()
         voteDown(eventId.value())
     }

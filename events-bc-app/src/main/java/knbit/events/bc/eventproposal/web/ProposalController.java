@@ -59,7 +59,7 @@ public class ProposalController {
 
     private void rejectProposal(EventProposalId eventProposalId) {
         commandGateway.send(
-                new EventProposalCommands.RejectProosal(eventProposalId)
+                new EventProposalCommands.RejectProposal(eventProposalId)
         );
     }
 }
