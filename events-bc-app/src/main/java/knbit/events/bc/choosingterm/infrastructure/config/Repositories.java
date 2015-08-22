@@ -1,4 +1,4 @@
-package knbit.events.bc.infrastructure.config;
+package knbit.events.bc.choosingterm.infrastructure.config;
 
 import knbit.events.bc.choosingterm.domain.aggregates.UnderChoosingTermEvent;
 import org.axonframework.eventhandling.EventBus;
