@@ -1,6 +1,6 @@
 package knbit.events.bc.backlogevent.web;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.backlogevent.web.forms.EventBacklogDTO;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -27,13 +27,20 @@ public class BacklogEventController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createBacklogEvent(@RequestBody @Valid EventBacklogDTO eventBacklogDTO) {
+        final EventId eventId = new EventId();
+        final EventDetails eventDetails = eventDetailsFrom(eventBacklogDTO);
+
         gateway.send(
-                CreateBacklogEventCommand.of(
-                        new EventId(), EventDetails.of(
-                                Name.of(eventBacklogDTO.getName()), Description.of(eventBacklogDTO.getDescription()),
-                                eventBacklogDTO.getEventType(), eventBacklogDTO.getEventFrequency())
-                )
+                BacklogEventCommands.Create.of(eventId, eventDetails)
         );
     }
 
+    private EventDetails eventDetailsFrom(EventBacklogDTO eventBacklogDTO) {
+        return EventDetails.of(
+                Name.of(eventBacklogDTO.getName()),
+                Description.of(eventBacklogDTO.getDescription()),
+                eventBacklogDTO.getEventType(),
+                eventBacklogDTO.getEventFrequency()
+        );
+    }
 }

@@ -1,6 +1,6 @@
 package knbit.events.bc.interest.web;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToInterestAwareEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand;
 import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
@@ -38,7 +38,7 @@ public class InterestAwareEventController {
     }
 
     private void transitFromBacklog(EventId id) {
-        gateway.sendAndWait(TransitBacklogEventToInterestAwareEventCommand.of(id));
+        gateway.sendAndWait(BacklogEventCommands.TransitToInterestAwareEventCommand.of(id));
     }
 
     private void addQuestionnaireIfAnyQuestionsPresent(EventId id, SurveyForm form) {

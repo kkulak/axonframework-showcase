@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.web
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToUnderChoosingTermEventCommand
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands
+
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand
 import knbit.events.bc.common.domain.valueobjects.EventId
@@ -35,7 +36,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                TransitBacklogEventToUnderChoosingTermEventCommand.of(
+                BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(
                         EventId.of("eventId")
                 )
         )

@@ -1,12 +1,9 @@
 package knbit.events.bc.backlogevent.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToInterestAwareEventCommand;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToUnderChoosingTermEventCommand;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -32,10 +29,10 @@ public class BacklogEventTest {
         fixture
                 .given()
                 .when(
-                        CreateBacklogEventCommand.of(eventId, eventDetails)
+                        BacklogEventCommands.Create.of(eventId, eventDetails)
                 )
                 .expectEvents(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 );
     }
 
@@ -43,13 +40,13 @@ public class BacklogEventTest {
     public void shouldTransitToInterestAwareEventGivenCorrespondingCommand() throws Exception {
         fixture
                 .given(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitBacklogEventToInterestAwareEventCommand.of(eventId)
+                        BacklogEventCommands.TransitToInterestAwareEventCommand.of(eventId)
                 )
                 .expectEvents(
-                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails)
+                        BacklogEventTransitionEvents.TransitedToInterestAware.of(eventId, eventDetails)
                 );
     }
 
@@ -57,11 +54,11 @@ public class BacklogEventTest {
     public void shouldNotBeAbleToTransitBacklogEventToInterestAwareEventMoreThanOnce() throws Exception {
         fixture
                 .given(
-                        BacklogEventCreated.of(eventId, eventDetails),
-                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails),
+                        BacklogEventTransitionEvents.TransitedToInterestAware.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitBacklogEventToInterestAwareEventCommand.of(eventId)
+                        BacklogEventCommands.TransitToInterestAwareEventCommand.of(eventId)
                 )
                 .expectException(IllegalStateException.class);
     }
@@ -70,13 +67,13 @@ public class BacklogEventTest {
     public void shouldTransitToUnderChoosingTermEventGivenCorrespondingCommand() throws Exception {
         fixture
                 .given(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitBacklogEventToUnderChoosingTermEventCommand.of(eventId)
+                        BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(eventId)
                 )
                 .expectEvents(
-                        BacklogEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        BacklogEventTransitionEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 );
     }
 
@@ -84,11 +81,11 @@ public class BacklogEventTest {
     public void shouldNotBeAbleToTransitBacklogEventToUnderChoosingTermEventMoreThanOnce() throws Exception {
         fixture
                 .given(
-                        BacklogEventCreated.of(eventId, eventDetails),
-                        BacklogEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails),
+                        BacklogEventTransitionEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitBacklogEventToInterestAwareEventCommand.of(eventId)
+                        BacklogEventCommands.TransitToInterestAwareEventCommand.of(eventId)
                 )
                 .expectException(IllegalStateException.class);
     }

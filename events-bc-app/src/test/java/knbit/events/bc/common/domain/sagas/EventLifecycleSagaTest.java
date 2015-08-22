@@ -1,8 +1,7 @@
 package knbit.events.bc.common.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToInterestAwareEvent;
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitedToUnderChoosingTermEvent;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -32,7 +31,7 @@ public class EventLifecycleSagaTest {
         fixture
                 .whenAggregate(eventId)
                 .publishes(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .expectActiveSagas(1);
     }
@@ -42,10 +41,10 @@ public class EventLifecycleSagaTest {
         fixture
                 .givenAggregate(eventId)
                 .published(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        BacklogEventTransitedToInterestAwareEvent.of(eventId, eventDetails)
+                        BacklogEventTransitionEvents.TransitedToInterestAware.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateInterestAwareEventCommand.of(eventId, eventDetails)
@@ -57,10 +56,10 @@ public class EventLifecycleSagaTest {
         fixture
                 .givenAggregate(eventId)
                 .published(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
-                        BacklogEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        BacklogEventTransitionEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
                         CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
@@ -72,7 +71,7 @@ public class EventLifecycleSagaTest {
         fixture
                 .givenAggregate(eventId)
                 .published(
-                        BacklogEventCreated.of(eventId, eventDetails)
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
                 )
                 .whenPublishingA(
                         InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)

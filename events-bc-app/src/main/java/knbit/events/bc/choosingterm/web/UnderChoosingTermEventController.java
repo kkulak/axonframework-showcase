@@ -1,6 +1,6 @@
 package knbit.events.bc.choosingterm.web;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToUnderChoosingTermEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
@@ -53,7 +53,7 @@ public class UnderChoosingTermEventController {
 
     private void transitFromBacklogEvent(EventId eventId) {
         commandGateway.sendAndWait(
-                TransitBacklogEventToUnderChoosingTermEventCommand.of(eventId)
+                BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(eventId)
         );
     }
 
