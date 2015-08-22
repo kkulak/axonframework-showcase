@@ -5,9 +5,9 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.RoomRequestedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -44,16 +44,16 @@ public class RequestingRoomTest {
 
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        BookRoomCommand.of(eventId, eventDuration.start(), eventDuration.duration(), capacity.value())
+                        ReservationCommands.BookRoom.of(eventId, eventDuration.start(), eventDuration.duration(), capacity.value())
                 )
                 .expectEventsMatching(
                         matchExactlyIgnoring(
                                 "reservationId",
                                 ImmutableList.of(
-                                        RoomRequestedEvent.of(eventId, ReservationId.of("ignored"), eventDuration, capacity)
+                                        ReservationEvents.RoomRequested.of(eventId, ReservationId.of("ignored"), eventDuration, capacity)
                                 )
                         )
                 );

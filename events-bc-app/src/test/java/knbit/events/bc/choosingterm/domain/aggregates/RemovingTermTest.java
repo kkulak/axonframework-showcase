@@ -6,10 +6,9 @@ import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.RemoveTermCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.TermAddedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.TermRemovedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -51,10 +50,10 @@ public class RemovingTermTest {
     public void shouldNotBeAbleToRemoveNotExistingTerm() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        RemoveTermCommand.of(
+                        TermCommands.RemoveTerm.of(
                                 eventId,
                                 termToRemove.duration().start(),
                                 termToRemove.duration().duration(),
@@ -69,11 +68,11 @@ public class RemovingTermTest {
     public void shouldProduceTermRemovedEventOnSuccessfulRemoval() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
-                        TermAddedEvent.of(eventId, termToRemove)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        TermEvents.TermAdded.of(eventId, termToRemove)
                 )
                 .when(
-                        RemoveTermCommand.of(
+                        TermCommands.RemoveTerm.of(
                                 eventId,
                                 termToRemove.duration().start(),
                                 termToRemove.duration().duration(),
@@ -82,7 +81,7 @@ public class RemovingTermTest {
                         )
                 )
                 .expectEvents(
-                        TermRemovedEvent.of(eventId, termToRemove)
+                        TermEvents.TermRemoved.of(eventId, termToRemove)
                 );
     }
 }

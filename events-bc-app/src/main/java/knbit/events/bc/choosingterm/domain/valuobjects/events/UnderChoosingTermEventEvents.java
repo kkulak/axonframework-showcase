@@ -1,4 +1,4 @@
-package knbit.events.bc.backlogevent.domain.valueobjects.events;
+package knbit.events.bc.choosingterm.domain.valuobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -14,17 +14,18 @@ import lombok.experimental.Accessors;
  */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class BacklogEventEvents {
+public final class UnderChoosingTermEventEvents {
 
-    @Value(staticConstructor = "of")
     @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
     public static class Created implements EventStatusAware {
 
         EventId eventId;
         EventDetails eventDetails;
 
+        @Override
         public EventStatus status() {
-            return EventStatus.BACKLOG;
+            return EventStatus.CHOOSING_TERM;
         }
     }
 }

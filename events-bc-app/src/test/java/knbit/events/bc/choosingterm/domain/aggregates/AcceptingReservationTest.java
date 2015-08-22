@@ -6,7 +6,7 @@ import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.Rese
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationRejectedException;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AcceptReservationCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -48,10 +48,10 @@ public class AcceptingReservationTest {
     public void shouldNotBeAbleToAcceptNotExistingReservation() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        AcceptReservationCommand.of(eventId, ReservationId.of("fakeId"), "3.21c")
+                        ReservationCommands.AcceptReservation.of(eventId, ReservationId.of("fakeId"), "3.21c")
                 )
                 .expectException(ReservationDoesNotExist.class);
     }
@@ -60,12 +60,12 @@ public class AcceptingReservationTest {
     public void shouldNotBeAbleToAcceptAlreadyAcceptedReservation() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
-                        RoomRequestedEvent.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationAcceptedEvent.of(eventId, reservationId)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
+                        ReservationEvents.ReservationAccepted.of(eventId, reservationId)
                 )
                 .when(
-                        AcceptReservationCommand.of(eventId, reservationId, "3.21c")
+                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
                 )
                 .expectException(ReservationAcceptedException.class);
     }
@@ -74,12 +74,12 @@ public class AcceptingReservationTest {
     public void shouldNotBeAbleToAcceptAlreadyRejectedReservation() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
-                        RoomRequestedEvent.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationRejectedEvent.of(eventId, reservationId)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
+                        ReservationEvents.ReservationRejected.of(eventId, reservationId)
                 )
                 .when(
-                        AcceptReservationCommand.of(eventId, reservationId, "3.21c")
+                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
                 )
                 .expectException(ReservationRejectedException.class);
     }
@@ -88,12 +88,12 @@ public class AcceptingReservationTest {
     public void shouldNotBeAbleToAcceptCancelledReservation() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
-                        RoomRequestedEvent.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationCancelledEvent.of(eventId, reservationId)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
+                        ReservationEvents.ReservationCancelled.of(eventId, reservationId)
                 )
                 .when(
-                        AcceptReservationCommand.of(eventId, reservationId, "3.21c")
+                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
                 )
                 .expectException(ReservationCancelledException.class);
     }
@@ -102,15 +102,15 @@ public class AcceptingReservationTest {
     public void otherwiseShouldGenerateReservationAcceptedEventAndAddNewTerm() throws Exception {
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
-                        RoomRequestedEvent.of(eventId, reservationId, eventDuration, capacity)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity)
                 )
                 .when(
-                        AcceptReservationCommand.of(eventId, reservationId, "3.21c")
+                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
                 )
                 .expectEvents(
-                        ReservationAcceptedEvent.of(eventId, reservationId),
-                        TermAddedEvent.of(eventId, Term.of(eventDuration, capacity, Location.of("3.21c")))
+                        ReservationEvents.ReservationAccepted.of(eventId, reservationId),
+                        TermEvents.TermAdded.of(eventId, Term.of(eventDuration, capacity, Location.of("3.21c")))
                 );
     }
 }

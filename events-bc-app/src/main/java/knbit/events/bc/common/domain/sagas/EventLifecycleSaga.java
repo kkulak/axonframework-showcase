@@ -2,7 +2,7 @@ package knbit.events.bc.common.domain.sagas;
 
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -31,14 +31,14 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     private void on(BacklogEventTransitionEvents.TransitedToUnderChoosingTerm event) {
         commandGateway.send(
-                CreateUnderChoosingTermEventCommand.of(event.eventId(), event.eventDetails())
+                UnderChoosingTermEventCommands.Create.of(event.eventId(), event.eventDetails())
         );
     }
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     private void on(InterestAwareEventTransitedToUnderChoosingTermEvent event) {
         commandGateway.send(
-                CreateUnderChoosingTermEventCommand.of(event.eventId(), event.eventDetails())
+                UnderChoosingTermEventCommands.Create.of(event.eventId(), event.eventDetails())
         );
     }
 

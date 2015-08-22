@@ -6,9 +6,9 @@ import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.TermAddedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -50,10 +50,10 @@ public class AddingTermTest {
 
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        AddTermCommand.of(
+                        TermCommands.AddTerm.of(
                                 eventId,
                                 newTerm.duration().start(),
                                 newTerm.duration().duration(),
@@ -62,7 +62,7 @@ public class AddingTermTest {
                         )
                 )
                 .expectEvents(
-                        TermAddedEvent.of(eventId, newTerm)
+                        TermEvents.TermAdded.of(eventId, newTerm)
                 );
     }
 
@@ -80,13 +80,13 @@ public class AddingTermTest {
 
         fixture
                 .given(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails),
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
 
-                        TermAddedEvent.of(eventId, existingTerm)
+                        TermEvents.TermAdded.of(eventId, existingTerm)
 
                 )
                 .when(
-                        AddTermCommand.of(
+                        TermCommands.AddTerm.of(
                                 eventId,
                                 new DateTime(2015, 1, 1, 19, 0),
                                 Duration.standardMinutes(90),

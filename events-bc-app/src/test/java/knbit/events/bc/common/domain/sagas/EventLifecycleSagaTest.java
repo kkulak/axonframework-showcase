@@ -2,7 +2,7 @@ package knbit.events.bc.common.domain.sagas;
 
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -62,7 +62,7 @@ public class EventLifecycleSagaTest {
                         BacklogEventTransitionEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
-                        CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
+                        UnderChoosingTermEventCommands.Create.of(eventId, eventDetails)
                 );
     }
 
@@ -77,7 +77,7 @@ public class EventLifecycleSagaTest {
                         InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
                 )
                 .expectDispatchedCommandsEqualTo(
-                        CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
+                        UnderChoosingTermEventCommands.Create.of(eventId, eventDetails)
                 );
     }
 }
