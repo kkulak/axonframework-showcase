@@ -8,9 +8,7 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.saga.annotation.AbstractAnnotatedSaga;
 import org.axonframework.saga.annotation.EndSaga;
@@ -34,7 +32,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(EventProposed event) {
+    public void handle(EventProposalEvents.EventProposed event) {
         this.eventProposalId = event.eventProposalId();
         this.proposalName = event.name();
         this.proposalDescription = event.description();
@@ -44,7 +42,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(ProposalAcceptedEvent event) {
+    public void handle(EventProposalEvents.ProposalAccepted event) {
         commandGateway.send(
                 BacklogEventCommands.Create.of(
                         new EventId(),
@@ -60,7 +58,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(ProposalRejectedEvent event) {
+    public void handle(EventProposalEvents.ProposalRejected event) {
     }
 
     @Autowired

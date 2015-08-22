@@ -3,7 +3,7 @@ package knbit.events.bc.eventproposal.domain.builders;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.ProposeEventCommand;
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import lombok.NoArgsConstructor;
 
 /**
@@ -44,7 +44,7 @@ public class ProposeEventCommandBuilder {
         return this;
     }
 
-    public ProposeEventCommand build() {
-        return new ProposeEventCommand(eventProposalId, name, description, eventType, eventFrequency);
+    public EventProposalCommands.ProposeEvent build() {
+        return new EventProposalCommands.ProposeEvent(eventProposalId, name, description, eventType, eventFrequency);
     }
 }

@@ -1,7 +1,7 @@
 package knbit.events.bc.eventproposal.domain.builders;
 
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand;
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,8 +17,8 @@ public class RejectProposalCommandBuilder {
 
     private EventProposalId eventProposalId = EventProposalId.of("id");
 
-    public RejectProposalCommand build() {
-        return new RejectProposalCommand(eventProposalId);
+    public EventProposalCommands.RejectProosal build() {
+        return new EventProposalCommands.RejectProosal(eventProposalId);
     }
 
 }

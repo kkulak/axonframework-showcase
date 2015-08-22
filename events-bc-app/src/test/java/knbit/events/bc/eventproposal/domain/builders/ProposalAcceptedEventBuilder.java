@@ -3,7 +3,7 @@ package knbit.events.bc.eventproposal.domain.builders;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,7 +21,7 @@ public class ProposalAcceptedEventBuilder {
     private ProposalState state = ProposalState.ACCEPTED;
     private EventType eventType = EventType.LECTURE;
 
-    public ProposalAcceptedEvent build() {
-        return new ProposalAcceptedEvent(eventProposalId, eventType, state);
+    public EventProposalEvents.ProposalAccepted build() {
+        return new EventProposalEvents.ProposalAccepted(eventProposalId, eventType, state);
     }
 }
