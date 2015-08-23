@@ -12,7 +12,7 @@ public class VoteCommandFactory {
             case POSITIVE:
                 return new SurveyCommands.VoteUp(EventId.of(eventId), attendee);
             case NEGATIVE:
-                return new SurveyCommands.VoteDownCommand(EventId.of(eventId), attendee);
+                return new SurveyCommands.VoteDown(EventId.of(eventId), attendee);
             default:
                 throw new IllegalArgumentException();
         }
