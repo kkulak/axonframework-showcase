@@ -6,7 +6,7 @@ import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import lombok.NoArgsConstructor;
 
 /**
@@ -54,7 +54,7 @@ public class EventProposedBuilder {
         return this;
     }
 
-    public EventProposed build() {
-        return new EventProposed(eventProposalId, name, description, eventType, eventFrequency, proposalState);
+    public EventProposalEvents.EventProposed build() {
+        return new EventProposalEvents.EventProposed(eventProposalId, name, description, eventType, eventFrequency, proposalState);
     }
 }

@@ -10,10 +10,7 @@ import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.WithFixedThresholdPolicy;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestThresholdReachedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.*;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +40,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -79,7 +76,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -112,7 +109,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -145,7 +142,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -181,7 +178,7 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectEvents(
-                        InterestThresholdReachedEvent.of(eventId),
+                        SurveyEvents.InterestThresholdReached.of(eventId),
 
                         SurveyVotedUpEventBuilder
                                 .instance()
@@ -199,7 +196,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -217,7 +214,7 @@ public class VotingUpTest {
                                 )
                                 .build(),
 
-                        InterestThresholdReachedEvent.of(eventId)
+                        SurveyEvents.InterestThresholdReached.of(eventId)
                 )
                 .when(
                         VoteUpCommandBuilder
@@ -246,7 +243,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -255,7 +252,7 @@ public class VotingUpTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
                         VoteDownCommandBuilder
@@ -271,7 +268,7 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
                         VoteDownCommandBuilder
@@ -287,9 +284,9 @@ public class VotingUpTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
                                 eventId, eventDetails
                         )
                 )

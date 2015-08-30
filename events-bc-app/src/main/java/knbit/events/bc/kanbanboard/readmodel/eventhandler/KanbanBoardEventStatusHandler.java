@@ -1,6 +1,6 @@
 package knbit.events.bc.kanbanboard.readmodel.eventhandler;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventCreated;
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
 import knbit.events.bc.common.readmodel.EventStatusAware;
 import knbit.events.bc.kanbanboard.readmodel.model.KanbanBoard;
 import knbit.events.bc.kanbanboard.readmodel.repository.KanbanBoardRepository;
@@ -19,7 +19,7 @@ public class KanbanBoardEventStatusHandler {
     }
 
     @EventHandler
-    public void handle(BacklogEventCreated event) {
+    public void handle(BacklogEventEvents.Created event) {
         kanbanBoardRepository.save(
             new KanbanBoard(
                     event.eventId().value(), event.eventDetails().name().value(),

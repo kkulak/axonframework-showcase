@@ -2,7 +2,8 @@ package knbit.events.bc.common.viewmodel.allevents.eventhandler
 
 import com.mongodb.DBCollection
 import knbit.events.bc.common.readmodel.EventStatus
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
+
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -23,7 +24,7 @@ class AllEventsEventHandler {
     }
 
     @EventHandler
-    def on(InterestAwareEventCreated event) {
+    def on(InterestAwareEvents.Created event) {
         def eventId = event.eventId()
         def eventDetails = event.eventDetails()
 

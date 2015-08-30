@@ -1,8 +1,8 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.CreateUnderChoosingTermEventCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
@@ -40,10 +40,10 @@ public class UnderChoosingTermEventCreationalTest {
         fixture
                 .givenNoPriorActivity()
                 .when(
-                        CreateUnderChoosingTermEventCommand.of(eventId, eventDetails)
+                        UnderChoosingTermEventCommands.Create.of(eventId, eventDetails)
                 )
                 .expectEvents(
-                        UnderChoosingTermEventCreated.of(eventId, eventDetails)
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 );
 
     }

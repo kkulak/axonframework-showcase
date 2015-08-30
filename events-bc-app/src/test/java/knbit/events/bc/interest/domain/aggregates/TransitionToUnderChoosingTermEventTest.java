@@ -7,10 +7,9 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
-import knbit.events.bc.interest.domain.valueobjects.commands.TransitInterestAwareEventToUnderTermChoosingEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventTransitedToUnderChoosingTermEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +36,10 @@ public class TransitionToUnderChoosingTermEventTest {
     public void shouldNotBeAbleToTransitIfEventSurveyingNotYetStarted() throws Exception {
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                        InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
                 )
                 .expectException(
                         SurveyingInterestNotYetStartedException.class
@@ -51,7 +50,7 @@ public class TransitionToUnderChoosingTermEventTest {
     public void ifSurveyingIsInProgressItShouldEndItAndThenTransitToUnderChoosingTermEvent() throws Exception {
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
@@ -59,12 +58,12 @@ public class TransitionToUnderChoosingTermEventTest {
                                 .build()
                 )
                 .when(
-                        TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                        InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
                 )
                 .expectEvents(
-                        SurveyingInterestEndedEvent.of(eventId),
+                        SurveyEvents.Ended.of(eventId),
 
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 );
     }
 
@@ -72,20 +71,20 @@ public class TransitionToUnderChoosingTermEventTest {
     public void shouldTransitToUnderChoosingTermEventGivenCorrespondingCommand() throws Exception {
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
-                        TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                        InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
                 )
                 .expectEvents(
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 );
     }
 
@@ -93,19 +92,19 @@ public class TransitionToUnderChoosingTermEventTest {
     public void shouldNotBeAbleToTransitAlreadyTransitedEvent() throws Exception {
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId),
+                        SurveyEvents.Ended.of(eventId),
 
-                        InterestAwareEventTransitedToUnderChoosingTermEvent.of(eventId, eventDetails)
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
                 )
                 .when(
-                        TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                        InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
                 )
                 .expectException(
                         InterestAwareEventAlreadyTransitedException.class

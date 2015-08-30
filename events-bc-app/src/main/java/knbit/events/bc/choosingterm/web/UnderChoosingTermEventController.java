@@ -1,12 +1,12 @@
 package knbit.events.bc.choosingterm.web;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToUnderChoosingTermEventCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermProposalDTO;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.TransitInterestAwareEventToUnderTermChoosingEventCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +53,13 @@ public class UnderChoosingTermEventController {
 
     private void transitFromBacklogEvent(EventId eventId) {
         commandGateway.sendAndWait(
-                TransitBacklogEventToUnderChoosingTermEventCommand.of(eventId)
+                BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(eventId)
         );
     }
 
     private void transitFromInterestAwareEvent(EventId eventId) {
         commandGateway.sendAndWait(
-                TransitInterestAwareEventToUnderTermChoosingEventCommand.of(eventId)
+                InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
         );
     }
 
@@ -69,8 +69,8 @@ public class UnderChoosingTermEventController {
                 .forEach(commandGateway::sendAndWait);
     }
 
-    private AddTermCommand addTermCommandFrom(EventId eventId, TermDTO term) {
-        return AddTermCommand.of(
+    private TermCommands.AddTerm addTermCommandFrom(EventId eventId, TermDTO term) {
+        return TermCommands.AddTerm.of(
                 eventId,
                 term.getDate(),
                 Duration.standardMinutes(term.getDuration()),
@@ -86,8 +86,8 @@ public class UnderChoosingTermEventController {
 
     }
 
-    private BookRoomCommand bookRoomCommandFrom(EventId eventId, TermProposalDTO termProposal) {
-        return BookRoomCommand.of(
+    private ReservationCommands.BookRoom bookRoomCommandFrom(EventId eventId, TermProposalDTO termProposal) {
+        return ReservationCommands.BookRoom.of(
                 eventId,
                 termProposal.getDate(),
                 Duration.standardMinutes(termProposal.getDuration()),

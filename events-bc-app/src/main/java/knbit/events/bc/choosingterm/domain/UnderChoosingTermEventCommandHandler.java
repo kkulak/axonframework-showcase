@@ -25,7 +25,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(CreateUnderChoosingTermEventCommand command) {
+    public void handle(UnderChoosingTermEventCommands.Create command) {
         final UnderChoosingTermEvent underChoosingTermEvent = new UnderChoosingTermEvent(
                 command.eventId(), command.eventDetails()
         );
@@ -34,7 +34,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(AddTermCommand command) {
+    public void handle(TermCommands.AddTerm command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
@@ -48,7 +48,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(RemoveTermCommand command) {
+    public void handle(TermCommands.RemoveTerm command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
@@ -62,7 +62,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(BookRoomCommand command) {
+    public void handle(ReservationCommands.BookRoom command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
@@ -75,7 +75,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(AcceptReservationCommand command) {
+    public void handle(ReservationCommands.AcceptReservation command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
@@ -86,7 +86,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(RejectReservationCommand command) {
+    public void handle(ReservationCommands.RejectReservation command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
@@ -94,7 +94,7 @@ public class UnderChoosingTermEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(CancelReservationCommand command) {
+    public void handle(ReservationCommands.CancelReservation command) {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 

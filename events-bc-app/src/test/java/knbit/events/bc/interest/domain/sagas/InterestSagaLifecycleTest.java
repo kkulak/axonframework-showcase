@@ -6,7 +6,7 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingTimeExceededEventBuilder;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -99,7 +99,7 @@ public class InterestSagaLifecycleTest {
                                 .build()
                 )
                 .whenPublishingA(
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .expectNoScheduledEvents();
 
@@ -120,7 +120,7 @@ public class InterestSagaLifecycleTest {
                                 .build()
                 )
                 .whenPublishingA(
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .expectActiveSagas(0);
 

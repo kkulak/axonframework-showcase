@@ -1,10 +1,13 @@
 package knbit.events.bc.choosingterm.web
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.TransitBacklogEventToUnderChoosingTermEventCommand
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.AddTermCommand
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.BookRoomCommand
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands
+
+
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.interest.domain.valueobjects.commands.TransitInterestAwareEventToUnderTermChoosingEventCommand
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands
+
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -35,7 +38,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                TransitBacklogEventToUnderChoosingTermEventCommand.of(
+                BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(
                         EventId.of("eventId")
                 )
         )
@@ -51,7 +54,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                TransitInterestAwareEventToUnderTermChoosingEventCommand.of(
+                InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(
                         EventId.of("eventId")
                 )
         )
@@ -69,7 +72,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                AddTermCommand.of(
+                TermCommands.AddTerm.of(
                         EventId.of("eventId"),
                         firstTermDTO.date,
                         Duration.standardMinutes(firstTermDTO.duration),
@@ -79,7 +82,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
         )
 
         1 * commandGatewayMock.sendAndWait(
-                AddTermCommand.of(
+                TermCommands.AddTerm.of(
                         EventId.of("eventId"),
                         secondTermDTO.date,
                         Duration.standardMinutes(secondTermDTO.duration),
@@ -102,7 +105,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
 
         then:
         1 * commandGatewayMock.sendAndWait(
-                BookRoomCommand.of(
+                ReservationCommands.BookRoom.of(
                         EventId.of("eventId"),
                         firstTermProposalDTO.date,
                         Duration.standardMinutes(firstTermProposalDTO.duration),
@@ -111,7 +114,7 @@ class UnderChoosingTermEventControllerTest extends Specification {
         )
 
         1 * commandGatewayMock.sendAndWait(
-                BookRoomCommand.of(
+                ReservationCommands.BookRoom.of(
                         EventId.of("eventId"),
                         secondTermProposalDTO.date,
                         Duration.standardMinutes(secondTermProposalDTO.duration),

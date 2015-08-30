@@ -1,6 +1,6 @@
 package knbit.events.bc.eventproposal.notificationdispatcher;
 
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class ProposalNotificationEventHandler {
     }
 
     @EventHandler
-    public void handle(EventProposed event) {
+    public void handle(EventProposalEvents.EventProposed event) {
         final ProposalNotification proposalNotification = new ProposalNotification(
                 event.eventProposalId().value(),
                 event.name().value(),

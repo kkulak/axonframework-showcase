@@ -6,9 +6,10 @@ import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedDownEvent
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent
-import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
+
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
+
 import spock.lang.Specification
 
 /**
@@ -44,7 +45,7 @@ class SurveyEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                SurveyingInterestStartedEvent.of(
+                SurveyStartingEvents.Started.of(
                         eventId, Mock(InterestPolicy.class)
                 )
         )
@@ -73,7 +74,7 @@ class SurveyEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                SurveyVotedUpEvent.of(
+                SurveyEvents.VotedUp.of(
                         eventId, Attendee.of("fname", "lname")
                 )
         )
@@ -101,7 +102,7 @@ class SurveyEventHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                SurveyVotedDownEvent.of(
+                SurveyEvents.VotedDown.of(
                         eventId, Attendee.of("fname", "lname")
                 )
         )

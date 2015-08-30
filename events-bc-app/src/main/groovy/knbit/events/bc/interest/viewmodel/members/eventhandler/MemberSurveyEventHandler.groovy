@@ -1,8 +1,10 @@
 package knbit.events.bc.interest.viewmodel.members.eventhandler
 
 import com.mongodb.DBCollection
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
+
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +22,7 @@ class MemberSurveyEventHandler {
     }
 
     @EventHandler
-    def on(InterestAwareEventCreated event) {
+    def on(InterestAwareEvents.Created event) {
         def eventId = event.eventId()
         def eventDetails = event.eventDetails()
 
@@ -34,7 +36,7 @@ class MemberSurveyEventHandler {
     }
 
     @EventHandler
-    def on(QuestionnaireAddedEvent event) {
+    def on(QuestionnaireEvents.Added event) {
         def domainId = event.eventId().value()
         def questions = event.questions()
 

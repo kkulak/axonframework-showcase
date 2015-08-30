@@ -1,9 +1,6 @@
 package knbit.events.bc.eventproposal.readmodel;
 
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalStateChanged;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.*;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +20,7 @@ public class EventProposalViewModelEventHandler {
     }
 
     @EventHandler
-    public void handle(EventProposed event) {
+    public void handle(EventProposalEvents.EventProposed event) {
         repository.save(
                 new EventProposalViewModel(
                         event.eventProposalId().value(),
@@ -37,16 +34,16 @@ public class EventProposalViewModelEventHandler {
     }
 
     @EventHandler
-    public void handle(ProposalAcceptedEvent event) {
+    public void handle(EventProposalEvents.ProposalAccepted event) {
         handleStateChange(event);
     }
 
     @EventHandler
-    public void handle(ProposalRejectedEvent event) {
+    public void handle(EventProposalEvents.ProposalRejected event) {
         handleStateChange(event);
     }
 
-    private void handleStateChange(ProposalStateChanged event) {
+    private void handleStateChange(EventProposalEvents.ProposalStateChanged event) {
         final EventProposalViewModel viewModel = repository.findByDomainId(
                 event.eventProposalId().value()
         );

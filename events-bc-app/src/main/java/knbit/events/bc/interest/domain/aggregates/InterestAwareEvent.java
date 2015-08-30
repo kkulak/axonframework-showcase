@@ -11,8 +11,8 @@ import knbit.events.bc.interest.domain.enums.InterestAwareEventState;
 import knbit.events.bc.interest.domain.exceptions.*;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
 import knbit.events.bc.interest.domain.valueobjects.events.*;
-import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyingInterestStartedEventFactory;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.factory.SurveyStartedEventFactory;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
@@ -50,12 +50,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     public InterestAwareEvent(EventId eventId, EventDetails eventDetails) {
         apply(
-                InterestAwareEventCreated.of(eventId, eventDetails)
+                InterestAwareEvents.Created.of(eventId, eventDetails)
         );
     }
 
     @EventSourcingHandler
-    private void on(InterestAwareEventCreated event) {
+    private void on(InterestAwareEvents.Created event) {
         this.id = event.eventId();
         this.eventDetails = event.eventDetails();
 
@@ -66,17 +66,17 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectIfVotingNotAllowed(attendee);
 
         if (interestPolicy.reachedBy(positiveVoters.size() + 1)) {
-            apply(InterestThresholdReachedEvent.of(id));
+            apply(SurveyEvents.InterestThresholdReached.of(id));
         }
 
-        apply(SurveyVotedUpEvent.of(id, attendee));
+        apply(SurveyEvents.VotedUp.of(id, attendee));
 
     }
 
     public void voteDown(Attendee attendee) {
         rejectIfVotingNotAllowed(attendee);
 
-        apply(SurveyVotedDownEvent.of(id, attendee));
+        apply(SurveyEvents.VotedDown.of(id, attendee));
     }
 
     private void rejectIfVotingNotAllowed(Attendee attendee) {
@@ -84,7 +84,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectOnAlreadyVoted(attendee);
     }
 
-    public void startSurveying(InterestPolicy interestPolicy, SurveyingInterestStartedEventFactory factory) {
+    public void startSurveying(InterestPolicy interestPolicy, SurveyStartedEventFactory factory) {
         rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
 
         apply(
@@ -95,27 +95,27 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     public void endSurveying() {
         rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
 
-        apply(SurveyingInterestEndedEvent.of(id));
+        apply(SurveyEvents.Ended.of(id));
     }
 
     @EventSourcingHandler
-    private void on(SurveyingInterestStartedEvent event) {
+    private void on(SurveyStartingEvents.Started event) {
         this.interestPolicy = event.interestPolicy();
         this.state = IN_PROGRESS;
     }
 
     @EventSourcingHandler
-    private void on(SurveyingInterestEndedEvent event) {
+    private void on(SurveyEvents.Ended event) {
         this.state = ENDED;
     }
 
     @EventSourcingHandler
-    private void on(SurveyVotedUpEvent event) {
+    private void on(SurveyEvents.VotedUp event) {
         positiveVoters.add(event.attendee());
     }
 
     @EventSourcingHandler
-    private void on(SurveyVotedDownEvent event) {
+    private void on(SurveyEvents.VotedDown event) {
         negativeVoters.add(event.attendee());
     }
 
@@ -153,7 +153,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectOnQuestionnaireAlreadyExists();
 
         apply(
-                QuestionnaireAddedEvent.of(id, questionsFrom(questionData))
+                QuestionnaireEvents.Added.of(id, questionsFrom(questionData))
         );
     }
 
@@ -171,11 +171,11 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
                 })
                 .collect(Collectors.toList());
 
-        apply(QuestionnaireCompletedEvent.of(id, attendeeAnswer.attendee(), answeredQuestions));
+        apply(QuestionnaireEvents.CompletedByAttendee.of(id, attendeeAnswer.attendee(), answeredQuestions));
     }
 
     @EventSourcingHandler
-    private void on(QuestionnaireCompletedEvent event) {
+    private void on(QuestionnaireEvents.CompletedByAttendee event) {
         interviewees.add(event.attendee());
     }
 
@@ -183,7 +183,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectOnInvalidStates(CREATED, TRANSITED);
         endIfSurveyingInProgress();
 
-        apply(InterestAwareEventTransitedToUnderChoosingTermEvent.of(id, eventDetails));
+        apply(InterestAwareEvents.TransitedToUnderChoosingTerm.of(id, eventDetails));
     }
 
     private void endIfSurveyingInProgress() {
@@ -193,7 +193,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     @EventSourcingHandler
-    private void on(InterestAwareEventTransitedToUnderChoosingTermEvent event) {
+    private void on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
         state = TRANSITED;
     }
 
@@ -230,7 +230,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     @EventSourcingHandler
-    private void on(QuestionnaireAddedEvent event) {
+    private void on(QuestionnaireEvents.Added event) {
         event.questions()
                 .forEach(
                         question -> questionnaire.put(

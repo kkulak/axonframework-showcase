@@ -7,8 +7,8 @@ import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +40,10 @@ public class InterestAwareEventCreationalTest {
         fixture
                 .givenNoPriorActivity()
                 .when(
-                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
+                        InterestAwareEventCommands.Create.of(eventId, eventDetails)
                 )
                 .expectEvents(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 );
 
     }

@@ -1,7 +1,7 @@
 package knbit.events.bc.interest.builders;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.VoteUpCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,8 +19,8 @@ public class VoteUpCommandBuilder {
     private EventId eventId = EventId.of("eventId");
     private Attendee attendee = Attendee.of("firstname", "lastname");
 
-    public VoteUpCommand build() {
-        return new VoteUpCommand(eventId, attendee);
+    public SurveyCommands.VoteUp build() {
+        return new SurveyCommands.VoteUp(eventId, attendee);
     }
 
 }

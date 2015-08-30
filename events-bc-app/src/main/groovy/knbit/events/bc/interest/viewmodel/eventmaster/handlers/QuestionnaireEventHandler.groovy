@@ -2,8 +2,8 @@ package knbit.events.bc.interest.viewmodel.eventmaster.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.enums.AnswerType
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireCompletedEvent
+
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -26,7 +26,7 @@ class QuestionnaireEventHandler {
     }
 
     @EventHandler
-    def on(QuestionnaireAddedEvent event) {
+    def on(QuestionnaireEvents.Added event) {
         def domainId = event.eventId().value()
         def questions = event.questions()
 
@@ -34,7 +34,7 @@ class QuestionnaireEventHandler {
     }
 
     @EventHandler
-    def on(QuestionnaireCompletedEvent event) {
+    def on(QuestionnaireEvents.CompletedByAttendee event) {
         def eventId = event.eventId()
         completeQuestionnaire(eventId.value(), event.answeredQuestions())
     }

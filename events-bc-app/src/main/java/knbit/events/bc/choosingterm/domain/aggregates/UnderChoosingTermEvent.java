@@ -8,10 +8,7 @@ import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermEx
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.RoomRequestedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.TermAddedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.TermRemovedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventCreated;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -42,11 +39,11 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     private UnderChoosingTermEventState state;
 
     public UnderChoosingTermEvent(EventId eventId, EventDetails eventDetails) {
-        apply(UnderChoosingTermEventCreated.of(eventId, eventDetails));
+        apply(UnderChoosingTermEventEvents.Created.of(eventId, eventDetails));
     }
 
     @EventSourcingHandler
-    private void on(UnderChoosingTermEventCreated event) {
+    private void on(UnderChoosingTermEventEvents.Created event) {
         this.id = event.eventId();
         this.eventDetails = event.eventDetails();
 
@@ -58,7 +55,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
             throw new CannotAddOverlappingTermException(id, newTerm);
         }
 
-        apply(TermAddedEvent.of(id, newTerm));
+        apply(TermEvents.TermAdded.of(id, newTerm));
     }
 
     private boolean newTermOverlaps(Term newTerm) {
@@ -68,7 +65,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     @EventSourcingHandler
-    private void on(TermAddedEvent event) {
+    private void on(TermEvents.TermAdded event) {
         terms.add(event.term());
     }
 
@@ -77,22 +74,22 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
             throw new CannotRemoveNotExistingTermException(id, termToRemove);
         }
 
-        apply(TermRemovedEvent.of(id, termToRemove));
+        apply(TermEvents.TermRemoved.of(id, termToRemove));
     }
 
     @EventSourcingHandler
-    private void on(TermRemovedEvent event) {
+    private void on(TermEvents.TermRemoved event) {
         terms.remove(event.term());
     }
 
     // todo: maybe propose term or somethin' like that?
     public void bookRoomFor(EventDuration eventDuration, Capacity capacity) {
         final ReservationId reservationId = new ReservationId();
-        apply(RoomRequestedEvent.of(id, reservationId, eventDuration, capacity));
+        apply(ReservationEvents.RoomRequested.of(id, reservationId, eventDuration, capacity));
     }
 
     @EventSourcingHandler
-    private void on(RoomRequestedEvent event) {
+    private void on(ReservationEvents.RoomRequested event) {
         final ReservationId reservationId = event.reservationId();
         final Reservation reservation = new Reservation(
                 id, reservationId, event.eventDuration(), event.capacity()
@@ -107,7 +104,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.accept();
 
         final Term termFromReservation = Term.of(reservation.eventDuration(), reservation.capacity(), location);
-        apply(TermAddedEvent.of(id, termFromReservation));
+        apply(TermEvents.TermAdded.of(id, termFromReservation));
     }
 
     public void rejectReservation(ReservationId reservationId) {

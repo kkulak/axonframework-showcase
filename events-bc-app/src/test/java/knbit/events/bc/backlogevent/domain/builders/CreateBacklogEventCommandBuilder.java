@@ -1,6 +1,6 @@
 package knbit.events.bc.backlogevent.domain.builders;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
@@ -47,7 +47,7 @@ public class CreateBacklogEventCommandBuilder {
         return this;
     }
 
-    public CreateBacklogEventCommand build() {
-        return CreateBacklogEventCommand.of(eventId, EventDetails.of(name, description, eventType, eventFrequency));
+    public BacklogEventCommands.Create build() {
+        return BacklogEventCommands.Create.of(eventId, EventDetails.of(name, description, eventType, eventFrequency));
     }
 }

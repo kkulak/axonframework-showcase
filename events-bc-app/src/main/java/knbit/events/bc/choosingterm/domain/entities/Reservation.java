@@ -3,10 +3,7 @@ package knbit.events.bc.choosingterm.domain.entities;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationAcceptedEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationCancelledEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvent;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationRejectedEvent;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
@@ -42,23 +39,23 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
         this.reservationStatus = ReservationStatus.PENDING;
     }
 
-    private boolean concernedWith(ReservationEvent event) {
+    private boolean concernedWith(ReservationEvents.ReservationEvent event) {
         return id.equals(event.reservationId());
     }
 
     public void accept() {
         rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
-        apply(ReservationAcceptedEvent.of(eventId, id));
+        apply(ReservationEvents.ReservationAccepted.of(eventId, id));
     }
 
     public void reject() {
         rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
-        apply(ReservationRejectedEvent.of(eventId, id));
+        apply(ReservationEvents.ReservationRejected.of(eventId, id));
     }
 
     public void cancel() {
         rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
-        apply(ReservationCancelledEvent.of(eventId, id));
+        apply(ReservationEvents.ReservationCancelled.of(eventId, id));
     }
 
     private void rejectOn(ReservationStatus... statuses) {
@@ -69,21 +66,21 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
     }
 
     @EventSourcingHandler
-    private void on(ReservationAcceptedEvent event) {
+    private void on(ReservationEvents.ReservationAccepted event) {
         changeStatusTo(event, ReservationStatus.ACCEPTED);
     }
 
     @EventSourcingHandler
-    private void on(ReservationRejectedEvent event) {
+    private void on(ReservationEvents.ReservationRejected event) {
         changeStatusTo(event, ReservationStatus.REJECTED);
     }
 
     @EventSourcingHandler
-    private void on(ReservationCancelledEvent event) {
+    private void on(ReservationEvents.ReservationCancelled event) {
         changeStatusTo(event, ReservationStatus.CANCELLED);
     }
 
-    private void changeStatusTo(ReservationEvent event, ReservationStatus newStatus) {
+    private void changeStatusTo(ReservationEvents.ReservationEvent event, ReservationStatus newStatus) {
         if (concernedWith(event)) {
             reservationStatus = newStatus;
         }
