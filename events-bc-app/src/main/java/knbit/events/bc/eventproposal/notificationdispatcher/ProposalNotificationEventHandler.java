@@ -1,5 +1,7 @@
 package knbit.events.bc.eventproposal.notificationdispatcher;
 
+import knbit.events.bc.common.config.AMQPConstants;
+import knbit.events.bc.common.dispatcher.MessageDispatcher;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProposalNotificationEventHandler {
-
-    private final ProposalNotificationDispatcher dispatcher;
+    private final MessageDispatcher dispatcher;
+    private static final String NOTIFICATION_TYPE = "EVENT_PROPOSED";
 
     @Autowired
-    public ProposalNotificationEventHandler(ProposalNotificationDispatcher dispatcher) {
+    public ProposalNotificationEventHandler(MessageDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
@@ -29,6 +31,6 @@ public class ProposalNotificationEventHandler {
                 event.eventFrequency()
         );
 
-        dispatcher.dispatch(proposalNotification);
+        dispatcher.dispatch(proposalNotification, AMQPConstants.NOTIFICATION_QUEUE, NOTIFICATION_TYPE);
     }
 }

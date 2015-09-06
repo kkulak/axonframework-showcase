@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
-mainClassName = 'knbit.events.bc.Application'
+mainClassName = 'knbit.annoucement.bc.Application'
 
 buildscript {
     repositories {

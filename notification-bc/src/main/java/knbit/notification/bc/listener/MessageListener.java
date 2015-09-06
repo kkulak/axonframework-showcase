@@ -1,7 +1,7 @@
 package knbit.notification.bc.listener;
 
 import com.google.common.base.Preconditions;
-import knbit.notification.bc.config.RabbitMQConfig;
+import knbit.events.bc.common.config.AMQPConstants;
 import knbit.notification.bc.messagewrapper.domain.MessageWrapper;
 import knbit.notification.bc.messagewrapper.infrastructure.dispatcher.NotificationDispatcher;
 import knbit.notification.bc.messagewrapper.infrastructure.persistence.MessageWrapperRepository;
@@ -32,7 +32,7 @@ public class MessageListener {
         this.notificationDispatcher = notificationDispatcher;
     }
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
+    @RabbitListener(queues = AMQPConstants.NOTIFICATION_QUEUE)
     public void receiveMessage(Message message) {
         log.debug("Received message: " + new String(message.getBody()));
 

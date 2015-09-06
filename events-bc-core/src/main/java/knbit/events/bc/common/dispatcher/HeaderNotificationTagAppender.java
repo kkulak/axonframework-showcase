@@ -1,4 +1,4 @@
-package knbit.events.bc.common.rabbitmq;
+package knbit.events.bc.common.dispatcher;
 
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
