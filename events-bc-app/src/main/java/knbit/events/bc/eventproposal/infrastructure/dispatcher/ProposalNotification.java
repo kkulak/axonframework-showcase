@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.notificationdispatcher;
+package knbit.events.bc.eventproposal.infrastructure.dispatcher;
 
 import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;

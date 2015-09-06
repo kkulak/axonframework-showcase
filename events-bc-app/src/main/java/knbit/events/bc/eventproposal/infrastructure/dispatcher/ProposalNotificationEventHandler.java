@@ -1,4 +1,4 @@
-package knbit.events.bc.eventproposal.notificationdispatcher;
+package knbit.events.bc.eventproposal.infrastructure.dispatcher;
 
 import knbit.events.bc.common.config.AMQPConstants;
 import knbit.events.bc.common.dispatcher.MessageDispatcher;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by novy on 09.05.15.
  */
-
+// TODO: find better place for sth like this
 @Component
 public class ProposalNotificationEventHandler {
     private final MessageDispatcher dispatcher;
