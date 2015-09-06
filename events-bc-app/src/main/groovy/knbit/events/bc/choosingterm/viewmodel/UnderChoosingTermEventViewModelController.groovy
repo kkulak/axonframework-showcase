@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/events/")
 class UnderChoosingTermEventViewModelController {
 
-    @RequestMapping(value = "/{eventId}/terms", method = RequestMethod.GET)
+    @RequestMapping(value = "/{eventId}/choosing-term", method = RequestMethod.GET)
     def termsPreviewFor(@PathVariable("eventId") eventId) {
 
         [
@@ -28,22 +28,18 @@ class UnderChoosingTermEventViewModelController {
                                 date    : DateTime.now(),
                                 duration: 90,
                                 capacity: 666,
-                                location: "3.27A",
-                                status  : ReservationStatus.CONFIRMED
-                        ],
+                                location: "3.27A"
+                        ]
+                ],
+                reservations  : [
                         [
                                 date    : DateTime.now(),
                                 duration: 60,
-                                capacity: 100,
-                                status  : ReservationStatus.PENDING
+                                capacity: 100
                         ]
 
                 ]
         ]
-    }
-
-    enum ReservationStatus {
-        CONFIRMED, PENDING, CANCELLED
     }
 
 }
