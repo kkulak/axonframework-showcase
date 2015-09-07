@@ -1,11 +1,9 @@
-package knbit.rsintegration
+package knbit.rsintegration.bc
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
-import scala.reflect.ClassTag
-
-package object utils {
+package object amqp {
 
   def parse[T](body: Array[Byte])(implicit m: scala.reflect.Manifest[T]): T = {
     val om = new ObjectMapper()
