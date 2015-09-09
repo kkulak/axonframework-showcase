@@ -6,9 +6,19 @@ repositories {
 }
 
 dependencies {
+
+    // scala
     compile 'org.scala-lang:scala-library:2.11.7'
+
+    // akka
     compile 'com.typesafe.akka:akka-actor_2.11:2.4-M3'
     compile 'com.thenewmotion.akka:akka-rabbitmq_2.11:1.2.4'
+    compile 'com.typesafe.akka:akka-persistence-experimental_2.11:2.4-M2'
+    compile 'org.iq80.leveldb:leveldb:0.7'
+    compile 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
+
+    // jackson
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
     compile 'com.fasterxml.jackson.module:jackson-module-scala_2.11:2.6.1'
+
 }

@@ -3,6 +3,7 @@ package knbit.rsintegration.bc.amqp
 import akka.actor.ActorRef
 import com.rabbitmq.client.DefaultConsumer
 import com.thenewmotion.akka.rabbitmq._
+import knbit.rsintegration.bc.common.Reservation
 import knbit.rsintegration.bc.scheduling.ScheduleRoomReservationRequestCommand
 
 object AMQP {
@@ -14,8 +15,8 @@ object AMQP {
     channel.queueBind(queue, exchange, "")
     val consumer = new DefaultConsumer(channel) {
       override def handleDelivery(consumerTag: String, envelope: Envelope, properties: BasicProperties, body: Array[Byte]) {
-        val command = parse[ScheduleRoomReservationRequestCommand](body)
-        scheduler ! command
+        val reservation = parse[Reservation](body)
+        scheduler ! ScheduleRoomReservationRequestCommand(reservation)
       }
     }
     channel.basicConsume(queue, true, consumer)

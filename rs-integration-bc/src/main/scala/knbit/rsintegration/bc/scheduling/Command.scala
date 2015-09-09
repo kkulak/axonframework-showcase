@@ -1,15 +1,13 @@
 package knbit.rsintegration.bc.scheduling
 
-case class ScheduleRoomReservationRequestCommand(eventId: String, reservationId: String,
-                                          start: Long, duration: Long, capacity: Int)
+import knbit.rsintegration.bc.common.Reservation
 
-case class RequestRoomReservationCommand(requestId: String, eventId: String, reservationId: String,
-                                         start: Long, duration: Long, capacity: Int)
+case class ScheduleRoomReservationRequestCommand(reservation: Reservation)
+
+case class RequestRoomReservationCommand(requestId: String, reservation: Reservation)
 
 case class CancelRoomReservationRequestCommand(requestId: String)
 
-case class ScheduleRoomReservationResponseCommand(eventId: String, reservationId: String,
-                                                  start: Long, duration: Long, capacity: Int)
+case class ScheduleRoomReservationResponseCommand(reservation: Reservation)
 
-case class ResponseRoomReservationCommand(responseId: String, eventId: String, reservationId: String,
-                                          start: Long, duration: Long, capacity: Int)
+case class ResponseRoomReservationCommand(responseId: String, reservation: Reservation)

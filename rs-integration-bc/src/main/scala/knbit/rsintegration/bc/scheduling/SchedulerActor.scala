@@ -13,10 +13,10 @@ class SchedulerActor extends Actor {
   val responseReservations: mutable.Map[String, Cancellable] = mutable.Map()
 
   override def receive: Receive = {
-    case ScheduleRoomReservationRequestCommand(eventId, reservationId, start, duration, capacity) => {
+    case ScheduleRoomReservationRequestCommand(reservation) => {
       val requestActor = actorOf(Props[RequestActor])
       val requestId = UUID.randomUUID().toString
-      val command = RequestRoomReservationCommand(requestId, eventId, reservationId, start, duration, capacity)
+      val command = RequestRoomReservationCommand(requestId, reservation)
       val cancellable = system.scheduler.schedule(0 seconds, 5 seconds, requestActor, command)
       requestReservations(requestId) = cancellable
       println("scheduled request actor")
@@ -26,10 +26,10 @@ class SchedulerActor extends Actor {
       requestReservations.remove(requestId)
       println("cancelled request actor scheduling")
     }
-    case ScheduleRoomReservationResponseCommand(eventId, reservationId, start, duration, capacity) => {
+    case ScheduleRoomReservationResponseCommand(reservation) => {
       val responseActor = actorOf(Props[ResponseActor])
       val responseId = UUID.randomUUID().toString
-      val command = ResponseRoomReservationCommand(responseId, eventId, reservationId, start, duration, capacity)
+      val command = ResponseRoomReservationCommand(responseId, reservation)
       val cancellable = system.scheduler.schedule(0 seconds, 10 seconds, responseActor, command)
       responseReservations(responseId) = cancellable
       println("scheduled response actor")
