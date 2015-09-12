@@ -58,15 +58,15 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onSuccess(requestId: String): Unit = {
     log.info("Success request. RequestId: [{}]", requestId)
-    persist(RequestSucceededEvent(requestId))(evt => {
+    persist(RequestSucceededEvent(requestId)){ evt =>
       system.eventStream.publish(RequestFinishedEvent(requestId, reservation))
       onRequestSucceededEvt(evt)
-    })
+    }
   }
 
   private[this] def onFailure(): Unit = {
     log.debug("Failure request")
-    persist(RequestFailedEvent)(evt => onRequestFailedEvt())
+    persist(RequestFailedEvent){ evt => onRequestFailedEvt() }
     system.scheduler.scheduleOnce(5 seconds, self, SendRequestCommand)
   }
 

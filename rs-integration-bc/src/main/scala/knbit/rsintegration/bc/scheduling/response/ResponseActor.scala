@@ -51,10 +51,10 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     persist(
       ResponseInitializedEvent(cmd.requestId, cmd.reservation,
       cmd.responseStrategy, cmd.schedulingStrategy)
-    )({
-      evt => onResponseInitializedEvt(evt)
+    ){ evt =>
+      onResponseInitializedEvt(evt)
       self ! SendResponseCommand
-    })
+    }
   }
 
   private[this] def handleSendResponseCmd(): Unit = {
@@ -70,28 +70,28 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onSuccess(term: Term): Unit = {
     log.info("Success response. Term: [{}]", term)
-    persist(ResponseFinishedEvent)(evt => onResponseFinishedEvt())
+    persist(ResponseFinishedEvent){ evt => onResponseFinishedEvt() }
   }
 
   private[this] def onUnresolved(): Unit = {
     log.debug("Unresolved response")
-    persist(UnresolvedResponseEvent)({ evt =>
+    persist(UnresolvedResponseEvent){ evt =>
       onUnresolvedEvt()
       system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
-    })
+    }
   }
 
   private[this] def onRejection(): Unit = {
     log.info("Rejection response")
-    persist(ResponseFinishedEvent)(evt => onResponseFinishedEvt())
+    persist(ResponseFinishedEvent){ evt => onResponseFinishedEvt() }
   }
 
   private[this] def onFailure(): Unit = {
     log.debug("Failure response!")
-    persist(FailureResponseEvent)({ evt =>
+    persist(FailureResponseEvent){ evt =>
       onFailureEvt()
       system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
-    })
+    }
   }
 
 }
