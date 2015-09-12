@@ -1,11 +1,10 @@
 package knbit.rsintegration.bc.amqp
 
-import akka.actor.{Props, ActorSystem, ActorRef}
+import akka.actor.{ActorRef, ActorSystem}
 import com.rabbitmq.client.DefaultConsumer
 import com.thenewmotion.akka.rabbitmq._
 import knbit.rsintegration.bc.common.Reservation
-import knbit.rsintegration.bc.scheduling.AttemptAmountSchedulingStrategy
-import knbit.rsintegration.bc.scheduling.request._
+import knbit.rsintegration.bc.scheduling.Factory
 
 object AMQP {
 
@@ -17,13 +16,7 @@ object AMQP {
     val consumer = new DefaultConsumer(channel) {
       override def handleDelivery(consumerTag: String, envelope: Envelope, properties: BasicProperties, body: Array[Byte]) {
         val reservation = parse[Reservation](body)
-        val requestActor = system.actorOf(
-          Props(classOf[RequestActor],
-          reservation.reservationId)
-        )
-        requestActor ! InitializeRequestCommand(
-          reservation, MockRequestStrategy(), AttemptAmountSchedulingStrategy(10)
-        )
+        Factory.createRequest(reservation)
       }
     }
     channel.basicConsume(queue, true, consumer)
