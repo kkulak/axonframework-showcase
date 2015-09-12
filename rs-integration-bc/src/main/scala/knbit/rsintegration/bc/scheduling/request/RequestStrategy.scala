@@ -15,11 +15,9 @@ trait RequestStrategy {
 case class MockRequestStrategy() extends RequestStrategy {
 
   override def makeRequest(reservation: Reservation): Result = {
-    val random = new Random().nextInt(5)
-    if(random == 2)
-      Success("request-id")
-    else
-      Failure()
+    val list = List(Success("request-id"), Failure())
+    val res = new Random().nextInt(2)
+    list(res)
   }
 
 }

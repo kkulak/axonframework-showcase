@@ -3,12 +3,16 @@ package knbit.rsintegration.bc.scheduling.response
 import akka.actor.ActorLogging
 import akka.persistence.PersistentActor
 import knbit.rsintegration.bc.common.{Reservation, Term}
+import scala.concurrent.duration._
+import scala.language.postfixOps
 
 class ResponseActor(id: String) extends PersistentActor with ActorLogging {
+  import context._
+
   var requestId: String = _
   var reservation: Reservation = _
   var responseStrategy: ResponseStrategy = _
-  var schedulingStrategy: SchedulingStrategy = _
+  var schedulingStrategy: ResponseSchedulingStrategy = _
 
   override def persistenceId: String = s"response-$id"
 
@@ -32,7 +36,7 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
   }
 
   private[this] def onResponseFinishedEvt(): Unit = {
-    context.stop(self)
+    stop(self)
   }
 
   private[this] def onUnresolvedEvt(): Unit = {
@@ -71,7 +75,10 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onUnresolved(): Unit = {
     log.debug("Unresolved response")
-    persist(UnresolvedResponseEvent)(evt => onUnresolvedEvt())
+    persist(UnresolvedResponseEvent)({ evt =>
+      onUnresolvedEvt()
+      system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
+    })
   }
 
   private[this] def onRejection(): Unit = {
@@ -81,7 +88,10 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onFailure(): Unit = {
     log.debug("Failure response!")
-    persist(FailureResponseEvent)(evt => onFailureEvt())
+    persist(FailureResponseEvent)({ evt =>
+      onFailureEvt()
+      system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
+    })
   }
 
 }

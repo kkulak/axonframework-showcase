@@ -4,7 +4,7 @@ import knbit.rsintegration.bc.common.Reservation
 
 case class RequestInitializedEvent(reservation: Reservation,
                                    requestStrategy: RequestStrategy,
-                                   schedulingStrategy: SchedulingStrategy)
+                                   schedulingStrategy: RequestSchedulingStrategy)
 
 case object RequestFailedEvent
 

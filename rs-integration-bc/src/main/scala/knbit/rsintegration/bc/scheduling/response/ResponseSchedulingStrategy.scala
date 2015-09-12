@@ -1,11 +1,13 @@
 package knbit.rsintegration.bc.scheduling.response
 
-trait SchedulingStrategy extends knbit.rsintegration.bc.scheduling.request.SchedulingStrategy {
+trait ResponseSchedulingStrategy {
   def markAttempt(): Unit
+  def shouldContinue(): Boolean
+  def markFailureAttempt(): Unit
 }
 
 case class AttemptAmountSchedulingStrategy(maxFailedAmount: Integer, maxUnresolvedAmount: Integer)
-     extends SchedulingStrategy {
+     extends ResponseSchedulingStrategy {
   var currentFailureAmount: Integer = 0
   var currentUnresolvedAmount: Integer = 0
 
@@ -17,6 +19,3 @@ case class AttemptAmountSchedulingStrategy(maxFailedAmount: Integer, maxUnresolv
     currentFailureAmount < maxFailedAmount
 
 }
-
-
-

@@ -4,6 +4,6 @@ import knbit.rsintegration.bc.common.Reservation
 
 case class InitializeRequestCommand(reservation: Reservation,
                                     requestStrategy: RequestStrategy,
-                                    schedulingStrategy: SchedulingStrategy)
+                                    schedulingStrategy: RequestSchedulingStrategy)
 
 case object SendRequestCommand

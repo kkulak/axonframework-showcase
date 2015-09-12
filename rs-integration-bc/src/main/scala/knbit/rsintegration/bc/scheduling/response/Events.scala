@@ -5,7 +5,7 @@ import knbit.rsintegration.bc.common.Reservation
 case class ResponseInitializedEvent(requestId: String,
                                     reservation: Reservation,
                                     responseStrategy: ResponseStrategy,
-                                    schedulingStrategy: SchedulingStrategy)
+                                    schedulingStrategy: ResponseSchedulingStrategy)
 
 case object ResponseFinishedEvent
 

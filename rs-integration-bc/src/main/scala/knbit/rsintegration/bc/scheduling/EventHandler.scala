@@ -3,11 +3,11 @@ package knbit.rsintegration.bc.scheduling
 import akka.actor.Actor
 import knbit.rsintegration.bc.scheduling.request.RequestFinishedEvent
 
-class EventHandlerActor extends Actor {
+class EventHandler(factory: ActorFactory) extends Actor {
   import context._
 
   override def receive: Receive = {
-    case RequestFinishedEvent(requestId, reservation) => Factory.createResponse(requestId, reservation)
+    case RequestFinishedEvent(requestId, reservation) => factory.createResponse(requestId, reservation)
   }
 
 }

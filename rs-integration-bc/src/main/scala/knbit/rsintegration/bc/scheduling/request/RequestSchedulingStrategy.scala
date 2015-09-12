@@ -1,11 +1,11 @@
 package knbit.rsintegration.bc.scheduling.request
 
-trait SchedulingStrategy {
+trait RequestSchedulingStrategy {
    def shouldContinue(): Boolean
    def markFailureAttempt(): Unit
 }
 
-case class FailureAttemptAmountSchedulingStrategy(maxAmount: Integer) extends SchedulingStrategy {
+case class FailureAttemptAmountSchedulingStrategy(maxAmount: Integer) extends RequestSchedulingStrategy {
   var currentFailureAttempt: Integer = 0
 
   override def shouldContinue(): Boolean = currentFailureAttempt < maxAmount

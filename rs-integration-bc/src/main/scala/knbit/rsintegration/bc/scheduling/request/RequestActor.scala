@@ -9,8 +9,9 @@ import scala.language.postfixOps
 
 class RequestActor(id: String) extends PersistentActor with ActorLogging {
   import context._
+
   var requestStrategy: RequestStrategy = _
-  var schedulingStrategy: SchedulingStrategy = _
+  var schedulingStrategy: RequestSchedulingStrategy = _
   var reservation: Reservation = _
 
   override def persistenceId: String = s"request-$id"
@@ -66,7 +67,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   private[this] def onFailure(): Unit = {
     log.debug("Failure request")
     persist(RequestFailedEvent)(evt => onRequestFailedEvt())
-    system.scheduler.scheduleOnce(3 seconds, self, SendRequestCommand)
+    system.scheduler.scheduleOnce(5 seconds, self, SendRequestCommand)
   }
 
 }
