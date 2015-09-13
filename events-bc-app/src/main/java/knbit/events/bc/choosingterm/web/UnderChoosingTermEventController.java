@@ -1,6 +1,8 @@
 package knbit.events.bc.choosingterm.web;
 
+import com.google.common.collect.ImmutableList;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
@@ -41,6 +43,54 @@ public class UnderChoosingTermEventController {
         transitFrom(previousState, id);
         addTerms(terms, id);
         bookRoomsFor(termProposals, id);
+    }
+
+    // todo: maybe separate controller?
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/terms")
+    public void addTerm(@PathVariable("eventId") String eventId,
+                        @RequestBody TermDTO termDTO) {
+
+        final EventId id = EventId.of(eventId);
+        addTerms(ImmutableList.of(termDTO), id);
+    }
+
+    // todo: as DELETE can't handle payload, i'm using PATCH right now
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{eventId}/terms")
+    public void removeTerm(@PathVariable("eventId") String eventId,
+                           @RequestBody TermDTO termDTO) {
+
+        final EventId id = EventId.of(eventId);
+        commandGateway.send(removeTermCommandFrom(id, termDTO));
+    }
+
+    private TermCommands.RemoveTerm removeTermCommandFrom(EventId eventId, TermDTO term) {
+        return TermCommands.RemoveTerm.of(
+                eventId,
+                term.getDate(),
+                Duration.standardMinutes(term.getDuration()),
+                term.getCapacity(),
+                term.getLocation()
+        );
+    }
+
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations")
+    public void bookRoom(@PathVariable("eventId") String eventId,
+                         @RequestBody TermProposalDTO termProposalDTO) {
+
+        final EventId id = EventId.of(eventId);
+        bookRoomsFor(ImmutableList.of(termProposalDTO), id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations/{reservationId}")
+    public void bookRoom(@PathVariable("eventId") String eventId,
+                         @PathVariable("reservationId") String reservationId) {
+
+        final EventId eventDomainId = EventId.of(eventId);
+        final ReservationId reservationDomainId = ReservationId.of(reservationId);
+        commandGateway.send(
+                ReservationCommands.CancelReservation.of(eventDomainId, reservationDomainId)
+        );
     }
 
     private void transitFrom(TransitFrom previousState, EventId eventId) {
