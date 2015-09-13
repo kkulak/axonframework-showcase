@@ -1,14 +1,13 @@
 package knbit.events.bc.choosingterm.web;
 
+import com.google.common.collect.ImmutableList;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermProposalDTO;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +42,45 @@ public class UnderChoosingTermEventController {
         bookRoomsFor(termProposals, id);
     }
 
+    // todo: maybe separate controller?
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/terms")
+    public void addTerm(@PathVariable("eventId") String eventId,
+                        @RequestBody TermDTO termDTO) {
+
+        final EventId id = EventId.of(eventId);
+        addTerms(ImmutableList.of(termDTO), id);
+    }
+
+    // todo: as DELETE can't handle payload, i'm using PATCH right now
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{eventId}/terms")
+    public void removeTerm(@PathVariable("eventId") String eventId,
+                           @RequestBody TermDTO termDTO) {
+
+        final EventId id = EventId.of(eventId);
+        commandGateway.send(
+                CommandFactory.removeTermCommandFrom(id, termDTO)
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations")
+    public void bookRoom(@PathVariable("eventId") String eventId,
+                         @RequestBody TermProposalDTO termProposalDTO) {
+
+        final EventId id = EventId.of(eventId);
+        bookRoomsFor(ImmutableList.of(termProposalDTO), id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations/{reservationId}")
+    public void bookRoom(@PathVariable("eventId") String eventId,
+                         @PathVariable("reservationId") String reservationId) {
+
+        final EventId eventDomainId = EventId.of(eventId);
+        final ReservationId reservationDomainId = ReservationId.of(reservationId);
+        commandGateway.send(
+                CommandFactory.cancelReservationCommandFrom(eventDomainId, reservationDomainId)
+        );
+    }
+
     private void transitFrom(TransitFrom previousState, EventId eventId) {
         if (previousState == TransitFrom.BACKLOG) {
             transitFromBacklogEvent(eventId);
@@ -65,34 +103,14 @@ public class UnderChoosingTermEventController {
 
     private void addTerms(Collection<TermDTO> terms, EventId eventId) {
         terms.stream()
-                .map(term -> addTermCommandFrom(eventId, term))
+                .map(term -> CommandFactory.addTermCommandFrom(eventId, term))
                 .forEach(commandGateway::sendAndWait);
-    }
-
-    private TermCommands.AddTerm addTermCommandFrom(EventId eventId, TermDTO term) {
-        return TermCommands.AddTerm.of(
-                eventId,
-                term.getDate(),
-                Duration.standardMinutes(term.getDuration()),
-                term.getCapacity(),
-                term.getLocation()
-        );
     }
 
     private void bookRoomsFor(Collection<TermProposalDTO> termProposals, EventId eventId) {
         termProposals.stream()
-                .map(proposal -> bookRoomCommandFrom(eventId, proposal))
+                .map(proposal -> CommandFactory.bookRoomCommandFrom(eventId, proposal))
                 .forEach(commandGateway::sendAndWait);
-
-    }
-
-    private ReservationCommands.BookRoom bookRoomCommandFrom(EventId eventId, TermProposalDTO termProposal) {
-        return ReservationCommands.BookRoom.of(
-                eventId,
-                termProposal.getDate(),
-                Duration.standardMinutes(termProposal.getDuration()),
-                termProposal.getCapacity()
-        );
     }
 
     enum TransitFrom {
