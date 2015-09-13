@@ -16,9 +16,9 @@ import spock.lang.Specification
 /**
  * Created by novy on 13.09.15.
  */
-class TermsEventHandlerTest extends Specification {
+class TermsHandlerTest extends Specification {
 
-    def TermsEventHandler objectUnderTest
+    def TermsHandler objectUnderTest
     def DBCollection collection
 
     def EventId eventId
@@ -32,7 +32,7 @@ class TermsEventHandlerTest extends Specification {
         def db = gMongo.getDB("test-db")
         collection = db.getCollection("test-collection")
 
-        objectUnderTest = new TermsEventHandler(collection)
+        objectUnderTest = new TermsHandler(collection)
         eventId = EventId.of("eventId")
         term = Term.of(
                 EventDuration.of(DateTime.now(), Duration.standardMinutes(90)),

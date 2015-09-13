@@ -19,7 +19,7 @@ class ChoosingTermPreviewController {
     def DBCollection termsCollection
 
     @Autowired
-    TermsEventHandler(@Qualifier("choosing-term") DBCollection termsCollection) {
+    ChoosingTermPreviewController(@Qualifier("choosing-term") DBCollection termsCollection) {
         this.termsCollection = termsCollection
     }
 

@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class TermsEventHandler {
+class TermsHandler {
 
     def DBCollection termsCollection
 
     @Autowired
-    TermsEventHandler(@Qualifier("choosing-term") DBCollection termsCollection) {
+    TermsHandler(@Qualifier("choosing-term") DBCollection termsCollection) {
         this.termsCollection = termsCollection
     }
 
