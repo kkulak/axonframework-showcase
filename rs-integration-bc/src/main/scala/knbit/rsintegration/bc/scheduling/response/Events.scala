@@ -1,6 +1,6 @@
 package knbit.rsintegration.bc.scheduling.response
 
-import knbit.rsintegration.bc.common.Reservation
+import knbit.rsintegration.bc.common.{Term, Reservation}
 
 case class ResponseInitializedEvent(requestId: String,
                                     reservation: Reservation,
@@ -11,4 +11,8 @@ case object ResponseFinishedEvent
 
 case object UnresolvedResponseEvent
 
-case object FailureResponseEvent
+case object FailureReservationEvent
+
+case class SuccessReservationEvent(eventId: String, reservationId: String, term: Term)
+
+case class FailureReservationEvent(eventId: String, reservationId: String)

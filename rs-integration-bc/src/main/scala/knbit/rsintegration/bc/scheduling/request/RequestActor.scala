@@ -17,12 +17,13 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   override def persistenceId: String = s"request-$id"
 
   override def receiveCommand: Receive = {
-    case cmd: InitializeRequestCommand => handleInitializeRequestCommand(cmd)
+    case cmd: InitializeRequestCommand => handleInitializeRequestCmd(cmd)
     case SendRequestCommand => handleSendRequestCmd()
   }
 
   override def receiveRecover: Receive = {
     case evt: RequestInitializedEvent => onRequestInitializedEvt(evt)
+    case RequestFinishedEvent => onRequestFinishedEvt()
     case RequestFailedEvent => onRequestFailedEvt()
   }
 
@@ -32,7 +33,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
     this.reservation = evt.reservation
   }
 
-  private[this] def onRequestSucceededEvt(evt: RequestSucceededEvent): Unit = {
+  private[this] def onRequestFinishedEvt(): Unit = {
     stop(self)
   }
 
@@ -40,7 +41,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
     schedulingStrategy.markFailureAttempt()
   }
 
-  private[this] def handleInitializeRequestCommand(cmd: InitializeRequestCommand): Unit = {
+  private[this] def handleInitializeRequestCmd(cmd: InitializeRequestCommand): Unit = {
     persist(RequestInitializedEvent(cmd.reservation, cmd.requestStrategy, cmd.schedulingStrategy)) { evt =>
       onRequestInitializedEvt(evt)
       self ! SendRequestCommand
@@ -58,15 +59,15 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onSuccess(requestId: String): Unit = {
     log.info("Success request. RequestId: [{}]", requestId)
-    persist(RequestSucceededEvent(requestId)){ evt =>
-      system.eventStream.publish(RequestFinishedEvent(requestId, reservation))
-      onRequestSucceededEvt(evt)
+    persist(RequestFinishedEvent){ evt =>
+      system.eventStream.publish(RequestSucceededEvent(requestId, reservation))
+      onRequestFinishedEvt()
     }
   }
 
   private[this] def onFailure(): Unit = {
-    log.debug("Failure request")
-    persist(RequestFailedEvent){ evt => onRequestFailedEvt() }
+    log.info("Failure request")
+    persist(RequestFinishedEvent){ evt => onRequestFailedEvt() }
     system.scheduler.scheduleOnce(5 seconds, self, SendRequestCommand)
   }
 

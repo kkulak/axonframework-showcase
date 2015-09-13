@@ -20,7 +20,7 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     case evt: ResponseInitializedEvent => onResponseInitializedEvt(evt)
     case ResponseFinishedEvent => onResponseFinishedEvt()
     case UnresolvedResponseEvent => onUnresolvedEvt()
-    case FailureResponseEvent => onFailureEvt()
+    case FailureReservationEvent => onFailureEvt()
   }
 
   override def receiveCommand: Receive = {
@@ -70,11 +70,14 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onSuccess(term: Term): Unit = {
     log.info("Success response. Term: [{}]", term)
-    persist(ResponseFinishedEvent){ evt => onResponseFinishedEvt() }
+    persist(ResponseFinishedEvent){ evt =>
+      system.eventStream.publish(SuccessReservationEvent(reservation.eventId, reservation.reservationId, term))
+      onResponseFinishedEvt()
+    }
   }
 
   private[this] def onUnresolved(): Unit = {
-    log.debug("Unresolved response")
+    log.info("Unresolved response")
     persist(UnresolvedResponseEvent){ evt =>
       onUnresolvedEvt()
       system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
@@ -83,12 +86,15 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onRejection(): Unit = {
     log.info("Rejection response")
-    persist(ResponseFinishedEvent){ evt => onResponseFinishedEvt() }
+    persist(ResponseFinishedEvent){ evt =>
+      system.eventStream.publish(FailureReservationEvent(reservation.eventId, reservation.reservationId))
+      onResponseFinishedEvt()
+    }
   }
 
   private[this] def onFailure(): Unit = {
-    log.debug("Failure response!")
-    persist(FailureResponseEvent){ evt =>
+    log.info("Failure response")
+    persist(FailureReservationEvent){ evt =>
       onFailureEvt()
       system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
     }

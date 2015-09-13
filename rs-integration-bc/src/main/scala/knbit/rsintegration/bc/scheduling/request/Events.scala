@@ -6,8 +6,8 @@ case class RequestInitializedEvent(reservation: Reservation,
                                    requestStrategy: RequestStrategy,
                                    schedulingStrategy: RequestSchedulingStrategy)
 
+case object RequestFinishedEvent
+
 case object RequestFailedEvent
 
-case class RequestSucceededEvent(requestId: String)
-
-case class RequestFinishedEvent(requestId: String, reservation: Reservation)
+case class RequestSucceededEvent(requestId: String, reservation: Reservation)
