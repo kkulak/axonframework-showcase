@@ -58,7 +58,7 @@ public class RemovingTermTest {
                                 termToRemove.duration().start(),
                                 termToRemove.duration().duration(),
                                 termToRemove.capacity().value(),
-                                termToRemove.location().getValue()
+                                termToRemove.location().value()
                         )
                 )
                 .expectException(CannotRemoveNotExistingTermException.class);
@@ -77,7 +77,7 @@ public class RemovingTermTest {
                                 termToRemove.duration().start(),
                                 termToRemove.duration().duration(),
                                 termToRemove.capacity().value(),
-                                termToRemove.location().getValue()
+                                termToRemove.location().value()
                         )
                 )
                 .expectEvents(

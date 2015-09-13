@@ -58,7 +58,7 @@ public class AddingTermTest {
                                 newTerm.duration().start(),
                                 newTerm.duration().duration(),
                                 newTerm.capacity().value(),
-                                newTerm.location().getValue()
+                                newTerm.location().value()
                         )
                 )
                 .expectEvents(

@@ -5,17 +5,19 @@ import com.google.common.base.Strings;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * Created by novy on 19.08.15.
  */
 
 @Getter
+@Accessors(fluent = true)
 @EqualsAndHashCode
 @ToString
 public class Location {
 
-    String value;
+    private final String value;
 
     public static Location of(String value) {
         return new Location(value);

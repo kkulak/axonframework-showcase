@@ -1,6 +1,8 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm
 
-import org.joda.time.DateTime
+import com.mongodb.DBCollection
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -14,32 +16,18 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/events/")
 class ChoosingTermPreviewController {
 
+    def DBCollection termsCollection
+
+    @Autowired
+    TermsEventHandler(@Qualifier("choosing-term") DBCollection termsCollection) {
+        this.termsCollection = termsCollection
+    }
+
     @RequestMapping(value = "/{eventId}/choosing-term", method = RequestMethod.GET)
     def termsPreviewFor(@PathVariable("eventId") eventId) {
-
-        [
-                domainId      : eventId,
-                name          : "what a fancy event!",
-                description   : "description",
-                eventType     : "LECTURE",
-                eventFrequency: "ONE_OFF",
-                terms         : [
-                        [
-                                date    : DateTime.now(),
-                                duration: 90,
-                                capacity: 666,
-                                location: "3.27A"
-                        ]
-                ],
-                reservations  : [
-                        [
-                                date    : DateTime.now(),
-                                duration: 60,
-                                capacity: 100
-                        ]
-
-                ]
-        ]
+        termsCollection.findOne([
+                domainId: eventId
+        ])
     }
 
 }
