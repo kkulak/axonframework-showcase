@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration
  * Created by novy on 04.06.15.
  */
 
-@Configuration
+@Configuration("survey-readmodel")
 class MongoDBConfig {
 
     @Bean
@@ -34,5 +34,4 @@ class MongoDBConfig {
     def DBCollection questionnaireCollection(DB db) {
         db.questionnaireCollection
     }
-
 }

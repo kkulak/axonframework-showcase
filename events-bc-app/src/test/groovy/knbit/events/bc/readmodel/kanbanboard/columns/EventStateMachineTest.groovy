@@ -1,6 +1,5 @@
 package knbit.events.bc.readmodel.kanbanboard.columns
 
-import knbit.events.bc.readmodel.kanbanboard.columns.EventStateMachine
 import spock.lang.Specification
 
 import static knbit.events.bc.common.readmodel.EventStatus.*
