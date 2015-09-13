@@ -12,6 +12,8 @@ import org.axonframework.eventstore.EventStore;
 import org.axonframework.eventstore.fs.EventFileResolver;
 import org.axonframework.eventstore.fs.FileSystemEventStore;
 import org.axonframework.eventstore.fs.SimpleEventFileResolver;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -66,6 +68,9 @@ public class AppConfig {
 
     @Bean
     public EventStore eventStore() {
+        // to prevent joda from setting local timezone while replaying events
+        DateTimeZone.setDefault(DateTimeZone.UTC);
+
         final File eventStoreFile = new File(EVENTSTORE_FILEPATH);
         final EventFileResolver eventFileResolver = new SimpleEventFileResolver(eventStoreFile);
         return new FileSystemEventStore(
