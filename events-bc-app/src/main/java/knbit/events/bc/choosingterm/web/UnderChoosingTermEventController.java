@@ -70,8 +70,8 @@ public class UnderChoosingTermEventController {
         bookRoomsFor(ImmutableList.of(termProposalDTO), id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations/{reservationId}")
-    public void bookRoom(@PathVariable("eventId") String eventId,
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/reservations/{reservationId}")
+    public void cancelReservation(@PathVariable("eventId") String eventId,
                          @PathVariable("reservationId") String reservationId) {
 
         final EventId eventDomainId = EventId.of(eventId);
