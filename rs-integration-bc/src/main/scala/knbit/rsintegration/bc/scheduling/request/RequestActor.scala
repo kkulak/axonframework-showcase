@@ -68,7 +68,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   private[this] def onFailure(): Unit = {
     log.info("Failure request")
     persist(RequestFinishedEvent){ evt => onRequestFailedEvt() }
-    system.scheduler.scheduleOnce(5 seconds, self, SendRequestCommand)
+    schedulingStrategy.schedule
   }
 
 }
