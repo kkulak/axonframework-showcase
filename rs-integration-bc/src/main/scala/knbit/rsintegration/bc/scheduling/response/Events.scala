@@ -9,10 +9,16 @@ case class ResponseInitializedEvent(requestId: String,
 
 case object ResponseFinishedEvent
 
+case object ResponseTerminatedEvent
+
 case object UnresolvedResponseEvent
 
 case object FailureReservationEvent
 
+case object RejectedResponseEvent
+
 case class SuccessReservationEvent(eventId: String, reservationId: String, term: Term)
 
 case class FailureReservationEvent(eventId: String, reservationId: String)
+
+case class ResponseExceedMaxAttemptAmountEvent(requestId: String, reservation: Reservation)

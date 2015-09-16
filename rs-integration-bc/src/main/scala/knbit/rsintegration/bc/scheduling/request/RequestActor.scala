@@ -1,7 +1,7 @@
 package knbit.rsintegration.bc.scheduling.request
 
 import akka.actor.ActorLogging
-import akka.persistence.{RecoveryCompleted, PersistentActor}
+import akka.persistence.PersistentActor
 import knbit.rsintegration.bc.common.Reservation
 import knbit.rsintegration.bc.scheduling.request.State.State
 

@@ -32,6 +32,7 @@ class ActorFactory( requestStrategy: RequestStrategy,
     responseActor ! InitializeResponseCommand(
       requestId, reservation, responseStrategy, responseSchedulingStrategy
     )
+    responseActor ! CheckResponseCommand
     responseActor
   }
 

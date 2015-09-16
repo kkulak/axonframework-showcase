@@ -3,8 +3,18 @@ package knbit.rsintegration.bc.scheduling.response
 import akka.actor.ActorLogging
 import akka.persistence.PersistentActor
 import knbit.rsintegration.bc.common.{Reservation, Term}
+import knbit.rsintegration.bc.scheduling.response.State.State
 import scala.concurrent.duration._
 import scala.language.postfixOps
+
+object State extends Enumeration {
+  type State = Value
+  val INITIALIZED = Value("initialized")
+  val NOT_INITIALIZED = Value("!initialized")
+  val FINISHED = Value("finished")
+  val TERMINATED = Value("terminated")
+  val REJECTED = Value("rejected")
+}
 
 class ResponseActor(id: String) extends PersistentActor with ActorLogging {
   import context._
@@ -13,19 +23,23 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
   var reservation: Reservation = _
   var responseStrategy: ResponseStrategy = _
   var schedulingStrategy: ResponseSchedulingStrategy = _
+  var state: State = State.NOT_INITIALIZED
 
-  override def persistenceId: String = s"response-$id"
+  override def persistenceId: String = id
 
   override def receiveRecover: Receive = {
     case evt: ResponseInitializedEvent => onResponseInitializedEvt(evt)
     case ResponseFinishedEvent => onResponseFinishedEvt()
     case UnresolvedResponseEvent => onUnresolvedEvt()
     case FailureReservationEvent => onFailureEvt()
+    case ResponseTerminatedEvent => onResponseTerminatedEvt()
+    case RejectedResponseEvent => onResponseRejectedEvt()
   }
 
   override def receiveCommand: Receive = {
-    case cmd: InitializeResponseCommand => handleInitializeCmd(cmd)
-    case SendResponseCommand => handleSendResponseCmd()
+    case InitializeResponseCommand(reqId, res, respStrategy, schStrategy) =>
+      initialize(reqId, res, respStrategy, schStrategy)
+    case CheckResponseCommand => checkResponse()
   }
 
   private[this] def onResponseInitializedEvt(evt: ResponseInitializedEvent): Unit = {
@@ -33,9 +47,21 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     this.reservation = evt.reservation
     this.responseStrategy = evt.responseStrategy
     this.schedulingStrategy = evt.schedulingStrategy
+    this.state = State.INITIALIZED
   }
 
   private[this] def onResponseFinishedEvt(): Unit = {
+    state = State.FINISHED
+    stop(self)
+  }
+
+  private[this] def onResponseTerminatedEvt(): Unit = {
+    state = State.TERMINATED
+    stop(self)
+  }
+
+  private[this] def onResponseRejectedEvt(): Unit = {
+    state = State.REJECTED
     stop(self)
   }
 
@@ -47,24 +73,41 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     schedulingStrategy.markFailureAttempt()
   }
 
-  private[this] def handleInitializeCmd(cmd: InitializeResponseCommand): Unit = {
+  private[this] def initialize(reqId: String, res: Reservation, respStrategy: ResponseStrategy,
+                               schStrategy: ResponseSchedulingStrategy): Unit = {
+    if(res.reservationId != id) throw new IllegalArgumentException("reservation.id != id")
+    if(state != State.NOT_INITIALIZED) throw new IllegalStateException("state != NOT_INITIALIZED")
+
     persist(
-      ResponseInitializedEvent(cmd.requestId, cmd.reservation,
-      cmd.responseStrategy, cmd.schedulingStrategy)
+      ResponseInitializedEvent(reqId, res, respStrategy, schStrategy)
     ){ evt =>
       onResponseInitializedEvt(evt)
-      self ! SendResponseCommand
     }
   }
 
-  private[this] def handleSendResponseCmd(): Unit = {
-    if(schedulingStrategy.shouldContinue()) {
-      responseStrategy.checkResponse(requestId) match {
-        case Success(term) => onSuccess(term)
-        case Unresolved() => onUnresolved()
-        case Rejection() => onRejection()
-        case Failure() => onFailure()
-      }
+  private[this] def checkResponse(): Unit = {
+    if(state != State.INITIALIZED) throw new IllegalStateException("state != INITIALIZED")
+
+    schedulingStrategy.shouldContinue() match {
+      case true => makeRequest()
+      case false => terminate()
+    }
+  }
+
+  private[this] def makeRequest(): Unit = {
+    responseStrategy.checkResponse(requestId) match {
+      case Success(term) => onSuccess(term)
+      case Unresolved() => onUnresolved()
+      case Rejection() => onRejection()
+      case Failure() => onFailure()
+    }
+  }
+
+  private[this] def terminate(): Unit = {
+    log.info("Checking response exceeded max attempt amount. Terminating...")
+    persist(ResponseTerminatedEvent) { evt =>
+      system.eventStream.publish(ResponseExceedMaxAttemptAmountEvent(requestId, reservation))
+      onResponseTerminatedEvt()
     }
   }
 
@@ -80,15 +123,15 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     log.info("Unresolved response")
     persist(UnresolvedResponseEvent){ evt =>
       onUnresolvedEvt()
-      system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
+      schedulingStrategy.schedule
     }
   }
 
   private[this] def onRejection(): Unit = {
     log.info("Rejection response")
-    persist(ResponseFinishedEvent){ evt =>
+    persist(RejectedResponseEvent){ evt =>
       system.eventStream.publish(FailureReservationEvent(reservation.eventId, reservation.reservationId))
-      onResponseFinishedEvt()
+      onResponseRejectedEvt()
     }
   }
 
@@ -96,7 +139,7 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     log.info("Failure response")
     persist(FailureReservationEvent){ evt =>
       onFailureEvt()
-      system.scheduler.scheduleOnce(5 seconds, self, SendResponseCommand)
+      schedulingStrategy.schedule
     }
   }
 

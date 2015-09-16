@@ -7,4 +7,4 @@ case class InitializeResponseCommand(requestId: String,
                                      responseStrategy: ResponseStrategy,
                                      schedulingStrategy: ResponseSchedulingStrategy)
 
-case object SendResponseCommand
+case object CheckResponseCommand
