@@ -1,11 +1,19 @@
 package knbit.rsintegration.bc.scheduling.request
 
 import akka.actor.ActorLogging
-import akka.persistence.PersistentActor
+import akka.persistence.{RecoveryCompleted, PersistentActor}
 import knbit.rsintegration.bc.common.Reservation
+import knbit.rsintegration.bc.scheduling.request.State.State
 
-import scala.concurrent.duration._
 import scala.language.postfixOps
+
+object State extends Enumeration {
+  type State = Value
+  val INITIALIZED = Value("initialized")
+  val NOT_INITIALIZED = Value("!initialized")
+  val FINISHED = Value("finished")
+  val TERMINATED = Value("terminated")
+}
 
 class RequestActor(id: String) extends PersistentActor with ActorLogging {
   import context._
@@ -13,27 +21,36 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   var requestStrategy: RequestStrategy = _
   var schedulingStrategy: RequestSchedulingStrategy = _
   var reservation: Reservation = _
+  var state: State = State.NOT_INITIALIZED
 
-  override def persistenceId: String = s"request-$id"
+  override def persistenceId: String = id
 
   override def receiveCommand: Receive = {
-    case cmd: InitializeRequestCommand => handleInitializeRequestCmd(cmd)
-    case SendRequestCommand => handleSendRequestCmd()
+    case InitializeRequestCommand(res, reqStrategy, schStrategy) => initialize(res, reqStrategy, schStrategy)
+    case SendRequestCommand => sendRequest()
   }
 
   override def receiveRecover: Receive = {
     case evt: RequestInitializedEvent => onRequestInitializedEvt(evt)
     case RequestFinishedEvent => onRequestFinishedEvt()
     case RequestFailedEvent => onRequestFailedEvt()
+    case RequestTerminatedEvent => onRequestTerminatedEvt()
   }
 
   private[this] def onRequestInitializedEvt(evt: RequestInitializedEvent): Unit = {
     this.requestStrategy = evt.requestStrategy
     this.schedulingStrategy = evt.schedulingStrategy
     this.reservation = evt.reservation
+    this.state = State.INITIALIZED
+  }
+
+  private[this] def onRequestTerminatedEvt(): Unit = {
+    this.state = State.TERMINATED
+    stop(self)
   }
 
   private[this] def onRequestFinishedEvt(): Unit = {
+    this.state = State.FINISHED
     stop(self)
   }
 
@@ -41,19 +58,36 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
     schedulingStrategy.markFailureAttempt()
   }
 
-  private[this] def handleInitializeRequestCmd(cmd: InitializeRequestCommand): Unit = {
-    persist(RequestInitializedEvent(cmd.reservation, cmd.requestStrategy, cmd.schedulingStrategy)) { evt =>
+  private[this] def initialize(res: Reservation, reqStrategy: RequestStrategy, schStrategy: RequestSchedulingStrategy): Unit = {
+    if(res.reservationId != id) throw new IllegalArgumentException("id != reservationId")
+    if(state != State.NOT_INITIALIZED) throw new IllegalStateException("state != NOT_INITIALIZED")
+
+    persist(RequestInitializedEvent(res, reqStrategy, schStrategy)) { evt =>
       onRequestInitializedEvt(evt)
-      self ! SendRequestCommand
     }
   }
 
-  private[this] def handleSendRequestCmd(): Unit = {
-    if(schedulingStrategy.shouldContinue()) {
-      requestStrategy.makeRequest(reservation) match {
-        case Success(requestId) => onSuccess(requestId)
-        case Failure() => onFailure()
-      }
+  private[this] def sendRequest(): Unit = {
+    if(state != State.INITIALIZED) throw new IllegalStateException("state != INITIALIZED")
+
+    schedulingStrategy.shouldContinue() match {
+      case true => makeRequest()
+      case false => terminate()
+    }
+  }
+
+  private[this] def makeRequest(): Unit = {
+    requestStrategy.makeRequest(reservation) match {
+      case Success(requestId) => onSuccess(requestId)
+      case Failure() => onFailure()
+    }
+  }
+
+  private[this] def terminate(): Unit = {
+    log.info("Request exceeded max attempt amount. Terminating...")
+    persist(RequestTerminatedEvent) { evt =>
+      system.eventStream.publish(RequestExceedMaxAttemptAmountEvent(reservation))
+      onRequestTerminatedEvt()
     }
   }
 
@@ -67,7 +101,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def onFailure(): Unit = {
     log.info("Failure request")
-    persist(RequestFinishedEvent){ evt => onRequestFailedEvt() }
+    persist(RequestFailedEvent){ evt => onRequestFailedEvt() }
     schedulingStrategy.schedule
   }
 

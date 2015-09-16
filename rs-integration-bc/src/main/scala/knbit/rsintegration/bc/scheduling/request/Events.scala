@@ -8,6 +8,10 @@ case class RequestInitializedEvent(reservation: Reservation,
 
 case object RequestFinishedEvent
 
+case object RequestTerminatedEvent
+
 case object RequestFailedEvent
 
 case class RequestSucceededEvent(requestId: String, reservation: Reservation)
+
+case class RequestExceedMaxAttemptAmountEvent(reservationId: Reservation)

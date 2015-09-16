@@ -20,6 +20,7 @@ class ActorFactory( requestStrategy: RequestStrategy,
     requestActor ! InitializeRequestCommand(
       reservation, requestStrategy, requestSchedulingStrategy
     )
+    requestActor ! SendRequestCommand
     requestActor
   }
 
