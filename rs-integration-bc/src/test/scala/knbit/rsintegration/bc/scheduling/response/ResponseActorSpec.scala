@@ -1,10 +1,9 @@
-package knbit.rsintegration.bc.scheduling
+package knbit.rsintegration.bc.scheduling.response
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
 import knbit.rsintegration.bc.EventsForwarder
 import knbit.rsintegration.bc.common.{Reservation, Term}
-import knbit.rsintegration.bc.scheduling.response._
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
@@ -13,6 +12,7 @@ import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
  * Corner cases, i.e. throwing exception from actor,
  * should be tested along with parent actor & supervisor strategy.
  * In general, whole test below is hacked(mock PersistentView) :(
+ * TODO: Builder pattern?
  */
 
 class ResponseActorSpec(_system: ActorSystem) extends TestKit(_system) with ImplicitSender
