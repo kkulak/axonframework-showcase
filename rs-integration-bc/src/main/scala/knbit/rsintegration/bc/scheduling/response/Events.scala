@@ -19,6 +19,6 @@ case object RejectedResponseEvent
 
 case class SuccessReservationEvent(eventId: String, reservationId: String, term: Term)
 
-case class FailureReservationEvent(eventId: String, reservationId: String)
+case class RejectedReservationEvent(eventId: String, reservationId: String)
 
-case class ResponseExceedMaxAttemptAmountEvent(requestId: String, reservation: Reservation)
+case class ResponseExceedMaxAttemptAmountEvent(eventId: String, reservationId: String)

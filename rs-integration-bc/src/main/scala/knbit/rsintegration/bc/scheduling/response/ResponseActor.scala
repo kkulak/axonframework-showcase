@@ -106,7 +106,7 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
   private[this] def terminate(): Unit = {
     log.info("Checking response exceeded max attempt amount. Terminating...")
     persist(ResponseTerminatedEvent) { evt =>
-      system.eventStream.publish(ResponseExceedMaxAttemptAmountEvent(requestId, reservation))
+      system.eventStream.publish(ResponseExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
       onResponseTerminatedEvt()
     }
   }
@@ -123,14 +123,14 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     log.info("Unresolved response")
     persist(UnresolvedResponseEvent){ evt =>
       onUnresolvedEvt()
-      schedulingStrategy.schedule
+      schedulingStrategy.schedule(context.system.scheduler)
     }
   }
 
   private[this] def onRejection(): Unit = {
     log.info("Rejection response")
     persist(RejectedResponseEvent){ evt =>
-      system.eventStream.publish(FailureReservationEvent(reservation.eventId, reservation.reservationId))
+      system.eventStream.publish(RejectedReservationEvent(reservation.eventId, reservation.reservationId))
       onResponseRejectedEvt()
     }
   }
@@ -139,7 +139,7 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     log.info("Failure response")
     persist(FailureReservationEvent){ evt =>
       onFailureEvt()
-      schedulingStrategy.schedule
+      schedulingStrategy.schedule(context.system.scheduler)
     }
   }
 

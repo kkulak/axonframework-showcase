@@ -9,10 +9,10 @@ trait ResponseSchedulingStrategy {
   def markAttempt(): Unit
   def shouldContinue(): Boolean
   def markFailureAttempt(): Unit
-  def schedule(implicit ref: ActorRef, ctx: ExecutionContext): Unit
+  def schedule(scheduler: Scheduler)(implicit ref: ActorRef, ctx: ExecutionContext): Unit
 }
 
-case class AttemptAmountSchedulingStrategy(scheduler: Scheduler, maxFailedAmount: Integer, maxUnresolvedAmount: Integer)
+case class AttemptAmountSchedulingStrategy(maxFailedAmount: Integer, maxUnresolvedAmount: Integer)
      extends ResponseSchedulingStrategy {
   var currentFailureAmount: Integer = 0
   var currentUnresolvedAmount: Integer = 0
@@ -24,6 +24,6 @@ case class AttemptAmountSchedulingStrategy(scheduler: Scheduler, maxFailedAmount
   override def shouldContinue(): Boolean = currentUnresolvedAmount < maxUnresolvedAmount &&
     currentFailureAmount < maxFailedAmount
 
-  override def schedule(implicit ref: ActorRef, ctx: ExecutionContext): Unit = scheduler.scheduleOnce(5 seconds, ref, CheckResponseCommand)
+  override def schedule(scheduler: Scheduler)(implicit ref: ActorRef, ctx: ExecutionContext): Unit = scheduler.scheduleOnce(5 seconds, ref, CheckResponseCommand)
 
 }

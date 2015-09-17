@@ -17,7 +17,7 @@ trait ResponseStrategy {
 case class MockResponseStrategy() extends ResponseStrategy {
 
   override def checkResponse(requestId: String): Result = {
-    val list = List(Success(Term()), Unresolved(), Rejection(), Failure())
+    val list = List(Success(Term("mock-location")), Unresolved(), Rejection(), Failure())
     val res = new Random().nextInt(4)
     list(res)
   }

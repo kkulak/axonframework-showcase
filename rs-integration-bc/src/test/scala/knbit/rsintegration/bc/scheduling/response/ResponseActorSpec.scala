@@ -114,7 +114,7 @@ class ResponseActorSpec(_system: ActorSystem) extends TestKit(_system) with Impl
       val schedulingStrategy = mock[ResponseSchedulingStrategy]
       val reservation = Reservation("eid", "6", 1000L, 90L, 10)
       when(schedulingStrategy.shouldContinue()).thenReturn(true)
-      when(respStrategy.checkResponse(requestId)).thenReturn(Success(Term()))
+      when(respStrategy.checkResponse(requestId)).thenReturn(Success(Term("mock")))
       // when
       req ! InitializeResponseCommand(requestId, reservation, respStrategy, schedulingStrategy)
       req ! CheckResponseCommand

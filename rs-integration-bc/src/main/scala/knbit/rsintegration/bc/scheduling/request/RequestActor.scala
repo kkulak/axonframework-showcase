@@ -86,7 +86,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   private[this] def terminate(): Unit = {
     log.info("Request exceeded max attempt amount. Terminating...")
     persist(RequestTerminatedEvent) { evt =>
-      system.eventStream.publish(RequestExceedMaxAttemptAmountEvent(reservation))
+      system.eventStream.publish(RequestExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
       onRequestTerminatedEvt()
     }
   }
@@ -102,7 +102,7 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
   private[this] def onFailure(): Unit = {
     log.info("Failure request")
     persist(RequestFailedEvent){ evt => onRequestFailedEvt() }
-    schedulingStrategy.schedule
+    schedulingStrategy.schedule(context.system.scheduler)
   }
 
 }

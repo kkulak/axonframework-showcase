@@ -10,5 +10,4 @@ trait SchedulingModule extends RequestModule with ResponseModule {
 
   def system: ActorSystem
 
-  def scheduler: Scheduler = system.scheduler
 }

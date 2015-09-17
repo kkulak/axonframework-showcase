@@ -14,4 +14,4 @@ case object RequestFailedEvent
 
 case class RequestSucceededEvent(requestId: String, reservation: Reservation)
 
-case class RequestExceedMaxAttemptAmountEvent(reservationId: Reservation)
+case class RequestExceedMaxAttemptAmountEvent(eventId: String, reservationId: String)
