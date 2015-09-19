@@ -3,7 +3,10 @@ package knbit.events.bc.announcement.iietboard.configuration;
 import knbit.events.bc.announcement.AbstractPublisherConfiguration;
 import knbit.events.bc.announcement.PublisherConfiguration;
 import knbit.events.bc.announcement.PublisherVendor;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
@@ -13,7 +16,6 @@ import javax.persistence.Entity;
  */
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
@@ -29,6 +31,23 @@ public class IIETBoardConfiguration extends AbstractPublisherConfiguration imple
     private String boardUrl;
     @NotBlank
     private String boardId;
+
+    public IIETBoardConfiguration(Long id,
+                                  String name,
+                                  boolean isDefault,
+                                  String username,
+                                  String password,
+                                  String loginUrl,
+                                  String boardUrl,
+                                  String boardId) {
+
+        super(id, name, isDefault);
+        this.username = username;
+        this.password = password;
+        this.loginUrl = loginUrl;
+        this.boardUrl = boardUrl;
+        this.boardId = boardId;
+    }
 
     @Override
     public PublisherVendor getVendor() {

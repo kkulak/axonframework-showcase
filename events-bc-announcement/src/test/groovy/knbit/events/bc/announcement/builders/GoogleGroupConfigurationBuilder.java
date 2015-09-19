@@ -10,9 +10,12 @@ import lombok.experimental.Accessors;
  */
 @Accessors(fluent = true)
 @Setter
-@NoArgsConstructor(staticName = "newGoogleGroupProperties")
-public class GoogleGroupPropertiesBuilder {
+@NoArgsConstructor(staticName = "newGoogleGroupConfiguration")
+public class GoogleGroupConfigurationBuilder {
 
+    private Long id = 666L;
+    private String name = "name";
+    private boolean isDefault = true;
     private String username = "username";
     private String host = "host";
     private String password = "password";
@@ -20,7 +23,7 @@ public class GoogleGroupPropertiesBuilder {
 
     public GoogleGroupConfiguration build() {
         return new GoogleGroupConfiguration(
-                username, host, password, googleGroupAddress
+                id, name, isDefault, username, host, password, googleGroupAddress
         );
     }
 }

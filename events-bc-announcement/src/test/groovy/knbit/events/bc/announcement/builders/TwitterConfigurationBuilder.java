@@ -10,15 +10,18 @@ import lombok.experimental.Accessors;
  */
 @Accessors(fluent = true)
 @Setter
-@NoArgsConstructor(staticName = "newTwitterProperties")
-public class TwitterPropertiesBuilder {
+@NoArgsConstructor(staticName = "newTwitterConfiguration")
+public class TwitterConfigurationBuilder {
 
+    private Long id = 666L;
+    private String name = "name";
+    private boolean isDefault = true;
     private String consumerKey = "consumerKey";
     private String consumerSecret = "consumerSecret";
 
     public TwitterConfiguration build() {
         return new TwitterConfiguration(
-                consumerKey, consumerSecret
+                id, name, isDefault, consumerKey, consumerSecret
         );
     }
 }

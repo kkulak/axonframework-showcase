@@ -1,6 +1,9 @@
 package knbit.events.bc.announcement.twitter.publisher;
 
+import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -12,12 +15,20 @@ import twitter4j.TwitterFactory;
 @Component
 public class TwitterPublisherFactory {
 
-    public TwitterPublisher fromConfiguration(TwitterConfiguration configuration) {
+    private final TwitterConfigurationRepository repository;
+
+    @Autowired
+    public TwitterPublisherFactory(TwitterConfigurationRepository repository) {
+        this.repository = repository;
+    }
+
+    public TwitterPublisher fromConfigurationBasedOn(Long id) {
+        final TwitterConfiguration configuration =
+                repository.findOne(id).orElseThrow(this::noSuchTwitterConfiguration);
 
         final twitter4j.conf.Configuration twitterFactoryConfiguration = new twitter4j.conf.ConfigurationBuilder()
                 .setOAuthConsumerKey(configuration.getConsumerKey())
                 .setOAuthConsumerSecret(configuration.getConsumerSecret())
-                        // todo: fix
                 .setOAuthAccessToken(null)
                 .build();
 
@@ -25,5 +36,9 @@ public class TwitterPublisherFactory {
                 .getInstance();
 
         return new TwitterPublisher(twitter);
+    }
+
+    private AnnouncementException noSuchTwitterConfiguration() {
+        return new AnnouncementException("No such twitter configuration");
     }
 }

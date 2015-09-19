@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.twitter;
 
 import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
-import knbit.events.bc.announcement.twitter.configuration.TwitterConfigurationConfigurationRepository;
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
 @RequestMapping("/announcements/config/twitter")
 public class TwitterConfigurationController {
 
-    private final TwitterConfigurationConfigurationRepository repository;
+    private final TwitterConfigurationRepository repository;
 
     @Autowired
-    public TwitterConfigurationController(TwitterConfigurationConfigurationRepository repository) {
+    public TwitterConfigurationController(TwitterConfigurationRepository repository) {
         this.repository = repository;
     }
 

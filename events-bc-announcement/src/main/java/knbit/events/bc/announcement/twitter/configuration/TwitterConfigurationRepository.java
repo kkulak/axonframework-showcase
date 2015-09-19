@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Created by novy on 19.09.15.
  */
-public interface TwitterConfigurationConfigurationRepository extends PublisherConfigurationRepository<TwitterConfiguration, Long> {
+public interface TwitterConfigurationRepository extends PublisherConfigurationRepository<TwitterConfiguration, Long> {
 
     Optional<TwitterConfiguration> findOne(Long id);
 }

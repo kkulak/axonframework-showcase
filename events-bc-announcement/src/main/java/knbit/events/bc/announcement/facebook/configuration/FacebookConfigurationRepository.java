@@ -5,6 +5,6 @@ import knbit.events.bc.PublisherConfigurationRepository;
 /**
  * Created by novy on 19.09.15.
  */
-public interface FacebookConfigurationConfigurationRepository
+public interface FacebookConfigurationRepository
         extends PublisherConfigurationRepository<FacebookConfiguration, Long> {
 }

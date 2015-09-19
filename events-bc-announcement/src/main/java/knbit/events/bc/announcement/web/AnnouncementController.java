@@ -28,19 +28,20 @@ public class AnnouncementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(value = "/announcements", method = RequestMethod.POST)
     public void postAnnouncement(@RequestBody @Valid AnnouncementDTO announcementDTO) {
-        final Collection<Publisher> publishers = factory.byVendors(
-                PublisherVendor.fromStringValues(
-                        announcementDTO.getPublishers()
-                )
-        );
-
-        final Announcement announcement = new Announcement(
-                announcementDTO.getTitle(), announcementDTO.getContent(), announcementDTO.getImageUrl()
-        );
-
-        publishers.forEach(
-                publisher -> publisher.publish(announcement)
-        );
+        // todo: implement me
+//        final Collection<Publisher> publishers = factory.byVendors(
+//                PublisherVendor.fromStringValues(
+//                        announcementDTO.getPublishers()
+//                )
+//        );
+//
+//        final Announcement announcement = new Announcement(
+//                announcementDTO.getTitle(), announcementDTO.getContent(), announcementDTO.getImageUrl()
+//        );
+//
+//        publishers.forEach(
+//                publisher -> publisher.publish(announcement)
+//        );
     }
 
 }

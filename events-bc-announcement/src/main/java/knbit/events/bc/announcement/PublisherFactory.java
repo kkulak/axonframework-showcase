@@ -1,6 +1,10 @@
 package knbit.events.bc.announcement;
 
 import com.google.common.base.Preconditions;
+import knbit.events.bc.announcement.facebook.publisher.FacebookPublisherFactory;
+import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisherFactory;
+import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisherFactory;
+import knbit.events.bc.announcement.twitter.publisher.TwitterPublisherFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,34 +18,44 @@ import java.util.stream.Collectors;
 @Component
 public class PublisherFactory {
 
-    private final AllConfigurationQuery allConfigurationQuery;
+    private final FacebookPublisherFactory facebookPublisherFactory;
+    private final TwitterPublisherFactory twitterPublisherFactory;
+    private final GoogleGroupPublisherFactory googleGroupPublisherFactory;
+    private final IIETBoardPublisherFactory iietBoardPublisherFactory;
 
     @Autowired
-    public PublisherFactory(AllConfigurationQuery allConfigurationQuery) {
-        this.allConfigurationQuery = allConfigurationQuery;
+    public PublisherFactory(FacebookPublisherFactory facebookPublisherFactory,
+                            TwitterPublisherFactory twitterPublisherFactory,
+                            GoogleGroupPublisherFactory googleGroupPublisherFactory,
+                            IIETBoardPublisherFactory iietBoardPublisherFactory) {
+
+        this.facebookPublisherFactory = facebookPublisherFactory;
+        this.twitterPublisherFactory = twitterPublisherFactory;
+        this.googleGroupPublisherFactory = googleGroupPublisherFactory;
+        this.iietBoardPublisherFactory = iietBoardPublisherFactory;
     }
 
-    public Publisher byVendor(PublisherVendor vendor) {
-        Preconditions.checkNotNull(vendor);
+    public Publisher byIdAndVendor(ConfigurationIdAndVendor idAndVendor) {
+        Preconditions.checkNotNull(idAndVendor);
 
-        switch (vendor) {
+        switch (idAndVendor.getVendor()) {
             case FACEBOOK:
-//                return facebookPublisher();
+                return facebookPublisherFactory.fromConfigurationBasedOn(idAndVendor.getId());
             case TWITTER:
-//                return twitterPublisher();
+                return twitterPublisherFactory.fromConfigurationBasedOn(idAndVendor.getId());
             case GOOGLE_GROUP:
-//                return googleGroupPublisher();
+                return googleGroupPublisherFactory.fromConfigurationBasedOn(idAndVendor.getId());
             case IIET_BOARD:
-//                return iietBoardPublisher();
+                return iietBoardPublisherFactory.fromConfigurationBasedOn(idAndVendor.getId());
             default:
                 throw new IllegalArgumentException();
         }
     }
 
-    public Collection<Publisher> byVendors(Collection<PublisherVendor> vendors) {
-        return vendors
+    public Collection<Publisher> byIdsAndVendors(Collection<ConfigurationIdAndVendor> idsAndVendors) {
+        return idsAndVendors
                 .stream()
-                .map(this::byVendor)
+                .map(this::byIdAndVendor)
                 .collect(Collectors.toList());
     }
 

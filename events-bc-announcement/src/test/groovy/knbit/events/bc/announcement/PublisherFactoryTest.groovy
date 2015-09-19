@@ -1,17 +1,21 @@
 package knbit.events.bc.announcement
 
-import knbit.events.bc.announcement.AllConfigurationQuery
-import knbit.events.bc.announcement.Publisher
-import knbit.events.bc.announcement.PublisherFactory
-import knbit.events.bc.announcement.PublisherVendor
-import knbit.events.bc.announcement.builders.FacebookPropertiesBuilder
-import knbit.events.bc.announcement.builders.GoogleGroupPropertiesBuilder
-import knbit.events.bc.announcement.builders.IIETBoardPropertiesBuilder
-import knbit.events.bc.announcement.builders.TwitterPropertiesBuilder
+import knbit.events.bc.announcement.builders.FacebookConfigurationBuilder
+import knbit.events.bc.announcement.builders.GoogleGroupConfigurationBuilder
+import knbit.events.bc.announcement.builders.IIETBoardConfigurationBuilder
+import knbit.events.bc.announcement.builders.TwitterConfigurationBuilder
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfigurationRepository
 import knbit.events.bc.announcement.facebook.publisher.FacebookPublisher
+import knbit.events.bc.announcement.facebook.publisher.FacebookPublisherFactory
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfigurationRepository
 import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisher
+import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisherFactory
+import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfigurationRepository
 import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisher
+import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisherFactory
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfigurationRepository
 import knbit.events.bc.announcement.twitter.publisher.TwitterPublisher
+import knbit.events.bc.announcement.twitter.publisher.TwitterPublisherFactory
 import spock.lang.Specification
 
 /**
@@ -19,17 +23,41 @@ import spock.lang.Specification
  */
 class PublisherFactoryTest extends Specification {
 
+    def FacebookConfigurationRepository facebookConfigurationRepository
+    def TwitterConfigurationRepository twitterConfigurationRepository
+    def GoogleGroupConfigurationRepository googleGroupConfigurationRepository
+    def IIETBoardConfigurationRepository iietBoardConfigurationRepository
+
+    def PublisherFactory objectUnderTest
+
+    void setup() {
+        facebookConfigurationRepository = Mock(FacebookConfigurationRepository)
+        twitterConfigurationRepository = Mock(TwitterConfigurationRepository)
+        googleGroupConfigurationRepository = Mock(GoogleGroupConfigurationRepository)
+        iietBoardConfigurationRepository = Mock(IIETBoardConfigurationRepository)
+
+        objectUnderTest = new PublisherFactory(
+                new FacebookPublisherFactory(facebookConfigurationRepository),
+                new TwitterPublisherFactory(twitterConfigurationRepository),
+                new GoogleGroupPublisherFactory(googleGroupConfigurationRepository),
+                new IIETBoardPublisherFactory(iietBoardConfigurationRepository)
+        )
+    }
+
     def "should return facebook publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
-        configurationRepositoryMock.facebookConfiguration() >> FacebookPropertiesBuilder
-                .newFacebookProperties()
-                .build()
-        def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
+        facebookConfigurationRepository.findOne(666L) >> Optional.of(
+                FacebookConfigurationBuilder
+                        .newFacebookConfiguration()
+                        .id(666L)
+                        .build()
+        )
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.FACEBOOK)
+        def Publisher publisher = objectUnderTest.byIdAndVendor(
+                new ConfigurationIdAndVendor(666L, PublisherVendor.FACEBOOK)
+        )
 
         then:
         publisher instanceof FacebookPublisher
@@ -39,14 +67,17 @@ class PublisherFactoryTest extends Specification {
     def "should return twitter publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
-        configurationRepositoryMock.twitterConfiguration() >> TwitterPropertiesBuilder
-                .newTwitterProperties()
-                .build()
-        def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
+        twitterConfigurationRepository.findOne(666L) >> Optional.of(
+                TwitterConfigurationBuilder
+                        .newTwitterConfiguration()
+                        .id(666L)
+                        .build()
+        )
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.TWITTER)
+        def Publisher publisher = objectUnderTest.byIdAndVendor(
+                new ConfigurationIdAndVendor(666L, PublisherVendor.TWITTER)
+        )
 
         then:
         publisher instanceof TwitterPublisher
@@ -56,14 +87,17 @@ class PublisherFactoryTest extends Specification {
     def "should return googlegroup publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
-        configurationRepositoryMock.googleGroupConfiguration() >> GoogleGroupPropertiesBuilder
-                .newGoogleGroupProperties()
-                .build()
-        def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
+        googleGroupConfigurationRepository.findOne(666L) >> Optional.of(
+                GoogleGroupConfigurationBuilder
+                        .newGoogleGroupConfiguration()
+                        .id(666L)
+                        .build()
+        )
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.GOOGLE_GROUP)
+        def Publisher publisher = objectUnderTest.byIdAndVendor(
+                new ConfigurationIdAndVendor(666L, PublisherVendor.GOOGLE_GROUP)
+        )
 
         then:
         publisher instanceof GoogleGroupPublisher
@@ -73,14 +107,17 @@ class PublisherFactoryTest extends Specification {
     def "should return iietboard publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
-        configurationRepositoryMock.iietBoardConfiguration() >> IIETBoardPropertiesBuilder
-                .newIIETBoardProperties()
-                .build()
-        def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
+        iietBoardConfigurationRepository.findOne(666L) >> Optional.of(
+                IIETBoardConfigurationBuilder
+                        .newIIETBoardProperties()
+                        .id(666L)
+                        .build()
+        )
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.IIET_BOARD)
+        def Publisher publisher = objectUnderTest.byIdAndVendor(
+                new ConfigurationIdAndVendor(666L, PublisherVendor.IIET_BOARD)
+        )
 
         then:
         publisher instanceof IIETBoardPublisher
@@ -88,17 +125,10 @@ class PublisherFactoryTest extends Specification {
     }
 
     def "should throw an exception given null"() {
-
-        given:
-        def objectUnderTest = new PublisherFactory(
-                Mock(AllConfigurationQuery.class)
-        )
-
         when:
-        objectUnderTest.byVendor(null)
+        objectUnderTest.byIdAndVendor(null)
 
         then:
         thrown(NullPointerException.class)
-
     }
 }

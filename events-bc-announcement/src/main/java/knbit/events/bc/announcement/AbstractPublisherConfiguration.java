@@ -1,6 +1,8 @@
 package knbit.events.bc.announcement;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +15,8 @@ import javax.persistence.MappedSuperclass;
  * Created by novy on 19.09.15.
  */
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public abstract class AbstractPublisherConfiguration {

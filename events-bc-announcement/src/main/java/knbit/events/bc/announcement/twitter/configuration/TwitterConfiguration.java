@@ -13,8 +13,6 @@ import javax.persistence.Entity;
  */
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 public class TwitterConfiguration extends AbstractPublisherConfiguration implements PublisherConfiguration {
@@ -23,6 +21,12 @@ public class TwitterConfiguration extends AbstractPublisherConfiguration impleme
     private String consumerKey;
     @NotBlank
     private String consumerSecret;
+
+    public TwitterConfiguration(Long id, String name, boolean isDefault, String consumerKey, String consumerSecret) {
+        super(id, name, isDefault);
+        this.consumerKey = consumerKey;
+        this.consumerSecret = consumerSecret;
+    }
 
     @Override
     public PublisherVendor getVendor() {

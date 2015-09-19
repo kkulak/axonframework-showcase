@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Created by novy on 19.09.15.
  */
-public interface GoogleGroupConfigurationConfigurationRepository extends PublisherConfigurationRepository<GoogleGroupConfiguration, Long> {
+public interface GoogleGroupConfigurationRepository extends PublisherConfigurationRepository<GoogleGroupConfiguration, Long> {
 
     Optional<GoogleGroupConfiguration> findOne(Long id);
 

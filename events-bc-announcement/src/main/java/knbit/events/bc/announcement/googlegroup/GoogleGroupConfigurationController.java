@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.googlegroup;
 
 import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
-import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfigurationConfigurationRepository;
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
 @RequestMapping("/announcements/config/googlegroup")
 public class GoogleGroupConfigurationController {
 
-    private final GoogleGroupConfigurationConfigurationRepository repository;
+    private final GoogleGroupConfigurationRepository repository;
 
     @Autowired
-    public GoogleGroupConfigurationController(GoogleGroupConfigurationConfigurationRepository repository) {
+    public GoogleGroupConfigurationController(GoogleGroupConfigurationRepository repository) {
         this.repository = repository;
     }
 

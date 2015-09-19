@@ -2,8 +2,10 @@ package knbit.events.bc.announcement.facebook.publisher;
 
 import facebook4j.Facebook;
 import facebook4j.FacebookFactory;
+import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
-import knbit.events.bc.announcement.facebook.publisher.FacebookPublisher;
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,12 +15,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class FacebookPublisherFactory {
 
-    public FacebookPublisher fromConfiguration(FacebookConfiguration facebookConfiguration) {
+    private final FacebookConfigurationRepository repository;
+
+    @Autowired
+    public FacebookPublisherFactory(FacebookConfigurationRepository repository) {
+        this.repository = repository;
+    }
+
+    public FacebookPublisher fromConfigurationBasedOn(long id) {
+        final FacebookConfiguration facebookConfiguration =
+                repository.findOne(id).orElseThrow(this::noSuchFacebookConfiguration);
 
         final facebook4j.conf.Configuration facebookFactoryConfiguration = new facebook4j.conf.ConfigurationBuilder()
                 .setOAuthAppId(facebookConfiguration.getAppId())
                 .setOAuthAppSecret(facebookConfiguration.getAppSecret())
-                        // todo: fix
                 .setOAuthAccessToken(null)
                 .build();
 
@@ -27,4 +37,9 @@ public class FacebookPublisherFactory {
 
         return new FacebookPublisher(facebook);
     }
+
+    private AnnouncementException noSuchFacebookConfiguration() {
+        return new AnnouncementException("No such facebook configuration");
+    }
+
 }

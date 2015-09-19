@@ -11,15 +11,18 @@ import lombok.experimental.Accessors;
 
 @Accessors(fluent = true)
 @Setter
-@NoArgsConstructor(staticName = "newFacebookProperties")
-public class FacebookPropertiesBuilder {
+@NoArgsConstructor(staticName = "newFacebookConfiguration")
+public class FacebookConfigurationBuilder {
 
+    private Long id = 1L;
+    private String name = "name";
+    private boolean isDefault = true;
     private String appId = "appId";
     private String appSecret = "appSecret";
 
     public FacebookConfiguration build() {
         return new FacebookConfiguration(
-                appId, appSecret
+                id, name, isDefault, appId, appSecret
         );
     }
 }

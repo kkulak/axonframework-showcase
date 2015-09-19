@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.iietboard;
 
 import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
-import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfigurationConfigurationRepository;
+import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
 @RequestMapping("/announcements/config/iietboard")
 public class IIETBoardConfigurationController {
 
-    private final IIETBoardConfigurationConfigurationRepository repository;
+    private final IIETBoardConfigurationRepository repository;
 
     @Autowired
-    public IIETBoardConfigurationController(IIETBoardConfigurationConfigurationRepository repository) {
+    public IIETBoardConfigurationController(IIETBoardConfigurationRepository repository) {
         this.repository = repository;
     }
 

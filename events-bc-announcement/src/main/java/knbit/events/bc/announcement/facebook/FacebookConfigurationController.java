@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.facebook;
 
 import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
-import knbit.events.bc.announcement.facebook.configuration.FacebookConfigurationConfigurationRepository;
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
 @RequestMapping("/announcements/config/facebook")
 public class FacebookConfigurationController {
 
-    private final FacebookConfigurationConfigurationRepository repository;
+    private final FacebookConfigurationRepository repository;
 
     @Autowired
-    public FacebookConfigurationController(FacebookConfigurationConfigurationRepository repository) {
+    public FacebookConfigurationController(FacebookConfigurationRepository repository) {
         this.repository = repository;
     }
 

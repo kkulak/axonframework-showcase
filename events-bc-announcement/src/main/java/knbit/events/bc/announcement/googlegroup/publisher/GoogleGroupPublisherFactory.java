@@ -1,6 +1,9 @@
 package knbit.events.bc.announcement.googlegroup.publisher;
 
+import knbit.events.bc.announcement.AnnouncementException;
 import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfigurationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
@@ -14,7 +17,17 @@ import java.util.Properties;
 @Component
 public class GoogleGroupPublisherFactory {
 
-    public GoogleGroupPublisher fromConfiguration(GoogleGroupConfiguration configuration) {
+    private final GoogleGroupConfigurationRepository repository;
+
+    @Autowired
+    public GoogleGroupPublisherFactory(GoogleGroupConfigurationRepository repository) {
+        this.repository = repository;
+    }
+
+    public GoogleGroupPublisher fromConfigurationBasedOn(Long id) {
+        final GoogleGroupConfiguration configuration =
+                repository.findOne(id).orElseThrow(this::noSuchGoogleGroupConfiguration);
+
         final JavaMailSender mailSender = mailSenderForProps(configuration);
 
         return new GoogleGroupPublisher(
@@ -36,5 +49,9 @@ public class GoogleGroupPublisherFactory {
         mailSender.setJavaMailProperties(mailProperties);
 
         return mailSender;
+    }
+
+    private AnnouncementException noSuchGoogleGroupConfiguration() {
+        return new AnnouncementException("No such googlegroup configuration");
     }
 }
