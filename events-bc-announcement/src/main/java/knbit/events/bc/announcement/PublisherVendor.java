@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Created by novy on 03.04.15.
  */
-public enum Publishers {
+public enum PublisherVendor {
 
     TWITTER,
     FACEBOOK,
@@ -21,10 +21,10 @@ public enum Publishers {
                 .collect(Collectors.toList());
     }
 
-    public static Collection<Publishers> fromStringValues(Collection<String> stringValues) {
+    public static Collection<PublisherVendor> fromStringValues(Collection<String> stringValues) {
         return stringValues
                 .stream()
-                .map(publisherString -> Publishers.valueOf(publisherString.toUpperCase()))
+                .map(publisherString -> PublisherVendor.valueOf(publisherString.toUpperCase()))
                 .collect(Collectors.toList());
     }
 

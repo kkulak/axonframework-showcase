@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement.builders;
 
 import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "newGoogleGroupProperties")
-class GoogleGroupPropertiesBuilder {
+public class GoogleGroupPropertiesBuilder {
 
     private String username = "username";
     private String host = "host";

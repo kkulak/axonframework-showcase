@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement.builders;
 
 import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "newFacebookProperties")
-class FacebookPropertiesBuilder {
+public class FacebookPropertiesBuilder {
 
     private String appId = "appId";
     private String appSecret = "appSecret";

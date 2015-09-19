@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.web;
 
 import com.google.common.base.Preconditions;
-import knbit.events.bc.announcement.config.Publishers;
+import knbit.events.bc.announcement.PublisherVendor;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +42,6 @@ public class AnnouncementDTO {
     }
 
     private boolean containsOnlyAllowedPublishers(Collection<String> publishers) {
-        return Publishers.stringValues().containsAll(publishers);
+        return PublisherVendor.stringValues().containsAll(publishers);
     }
 }

@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement.builders;
 
 import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "newTwitterProperties")
-class TwitterPropertiesBuilder {
+public class TwitterPropertiesBuilder {
 
     private String consumerKey = "consumerKey";
     private String consumerSecret = "consumerSecret";

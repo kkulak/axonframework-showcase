@@ -1,7 +1,6 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement;
 
 import com.google.common.base.Preconditions;
-import knbit.events.bc.announcement.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +14,14 @@ import java.util.stream.Collectors;
 @Component
 public class PublisherFactory {
 
-    private final ConfigurationRepository configurationRepository;
+    private final AllConfigurationQuery allConfigurationQuery;
 
     @Autowired
-    public PublisherFactory(ConfigurationRepository configurationRepository) {
-        this.configurationRepository = configurationRepository;
+    public PublisherFactory(AllConfigurationQuery allConfigurationQuery) {
+        this.allConfigurationQuery = allConfigurationQuery;
     }
 
-    public Publisher byVendor(Publishers vendor) {
+    public Publisher byVendor(PublisherVendor vendor) {
         Preconditions.checkNotNull(vendor);
 
         switch (vendor) {
@@ -39,7 +38,7 @@ public class PublisherFactory {
         }
     }
 
-    public Collection<Publisher> byVendors(Collection<Publishers> vendors) {
+    public Collection<Publisher> byVendors(Collection<PublisherVendor> vendors) {
         return vendors
                 .stream()
                 .map(this::byVendor)

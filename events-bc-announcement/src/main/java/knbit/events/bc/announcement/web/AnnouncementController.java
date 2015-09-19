@@ -2,8 +2,8 @@ package knbit.events.bc.announcement.web;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
-import knbit.events.bc.announcement.config.PublisherFactory;
-import knbit.events.bc.announcement.config.Publishers;
+import knbit.events.bc.announcement.PublisherFactory;
+import knbit.events.bc.announcement.PublisherVendor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,7 @@ public class AnnouncementController {
     @RequestMapping(value = "/announcements", method = RequestMethod.POST)
     public void postAnnouncement(@RequestBody @Valid AnnouncementDTO announcementDTO) {
         final Collection<Publisher> publishers = factory.byVendors(
-                Publishers.fromStringValues(
+                PublisherVendor.fromStringValues(
                         announcementDTO.getPublishers()
                 )
         );

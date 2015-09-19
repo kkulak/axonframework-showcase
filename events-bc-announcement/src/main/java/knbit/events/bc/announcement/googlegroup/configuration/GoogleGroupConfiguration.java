@@ -1,6 +1,8 @@
 package knbit.events.bc.announcement.googlegroup.configuration;
 
-import knbit.events.bc.announcement.AbstractNamedConfiguration;
+import knbit.events.bc.announcement.AbstractPublisherConfiguration;
+import knbit.events.bc.announcement.PublisherConfiguration;
+import knbit.events.bc.announcement.PublisherVendor;
 import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,10 +17,19 @@ import javax.persistence.Entity;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
-public class GoogleGroupConfiguration extends AbstractNamedConfiguration {
+public class GoogleGroupConfiguration extends AbstractPublisherConfiguration implements PublisherConfiguration {
 
+    @NotBlank
     private String username;
+    @NotBlank
     private String host;
+    @NotBlank
     private String password;
+    @NotBlank
     private String googleGroupAddress;
+
+    @Override
+    public PublisherVendor getVendor() {
+        return PublisherVendor.GOOGLE_GROUP;
+    }
 }

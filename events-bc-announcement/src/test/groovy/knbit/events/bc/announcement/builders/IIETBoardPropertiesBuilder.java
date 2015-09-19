@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.config;
+package knbit.events.bc.announcement.builders;
 
 import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 @Setter
 @NoArgsConstructor(staticName = "newIIETBoardProperties")
-class IIETBoardPropertiesBuilder {
+public class IIETBoardPropertiesBuilder {
 
     private String username = "username";
     private String password = "password";

@@ -1,6 +1,8 @@
 package knbit.events.bc.announcement;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,12 +14,16 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @Getter
-public abstract class AbstractNamedConfiguration {
+@Setter
+public abstract class AbstractPublisherConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotBlank
     private String name;
+
+    private boolean isDefault;
 
     @Override
     public boolean equals(Object obj) {
@@ -31,7 +37,7 @@ public abstract class AbstractNamedConfiguration {
             return false;
         }
 
-        AbstractNamedConfiguration that = (AbstractNamedConfiguration) obj;
+        AbstractPublisherConfiguration that = (AbstractPublisherConfiguration) obj;
 
         return this.id.equals(that.getId());
     }

@@ -1,7 +1,7 @@
 package knbit.events.bc.announcement.web
 
 import com.google.common.collect.ImmutableList
-import knbit.events.bc.announcement.config.Publishers
+import knbit.events.bc.announcement.PublisherVendor
 import spock.lang.Specification
 
 /**
@@ -25,11 +25,11 @@ class AnnouncementDTOTest extends Specification {
 
         given:
         def objectUnderTest = new AnnouncementDTO(
-                Publishers.stringValues(), "title", "content", "http://valid.url.com"
+                PublisherVendor.stringValues(), "title", "content", "http://valid.url.com"
         )
 
         expect:
-        objectUnderTest.getPublishers() == Publishers.stringValues()
+        objectUnderTest.getPublishers() == PublisherVendor.stringValues()
 
     }
 }

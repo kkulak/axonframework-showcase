@@ -1,6 +1,13 @@
-package knbit.events.bc.announcement.config
+package knbit.events.bc.announcement
 
+import knbit.events.bc.announcement.AllConfigurationQuery
 import knbit.events.bc.announcement.Publisher
+import knbit.events.bc.announcement.PublisherFactory
+import knbit.events.bc.announcement.PublisherVendor
+import knbit.events.bc.announcement.builders.FacebookPropertiesBuilder
+import knbit.events.bc.announcement.builders.GoogleGroupPropertiesBuilder
+import knbit.events.bc.announcement.builders.IIETBoardPropertiesBuilder
+import knbit.events.bc.announcement.builders.TwitterPropertiesBuilder
 import knbit.events.bc.announcement.facebook.publisher.FacebookPublisher
 import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisher
 import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisher
@@ -15,14 +22,14 @@ class PublisherFactoryTest extends Specification {
     def "should return facebook publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(ConfigurationRepository.class)
+        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
         configurationRepositoryMock.facebookConfiguration() >> FacebookPropertiesBuilder
                 .newFacebookProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(Publishers.FACEBOOK)
+        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.FACEBOOK)
 
         then:
         publisher instanceof FacebookPublisher
@@ -32,14 +39,14 @@ class PublisherFactoryTest extends Specification {
     def "should return twitter publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(ConfigurationRepository.class)
+        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
         configurationRepositoryMock.twitterConfiguration() >> TwitterPropertiesBuilder
                 .newTwitterProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(Publishers.TWITTER)
+        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.TWITTER)
 
         then:
         publisher instanceof TwitterPublisher
@@ -49,14 +56,14 @@ class PublisherFactoryTest extends Specification {
     def "should return googlegroup publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(ConfigurationRepository.class)
+        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
         configurationRepositoryMock.googleGroupConfiguration() >> GoogleGroupPropertiesBuilder
                 .newGoogleGroupProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(Publishers.GOOGLE_GROUP)
+        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.GOOGLE_GROUP)
 
         then:
         publisher instanceof GoogleGroupPublisher
@@ -66,14 +73,14 @@ class PublisherFactoryTest extends Specification {
     def "should return iietboard publisher when needed"() {
 
         given:
-        def configurationRepositoryMock = Mock(ConfigurationRepository.class)
+        def configurationRepositoryMock = Mock(AllConfigurationQuery.class)
         configurationRepositoryMock.iietBoardConfiguration() >> IIETBoardPropertiesBuilder
                 .newIIETBoardProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
 
         when:
-        def Publisher publisher = objectUnderTest.byVendor(Publishers.IIET_BOARD)
+        def Publisher publisher = objectUnderTest.byVendor(PublisherVendor.IIET_BOARD)
 
         then:
         publisher instanceof IIETBoardPublisher
@@ -84,7 +91,7 @@ class PublisherFactoryTest extends Specification {
 
         given:
         def objectUnderTest = new PublisherFactory(
-                Mock(ConfigurationRepository.class)
+                Mock(AllConfigurationQuery.class)
         )
 
         when:
