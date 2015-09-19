@@ -29,7 +29,7 @@ public class AllConfigurationQuery {
 
     public Collection<PublisherConfiguration> defaults() {
         return allConfigurationsStream()
-                .filter(PublisherConfiguration::isDefault)
+                .filter(PublisherConfiguration::isDefaultPublisher)
                 .collect(Collectors.toList());
     }
 

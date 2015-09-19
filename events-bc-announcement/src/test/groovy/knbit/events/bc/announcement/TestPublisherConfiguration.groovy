@@ -30,7 +30,7 @@ public class TestPublisherConfiguration implements PublisherConfiguration {
     }
 
     @Override
-    boolean isDefault() {
+    boolean isDefaultPublisher() {
         return isDefault
     }
 

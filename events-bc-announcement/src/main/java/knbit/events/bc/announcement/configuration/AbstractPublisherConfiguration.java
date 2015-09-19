@@ -27,7 +27,7 @@ public abstract class AbstractPublisherConfiguration {
     @NotBlank
     private String name;
 
-    private boolean isDefault;
+    private boolean defaultPublisher = false;
 
     @Override
     public boolean equals(Object obj) {

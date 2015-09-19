@@ -11,7 +11,7 @@ public interface PublisherConfiguration {
 
     String getName();
 
-    boolean isDefault();
+    boolean isDefaultPublisher();
 
     PublisherVendor getVendor();
 }
