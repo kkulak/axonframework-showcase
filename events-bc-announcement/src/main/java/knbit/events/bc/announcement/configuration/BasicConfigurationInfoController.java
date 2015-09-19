@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.web;
+package knbit.events.bc.announcement.configuration;
 
 import knbit.events.bc.announcement.configuration.AllConfigurationQuery;
 import knbit.events.bc.announcement.configuration.PublisherConfiguration;

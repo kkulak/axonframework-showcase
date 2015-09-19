@@ -1,12 +1,9 @@
 package knbit.events.bc.announcement.web;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 /**
@@ -15,9 +12,10 @@ import java.util.Collection;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class AnnouncementDTO {
 
-    @NotEmpty
+    @NotNull
     private Collection<ConfigurationIdAndVendor> publishers;
 
     @NotBlank

@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@EqualsAndHashCode
 public class ConfigurationIdAndVendor {
 
     @NotEmpty
