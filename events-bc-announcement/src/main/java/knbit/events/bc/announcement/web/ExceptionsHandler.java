@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.validation.ConstraintViolationException;
-import java.util.StringJoiner;
-
 /**
  * Created by novy on 03.04.15.
  */
@@ -20,7 +17,9 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(AnnouncementException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody ErrorDTO handle(AnnouncementException exception) {
+    public
+    @ResponseBody
+    ErrorDTO handle(AnnouncementException exception) {
 
         return ErrorDTO.Builder.instance()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)

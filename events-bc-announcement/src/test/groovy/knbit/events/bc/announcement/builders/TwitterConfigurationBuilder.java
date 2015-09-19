@@ -1,6 +1,6 @@
 package knbit.events.bc.announcement.builders;
 
-import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
+import knbit.events.bc.announcement.configuration.twitter.TwitterConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;

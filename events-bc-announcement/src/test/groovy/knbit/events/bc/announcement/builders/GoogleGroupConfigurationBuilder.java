@@ -1,6 +1,6 @@
 package knbit.events.bc.announcement.builders;
 
-import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
+import knbit.events.bc.announcement.configuration.googlegroup.GoogleGroupConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;

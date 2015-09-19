@@ -1,9 +1,8 @@
 package knbit.events.bc.announcement.web;
 
 import knbit.events.bc.announcement.Announcement;
-import knbit.events.bc.announcement.Publisher;
-import knbit.events.bc.announcement.PublisherFactory;
-import knbit.events.bc.announcement.PublisherVendor;
+import knbit.events.bc.announcement.publishers.Publisher;
+import knbit.events.bc.announcement.publishers.PublisherFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,20 +27,17 @@ public class AnnouncementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(value = "/announcements", method = RequestMethod.POST)
     public void postAnnouncement(@RequestBody @Valid AnnouncementDTO announcementDTO) {
-        // todo: implement me
-//        final Collection<Publisher> publishers = factory.byVendors(
-//                PublisherVendor.fromStringValues(
-//                        announcementDTO.getPublishers()
-//                )
-//        );
-//
-//        final Announcement announcement = new Announcement(
-//                announcementDTO.getTitle(), announcementDTO.getContent(), announcementDTO.getImageUrl()
-//        );
-//
-//        publishers.forEach(
-//                publisher -> publisher.publish(announcement)
-//        );
+        final Collection<Publisher> publishers = factory.byIdsAndVendors(
+                announcementDTO.getPublishers()
+        );
+
+        final Announcement announcement = new Announcement(
+                announcementDTO.getTitle(), announcementDTO.getContent(), announcementDTO.getImageUrl()
+        );
+
+        publishers.forEach(
+                publisher -> publisher.publish(announcement)
+        );
     }
 
 }

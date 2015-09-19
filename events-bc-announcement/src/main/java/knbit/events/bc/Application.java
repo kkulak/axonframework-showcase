@@ -9,7 +9,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "knbit.events.bc.announcement")
+@EnableJpaRepositories(basePackages = {
+        "knbit.events.bc.announcement.configuration.facebook",
+        "knbit.events.bc.announcement.configuration.twitter",
+        "knbit.events.bc.announcement.configuration.googlegroup",
+        "knbit.events.bc.announcement.configuration.iietboard",
+})
 @Import({
         CorsFilter.class,
         SwaggerConfig.class,

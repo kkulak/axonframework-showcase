@@ -1,6 +1,6 @@
 package knbit.events.bc.announcement.builders;
 
-import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
+import knbit.events.bc.announcement.configuration.iietboard.IIETBoardConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
