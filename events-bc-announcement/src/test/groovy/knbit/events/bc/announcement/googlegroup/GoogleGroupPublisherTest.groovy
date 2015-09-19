@@ -1,6 +1,8 @@
 package knbit.events.bc.announcement.googlegroup
 
 import knbit.events.bc.AnnouncementBuilder
+import knbit.events.bc.announcement.googlegroup.publisher.CannotPostOnGoogleGroupException
+import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisher
 import org.springframework.mail.MailException
 import org.springframework.mail.javamail.JavaMailSender
 import spock.lang.Specification

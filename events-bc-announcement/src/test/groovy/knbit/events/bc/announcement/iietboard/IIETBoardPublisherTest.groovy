@@ -2,6 +2,9 @@ package knbit.events.bc.announcement.iietboard
 
 import com.gargoylesoftware.htmlunit.WebClient
 import knbit.events.bc.AnnouncementBuilder
+import knbit.events.bc.announcement.iietboard.publisher.BoardPublisherConfiguration
+import knbit.events.bc.announcement.iietboard.publisher.CannotPostOnBoardException
+import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisher
 import spock.lang.Specification
 
 /**

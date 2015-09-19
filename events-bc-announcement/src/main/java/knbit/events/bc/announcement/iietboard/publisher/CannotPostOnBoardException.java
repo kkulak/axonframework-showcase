@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.iietboard;
+package knbit.events.bc.announcement.iietboard.publisher;
 
 import knbit.events.bc.announcement.AnnouncementException;
 

@@ -1,7 +1,9 @@
 package knbit.events.bc.announcement.twitter
 
 import knbit.events.bc.AnnouncementBuilder
-import knbit.events.bc.announcement.twitter.TwitterPublisher.ImageStreamReader
+import knbit.events.bc.announcement.twitter.publisher.CannotPostOnTwitterException
+import knbit.events.bc.announcement.twitter.publisher.TwitterPublisher
+import knbit.events.bc.announcement.twitter.publisher.TwitterPublisher.ImageStreamReader
 import spock.lang.Specification
 import twitter4j.StatusUpdate
 import twitter4j.Twitter

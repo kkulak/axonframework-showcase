@@ -1,6 +1,10 @@
 package knbit.events.bc.announcement.web;
 
 import knbit.events.bc.announcement.config.*;
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
+import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,47 +27,47 @@ public class ConfigurationController {
     }
 
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
-    public FacebookProperties facebookConfiguration() {
+    public FacebookConfiguration facebookConfiguration() {
         return configurationRepository.facebookProperties();
     }
 
     @RequestMapping(value = "/facebook", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void facebookConfiguration(@RequestBody @Valid FacebookProperties facebookProperties) {
-        configurationRepository.facebookProperties(facebookProperties);
+    public void facebookConfiguration(@RequestBody @Valid FacebookConfiguration facebookConfiguration) {
+        configurationRepository.facebookProperties(facebookConfiguration);
     }
 
     @RequestMapping(value = "/twitter", method = RequestMethod.GET)
-    public TwitterProperties twitterConfiguration() {
+    public TwitterConfiguration twitterConfiguration() {
         return configurationRepository.twitterProperties();
     }
 
     @RequestMapping(value = "/twitter", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void twitterConfiguration(@RequestBody @Valid TwitterProperties twitterProperties) {
-        configurationRepository.twitterProperties(twitterProperties);
+    public void twitterConfiguration(@RequestBody @Valid TwitterConfiguration twitterConfiguration) {
+        configurationRepository.twitterProperties(twitterConfiguration);
     }
 
     @RequestMapping(value = "/googlegroup", method = RequestMethod.GET)
-    public GoogleGroupProperties googleGroupConfiguration() {
+    public GoogleGroupConfiguration googleGroupConfiguration() {
         return configurationRepository.googleGroupProperties();
     }
 
     @RequestMapping(value = "/googlegroup", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void googleGroupConfiguration(@RequestBody @Valid GoogleGroupProperties googleGroupProperties) {
-        configurationRepository.googleGroupProperties(googleGroupProperties);
+    public void googleGroupConfiguration(@RequestBody @Valid GoogleGroupConfiguration googleGroupConfiguration) {
+        configurationRepository.googleGroupProperties(googleGroupConfiguration);
     }
 
     @RequestMapping(value = "/iietboard", method = RequestMethod.GET)
-    public IIETBoardProperties iietBoardConfiguration() {
+    public IIETBoardConfiguration iietBoardConfiguration() {
         return configurationRepository.iietBoardProperties();
     }
 
     @RequestMapping(value = "/iietboard", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void iietBoardConfiguration(@RequestBody @Valid IIETBoardProperties iietBoardProperties) {
-        configurationRepository.iietBoardProperties(iietBoardProperties);
+    public void iietBoardConfiguration(@RequestBody @Valid IIETBoardConfiguration iietBoardConfiguration) {
+        configurationRepository.iietBoardProperties(iietBoardConfiguration);
     }
 
 }

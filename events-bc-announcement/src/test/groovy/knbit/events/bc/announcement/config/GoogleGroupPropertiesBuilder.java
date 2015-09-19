@@ -1,5 +1,6 @@
 package knbit.events.bc.announcement.config;
 
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,8 +18,8 @@ class GoogleGroupPropertiesBuilder {
     private String password = "password";
     private String googleGroupAddress = "address";
 
-    public GoogleGroupProperties build() {
-        return new GoogleGroupProperties(
+    public GoogleGroupConfiguration build() {
+        return new GoogleGroupConfiguration(
                 username, host, password, googleGroupAddress
         );
     }

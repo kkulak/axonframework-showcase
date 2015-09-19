@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.twitter;
+package knbit.events.bc.announcement.twitter.publisher;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.Publisher;
@@ -22,12 +22,12 @@ public class TwitterPublisher implements Publisher {
     private Twitter twitter;
     private ImageStreamReader imageStreamReader;
 
-    public TwitterPublisher(Twitter twitter) {
+    TwitterPublisher(Twitter twitter) {
         this.twitter = twitter;
         this.imageStreamReader = new ImageStreamReader();
     }
 
-    public TwitterPublisher(Twitter twitter, ImageStreamReader imageStreamReader) {
+    TwitterPublisher(Twitter twitter, ImageStreamReader imageStreamReader) {
         this.twitter = twitter;
         this.imageStreamReader = imageStreamReader;
     }

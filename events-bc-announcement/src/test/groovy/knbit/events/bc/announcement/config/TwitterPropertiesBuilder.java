@@ -1,5 +1,6 @@
 package knbit.events.bc.announcement.config;
 
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,8 +16,8 @@ class TwitterPropertiesBuilder {
     private String consumerKey = "consumerKey";
     private String consumerSecret = "consumerSecret";
 
-    public TwitterProperties build() {
-        return new TwitterProperties(
+    public TwitterConfiguration build() {
+        return new TwitterConfiguration(
                 consumerKey, consumerSecret
         );
     }

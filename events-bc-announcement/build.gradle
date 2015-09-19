@@ -34,6 +34,8 @@ dependencies {
     // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
+    compile 'hsqldb:hsqldb:1.8.0.10'
 
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'

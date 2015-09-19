@@ -1,5 +1,6 @@
 package knbit.events.bc.announcement.config;
 
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,8 +17,8 @@ class FacebookPropertiesBuilder {
     private String appId = "appId";
     private String appSecret = "appSecret";
 
-    public FacebookProperties build() {
-        return new FacebookProperties(
+    public FacebookConfiguration build() {
+        return new FacebookConfiguration(
                 appId, appSecret
         );
     }

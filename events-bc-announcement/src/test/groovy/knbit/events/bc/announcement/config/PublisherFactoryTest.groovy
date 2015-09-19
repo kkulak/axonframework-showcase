@@ -1,10 +1,10 @@
 package knbit.events.bc.announcement.config
 
 import knbit.events.bc.announcement.Publisher
-import knbit.events.bc.announcement.facebook.FacebookPublisher
-import knbit.events.bc.announcement.googlegroup.GoogleGroupPublisher
-import knbit.events.bc.announcement.iietboard.IIETBoardPublisher
-import knbit.events.bc.announcement.twitter.TwitterPublisher
+import knbit.events.bc.announcement.facebook.publisher.FacebookPublisher
+import knbit.events.bc.announcement.googlegroup.publisher.GoogleGroupPublisher
+import knbit.events.bc.announcement.iietboard.publisher.IIETBoardPublisher
+import knbit.events.bc.announcement.twitter.publisher.TwitterPublisher
 import spock.lang.Specification
 
 /**
@@ -16,7 +16,7 @@ class PublisherFactoryTest extends Specification {
 
         given:
         def configurationRepositoryMock = Mock(ConfigurationRepository.class)
-        configurationRepositoryMock.facebookProperties() >> FacebookPropertiesBuilder
+        configurationRepositoryMock.facebookConfiguration() >> FacebookPropertiesBuilder
                 .newFacebookProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
@@ -33,7 +33,7 @@ class PublisherFactoryTest extends Specification {
 
         given:
         def configurationRepositoryMock = Mock(ConfigurationRepository.class)
-        configurationRepositoryMock.twitterProperties() >> TwitterPropertiesBuilder
+        configurationRepositoryMock.twitterConfiguration() >> TwitterPropertiesBuilder
                 .newTwitterProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
@@ -50,7 +50,7 @@ class PublisherFactoryTest extends Specification {
 
         given:
         def configurationRepositoryMock = Mock(ConfigurationRepository.class)
-        configurationRepositoryMock.googleGroupProperties() >> GoogleGroupPropertiesBuilder
+        configurationRepositoryMock.googleGroupConfiguration() >> GoogleGroupPropertiesBuilder
                 .newGoogleGroupProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)
@@ -67,7 +67,7 @@ class PublisherFactoryTest extends Specification {
 
         given:
         def configurationRepositoryMock = Mock(ConfigurationRepository.class)
-        configurationRepositoryMock.iietBoardProperties() >> IIETBoardPropertiesBuilder
+        configurationRepositoryMock.iietBoardConfiguration() >> IIETBoardPropertiesBuilder
                 .newIIETBoardProperties()
                 .build()
         def objectUnderTest = new PublisherFactory(configurationRepositoryMock)

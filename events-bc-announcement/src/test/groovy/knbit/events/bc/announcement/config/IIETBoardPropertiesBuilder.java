@@ -1,5 +1,6 @@
 package knbit.events.bc.announcement.config;
 
+import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -19,8 +20,8 @@ class IIETBoardPropertiesBuilder {
     private String boardId = "id";
 
 
-    public IIETBoardProperties build() {
-        return new IIETBoardProperties(
+    public IIETBoardConfiguration build() {
+        return new IIETBoardConfiguration(
                 username, password, loginUrl, boardUrl, boardId
         );
     }

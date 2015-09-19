@@ -1,5 +1,9 @@
 package knbit.events.bc.announcement.config;
 
+import knbit.events.bc.announcement.facebook.configuration.FacebookConfiguration;
+import knbit.events.bc.announcement.googlegroup.configuration.GoogleGroupConfiguration;
+import knbit.events.bc.announcement.iietboard.configuration.IIETBoardConfiguration;
+import knbit.events.bc.announcement.twitter.configuration.TwitterConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,27 +20,27 @@ import org.springframework.stereotype.Repository;
 @Accessors(fluent = true, chain = false)
 public class ConfigurationRepository {
 
-    private FacebookProperties facebookProperties = defaultFacebookProperties();
-    private TwitterProperties twitterProperties = defaultTwitterProperties();
-    private GoogleGroupProperties googleGroupProperties = defaultGoogleGroupProperties();
-    private IIETBoardProperties iietBoardProperties = defaultIIETBoardProperties();
+    private FacebookConfiguration facebookConfiguration = defaultFacebookProperties();
+    private TwitterConfiguration twitterConfiguration = defaultTwitterProperties();
+    private GoogleGroupConfiguration googleGroupConfiguration = defaultGoogleGroupProperties();
+    private IIETBoardConfiguration iietBoardConfiguration = defaultIIETBoardProperties();
 
-    private FacebookProperties defaultFacebookProperties() {
-        return new FacebookProperties(
+    private FacebookConfiguration defaultFacebookProperties() {
+        return new FacebookConfiguration(
                 "facebookAppId",
                 "facebookAppSecret"
         );
     }
 
-    private TwitterProperties defaultTwitterProperties() {
-        return new TwitterProperties(
+    private TwitterConfiguration defaultTwitterProperties() {
+        return new TwitterConfiguration(
                 "twitterConsumerKey",
                 "twitterConsumerSecret"
         );
     }
 
-    private GoogleGroupProperties defaultGoogleGroupProperties() {
-        return new GoogleGroupProperties(
+    private GoogleGroupConfiguration defaultGoogleGroupProperties() {
+        return new GoogleGroupConfiguration(
                 "username",
                 "smpt.google.com",
                 "password",
@@ -44,8 +48,8 @@ public class ConfigurationRepository {
         );
     }
 
-    private IIETBoardProperties defaultIIETBoardProperties() {
-        return new IIETBoardProperties(
+    private IIETBoardConfiguration defaultIIETBoardProperties() {
+        return new IIETBoardConfiguration(
                 "username",
                 "password",
                 "http://accounts.iiet.pl/students/sign_in",

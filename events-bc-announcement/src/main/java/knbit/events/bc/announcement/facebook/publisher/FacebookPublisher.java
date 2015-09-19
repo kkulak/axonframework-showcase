@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.facebook;
+package knbit.events.bc.announcement.facebook.publisher;
 
 import facebook4j.Facebook;
 import facebook4j.FacebookException;

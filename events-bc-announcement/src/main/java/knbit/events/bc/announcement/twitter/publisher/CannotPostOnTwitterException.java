@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.twitter;
+package knbit.events.bc.announcement.twitter.publisher;
 
 import knbit.events.bc.announcement.AnnouncementException;
 

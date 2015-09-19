@@ -4,6 +4,8 @@ import facebook4j.Facebook
 import facebook4j.FacebookException
 import facebook4j.PostUpdate
 import knbit.events.bc.AnnouncementBuilder
+import knbit.events.bc.announcement.facebook.publisher.CannotPostOnFacebookException
+import knbit.events.bc.announcement.facebook.publisher.FacebookPublisher
 import spock.lang.Specification
 
 /**

@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.googlegroup;
+package knbit.events.bc.announcement.googlegroup.publisher;
 
 import knbit.events.bc.announcement.Announcement;
 import knbit.events.bc.announcement.AnnouncementException;

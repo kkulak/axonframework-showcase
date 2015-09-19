@@ -1,4 +1,4 @@
-package knbit.events.bc.announcement.iietboard;
+package knbit.events.bc.announcement.iietboard.publisher;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
