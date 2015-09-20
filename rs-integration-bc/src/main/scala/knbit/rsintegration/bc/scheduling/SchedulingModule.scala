@@ -1,6 +1,6 @@
 package knbit.rsintegration.bc.scheduling
 
-import akka.actor.{Scheduler, ActorSystem}
+import akka.actor.ActorSystem
 import knbit.rsintegration.bc.scheduling.request.RequestModule
 import knbit.rsintegration.bc.scheduling.response.ResponseModule
 import com.softwaremill.macwire._

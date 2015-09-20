@@ -62,8 +62,9 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
     if(res.reservationId != id) throw new IllegalArgumentException("id != reservationId")
     if(state != State.NOT_INITIALIZED) throw new IllegalStateException("state != NOT_INITIALIZED")
 
-    persist(RequestInitializedEvent(res, reqStrategy, schStrategy)) { evt =>
-      onRequestInitializedEvt(evt)
+    persist(RequestInitializedEvent(res, reqStrategy, schStrategy)) { evt => {
+        onRequestInitializedEvt(evt)
+      }
     }
   }
 
@@ -85,17 +86,19 @@ class RequestActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def terminate(): Unit = {
     log.info("Request exceeded max attempt amount. Terminating...")
-    persist(RequestTerminatedEvent) { evt =>
-      system.eventStream.publish(RequestExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
-      onRequestTerminatedEvt()
+    persist(RequestTerminatedEvent) { evt => {
+        system.eventStream.publish(RequestExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
+        onRequestTerminatedEvt()
+      }
     }
   }
 
   private[this] def onSuccess(requestId: String): Unit = {
     log.info("Success request. RequestId: [{}]", requestId)
-    persist(RequestFinishedEvent){ evt =>
-      system.eventStream.publish(RequestSucceededEvent(requestId, reservation))
-      onRequestFinishedEvt()
+    persist(RequestFinishedEvent){ evt => {
+        system.eventStream.publish(RequestSucceededEvent(requestId, reservation))
+        onRequestFinishedEvt()
+      }
     }
   }
 

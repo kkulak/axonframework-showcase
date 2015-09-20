@@ -1,6 +1,7 @@
 package knbit.rsintegration.bc.scheduling.request
 
 import knbit.rsintegration.bc.common.Reservation
+import knbit.rsintegration.bc.scheduling.CrossActorEvent
 
 case class RequestInitializedEvent(reservation: Reservation,
                                    requestStrategy: RequestStrategy,
@@ -12,6 +13,6 @@ case object RequestTerminatedEvent
 
 case object RequestFailedEvent
 
-case class RequestSucceededEvent(requestId: String, reservation: Reservation)
+case class RequestSucceededEvent(requestId: String, reservation: Reservation) extends CrossActorEvent
 
-case class RequestExceedMaxAttemptAmountEvent(eventId: String, reservationId: String)
+case class RequestExceedMaxAttemptAmountEvent(eventId: String, reservationId: String) extends CrossActorEvent

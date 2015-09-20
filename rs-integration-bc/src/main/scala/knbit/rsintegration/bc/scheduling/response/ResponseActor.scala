@@ -78,10 +78,9 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
     if(res.reservationId != id) throw new IllegalArgumentException("reservation.id != id")
     if(state != State.NOT_INITIALIZED) throw new IllegalStateException("state != NOT_INITIALIZED")
 
-    persist(
-      ResponseInitializedEvent(reqId, res, respStrategy, schStrategy)
-    ){ evt =>
-      onResponseInitializedEvt(evt)
+    persist(ResponseInitializedEvent(reqId, res, respStrategy, schStrategy)){ evt => {
+        onResponseInitializedEvt(evt)
+      }
     }
   }
 
@@ -105,41 +104,46 @@ class ResponseActor(id: String) extends PersistentActor with ActorLogging {
 
   private[this] def terminate(): Unit = {
     log.info("Checking response exceeded max attempt amount. Terminating...")
-    persist(ResponseTerminatedEvent) { evt =>
-      system.eventStream.publish(ResponseExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
-      onResponseTerminatedEvt()
+    persist(ResponseTerminatedEvent) { evt => {
+        system.eventStream.publish(ResponseExceedMaxAttemptAmountEvent(reservation.eventId, reservation.reservationId))
+        onResponseTerminatedEvt()
+      }
     }
   }
 
   private[this] def onSuccess(term: Term): Unit = {
     log.info("Success response. Term: [{}]", term)
-    persist(ResponseFinishedEvent){ evt =>
-      system.eventStream.publish(SuccessReservationEvent(reservation.eventId, reservation.reservationId, term))
-      onResponseFinishedEvt()
+    persist(ResponseFinishedEvent){ evt => {
+        system.eventStream.publish(SuccessReservationEvent(reservation.eventId, reservation.reservationId, term))
+        onResponseFinishedEvt()
+      }
     }
   }
 
   private[this] def onUnresolved(): Unit = {
     log.info("Unresolved response")
-    persist(UnresolvedResponseEvent){ evt =>
-      onUnresolvedEvt()
-      schedulingStrategy.schedule(context.system.scheduler)
+    persist(UnresolvedResponseEvent){ evt => {
+        onUnresolvedEvt()
+        schedulingStrategy.schedule(context.system.scheduler)
+      }
     }
   }
 
   private[this] def onRejection(): Unit = {
     log.info("Rejection response")
-    persist(RejectedResponseEvent){ evt =>
-      system.eventStream.publish(RejectedReservationEvent(reservation.eventId, reservation.reservationId))
-      onResponseRejectedEvt()
+    persist(RejectedResponseEvent){ evt => {
+        system.eventStream.publish(RejectedReservationEvent(reservation.eventId, reservation.reservationId))
+        onResponseRejectedEvt()
+      }
     }
   }
 
   private[this] def onFailure(): Unit = {
     log.info("Failure response")
-    persist(FailureReservationEvent){ evt =>
-      onFailureEvt()
-      schedulingStrategy.schedule(context.system.scheduler)
+    persist(FailureReservationEvent){ evt => {
+        onFailureEvt()
+        schedulingStrategy.schedule(context.system.scheduler)
+      }
     }
   }
 
