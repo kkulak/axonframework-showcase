@@ -132,4 +132,27 @@ class ReservationsHandlerTest extends Specification {
 
         choosingTermsPreview.reservations == []
     }
+
+    def "should remove reservation readmodel on failed reservation"() {
+        given:
+        collection << [
+                domainId    : eventId.value(),
+                reservations: [
+                        [reservationId: reservationId.value()]
+                ]
+        ]
+
+        when:
+        objectUnderTest.on(
+                ReservationEvents.ReservationFailed.of(eventId, reservationId, "fail")
+        )
+
+        then:
+        def choosingTermsPreview = collection.findOne(
+                domainId: eventId.value()
+        )
+
+        choosingTermsPreview.reservations == []
+    }
+
 }

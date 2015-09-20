@@ -50,6 +50,11 @@ class ReservationsHandler {
         removeReservationFor(event.eventId(), event.reservationId())
     }
 
+    @EventHandler
+    def on(ReservationEvents.ReservationFailed event) {
+        removeReservationFor(event.eventId(), event.reservationId())
+    }
+
     private static def reservationDataFrom(ReservationEvents.RoomRequested event) {
         def eventDuration = event.eventDuration()
         [
