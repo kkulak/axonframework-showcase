@@ -15,7 +15,7 @@ object Application extends App with SchedulingModule {
   system.eventStream.subscribe(eventHandler, classOf[AnyRef])
 
   val factory = new ConnectionFactory()
-  val connection = system.actorOf(ConnectionActor.props(factory, reconnectionDelay = 10.seconds), "rabbitmq")
+  val connection = system.actorOf(ConnectionActor.props(factory), "rabbitmq")
   connection ! CreateChannel(ChannelActor.props(AMQP.setupSubscriber(wire[ActorFactory])), Some("subscriber"))
   connection ! CreateChannel(ChannelActor.props(AMQP.setupPublisher), Some("publisher"))
 

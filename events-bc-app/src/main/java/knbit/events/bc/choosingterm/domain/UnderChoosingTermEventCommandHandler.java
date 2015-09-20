@@ -100,4 +100,13 @@ public class UnderChoosingTermEventCommandHandler {
 
         underChoosingTermEvent.cancelReservation(command.reservationId());
     }
+
+    @CommandHandler
+    public void handle(ReservationCommands.FailReservation command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        underChoosingTermEvent.failReservation(command.reservationId(), command.reason());
+    }
+
 }

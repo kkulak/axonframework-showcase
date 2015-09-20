@@ -2,15 +2,12 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions;
-import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationAcceptedException;
-import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationCancelledException;
-import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
-import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationRejectedException;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -20,12 +17,7 @@ import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-
-/**
- * Created by novy on 19.08.15.
- */
-public class RejectingReservationTest {
-
+public class FailingReservationTest {
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
     private EventId eventId;
     private EventDetails eventDetails;
@@ -43,38 +35,24 @@ public class RejectingReservationTest {
                 .build();
 
         reservationId = ReservationId.of("reservationId");
-        eventDuration = EventDuration.of(DateTime.now(), Duration.standardHours(2));
+        eventDuration = EventDuration.of(DateTime.now(), Duration.standardDays(2));
         capacity = Capacity.of(20);
     }
 
     @Test
-    public void shouldNotBeAbleToRejectNotExistingReservation() throws Exception {
+    public void shouldNotBeAbleToFailNotExistingReservation() throws Exception {
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        ReservationCommands.RejectReservation.of(eventId, ReservationId.of("fakeId"))
+                        ReservationCommands.FailReservation.of(eventId, ReservationId.of("fakeId"), "fake")
                 )
-                .expectException(ReservationDoesNotExist.class);
+                .expectException(ReservationExceptions.ReservationDoesNotExist.class);
     }
 
     @Test
-    public void shouldNotBeAbleToRejectAlreadyRejectedReservation() throws Exception {
-        fixture
-                .given(
-                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
-                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationEvents.ReservationRejected.of(eventId, reservationId)
-                )
-                .when(
-                        ReservationCommands.RejectReservation.of(eventId, reservationId)
-                )
-                .expectException(ReservationRejectedException.class);
-    }
-
-    @Test
-    public void shouldNotBeAbleToRejectAlreadyAcceptedReservation() throws Exception {
+    public void shouldNotBeAbleToFailAlreadyAcceptedReservation() throws Exception {
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
@@ -82,27 +60,27 @@ public class RejectingReservationTest {
                         ReservationEvents.ReservationAccepted.of(eventId, reservationId)
                 )
                 .when(
-                        ReservationCommands.RejectReservation.of(eventId, reservationId)
+                        ReservationCommands.FailReservation.of(eventId, reservationId, "fail")
                 )
-                .expectException(ReservationAcceptedException.class);
+                .expectException(ReservationExceptions.ReservationAcceptedException.class);
     }
 
     @Test
-    public void shouldNotBeAbleToRejectAlreadyFailedReservation() throws Exception {
+    public void shouldNotBeAbleToFailAlreadyRejectedReservation() throws Exception {
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
                         ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
-                        ReservationEvents.ReservationFailed.of(eventId, reservationId, "fail")
+                        ReservationEvents.ReservationRejected.of(eventId, reservationId)
                 )
                 .when(
-                        ReservationCommands.RejectReservation.of(eventId, reservationId)
+                        ReservationCommands.FailReservation.of(eventId, reservationId, "fail")
                 )
-                .expectException(ReservationExceptions.ReservationFailedException.class);
+                .expectException(ReservationExceptions.ReservationRejectedException.class);
     }
 
     @Test
-    public void shouldNotBeAbleToRejectCancelledReservation() throws Exception {
+    public void shouldNotBeAbleToFailAlreadyCancelledReservation() throws Exception {
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
@@ -110,23 +88,38 @@ public class RejectingReservationTest {
                         ReservationEvents.ReservationCancelled.of(eventId, reservationId)
                 )
                 .when(
-                        ReservationCommands.RejectReservation.of(eventId, reservationId)
+                        ReservationCommands.FailReservation.of(eventId, reservationId, "fail")
                 )
-                .expectException(ReservationCancelledException.class);
+                .expectException(ReservationExceptions.ReservationCancelledException.class);
     }
 
     @Test
-    public void itShouldProduceReservationRejectedEventOtherwise() throws Exception {
+    public void shouldNotBeAbleToFailAlreadyFailedReservation() throws Exception {
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
+                        ReservationEvents.ReservationFailed.of(eventId, reservationId, "fail")
+                )
+                .when(
+                        ReservationCommands.FailReservation.of(eventId, reservationId, "fail")
+                )
+                .expectException(ReservationExceptions.ReservationFailedException.class);
+    }
+
+    @Test
+    public void shouldGenerateReservationFailedEventOtherwise() throws Exception {
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
                         ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity)
                 )
                 .when(
-                        ReservationCommands.RejectReservation.of(eventId, reservationId)
+                        ReservationCommands.FailReservation.of(eventId, reservationId, "fail")
                 )
                 .expectEvents(
-                        ReservationEvents.ReservationRejected.of(eventId, reservationId)
+                        ReservationEvents.ReservationFailed.of(eventId, reservationId, "fail")
                 );
     }
+
 }

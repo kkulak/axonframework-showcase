@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.infrastructure.rsintegration;
 
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.infrastructure.rsintegration.dto.ReservationDTO;
 import knbit.events.bc.common.config.AMQPConstants;
 import knbit.events.bc.common.dispatcher.MessageDispatcher;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class RoomBookingEventHandler {
         );
 
         log.debug("Sending reservation request to rs-integration-bc...");
-        dispatcher.dispatch(reservationDTO, AMQPConstants.RS_INTEGRATION_QUEUE);
+        dispatcher.dispatch(reservationDTO, AMQPConstants.RS_INTEGRATION_IN_QUEUE);
     }
 
 }

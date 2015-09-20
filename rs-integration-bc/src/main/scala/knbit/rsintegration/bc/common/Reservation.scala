@@ -9,4 +9,4 @@ case class AcceptedReservation(eventId: String, reservationId: String, term: Ter
 
 case class RejectedReservation(eventId: String, reservationId: String)
 
-case class ReservationTimeout(eventId: String, reservationId: String)
+case class FailedReservation(eventId: String, reservationId: String, cause: String)

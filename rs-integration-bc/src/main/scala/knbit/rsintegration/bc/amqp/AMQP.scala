@@ -1,6 +1,9 @@
 package knbit.rsintegration.bc.amqp
 
+import java.util
+
 import akka.actor.{ActorRef, ActorSystem}
+import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.DefaultConsumer
 import com.thenewmotion.akka.rabbitmq._
 import knbit.rsintegration.bc.common.Reservation
@@ -28,8 +31,15 @@ object AMQP {
     channel.queueBind(queue_out, exchange, queue_out)
   }
 
-  def publish(message: AnyRef)(channel: Channel) {
-    channel.basicPublish(exchange, queue_out, null, bytes(message))
+  def publish(message: AnyRef, messageType: String)(channel: Channel) {
+    channel.basicPublish(exchange, queue_out, propsWithHeader("type", messageType), bytes(message))
+  }
+
+  private[this] def propsWithHeader(key: String, value: String): BasicProperties = {
+    val map = new util.HashMap[String, Object]()
+    map.put(key, value)
+    new BasicProperties()
+      .builder.headers(map).build
   }
 
 }

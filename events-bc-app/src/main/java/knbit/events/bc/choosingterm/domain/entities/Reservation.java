@@ -29,6 +29,8 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
     @Getter
     private Capacity capacity;
     private ReservationStatus reservationStatus;
+    // TODO: move to status
+    private String message;
 
     public Reservation(EventId eventId, ReservationId reservationId, EventDuration eventDuration, Capacity capacity) {
         this.eventId = eventId;
@@ -44,17 +46,22 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
     }
 
     public void accept() {
-        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED, ReservationStatus.FAILED);
         apply(ReservationEvents.ReservationAccepted.of(eventId, id));
     }
 
     public void reject() {
-        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED, ReservationStatus.FAILED);
         apply(ReservationEvents.ReservationRejected.of(eventId, id));
     }
 
+    public void fail(String cause) {
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED, ReservationStatus.FAILED);
+        apply(ReservationEvents.ReservationFailed.of(eventId, id, cause));
+    }
+
     public void cancel() {
-        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED);
+        rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED, ReservationStatus.FAILED);
         apply(ReservationEvents.ReservationCancelled.of(eventId, id));
     }
 
@@ -78,6 +85,12 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
     @EventSourcingHandler
     private void on(ReservationEvents.ReservationCancelled event) {
         changeStatusTo(event, ReservationStatus.CANCELLED);
+    }
+
+    @EventSourcingHandler
+    private void on(ReservationEvents.ReservationFailed event) {
+        changeStatusTo(event, ReservationStatus.FAILED);
+        message = event.cause();
     }
 
     private void changeStatusTo(ReservationEvents.ReservationEvent event, ReservationStatus newStatus) {

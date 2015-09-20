@@ -1,4 +1,4 @@
-package knbit.events.bc.choosingterm.infrastructure.rsintegration;
+package knbit.events.bc.choosingterm.infrastructure.rsintegration.dto;
 
 import lombok.*;
 

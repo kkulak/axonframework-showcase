@@ -12,28 +12,28 @@ class EventHandler(factory: ActorFactory) extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case RequestSucceededEvent(requestId, reservation) => factory.createResponse(requestId, reservation)
-    case RequestExceedMaxAttemptAmountEvent(eventId, reservationId) => onRequestTimeout(eventId, reservationId)
+    case RequestExceedMaxAttemptAmountEvent(eventId, reservationId) => onFailedReservation(eventId, reservationId)
     case SuccessReservationEvent(eventId, reservationId, term) => onSuccessReservation(eventId, reservationId, term)
     case RejectedReservationEvent(eventId, reservationId) => onRejectedReservation(eventId, reservationId)
-    case ResponseExceedMaxAttemptAmountEvent(eventId, reservationId) => onRequestTimeout(eventId, reservationId)
+    case ResponseExceedMaxAttemptAmountEvent(eventId, reservationId) => onFailedReservation(eventId, reservationId)
   }
 
-  private[this] def onRequestTimeout(eventId: String, reservationId: String) = {
-    val message = ReservationTimeout(eventId, reservationId)
+  private[this] def onFailedReservation(eventId: String, reservationId: String) = {
+    val message = FailedReservation(eventId, reservationId, "RS is not responding")
     log.info("Sending success reservation message: [{}]", message)
-    publisher ! ChannelMessage(AMQP.publish(message), dropIfNoChannel = false)
+    publisher ! ChannelMessage(AMQP.publish(message, "rs-integration:failure"), dropIfNoChannel = false)
   }
 
   private[this] def onSuccessReservation(eventId: String, reservationId: String, term: Term): Unit = {
     val message = AcceptedReservation(eventId, reservationId, term)
     log.info("Sending success reservation message: [{}]", message)
-    publisher ! ChannelMessage(AMQP.publish(message), dropIfNoChannel = false)
+    publisher ! ChannelMessage(AMQP.publish(message, "rs-integration:success"), dropIfNoChannel = false)
   }
 
   private[this] def onRejectedReservation(eventId: String, reservationId: String): Unit = {
     val message = RejectedReservation(eventId, reservationId)
     log.info("Sending failure reservation message: [{}]", message)
-    publisher ! ChannelMessage(AMQP.publish(message), dropIfNoChannel = false)
+    publisher ! ChannelMessage(AMQP.publish(message, "rs-integration:rejected"), dropIfNoChannel = false)
   }
 
 }

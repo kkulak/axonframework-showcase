@@ -55,4 +55,15 @@ public final class ReservationEvents {
         EventId eventId;
         ReservationId reservationId;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class ReservationFailed implements ReservationEvent {
+
+        EventId eventId;
+        ReservationId reservationId;
+        String cause;
+
+    }
+
 }

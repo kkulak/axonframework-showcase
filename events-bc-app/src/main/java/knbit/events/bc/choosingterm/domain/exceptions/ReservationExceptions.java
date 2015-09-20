@@ -39,4 +39,12 @@ public interface ReservationExceptions {
         }
     }
 
+    class ReservationFailedException extends RuntimeException {
+        private static final String ERROR_MESSAGE_TEMPLATE = "Reservation with ID %s failed!";
+
+        public ReservationFailedException(ReservationId reservationId) {
+            super(String.format(ERROR_MESSAGE_TEMPLATE, reservationId));
+        }
+    }
+
 }

@@ -2,7 +2,8 @@ package knbit.events.bc.common.config;
 
 public class AMQPConstants {
 
-    public static final String RS_INTEGRATION_QUEUE = "rs.integration.in";
+    public static final String RS_INTEGRATION_IN_QUEUE = "rs.integration.in";
+    public static final String RS_INTEGRATION_OUT_QUEUE = "rs.integration.out";
     public static final String NOTIFICATION_QUEUE = "notification.queue";
     public static final String EXCHANGE = "knbit.events.bc";
 

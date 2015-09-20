@@ -30,6 +30,12 @@ enum ReservationStatus {
         public void rejectOn(ReservationId reservationId) {
             throw new ReservationExceptions.ReservationCancelledException(reservationId);
         }
+    },
+    FAILED {
+        @Override
+        public void rejectOn(ReservationId reservationId) {
+            throw new ReservationExceptions.ReservationFailedException(reservationId);
+        }
     };
 
     public abstract void rejectOn(ReservationId reservationId);
