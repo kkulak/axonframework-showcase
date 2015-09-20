@@ -1,4 +1,32 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 apply plugin: 'scala'
+apply plugin: 'com.github.maiflai.scalatest'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.bmuschko.docker-java-application'
+
+mainClassName = 'knbit.rsintegration.bc.Application'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath "com.github.maiflai:gradle-scalatest:0.9"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.2'
+        classpath 'com.bmuschko:gradle-docker-plugin:2.4'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -27,9 +55,50 @@ dependencies {
     testCompile 'org.scalatest:scalatest_2.11:3.0.0-M8'
     testCompile 'com.github.dnvriend:akka-persistence-inmemory_2.11:1.1.0-RC2'
     testCompile 'org.mockito:mockito-all:1.8.4'
+    testRuntime 'org.pegdown:pegdown:1.1.0'
 
     // jackson
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
     compile 'com.fasterxml.jackson.module:jackson-module-scala_2.11:2.6.1'
 
+}
+
+shadowJar {
+    mergeServiceFiles('reference.conf')
+}
+
+docker {
+    registryCredentials {
+        username = dockerRegistryProperties.username
+        password = dockerRegistryProperties.password
+        email = dockerRegistryProperties.email
+    }
+}
+
+task createDockerfile(type: Dockerfile) {
+    dependsOn shadowJar
+    destFile = project.file('build/Dockerfile')
+    from 'java:8'
+    volume '/tmp'
+    addFile 'libs/rs-integration-bc-*-all.jar', 'rs-integration-bc.jar'
+    runCommand 'bash -c "touch /rs-integration-bc.jar"'
+    entryPoint 'java', '-jar', '/rs-integration-bc.jar'
+}
+
+task buildImage(type: DockerBuildImage) {
+    dependsOn createDockerfile
+    inputDir = createDockerfile.destFile.parentFile
+    tag = 'knbitevents/rs-integration-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/rs-integration-bc'
+    imageId = 'knbitevents/rs-integration-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
+}
+
+task pushImage(type: DockerPushImage) {
+    dependsOn tagImage
+    imageName = 'knbitevents/rs-integration-bc'
 }
