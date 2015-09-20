@@ -28,7 +28,7 @@ public class MessageListener {
 
     private final static String HEADER_KEY = "type";
     private final static String SUCCESS = "rs-integration:success";
-    private final static String FAILED = "rs-integration:failed";
+    private final static String FAILED = "rs-integration:failure";
     private final static String REJECTED = "rs-integration:rejected";
     private final static String UNKNOWN = "unknown";
 
