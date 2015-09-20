@@ -13,13 +13,23 @@ import static org.springframework.amqp.core.BindingBuilder.bind;
 public class RabbitMQConfig extends BasicRabbitMQConfig {
 
     @Bean
-    Queue rsIntegrationQueue() {
+    Queue rsIntegrationInQueue() {
         return new Queue(AMQPConstants.RS_INTEGRATION_IN_QUEUE, false);
     }
 
     @Bean
-    Binding rsIntegrationBinding() {
-        return bind(rsIntegrationQueue()).to(exchange()).withQueueName();
+    Binding rsIntegrationInBinding() {
+        return bind(rsIntegrationInQueue()).to(exchange()).withQueueName();
+    }
+
+    @Bean
+    Queue rsIntegrationOutQueue() {
+        return new Queue(AMQPConstants.RS_INTEGRATION_OUT_QUEUE, false);
+    }
+
+    @Bean
+    Binding rsIntegrationOutBinding() {
+        return bind(rsIntegrationOutQueue()).to(exchange()).withQueueName();
     }
 
 }

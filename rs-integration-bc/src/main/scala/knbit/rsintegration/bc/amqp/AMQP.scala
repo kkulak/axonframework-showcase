@@ -16,6 +16,7 @@ object AMQP {
   val queue_out = "rs.integration.out"
   
   def setupSubscriber(factory: ActorFactory)(channel: Channel, self: ActorRef) {
+    channel.queueDeclare(queue_in, false, false, false, null)
     channel.queueBind(queue_in, exchange, queue_in)
     val consumer = new DefaultConsumer(channel) {
       override def handleDelivery(consumerTag: String, envelope: Envelope, properties: BasicProperties, body: Array[Byte]) {
