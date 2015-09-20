@@ -53,4 +53,15 @@ public final class ReservationCommands {
         ReservationId reservationId;
 
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class FailReservation {
+
+        EventId eventId;
+        ReservationId reservationId;
+        String reason;
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationAcceptedException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationCancelledException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
@@ -84,6 +85,20 @@ public class CancellingReservationTest {
                         ReservationCommands.CancelReservation.of(eventId, reservationId)
                 )
                 .expectException(ReservationRejectedException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToCancelAlreadyFailedReservation() throws Exception {
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity),
+                        ReservationEvents.ReservationFailed.of(eventId, reservationId, "fail")
+                )
+                .when(
+                        ReservationCommands.CancelReservation.of(eventId, reservationId)
+                )
+                .expectException(ReservationExceptions.ReservationFailedException.class);
     }
 
     @Test

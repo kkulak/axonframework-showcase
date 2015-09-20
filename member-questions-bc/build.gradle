@@ -34,7 +34,6 @@ dependencies {
     // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
 
     compile 'commons-validator:commons-validator:1.4.0'
 
