@@ -23,7 +23,7 @@ import static knbit.events.bc.common.infrastructure.ObjectUtils.map;
 
 @Slf4j
 @Component
-public class MessageListener {
+public class ReservationMessageListener {
     private final CommandGateway gateway;
 
     private final static String HEADER_KEY = "type";
@@ -33,7 +33,7 @@ public class MessageListener {
     private final static String UNKNOWN = "unknown";
 
     @Autowired
-    public MessageListener(CommandGateway gateway) {
+    public ReservationMessageListener(CommandGateway gateway) {
         this.gateway = gateway;
     }
 

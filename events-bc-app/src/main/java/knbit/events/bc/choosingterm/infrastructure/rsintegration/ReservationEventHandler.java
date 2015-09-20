@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class RoomBookingEventHandler {
+public class ReservationEventHandler {
     private final MessageDispatcher dispatcher;
 
     @Autowired
-    public RoomBookingEventHandler(MessageDispatcher dispatcher) {
+    public ReservationEventHandler(MessageDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
