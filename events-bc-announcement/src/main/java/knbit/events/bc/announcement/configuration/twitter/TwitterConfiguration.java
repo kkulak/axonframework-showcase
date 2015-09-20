@@ -3,7 +3,9 @@ package knbit.events.bc.announcement.configuration.twitter;
 import knbit.events.bc.announcement.configuration.AbstractPublisherConfiguration;
 import knbit.events.bc.announcement.configuration.PublisherConfiguration;
 import knbit.events.bc.announcement.publishers.PublisherVendor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -14,6 +16,7 @@ import javax.persistence.Entity;
  */
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 public class TwitterConfiguration extends AbstractPublisherConfiguration implements PublisherConfiguration {
