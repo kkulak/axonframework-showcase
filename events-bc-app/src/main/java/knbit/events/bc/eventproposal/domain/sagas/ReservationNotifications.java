@@ -8,6 +8,7 @@ public final class ReservationNotifications {
 
     @Getter
     @Setter(AccessLevel.PRIVATE)
+    @EqualsAndHashCode
     @AllArgsConstructor(staticName = "of")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Accepted {
@@ -18,6 +19,7 @@ public final class ReservationNotifications {
 
     @Getter
     @Setter(AccessLevel.PRIVATE)
+    @EqualsAndHashCode
     @AllArgsConstructor(staticName = "of")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Rejected {
@@ -28,6 +30,7 @@ public final class ReservationNotifications {
 
     @Getter
     @Setter(AccessLevel.PRIVATE)
+    @EqualsAndHashCode
     @AllArgsConstructor(staticName = "of")
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Failed {
