@@ -1,15 +1,14 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
-mainClassName = 'knbit.annoucement.bc.Application'
+mainClassName = 'knbit.events.bc.announcement.Application'
 
 buildscript {
     repositories {
@@ -34,6 +33,11 @@ dependencies {
     // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-data-jpa:1.2.6.RELEASE') {
+        exclude group: 'org.springframework.data', module: 'spring-data-jpa'
+    }
+    compile 'org.springframework.data:spring-data-jpa:1.9.0.RELEASE'
+    compile 'hsqldb:hsqldb:1.8.0.10'
 
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
