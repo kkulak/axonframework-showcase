@@ -42,7 +42,7 @@ dependencies {
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'org.facebook4j:facebook4j-core:2.2.2'
-    compile 'net.sourceforge.htmlunit:htmlunit:2.15'
+    compile 'net.sourceforge.htmlunit:htmlunit:2.18'
 
     compile 'commons-validator:commons-validator:1.4.0'
     compile 'org.apache.commons:commons-imaging:1.0-SNAPSHOT'

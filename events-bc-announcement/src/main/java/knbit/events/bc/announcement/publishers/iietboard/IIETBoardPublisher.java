@@ -86,7 +86,7 @@ public class IIETBoardPublisher implements Publisher {
 
     private class PostScrapper {
 
-        private static final String POST_FORM_NAME = "postform";
+        private static final String POST_FORM_ID = "postform";
         private static final String SUBJECT_INPUT_NAME = "subject";
         private static final String MESSAGE_INPUT_NAME = "message";
         private static final String SUBMIT_BUTTON_NAME = "post";
@@ -103,20 +103,14 @@ public class IIETBoardPublisher implements Publisher {
         public void post(Announcement announcement) throws IOException {
 
             final HtmlPage postingPage = webClient.getPage(postUrl);
-            final HtmlForm postForm = postingPage.getFormByName(POST_FORM_NAME);
+            final HtmlForm postForm = (HtmlForm)postingPage.getElementById(POST_FORM_ID);
+
             postForm.getInputByName(SUBJECT_INPUT_NAME).setValueAttribute(announcement.title());
 
             final String messageContent = determineMessageContent(announcement);
-
             postForm.getTextAreaByName(MESSAGE_INPUT_NAME).setText(messageContent);
-            final HtmlSubmitInput sendPostButton = postForm.getInputByName(SUBMIT_BUTTON_NAME);
 
-            // http://stackoverflow.com/questions/8513134/i-cant-create-thread-on-phpbb3-forum/11713867#11713867
-            try {
-                Thread.sleep(DELAY_TIME);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            final HtmlSubmitInput sendPostButton = postForm.getInputByName(SUBMIT_BUTTON_NAME);
             sendPostButton.click();
         }
 

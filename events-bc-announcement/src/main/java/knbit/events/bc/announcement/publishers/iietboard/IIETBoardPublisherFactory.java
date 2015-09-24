@@ -34,6 +34,7 @@ public class IIETBoardPublisherFactory {
         );
 
         final WebClient webClient = new WebClient();
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
 
         return new IIETBoardPublisher(
                 publisherConfiguration, webClient
