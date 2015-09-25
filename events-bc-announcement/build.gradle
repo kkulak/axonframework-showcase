@@ -69,8 +69,15 @@ task createDockerfile(type: Dockerfile) {
     destFile = project.file('build/Dockerfile')
     from 'java:8'
     volume '/tmp'
+
+    runCommand 'openssl s_client -showcerts -connect accounts.iiet.pl:443 </dev/null 2>/dev/null|openssl x509 -outform PEM > accounts.pem'
+    runCommand 'openssl s_client -showcerts -connect forum.iiet.pl:443 -servername forum.iiet.pl </dev/null 2>/dev/null|openssl x509 -outform PEM > forum.pem'
+    runCommand 'keytool -import -alias \'accounts.iiet.pl\' -file accounts.pem -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -noprompt'
+    runCommand 'keytool -import -alias \'forum.iiet.pl\' -file forum.pem -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -noprompt'
+
     addFile 'libs/events-bc-announcement-*.jar', 'announcement-bc.jar'
     runCommand 'bash -c "touch /announcement-bc.jar"'
+
     entryPoint 'java', '-jar', '/announcement-bc.jar'
 }
 
