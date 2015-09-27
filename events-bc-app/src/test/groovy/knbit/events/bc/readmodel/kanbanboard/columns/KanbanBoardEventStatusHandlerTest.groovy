@@ -4,6 +4,7 @@ import com.github.fakemongo.Fongo
 import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.enums.EventFrequency
 import knbit.events.bc.common.domain.enums.EventType
@@ -18,6 +19,7 @@ import spock.lang.Specification
 
 import static knbit.events.bc.common.readmodel.EventStatus.BACKLOG
 import static knbit.events.bc.common.readmodel.EventStatus.CHOOSING_TERM
+import static knbit.events.bc.common.readmodel.EventStatus.ENROLLMENT
 import static knbit.events.bc.common.readmodel.EventStatus.SURVEY_INTEREST
 
 class KanbanBoardEventStatusHandlerTest extends Specification {
@@ -91,6 +93,40 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(UnderChoosingTermEventEvents.Created.of(eventId, eventDetails))
+
+        then:
+        def entry = collection.findOne([
+                eventDomainId: eventId.value()
+        ])
+        def entryWithoutMongoId = entry.toMap()
+
+        entryWithoutMongoId['eventStatus'] == CHOOSING_TERM
+        entryWithoutMongoId['reachableStatus'] == [CHOOSING_TERM]
+    }
+
+    def "should set appropriate event states on terms ready event"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        when:
+        objectUnderTest.on(TermStatusEvents.Ready.of(eventId))
+
+        then:
+        def entry = collection.findOne([
+                eventDomainId: eventId.value()
+        ])
+        def entryWithoutMongoId = entry.toMap()
+
+        entryWithoutMongoId['eventStatus'] == CHOOSING_TERM
+        entryWithoutMongoId['reachableStatus'] == [CHOOSING_TERM, ENROLLMENT]
+    }
+
+    def "should set appropriate event states on terms pending event"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        when:
+        objectUnderTest.on(TermStatusEvents.Pending.of(eventId))
 
         then:
         def entry = collection.findOne([
