@@ -1,6 +1,7 @@
 package knbit.events.bc.readmodel.kanbanboard.columns
 
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -54,6 +55,28 @@ class KanbanBoardEventStatusHandler {
                         reachableStatus: [CHOOSING_TERM],
                         eventStatus: CHOOSING_TERM
                        ]
+                ]
+        )
+    }
+
+    @EventHandler
+    def on(TermStatusEvents.Ready event) {
+        collection.update(
+                [eventDomainId: event.eventId().value()],
+                [$set: [
+                        reachableStatus: [CHOOSING_TERM, ENROLLMENT],
+                        eventStatus: CHOOSING_TERM]
+                ]
+        )
+    }
+
+    @EventHandler
+    def on(TermStatusEvents.Pending event) {
+        collection.update(
+                [eventDomainId: event.eventId().value()],
+                [$set: [
+                        reachableStatus: [CHOOSING_TERM],
+                        eventStatus: CHOOSING_TERM]
                 ]
         )
     }
