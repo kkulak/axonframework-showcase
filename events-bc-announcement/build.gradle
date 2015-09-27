@@ -38,6 +38,7 @@ dependencies {
     }
     compile 'org.springframework.data:spring-data-jpa:1.9.0.RELEASE'
     compile 'hsqldb:hsqldb:1.8.0.10'
+    compile 'org.postgresql:postgresql:9.4-1203-jdbc42'
 
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
