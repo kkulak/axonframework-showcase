@@ -3,21 +3,13 @@ package knbit.events.bc.readmodel.eventproposal
 import com.github.fakemongo.Fongo
 import com.gmongo.GMongo
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration
-import knbit.events.bc.choosingterm.domain.valuobjects.Location
-import knbit.events.bc.choosingterm.domain.valuobjects.Term
 import knbit.events.bc.common.domain.enums.EventFrequency
 import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.common.domain.valueobjects.Description
-import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.eventproposal.domain.enums.ProposalState
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents
-import knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers.TermsHandler
-import org.joda.time.DateTime
-import org.joda.time.Duration
 import spock.lang.Specification
 
 class EventProposalHandlerTest extends Specification {

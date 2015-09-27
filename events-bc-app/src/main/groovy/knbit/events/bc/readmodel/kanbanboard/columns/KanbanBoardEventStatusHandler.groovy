@@ -40,7 +40,8 @@ class KanbanBoardEventStatusHandler {
                 [eventDomainId: event.eventId().value()],
                 [$set: [
                         reachableStatus: [SURVEY_INTEREST, CHOOSING_TERM],
-                        eventStatus: SURVEY_INTEREST]
+                        eventStatus: SURVEY_INTEREST
+                       ]
                 ]
         )
     }
@@ -51,7 +52,8 @@ class KanbanBoardEventStatusHandler {
                 [eventDomainId: event.eventId().value()],
                 [$set: [
                         reachableStatus: [CHOOSING_TERM],
-                        eventStatus: CHOOSING_TERM]
+                        eventStatus: CHOOSING_TERM
+                       ]
                 ]
         )
     }
