@@ -4,6 +4,7 @@ import com.aol.cyclops.trycatch.Try;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.FailureAuthentication;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.SuccessfulAuthentication;
+import lombok.Data;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,11 @@ class AuthenticationClient {
                 .get();
     }
 
-    private ResponseEntity<TokenDto> tryAuthenticateWith(String token) {
-        return restTemplate.postForEntity(authenticationEndpoint, new TokenDto(token), TokenDto.class);
+    private ResponseEntity<AuthenticationResponseDto> tryAuthenticateWith(String token) {
+        return restTemplate.postForEntity(authenticationEndpoint, new TokenDto(token), AuthenticationResponseDto.class);
     }
 
-    private AuthenticationResult fromServerResponse(ResponseEntity<TokenDto> response, String token) {
+    private AuthenticationResult fromServerResponse(ResponseEntity<AuthenticationResponseDto> response, String token) {
         final HttpStatus statusCode = response.getStatusCode();
         return statusCode.is2xxSuccessful() ?
                 new SuccessfulAuthentication(statusCode, token) : new FailureAuthentication(statusCode);
@@ -59,4 +60,8 @@ class AuthenticationClient {
         private final String token;
     }
 
+    @Data
+    private static class AuthenticationResponseDto {
+        private final String userId;
+    }
 }
