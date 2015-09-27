@@ -5,6 +5,7 @@ import knbit.events.bc.auth.Role;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult.FailureAuthorization;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult.SuccessfulAuthorization;
+import lombok.Data;
 import lombok.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -38,12 +39,12 @@ class AuthorizationClient {
                 .get();
     }
 
-    private ResponseEntity<PermissionDto> tryAuthorizeWith(String token, Role role) {
+    private ResponseEntity<AuthorizationResponseDto> tryAuthorizeWith(String token, Role role) {
         final HttpEntity<PermissionDto> request = createRequestFor(token, role);
-        return restTemplate.exchange(authorizationEndpoint, HttpMethod.POST, request, PermissionDto.class);
+        return restTemplate.exchange(authorizationEndpoint, HttpMethod.POST, request, AuthorizationResponseDto.class);
     }
 
-    private AuthorizationResult fromServerResponse(ResponseEntity<PermissionDto> response, String token) {
+    private AuthorizationResult fromServerResponse(ResponseEntity<AuthorizationResponseDto> response, String token) {
         final HttpStatus statusCode = response.getStatusCode();
         return statusCode.is2xxSuccessful() ?
                 new SuccessfulAuthorization(statusCode, token) : new FailureAuthorization(statusCode);
@@ -66,5 +67,10 @@ class AuthorizationClient {
     @Value
     private static class PermissionDto {
         private final String permission;
+    }
+
+    @Data
+    private static class AuthorizationResponseDto {
+        private String userId;
     }
 }
