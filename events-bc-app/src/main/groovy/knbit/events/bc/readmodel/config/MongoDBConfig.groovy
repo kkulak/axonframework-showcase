@@ -30,7 +30,7 @@ class MongoDBConfig {
     @Profile(Profiles.PROD)
     @Bean
     def GMongo prodGMongo() {
-        def mongoClient = new MongoClient("localhost")
+        def mongoClient = new MongoClient("eventsbcmongo")
         new GMongo(mongoClient)
     }
 
