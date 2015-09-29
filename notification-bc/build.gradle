@@ -56,7 +56,7 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/notification-bc-*.jar', 'notification-bc.jar'
     runCommand 'bash -c "touch /notification-bc.jar"'
-    entryPoint 'java', '-jar', '/notification-bc.jar'
+    entryPoint 'java', '-Xmx512m', '-jar', '/notification-bc.jar'
     exposePort 5672
 }
 
