@@ -3,7 +3,7 @@ package knbit.events.bc.choosingterm.domain.entities;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
@@ -63,6 +63,10 @@ public class Reservation extends IdentifiedDomainEntity<ReservationId> {
     public void cancel() {
         rejectOn(ReservationStatus.ACCEPTED, ReservationStatus.REJECTED, ReservationStatus.CANCELLED, ReservationStatus.FAILED);
         apply(ReservationEvents.ReservationCancelled.of(eventId, id));
+    }
+
+    public boolean pending() {
+        return reservationStatus == ReservationStatus.PENDING;
     }
 
     private void rejectOn(ReservationStatus... statuses) {

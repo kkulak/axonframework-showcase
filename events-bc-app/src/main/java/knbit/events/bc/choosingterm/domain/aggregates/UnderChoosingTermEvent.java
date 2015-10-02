@@ -1,5 +1,6 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import knbit.events.bc.choosingterm.domain.entities.Reservation;
@@ -7,8 +8,11 @@ import knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
+import knbit.events.bc.choosingterm.domain.exceptions.TransitionToEnrollmentExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -21,6 +25,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.CREATED;
+import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.TRANSITED;
 
 
 /**
@@ -121,6 +126,20 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.cancel();
     }
 
+    public void transitToEnrollment() {
+        rejectIfThereArePendingReservations();
+        rejectOnNoTerms();
+
+        apply(
+                UnderChoosingTermEventEvents.TransitedToEnrollment.of(id, eventDetails, ImmutableList.copyOf(terms))
+        );
+    }
+
+    @EventSourcingHandler
+    private void on(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
+        state = TRANSITED;
+    }
+
     public void failReservation(ReservationId reservationId, String reason) {
         rejectOnNotExistingReservation(reservationId);
 
@@ -131,6 +150,22 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     private void rejectOnNotExistingReservation(ReservationId reservationId) {
         if (!reservations.containsKey(reservationId)) {
             throw new ReservationDoesNotExist(reservationId);
+        }
+    }
+
+    private void rejectIfThereArePendingReservations() {
+        final boolean hasAnyPendingReservation = reservations.values()
+                .stream()
+                .anyMatch(Reservation::pending);
+
+        if (hasAnyPendingReservation) {
+            throw new TransitionToEnrollmentExceptions.HasPendingReservations(id);
+        }
+    }
+
+    private void rejectOnNoTerms() {
+        if (terms.isEmpty()) {
+            throw new TransitionToEnrollmentExceptions.DoesNotHaveAnyTerms(id);
         }
     }
 }

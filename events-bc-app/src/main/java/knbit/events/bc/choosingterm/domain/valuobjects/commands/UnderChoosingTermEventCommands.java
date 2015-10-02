@@ -21,4 +21,12 @@ public final class UnderChoosingTermEventCommands {
         EventId eventId;
         EventDetails eventDetails;
     }
+
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class TransitToEnrollment {
+
+        EventId eventId;
+    }
 }
