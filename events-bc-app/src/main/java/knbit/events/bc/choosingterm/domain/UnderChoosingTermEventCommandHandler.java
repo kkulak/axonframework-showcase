@@ -2,7 +2,9 @@ package knbit.events.bc.choosingterm.domain;
 
 import knbit.events.bc.choosingterm.domain.aggregates.UnderChoosingTermEvent;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
-import knbit.events.bc.choosingterm.domain.valuobjects.commands.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +109,14 @@ public class UnderChoosingTermEventCommandHandler {
                 repository.load(command.eventId());
 
         underChoosingTermEvent.failReservation(command.reservationId(), command.reason());
+    }
+
+    @CommandHandler
+    public void handle(UnderChoosingTermEventCommands.TransitToEnrollment command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        underChoosingTermEvent.transitToEnrollment();
     }
 
 }

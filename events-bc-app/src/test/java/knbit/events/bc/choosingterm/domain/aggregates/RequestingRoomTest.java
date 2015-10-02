@@ -2,11 +2,11 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
-import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
+import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
+import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -56,6 +56,35 @@ public class RequestingRoomTest {
                                         ReservationEvents.RoomRequested.of(eventId, ReservationId.of("ignored"), eventDuration, capacity)
                                 )
                         )
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToRequestRoomIfEventTransitedToEnrollment() throws Exception {
+
+        final Term term = Term.of(
+                EventDuration.of(DateTime.now(), Duration.standardMinutes(60)),
+                Capacity.of(60),
+                Location.of("3.27A")
+        );
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+
+                        TermEvents.TermAdded.of(eventId, term),
+
+                        UnderChoosingTermEventEvents.TransitedToEnrollment.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(term)
+                        )
+                )
+                .when(
+                        ReservationCommands.BookRoom.of(eventId, DateTime.now(), Duration.standardHours(1), 100)
+                )
+                .expectException(
+                        UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment.class
                 );
     }
 }

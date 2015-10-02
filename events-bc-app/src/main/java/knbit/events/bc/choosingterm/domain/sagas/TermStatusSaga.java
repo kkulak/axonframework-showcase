@@ -68,10 +68,13 @@ public class TermStatusSaga extends AbstractAnnotatedSaga {
         sendAppropriateEvent();
     }
 
-    // TODO: end saga event!! (on transition from choosing term state to another)
+    @SagaEventHandler(associationProperty = "eventId")
+    public void handle(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
+        end();
+    }
 
     private void sendAppropriateEvent() {
-        if(termsAmount > 0 && reservationAmount == 0)
+        if (termsAmount > 0 && reservationAmount == 0)
             eventTemplate.publishEvent(TermStatusEvents.Ready.of(eventId));
         else
             eventTemplate.publishEvent(TermStatusEvents.Pending.of(eventId));

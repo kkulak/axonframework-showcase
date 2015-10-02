@@ -1,7 +1,9 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
+import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
+import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
@@ -95,5 +97,40 @@ public class AddingTermTest {
                         )
                 )
                 .expectException(CannotAddOverlappingTermException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTermIfEventAlreadyTransited() throws Exception {
+        final Term existingTerm = Term.of(
+                EventDuration.of(
+                        new DateTime(2015, 1, 1, 18, 30),
+                        Duration.standardMinutes(90)
+                ),
+                Capacity.of(666),
+                Location.of("3.21c")
+        );
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+
+                        TermEvents.TermAdded.of(eventId, existingTerm),
+
+                        UnderChoosingTermEventEvents.TransitedToEnrollment.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(existingTerm)
+                        )
+                )
+                .when(
+                        TermCommands.AddTerm.of(
+                                eventId,
+                                new DateTime(2015, 1, 1, 19, 0),
+                                Duration.standardMinutes(90),
+                                66,
+                                "4.21A"
+                        )
+                )
+                .expectException(UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment.class);
     }
 }

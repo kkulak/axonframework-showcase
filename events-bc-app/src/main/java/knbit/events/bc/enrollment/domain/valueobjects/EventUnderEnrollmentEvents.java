@@ -1,6 +1,5 @@
-package knbit.events.bc.choosingterm.domain.valuobjects.events;
+package knbit.events.bc.enrollment.domain.valueobjects;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.readmodel.EventStatus;
@@ -10,14 +9,13 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
-import java.util.Collection;
-
 /**
- * Created by novy on 22.08.15.
+ * Created by novy on 02.10.15.
  */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnderChoosingTermEventEvents {
+public final class EventUnderEnrollmentEvents {
+
 
     @Accessors(fluent = true)
     @Value(staticConstructor = "of")
@@ -28,16 +26,7 @@ public final class UnderChoosingTermEventEvents {
 
         @Override
         public EventStatus status() {
-            return EventStatus.CHOOSING_TERM;
+            return EventStatus.ENROLLMENT;
         }
-    }
-
-    @Accessors(fluent = true)
-    @Value(staticConstructor = "of")
-    public static class TransitedToEnrollment {
-
-        EventId eventId;
-        EventDetails eventDetails;
-        Collection<Term> terms;
     }
 }

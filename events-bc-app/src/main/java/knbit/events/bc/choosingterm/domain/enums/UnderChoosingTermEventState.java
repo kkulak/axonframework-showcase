@@ -5,5 +5,6 @@ package knbit.events.bc.choosingterm.domain.enums;
  */
 public enum  UnderChoosingTermEventState {
 
-    CREATED
+    CREATED,
+    TRANSITED
 }
