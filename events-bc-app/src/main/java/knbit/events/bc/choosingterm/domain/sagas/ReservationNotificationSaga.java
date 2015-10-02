@@ -62,7 +62,11 @@ public class ReservationNotificationSaga extends AbstractAnnotatedSaga {
         dispatcher.dispatch(message, AMQPConstants.NOTIFICATION_QUEUE, FAILED_RESERVATION_NOTIFICATION);
     }
 
-    // TODO: end saga event!! (on transition from choosing term state to another)
+    @SagaEventHandler(associationProperty = "eventId")
+    public void handle(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
+        end();
+    }
+
 
     @Autowired
     public void setDispatcher(MessageDispatcher dispatcher) {

@@ -8,6 +8,8 @@ import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 public class ReservationNotificationSagaTest {
     private AnnotatedSagaTestFixture fixture;
     private EventId eventId;
@@ -34,6 +36,22 @@ public class ReservationNotificationSagaTest {
                 .expectActiveSagas(1);
     }
 
-    // TODO: end saga test
+    @Test
+    public void shouldEndSagaOnTransitionToAnotherState() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        UnderChoosingTermEventEvents.Created.of(
+                                eventId, eventDetails
+                        )
+                )
+                .whenAggregate(eventId)
+                .publishes(
+                        UnderChoosingTermEventEvents.TransitedToEnrollment.of(
+                                eventId, eventDetails, Collections.emptyList()
+                        )
+                )
+                .expectActiveSagas(0);
+    }
 
 }

@@ -9,6 +9,8 @@ import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 public class TermStatusSagaTest {
     private AnnotatedSagaTestFixture fixture;
     private EventId eventId;
@@ -57,6 +59,15 @@ public class TermStatusSagaTest {
                 .expectPublishedEvents(TermStatusEvents.Pending.of(eventId));
     }
 
-    // TODO: test for closing saga
-
+    @Test
+    public void shouldEndOnEventTransition() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(UnderChoosingTermEventEvents.Created.of(eventId, null))
+                .whenAggregate(eventId)
+                .publishes(
+                        UnderChoosingTermEventEvents.TransitedToEnrollment.of(eventId, null, Collections.emptyList())
+                )
+                .expectActiveSagas(0);
+    }
 }
