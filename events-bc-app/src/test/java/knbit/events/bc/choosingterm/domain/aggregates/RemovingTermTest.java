@@ -1,7 +1,9 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
+import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
+import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
@@ -82,6 +84,35 @@ public class RemovingTermTest {
                 )
                 .expectEvents(
                         TermEvents.TermRemoved.of(eventId, termToRemove)
+                );
+    }
+
+
+    @Test
+    public void shouldNotBeAbleRemoveTermIfEventTransitedToEnrollment() throws Exception {
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+
+                        TermEvents.TermAdded.of(eventId, termToRemove),
+
+                        UnderChoosingTermEventEvents.TransitedToEnrollment.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(termToRemove)
+                        )
+                )
+                .when(
+                        TermCommands.RemoveTerm.of(
+                                eventId,
+                                termToRemove.duration().start(),
+                                termToRemove.duration().duration(),
+                                termToRemove.capacity().value(),
+                                termToRemove.location().value()
+                        )
+                )
+                .expectException(
+                        UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment.class
                 );
     }
 }

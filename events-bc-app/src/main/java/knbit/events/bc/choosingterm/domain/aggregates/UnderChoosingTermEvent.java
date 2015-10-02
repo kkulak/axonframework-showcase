@@ -9,6 +9,7 @@ import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermEx
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationDoesNotExist;
 import knbit.events.bc.choosingterm.domain.exceptions.TransitionToEnrollmentExceptions;
+import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
@@ -56,6 +57,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void addTerm(Term newTerm) {
+        rejectOnTransited();
         if (newTermOverlaps(newTerm)) {
             throw new CannotAddOverlappingTermException(id, newTerm);
         }
@@ -75,6 +77,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void removeTerm(Term termToRemove) {
+        rejectOnTransited();
         if (!terms.contains(termToRemove)) {
             throw new CannotRemoveNotExistingTermException(id, termToRemove);
         }
@@ -89,6 +92,8 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
 
     // todo: maybe propose term or somethin' like that?
     public void bookRoomFor(EventDuration eventDuration, Capacity capacity) {
+        rejectOnTransited();
+
         final ReservationId reservationId = new ReservationId();
         apply(ReservationEvents.RoomRequested.of(id, reservationId, eventDuration, capacity));
     }
@@ -127,6 +132,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void transitToEnrollment() {
+        rejectOnTransited();
         rejectIfThereArePendingReservations();
         rejectOnNoTerms();
 
@@ -166,6 +172,12 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     private void rejectOnNoTerms() {
         if (terms.isEmpty()) {
             throw new TransitionToEnrollmentExceptions.DoesNotHaveAnyTerms(id);
+        }
+    }
+
+    private void rejectOnTransited() {
+        if (state == TRANSITED) {
+            throw new UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment(id);
         }
     }
 }
