@@ -12,15 +12,11 @@ import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.domain.valueobjects.Name
-import knbit.events.bc.common.readmodel.EventStatus
-import knbit.events.bc.eventproposal.domain.enums.ProposalState
+import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import spock.lang.Specification
 
-import static knbit.events.bc.common.readmodel.EventStatus.BACKLOG
-import static knbit.events.bc.common.readmodel.EventStatus.CHOOSING_TERM
-import static knbit.events.bc.common.readmodel.EventStatus.ENROLLMENT
-import static knbit.events.bc.common.readmodel.EventStatus.SURVEY_INTEREST
+import static knbit.events.bc.common.readmodel.EventStatus.*
 
 class KanbanBoardEventStatusHandlerTest extends Specification {
     def KanbanBoardEventStatusHandler objectUnderTest
@@ -61,12 +57,12 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
         entryWithoutMongoId.remove '_id'
 
         entryWithoutMongoId == [
-                eventDomainId   : eventId.value(),
-                name            : name.value(),
-                eventType       : type,
-                eventFrequency  : freq,
-                eventStatus     : BACKLOG,
-                reachableStatus : [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
+                eventDomainId  : eventId.value(),
+                name           : name.value(),
+                eventType      : type,
+                eventFrequency : freq,
+                eventStatus    : BACKLOG,
+                reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ]
     }
 
@@ -136,6 +132,23 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
 
         entryWithoutMongoId['eventStatus'] == CHOOSING_TERM
         entryWithoutMongoId['reachableStatus'] == [CHOOSING_TERM]
+    }
+
+    def "should set appropriate event states on enrollment event created"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        when:
+        objectUnderTest.on(EventUnderEnrollmentEvents.Created.of(eventId, eventDetails))
+
+        then:
+        def entry = collection.findOne([
+                eventDomainId: eventId.value()
+        ])
+        def entryWithoutMongoId = entry.toMap()
+
+        entryWithoutMongoId['eventStatus'] == ENROLLMENT
+        entryWithoutMongoId['reachableStatus'] == [ENROLLMENT, READY]
     }
 
 }
