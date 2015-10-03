@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Created by novy on 07.05.15.
  */
 
-public class WithoutIdentifierMatcher {
+public class WithoutFieldMatcher {
 
     public static <GenericObject extends Message<ObjectToMatch>, ObjectToMatch> Matcher<Collection<GenericObject>> matchExactlyIgnoring(String fieldToIgnore, Collection<ObjectToMatch> thoseObjects) {
         return new BaseMatcher<Collection<GenericObject>>() {

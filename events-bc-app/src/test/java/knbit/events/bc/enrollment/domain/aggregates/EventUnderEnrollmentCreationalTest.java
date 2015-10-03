@@ -12,13 +12,17 @@ import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentCommands;
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentEvents;
+import knbit.events.bc.enrollment.domain.valueobjects.TermId;
+import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
+import knbit.events.bc.enrollment.domain.valueobjects.events.IdentifiedTerm;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
+
+import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
 
 /**
  * Created by novy on 02.10.15.
@@ -33,8 +37,9 @@ public class EventUnderEnrollmentCreationalTest {
     }
 
     @Test
-    public void shouldProduceUnderChoosingTermEventCreatedEventGivenCorrespondingCommand() throws Exception {
+    public void givenCreateCommandItShouldProduceCorrespondingCreatedEvent() throws Exception {
 
+        // todo builders to avoid setup
         final EventId eventId = EventId.of("eventId");
         final EventDetails eventDetails = EventDetails.of(
                 Name.of("name"),
@@ -47,6 +52,18 @@ public class EventUnderEnrollmentCreationalTest {
                 Capacity.of(15),
                 Location.of("3.21A")
         );
+        final IdentifiedTerm identifiedTerm = IdentifiedTerm.of(
+                TermId.of("dummyId"),
+                term
+        );
+
+        final ImmutableList<EventUnderEnrollmentEvents.Created> expectedEvent = ImmutableList.of(
+                EventUnderEnrollmentEvents.Created.of(
+                        eventId,
+                        eventDetails,
+                        ImmutableList.of(identifiedTerm)
+                )
+        );
 
 
         fixture
@@ -54,8 +71,8 @@ public class EventUnderEnrollmentCreationalTest {
                 .when(
                         EventUnderEnrollmentCommands.Create.of(eventId, eventDetails, ImmutableList.of(term))
                 )
-                .expectEvents(
-                        EventUnderEnrollmentEvents.Created.of(eventId, eventDetails)
+                .expectEventsMatching(
+                        matchExactlyIgnoring("terms", expectedEvent)
                 );
     }
 }

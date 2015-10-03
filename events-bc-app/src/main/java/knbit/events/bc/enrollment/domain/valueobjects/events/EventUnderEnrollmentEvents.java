@@ -1,8 +1,9 @@
-package knbit.events.bc.enrollment.domain.valueobjects;
+package knbit.events.bc.enrollment.domain.valueobjects.events;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.common.readmodel.EventStatus;
+import knbit.events.bc.common.readmodel.EventStatusAware;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -15,14 +16,20 @@ import java.util.Collection;
  */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class EventUnderEnrollmentCommands {
+public final class EventUnderEnrollmentEvents {
+
 
     @Accessors(fluent = true)
     @Value(staticConstructor = "of")
-    public static class Create {
+    public static class Created implements EventStatusAware {
 
         EventId eventId;
         EventDetails eventDetails;
-        Collection<Term> terms;
+        Collection<IdentifiedTerm> terms;
+
+        @Override
+        public EventStatus status() {
+            return EventStatus.ENROLLMENT;
+        }
     }
 }

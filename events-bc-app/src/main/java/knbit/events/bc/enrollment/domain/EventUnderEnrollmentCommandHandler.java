@@ -1,7 +1,7 @@
 package knbit.events.bc.enrollment.domain;
 
 import knbit.events.bc.enrollment.domain.aggregates.EventUnderEnrollment;
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
