@@ -23,7 +23,7 @@ public class Repositories {
     private EventBus eventBus;
 
     @Bean
-    public Repository<EventUnderEnrollment> eventProposalRepository() {
+    public Repository<EventUnderEnrollment> eventUnderEnrollmentRepository() {
         EventSourcingRepository<EventUnderEnrollment> repository = new EventSourcingRepository<>(
                 EventUnderEnrollment.class, eventStore);
 
