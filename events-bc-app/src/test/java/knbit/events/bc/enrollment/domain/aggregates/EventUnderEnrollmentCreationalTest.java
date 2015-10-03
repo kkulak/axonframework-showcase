@@ -2,6 +2,7 @@ package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
@@ -16,6 +17,7 @@ import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
+import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -39,19 +41,9 @@ public class EventUnderEnrollmentCreationalTest {
     @Test
     public void givenCreateCommandItShouldProduceCorrespondingCreatedEvent() throws Exception {
 
-        // todo builders to avoid setup
         final EventId eventId = EventId.of("eventId");
-        final EventDetails eventDetails = EventDetails.of(
-                Name.of("name"),
-                Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
-        );
-        final Term term = Term.of(
-                EventDuration.of(DateTime.now(), Duration.standardHours(1)),
-                Capacity.of(15),
-                Location.of("3.21A")
-        );
+        final EventDetails eventDetails = EventDetailsBuilder.defaultEventDetails();
+        final Term term = TermBuilder.defaultTerm();
         final IdentifiedTerm identifiedTerm = IdentifiedTerm.of(
                 TermId.of("dummyId"),
                 term
