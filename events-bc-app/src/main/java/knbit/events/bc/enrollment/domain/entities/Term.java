@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -52,11 +53,8 @@ public class Term extends IdentifiedDomainEntity<TermId> {
 
     @EventSourcingHandler
     private void on(TermModifyingEvents.LecturerAssigned event) {
-        if (!concernedWith(event)) {
-            return;
-        }
-
-        lecturer = event.lecturer();
+        eventPossiblyMatchingCurrentTerm(event)
+                .ifPresent(matchingEvent -> this.lecturer = matchingEvent.lecturer());
     }
 
     public void limitParticipants(ParticipantLimit newLimit) {
@@ -75,17 +73,18 @@ public class Term extends IdentifiedDomainEntity<TermId> {
 
     @EventSourcingHandler
     private void on(TermModifyingEvents.ParticipantLimitSet event) {
-        if (!concernedWith(event)) {
-            return;
+        eventPossiblyMatchingCurrentTerm(event)
+                .ifPresent(matchingEvent -> this.participantLimit = matchingEvent.participantLimit());
+    }
+
+    private void invokeOnlyIfConcernedWith(TermEvent event, Runnable callback) {
+        if (id.equals(event.termId())) {
+            callback.run();
         }
-
-        this.participantLimit = event.participantLimit();
     }
 
-//    private void invokeOnlyIfConcernedWith(TermEvent event, Consumer)
-
-    private boolean concernedWith(TermEvent event) {
-        return id.equals(event.termId());
+    private <T extends TermEvent> Optional<T> eventPossiblyMatchingCurrentTerm(T termEvent) {
+        return Optional.of(termEvent)
+                .filter(event -> id.equals(event.termId()));
     }
-
 }
