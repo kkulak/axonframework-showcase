@@ -4,7 +4,7 @@ import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvent
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;

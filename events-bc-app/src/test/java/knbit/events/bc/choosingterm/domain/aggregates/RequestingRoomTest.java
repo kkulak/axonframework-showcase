@@ -17,7 +17,7 @@ import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
-import static knbit.events.bc.matchers.WithoutIdentifierMatcher.matchExactlyIgnoring;
+import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
 
 /**
  * Created by novy on 19.08.15.

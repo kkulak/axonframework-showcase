@@ -12,7 +12,7 @@ import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.domain.valueobjects.Name
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentEvents
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import spock.lang.Specification
 
@@ -139,7 +139,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
         objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
 
         when:
-        objectUnderTest.on(EventUnderEnrollmentEvents.Created.of(eventId, eventDetails))
+        objectUnderTest.on(EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, []))
 
         then:
         def entry = collection.findOne([

@@ -3,7 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.columns
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
-import knbit.events.bc.enrollment.domain.valueobjects.EventUnderEnrollmentEvents
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
