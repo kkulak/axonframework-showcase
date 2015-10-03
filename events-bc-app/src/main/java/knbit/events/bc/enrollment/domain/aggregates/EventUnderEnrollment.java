@@ -4,13 +4,10 @@ import com.google.common.collect.Maps;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.entities.Term;
-import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
-import knbit.events.bc.enrollment.domain.valueobjects.TermId;
+import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.*;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.axonframework.eventsourcing.annotation.EventSourcedMember;
@@ -94,5 +91,20 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
         final Term term = terms.get(termId);
         term.limitParticipants(newLimit);
+    }
+
+    public void enrollFor(TermId termId, ParticipantId participantId) {
+        rejectOnNotExistingTerm(termId);
+
+        final Term term = terms.get(termId);
+        term.enroll(participantId);
+
+    }
+
+    public void disenrollFrom(TermId termId, ParticipantId participantId) {
+        rejectOnNotExistingTerm(termId);
+
+        final Term term = terms.get(termId);
+        term.disenroll(participantId);
     }
 }

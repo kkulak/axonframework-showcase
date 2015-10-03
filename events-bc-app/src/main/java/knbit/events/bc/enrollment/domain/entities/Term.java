@@ -8,9 +8,10 @@ import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
-import knbit.events.bc.enrollment.domain.valueobjects.Participant;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
+import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermEvent;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import lombok.AccessLevel;
@@ -35,7 +36,7 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private Lecturer lecturer;
     private ParticipantLimit participantLimit;
 
-    private Set<Participant> enrolledUsers = Sets.newHashSet();
+    private Set<ParticipantId> enrolledUsers = Sets.newHashSet();
 
     public Term(EventId eventId, TermId termId, EventDuration duration, Capacity capacity, Location location) {
         this.eventId = eventId;
@@ -75,6 +76,32 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private void on(TermModifyingEvents.ParticipantLimitSet event) {
         eventPossiblyMatchingCurrentTerm(event)
                 .ifPresent(matchingEvent -> this.participantLimit = matchingEvent.participantLimit());
+    }
+
+    public void enroll(ParticipantId participantId) {
+        // todo: checks
+
+        apply(EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, id, participantId));
+    }
+
+
+    @EventSourcingHandler
+    private void on(EnrollmentEvents.ParticipantEnrolledForTerm event) {
+        eventPossiblyMatchingCurrentTerm(event)
+                .ifPresent(matchingEvent -> this.enrolledUsers.add(matchingEvent.participantId()));
+    }
+
+
+    public void disenroll(ParticipantId participantId) {
+        // todo checks
+
+        apply(EnrollmentEvents.ParticipantDisenrolledFromTerm.of(eventId, id, participantId));
+    }
+
+    @EventSourcingHandler
+    private void on(EnrollmentEvents.ParticipantDisenrolledFromTerm event) {
+        eventPossiblyMatchingCurrentTerm(event)
+                .ifPresent(matchingEvent -> this.enrolledUsers.remove(matchingEvent.participantId()));
     }
 
     private void invokeOnlyIfConcernedWith(TermEvent event, Runnable callback) {

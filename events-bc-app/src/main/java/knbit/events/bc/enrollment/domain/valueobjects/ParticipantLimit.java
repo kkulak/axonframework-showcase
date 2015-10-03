@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class ParticipantLimit {
 
-    int value;
+    private int value;
 
     public static ParticipantLimit of(int value) {
         return new ParticipantLimit(value);

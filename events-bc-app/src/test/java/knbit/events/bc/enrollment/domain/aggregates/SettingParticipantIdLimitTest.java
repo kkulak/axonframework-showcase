@@ -22,7 +22,7 @@ import org.junit.Test;
 /**
  * Created by novy on 03.10.15.
  */
-public class SettingParticipantLimitTest {
+public class SettingParticipantIdLimitTest {
 
     private FixtureConfiguration<EventUnderEnrollment> fixture;
     private EventId eventId;
