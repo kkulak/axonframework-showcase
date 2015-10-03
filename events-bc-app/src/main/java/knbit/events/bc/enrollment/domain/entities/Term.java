@@ -11,8 +11,10 @@ import knbit.events.bc.enrollment.domain.valueobjects.Participant;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermEvent;
+import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Set;
 
@@ -33,9 +35,30 @@ public class Term extends IdentifiedDomainEntity<TermId> {
 
     private Set<Participant> enrolledUsers = Sets.newHashSet();
 
+    public Term(EventId eventId, TermId termId, EventDuration duration, Capacity capacity, Location location) {
+        this.eventId = eventId;
+        this.id = termId;
+        this.duration = duration;
+        this.capacity = capacity;
+        this.location = location;
+        this.participantLimit = ParticipantLimit.of(capacity);
+    }
+
     private boolean concernedWith(TermEvent event) {
         return id.equals(event.termId());
     }
 
 
+    public void assignLecturer(Lecturer lecturer) {
+        apply(TermModifyingEvents.LecturerAssigned.of(eventId, id, lecturer));
+    }
+
+    @EventSourcingHandler
+    private void on(TermModifyingEvents.LecturerAssigned event) {
+        if (!concernedWith(event)) {
+            return;
+        }
+
+        lecturer = event.lecturer();
+    }
 }

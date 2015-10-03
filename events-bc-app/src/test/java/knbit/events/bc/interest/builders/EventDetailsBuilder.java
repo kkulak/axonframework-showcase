@@ -28,4 +28,8 @@ public class EventDetailsBuilder {
         return EventDetails.of(name, description, type, frequency);
     }
 
+    public static EventDetails defaultEventDetails() {
+        return EventDetailsBuilder.instance().build();
+    }
+
 }
