@@ -6,7 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.Participant;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;

@@ -1,4 +1,4 @@
-package knbit.events.bc.enrollment.domain;
+package knbit.events.bc.enrollment.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;

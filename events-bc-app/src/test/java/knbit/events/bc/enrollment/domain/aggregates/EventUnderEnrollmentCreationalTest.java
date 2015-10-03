@@ -15,7 +15,7 @@ import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.events.IdentifiedTerm;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;

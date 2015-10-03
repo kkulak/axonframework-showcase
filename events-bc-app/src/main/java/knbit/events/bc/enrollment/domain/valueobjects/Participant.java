@@ -13,11 +13,12 @@ import lombok.experimental.Accessors;
 public class Participant {
 
     ParticipantId participantId;
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class ParticipantId {
+
+        String value;
+    }
 }
 
-@Accessors(fluent = true)
-@Value(staticConstructor = "of")
-class ParticipantId {
-
-    String value;
-}
