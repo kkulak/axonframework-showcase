@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
@@ -59,10 +60,16 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     }
 
     public void limitParticipants(ParticipantLimit newLimit) {
-//       todo check for too low limit (taking participants into account)
         checkIfLimitIsNotTooHigh(newLimit);
+        checkIfLimitIsNotTooLowForCurrentParticipants(newLimit);
 
         apply(TermModifyingEvents.ParticipantLimitSet.of(eventId, id, newLimit));
+    }
+
+    private void checkIfLimitIsNotTooLowForCurrentParticipants(ParticipantLimit newLimit) {
+        if (newLimit.value() < enrolledUsers.size()) {
+            throw new EventUnderEnrollmentExceptions.ParticipantLimitTooLow(id, newLimit.value());
+        }
     }
 
     private void checkIfLimitIsNotTooHigh(ParticipantLimit newLimit) {
@@ -71,7 +78,6 @@ public class Term extends IdentifiedDomainEntity<TermId> {
         }
     }
 
-
     @EventSourcingHandler
     private void on(TermModifyingEvents.ParticipantLimitSet event) {
         eventPossiblyMatchingCurrentTerm(event)
@@ -79,11 +85,22 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     }
 
     public void enroll(ParticipantId participantId) {
-        // todo: checks
+        rejectIfParticipantLimitExceeded();
 
         apply(EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, id, participantId));
     }
 
+    private void rejectIfParticipantLimitExceeded() {
+        if (enrolledUsers.size() == participantLimit.value()) {
+            throw new EnrollmentExceptions.EnrollmentLimitExceeded(participantLimit, id);
+        }
+    }
+
+    private void rejectIfNotEnrolled(ParticipantId participantId) {
+        if (!enrolled(participantId)) {
+            throw new EnrollmentExceptions.NotYetEnrolled(participantId, id);
+        }
+    }
 
     @EventSourcingHandler
     private void on(EnrollmentEvents.ParticipantEnrolledForTerm event) {
@@ -93,7 +110,7 @@ public class Term extends IdentifiedDomainEntity<TermId> {
 
 
     public void disenroll(ParticipantId participantId) {
-        // todo checks
+        rejectIfNotEnrolled(participantId);
 
         apply(EnrollmentEvents.ParticipantDisenrolledFromTerm.of(eventId, id, participantId));
     }
@@ -102,6 +119,10 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private void on(EnrollmentEvents.ParticipantDisenrolledFromTerm event) {
         eventPossiblyMatchingCurrentTerm(event)
                 .ifPresent(matchingEvent -> this.enrolledUsers.remove(matchingEvent.participantId()));
+    }
+
+    public boolean enrolled(ParticipantId participantId) {
+        return enrolledUsers.contains(participantId);
     }
 
     private void invokeOnlyIfConcernedWith(TermEvent event, Runnable callback) {

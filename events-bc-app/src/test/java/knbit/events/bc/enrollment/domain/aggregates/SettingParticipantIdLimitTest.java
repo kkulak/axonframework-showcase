@@ -8,11 +8,13 @@ import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
@@ -51,12 +53,42 @@ public class SettingParticipantIdLimitTest {
                 );
     }
 
-    //    todo: test for setting to low limit
-//    @Test
-//    public void shouldNotBeAbleToSetLimit() throws Exception {
-//
-//    }
+    @Test
+    public void shouldNotBeAbleToSetLimitLowerThanCurrentParticipantCount() throws Exception {
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(identifiedTerm)
+                        ),
 
+                        TermModifyingEvents.ParticipantLimitSet.of(
+                                eventId,
+                                identifiedTerm.termId(),
+                                ParticipantLimit.of(2)
+                        ),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(
+                                eventId,
+                                identifiedTerm.termId(),
+                                ParticipantId.of("participant1")
+                        ),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(
+                                eventId,
+                                identifiedTerm.termId(),
+                                ParticipantId.of("participant2")
+                        )
+                )
+                .when(
+                        TermModifyingCommands.SetParticipantLimit.of(eventId, identifiedTerm.termId(), 1)
+                )
+                .expectException(
+                        EventUnderEnrollmentExceptions.ParticipantLimitTooLow.class
+                );
+
+    }
 
     @Test
     public void shouldNotBeAbleToSetLimitHigherThanRoomCapacity() throws Exception {

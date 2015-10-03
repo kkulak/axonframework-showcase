@@ -5,6 +5,7 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.entities.Term;
+import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.*;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
@@ -95,10 +96,21 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
     public void enrollFor(TermId termId, ParticipantId participantId) {
         rejectOnNotExistingTerm(termId);
+        rejectIfAlreadyEnrolledForAnyTerm(participantId);
 
         final Term term = terms.get(termId);
         term.enroll(participantId);
 
+    }
+
+    private void rejectIfAlreadyEnrolledForAnyTerm(ParticipantId participantId) {
+        final boolean participantEnrolledForAnyTerm = terms.values()
+                .stream()
+                .anyMatch(term -> term.enrolled(participantId));
+
+        if (participantEnrolledForAnyTerm) {
+            throw new EnrollmentExceptions.AlreadyEnrolledForEvent(participantId, id);
+        }
     }
 
     public void disenrollFrom(TermId termId, ParticipantId participantId) {

@@ -6,13 +6,16 @@ import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
+import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -58,6 +61,74 @@ public class EnrollingTest {
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToEnrollTwiceForTheSameTerm() throws Exception {
+        final ParticipantId participantId = ParticipantId.of("participantId");
+
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(firstTerm, secondTerm)
+                        ),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                )
+                .when(
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), participantId)
+                )
+                .expectException(
+                        EnrollmentExceptions.AlreadyEnrolledForEvent.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToEnrollIfAlreadyEnrolledForDifferentTerm() throws Exception {
+        final ParticipantId participantId = ParticipantId.of("participantId");
+
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(firstTerm, secondTerm)
+                        ),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                )
+                .when(
+                        EnrollmentCommands.EnrollFor.of(eventId, secondTerm.termId(), participantId)
+                )
+                .expectException(
+                        EnrollmentExceptions.AlreadyEnrolledForEvent.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToEnrollIfLimitExceeded() throws Exception {
+        final ParticipantId participantId = ParticipantId.of("participant1");
+
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(firstTerm, secondTerm)
+                        ),
+
+                        TermModifyingEvents.ParticipantLimitSet.of(eventId, firstTerm.termId(), ParticipantLimit.of(1)),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                )
+                .when(
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), ParticipantId.of("participant2"))
+                )
+                .expectException(
+                        EnrollmentExceptions.EnrollmentLimitExceeded.class
                 );
     }
 

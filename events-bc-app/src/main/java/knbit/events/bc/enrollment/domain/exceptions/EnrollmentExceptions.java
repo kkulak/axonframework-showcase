@@ -9,18 +9,10 @@ import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 /**
  * Created by novy on 03.10.15.
  */
-public interface EnrollingExceptions {
-
-    class AlreadyEnrolledForTerm extends DomainException {
-        private static final String MESSAGE_PATTERN = "Participant %s already enrolled for term %s";
-
-        public AlreadyEnrolledForTerm(ParticipantId participantId, TermId termId) {
-            super(String.format(MESSAGE_PATTERN, participantId, termId));
-        }
-    }
+public interface EnrollmentExceptions {
 
     class AlreadyEnrolledForEvent extends DomainException {
-        private static final String MESSAGE_PATTERN = "Participant %s has already chosen another term (eventId = %s)";
+        private static final String MESSAGE_PATTERN = "Participant %s is already enrolled for this event (%s)";
 
         public AlreadyEnrolledForEvent(ParticipantId participantId, EventId eventId) {
             super(String.format(MESSAGE_PATTERN, participantId, eventId));

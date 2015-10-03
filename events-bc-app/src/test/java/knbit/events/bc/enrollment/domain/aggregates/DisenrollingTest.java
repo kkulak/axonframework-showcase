@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
@@ -44,7 +45,7 @@ public class DisenrollingTest {
     }
 
     @Test
-    public void shouldNotBeAbleToEnrollForNotExistingTerm() throws Exception {
+    public void shouldNotBeAbleToDisenrollForNotExistingTerm() throws Exception {
         fixture
                 .given(
                         EventUnderEnrollmentEvents.Created.of(
@@ -62,6 +63,28 @@ public class DisenrollingTest {
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToDisenrollIfNotEnrolledForGivenTerm() throws Exception {
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(firstTerm, secondTerm)
+                        )
+                )
+                .when(
+                        EnrollmentCommands.DissenrollFrom.of(
+                                eventId,
+                                firstTerm.termId(),
+                                ParticipantId.of("participantId")
+                        )
+                )
+                .expectException(
+                        EnrollmentExceptions.NotYetEnrolled.class
                 );
     }
 
