@@ -23,4 +23,14 @@ public final class TermModifyingCommands {
         String firstName;
         String lastName;
     }
+
+
+    @Value(staticConstructor = "of")
+    @Accessors(fluent = true)
+    public static class SetParticipantLimit {
+
+        EventId eventId;
+        TermId termId;
+        int participantLimit;
+    }
 }

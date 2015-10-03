@@ -2,6 +2,7 @@ package knbit.events.bc.enrollment.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,15 @@ public final class TermModifyingEvents {
         EventId eventId;
         TermId termId;
         Lecturer lecturer;
+    }
+
+
+    @Value(staticConstructor = "of")
+    @Accessors(fluent = true)
+    public static class ParticipantLimitSet implements TermEvent {
+
+        EventId eventId;
+        TermId termId;
+        ParticipantLimit participantLimit;
     }
 }

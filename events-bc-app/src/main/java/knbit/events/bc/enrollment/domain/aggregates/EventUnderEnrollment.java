@@ -7,6 +7,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.entities.Term;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.IdentifiedTerm;
@@ -79,12 +80,19 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
         final Term term = terms.get(termId);
         term.assignLecturer(lecturer);
-
     }
+
 
     private void rejectOnNotExistingTerm(TermId termId) {
         if (!terms.containsKey(termId)) {
             throw new EventUnderEnrollmentExceptions.NoSuchTermException(id, termId);
         }
+    }
+
+    public void limitParticipants(TermId termId, ParticipantLimit newLimit) {
+        rejectOnNotExistingTerm(termId);
+
+        final Term term = terms.get(termId);
+        term.limitParticipants(newLimit);
     }
 }

@@ -2,6 +2,7 @@ package knbit.events.bc.enrollment.domain;
 
 import knbit.events.bc.enrollment.domain.aggregates.EventUnderEnrollment;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
 import org.axonframework.commandhandling.annotation.CommandHandler;
@@ -40,6 +41,15 @@ public class EventUnderEnrollmentCommandHandler {
 
         eventUnderEnrollment.assignLecturer(
                 command.termId(), Lecturer.of(command.firstName(), command.lastName())
+        );
+    }
+
+    @CommandHandler
+    public void handle(TermModifyingCommands.SetParticipantLimit command) {
+        final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
+
+        eventUnderEnrollment.limitParticipants(
+                command.termId(), ParticipantLimit.of(command.participantLimit())
         );
     }
 }

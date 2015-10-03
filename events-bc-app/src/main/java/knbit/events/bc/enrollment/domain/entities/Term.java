@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.Participant;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
@@ -44,10 +45,6 @@ public class Term extends IdentifiedDomainEntity<TermId> {
         this.participantLimit = ParticipantLimit.of(capacity);
     }
 
-    private boolean concernedWith(TermEvent event) {
-        return id.equals(event.termId());
-    }
-
 
     public void assignLecturer(Lecturer lecturer) {
         apply(TermModifyingEvents.LecturerAssigned.of(eventId, id, lecturer));
@@ -61,4 +58,34 @@ public class Term extends IdentifiedDomainEntity<TermId> {
 
         lecturer = event.lecturer();
     }
+
+    public void limitParticipants(ParticipantLimit newLimit) {
+//       todo check for too low limit (taking participants into account)
+        checkIfLimitIsNotTooHigh(newLimit);
+
+        apply(TermModifyingEvents.ParticipantLimitSet.of(eventId, id, newLimit));
+    }
+
+    private void checkIfLimitIsNotTooHigh(ParticipantLimit newLimit) {
+        if (!newLimit.fitsCapacity(capacity)) {
+            throw new EventUnderEnrollmentExceptions.ParticipantLimitTooHigh(id, newLimit.value());
+        }
+    }
+
+
+    @EventSourcingHandler
+    private void on(TermModifyingEvents.ParticipantLimitSet event) {
+        if (!concernedWith(event)) {
+            return;
+        }
+
+        this.participantLimit = event.participantLimit();
+    }
+
+//    private void invokeOnlyIfConcernedWith(TermEvent event, Consumer)
+
+    private boolean concernedWith(TermEvent event) {
+        return id.equals(event.termId());
+    }
+
 }

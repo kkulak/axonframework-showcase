@@ -17,4 +17,22 @@ public interface EventUnderEnrollmentExceptions {
             super(String.format(MESSAGE_PATTERN, termId, eventId));
         }
     }
+
+    class ParticipantLimitTooLow extends DomainException {
+
+        private static final String MESSAGE_PATTERN = "Participant limit (%d) for term %s too low.";
+
+        public ParticipantLimitTooLow(TermId termId, int participantLimit) {
+            super(String.format(MESSAGE_PATTERN, participantLimit, termId));
+        }
+    }
+
+    class ParticipantLimitTooHigh extends DomainException {
+
+        private static final String MESSAGE_PATTERN = "Participant limit (%d) for term %s too high.";
+
+        public ParticipantLimitTooHigh(TermId termId, int participantLimit) {
+            super(String.format(MESSAGE_PATTERN, participantLimit, termId));
+        }
+    }
 }
