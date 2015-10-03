@@ -2,7 +2,7 @@ package knbit.events.bc.enrollment.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -29,6 +29,6 @@ public interface TermModifyingEvents {
 
         EventId eventId;
         TermId termId;
-        ParticipantLimit participantLimit;
+        ParticipantsLimit participantsLimit;
     }
 }

@@ -15,19 +15,19 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 @ToString
 @Accessors(fluent = true)
-public class ParticipantLimit {
+public class ParticipantsLimit {
 
     private int value;
 
-    public static ParticipantLimit of(int value) {
-        return new ParticipantLimit(value);
+    public static ParticipantsLimit of(int value) {
+        return new ParticipantsLimit(value);
     }
 
-    public static ParticipantLimit of(Capacity capacity) {
-        return new ParticipantLimit(capacity.value());
+    public static ParticipantsLimit of(Capacity capacity) {
+        return new ParticipantsLimit(capacity.value());
     }
 
-    private ParticipantLimit(int value) {
+    private ParticipantsLimit(int value) {
         Preconditions.checkArgument(value > 0, "Limit must be grater than 0");
         this.value = value;
     }

@@ -9,8 +9,8 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
@@ -57,7 +57,7 @@ public class EnrollingTest {
                         )
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, TermId.of("fakeId"), ParticipantId.of("id"))
+                        EnrollmentCommands.EnrollFor.of(eventId, TermId.of("fakeId"), MemberId.of("id"))
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
@@ -66,7 +66,7 @@ public class EnrollingTest {
 
     @Test
     public void shouldNotBeAbleToEnrollTwiceForTheSameTerm() throws Exception {
-        final ParticipantId participantId = ParticipantId.of("participantId");
+        final MemberId memberId = MemberId.of("participantId");
 
         fixture
                 .given(
@@ -76,10 +76,10 @@ public class EnrollingTest {
                                 ImmutableList.of(firstTerm, secondTerm)
                         ),
 
-                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId)
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), memberId)
                 )
                 .expectException(
                         EnrollmentExceptions.AlreadyEnrolledForEvent.class
@@ -88,7 +88,7 @@ public class EnrollingTest {
 
     @Test
     public void shouldNotBeAbleToEnrollIfAlreadyEnrolledForDifferentTerm() throws Exception {
-        final ParticipantId participantId = ParticipantId.of("participantId");
+        final MemberId memberId = MemberId.of("participantId");
 
         fixture
                 .given(
@@ -98,10 +98,10 @@ public class EnrollingTest {
                                 ImmutableList.of(firstTerm, secondTerm)
                         ),
 
-                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId)
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, secondTerm.termId(), participantId)
+                        EnrollmentCommands.EnrollFor.of(eventId, secondTerm.termId(), memberId)
                 )
                 .expectException(
                         EnrollmentExceptions.AlreadyEnrolledForEvent.class
@@ -110,7 +110,7 @@ public class EnrollingTest {
 
     @Test
     public void shouldNotBeAbleToEnrollIfLimitExceeded() throws Exception {
-        final ParticipantId participantId = ParticipantId.of("participant1");
+        final MemberId memberId = MemberId.of("participant1");
 
         fixture
                 .given(
@@ -120,12 +120,12 @@ public class EnrollingTest {
                                 ImmutableList.of(firstTerm, secondTerm)
                         ),
 
-                        TermModifyingEvents.ParticipantLimitSet.of(eventId, firstTerm.termId(), ParticipantLimit.of(1)),
+                        TermModifyingEvents.ParticipantLimitSet.of(eventId, firstTerm.termId(), ParticipantsLimit.of(1)),
 
-                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId)
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), ParticipantId.of("participant2"))
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), MemberId.of("participant2"))
                 )
                 .expectException(
                         EnrollmentExceptions.EnrollmentLimitExceeded.class
@@ -135,7 +135,7 @@ public class EnrollingTest {
     @Test
     public void shouldProduceProperEventOnSuccessfulEnrollment() throws Exception {
 
-        final ParticipantId participantId = ParticipantId.of("participantId");
+        final MemberId memberId = MemberId.of("participantId");
 
         fixture
                 .given(
@@ -146,10 +146,10 @@ public class EnrollingTest {
                         )
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), memberId)
                 )
                 .expectEvents(
-                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId)
                 );
     }
 }

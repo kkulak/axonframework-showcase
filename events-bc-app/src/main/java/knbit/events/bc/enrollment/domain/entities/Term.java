@@ -9,8 +9,8 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermEvent;
@@ -35,9 +35,9 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private Location location;
 
     private Lecturer lecturer;
-    private ParticipantLimit participantLimit;
+    private ParticipantsLimit participantsLimit;
 
-    private Set<ParticipantId> enrolledUsers = Sets.newHashSet();
+    private Set<MemberId> enrolledUsers = Sets.newHashSet();
 
     public Term(EventId eventId, TermId termId, EventDuration duration, Capacity capacity, Location location) {
         this.eventId = eventId;
@@ -45,7 +45,7 @@ public class Term extends IdentifiedDomainEntity<TermId> {
         this.duration = duration;
         this.capacity = capacity;
         this.location = location;
-        this.participantLimit = ParticipantLimit.of(capacity);
+        this.participantsLimit = ParticipantsLimit.of(capacity);
     }
 
 
@@ -59,20 +59,20 @@ public class Term extends IdentifiedDomainEntity<TermId> {
                 .ifPresent(matchingEvent -> this.lecturer = matchingEvent.lecturer());
     }
 
-    public void limitParticipants(ParticipantLimit newLimit) {
+    public void limitParticipants(ParticipantsLimit newLimit) {
         checkIfLimitIsNotTooHigh(newLimit);
         checkIfLimitIsNotTooLowForCurrentParticipants(newLimit);
 
         apply(TermModifyingEvents.ParticipantLimitSet.of(eventId, id, newLimit));
     }
 
-    private void checkIfLimitIsNotTooLowForCurrentParticipants(ParticipantLimit newLimit) {
+    private void checkIfLimitIsNotTooLowForCurrentParticipants(ParticipantsLimit newLimit) {
         if (newLimit.value() < enrolledUsers.size()) {
             throw new EventUnderEnrollmentExceptions.ParticipantLimitTooLow(id, newLimit.value());
         }
     }
 
-    private void checkIfLimitIsNotTooHigh(ParticipantLimit newLimit) {
+    private void checkIfLimitIsNotTooHigh(ParticipantsLimit newLimit) {
         if (!newLimit.fitsCapacity(capacity)) {
             throw new EventUnderEnrollmentExceptions.ParticipantLimitTooHigh(id, newLimit.value());
         }
@@ -81,48 +81,48 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     @EventSourcingHandler
     private void on(TermModifyingEvents.ParticipantLimitSet event) {
         eventPossiblyMatchingCurrentTerm(event)
-                .ifPresent(matchingEvent -> this.participantLimit = matchingEvent.participantLimit());
+                .ifPresent(matchingEvent -> this.participantsLimit = matchingEvent.participantsLimit());
     }
 
-    public void enroll(ParticipantId participantId) {
+    public void enroll(MemberId memberId) {
         rejectIfParticipantLimitExceeded();
 
-        apply(EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, id, participantId));
+        apply(EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, id, memberId));
     }
 
     private void rejectIfParticipantLimitExceeded() {
-        if (enrolledUsers.size() == participantLimit.value()) {
-            throw new EnrollmentExceptions.EnrollmentLimitExceeded(participantLimit, id);
+        if (enrolledUsers.size() == participantsLimit.value()) {
+            throw new EnrollmentExceptions.EnrollmentLimitExceeded(participantsLimit, id);
         }
     }
 
-    private void rejectIfNotEnrolled(ParticipantId participantId) {
-        if (!enrolled(participantId)) {
-            throw new EnrollmentExceptions.NotYetEnrolled(participantId, id);
+    private void rejectIfNotEnrolled(MemberId memberId) {
+        if (!enrolled(memberId)) {
+            throw new EnrollmentExceptions.NotYetEnrolled(memberId, id);
         }
     }
 
     @EventSourcingHandler
     private void on(EnrollmentEvents.ParticipantEnrolledForTerm event) {
         eventPossiblyMatchingCurrentTerm(event)
-                .ifPresent(matchingEvent -> this.enrolledUsers.add(matchingEvent.participantId()));
+                .ifPresent(matchingEvent -> this.enrolledUsers.add(matchingEvent.memberId()));
     }
 
 
-    public void disenroll(ParticipantId participantId) {
-        rejectIfNotEnrolled(participantId);
+    public void disenroll(MemberId memberId) {
+        rejectIfNotEnrolled(memberId);
 
-        apply(EnrollmentEvents.ParticipantDisenrolledFromTerm.of(eventId, id, participantId));
+        apply(EnrollmentEvents.ParticipantDisenrolledFromTerm.of(eventId, id, memberId));
     }
 
     @EventSourcingHandler
     private void on(EnrollmentEvents.ParticipantDisenrolledFromTerm event) {
         eventPossiblyMatchingCurrentTerm(event)
-                .ifPresent(matchingEvent -> this.enrolledUsers.remove(matchingEvent.participantId()));
+                .ifPresent(matchingEvent -> this.enrolledUsers.remove(matchingEvent.memberId()));
     }
 
-    public boolean enrolled(ParticipantId participantId) {
-        return enrolledUsers.contains(participantId);
+    public boolean enrolled(MemberId memberId) {
+        return enrolledUsers.contains(memberId);
     }
 
     private void invokeOnlyIfConcernedWith(TermEvent event, Runnable callback) {

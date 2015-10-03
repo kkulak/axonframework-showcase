@@ -2,7 +2,7 @@ package knbit.events.bc.enrollment.domain;
 
 import knbit.events.bc.enrollment.domain.aggregates.EventUnderEnrollment;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
@@ -50,7 +50,7 @@ public class EventUnderEnrollmentCommandHandler {
         final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
 
         eventUnderEnrollment.limitParticipants(
-                command.termId(), ParticipantLimit.of(command.participantLimit())
+                command.termId(), ParticipantsLimit.of(command.participantLimit())
         );
     }
 
@@ -58,13 +58,13 @@ public class EventUnderEnrollmentCommandHandler {
     public void handle(EnrollmentCommands.EnrollFor command) {
         final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
 
-        eventUnderEnrollment.enrollFor(command.termId(), command.participantId());
+        eventUnderEnrollment.enrollFor(command.termId(), command.memberId());
     }
 
     @CommandHandler
     public void handle(EnrollmentCommands.DissenrollFrom command) {
         final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
 
-        eventUnderEnrollment.disenrollFrom(command.termId(), command.participantId());
+        eventUnderEnrollment.disenrollFrom(command.termId(), command.memberId());
     }
 }

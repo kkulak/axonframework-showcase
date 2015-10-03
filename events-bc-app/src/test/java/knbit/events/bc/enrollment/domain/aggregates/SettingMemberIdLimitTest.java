@@ -9,8 +9,8 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
@@ -24,7 +24,7 @@ import org.junit.Test;
 /**
  * Created by novy on 03.10.15.
  */
-public class SettingParticipantIdLimitTest {
+public class SettingMemberIdLimitTest {
 
     private FixtureConfiguration<EventUnderEnrollment> fixture;
     private EventId eventId;
@@ -66,19 +66,19 @@ public class SettingParticipantIdLimitTest {
                         TermModifyingEvents.ParticipantLimitSet.of(
                                 eventId,
                                 identifiedTerm.termId(),
-                                ParticipantLimit.of(2)
+                                ParticipantsLimit.of(2)
                         ),
 
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(
                                 eventId,
                                 identifiedTerm.termId(),
-                                ParticipantId.of("participant1")
+                                MemberId.of("participant1")
                         ),
 
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(
                                 eventId,
                                 identifiedTerm.termId(),
-                                ParticipantId.of("participant2")
+                                MemberId.of("participant2")
                         )
                 )
                 .when(
@@ -128,7 +128,7 @@ public class SettingParticipantIdLimitTest {
                         TermModifyingEvents.ParticipantLimitSet.of(
                                 eventId,
                                 identifiedTerm.termId(),
-                                ParticipantLimit.of(30))
+                                ParticipantsLimit.of(30))
                 );
     }
 }

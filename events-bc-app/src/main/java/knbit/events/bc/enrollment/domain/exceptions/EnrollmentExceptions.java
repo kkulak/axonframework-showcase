@@ -2,8 +2,8 @@ package knbit.events.bc.enrollment.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 
 /**
@@ -12,25 +12,25 @@ import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 public interface EnrollmentExceptions {
 
     class AlreadyEnrolledForEvent extends DomainException {
-        private static final String MESSAGE_PATTERN = "Participant %s is already enrolled for this event (%s)";
+        private static final String MESSAGE_PATTERN = "Member %s is already enrolled for this event (%s)";
 
-        public AlreadyEnrolledForEvent(ParticipantId participantId, EventId eventId) {
-            super(String.format(MESSAGE_PATTERN, participantId, eventId));
+        public AlreadyEnrolledForEvent(MemberId memberId, EventId eventId) {
+            super(String.format(MESSAGE_PATTERN, memberId, eventId));
         }
     }
 
     class NotYetEnrolled extends DomainException {
-        private static final String MESSAGE_PATTERN = "Participant %s not yet enrolled for term %s";
+        private static final String MESSAGE_PATTERN = "Member %s not yet enrolled for term %s";
 
-        public NotYetEnrolled(ParticipantId participantId, TermId termId) {
-            super(String.format(MESSAGE_PATTERN, participantId, termId));
+        public NotYetEnrolled(MemberId memberId, TermId termId) {
+            super(String.format(MESSAGE_PATTERN, memberId, termId));
         }
     }
 
     class EnrollmentLimitExceeded extends DomainException {
         private static final String MESSAGE_PATTERN = "Could not enroll, limit exceeded (%s) for term %s";
 
-        public EnrollmentLimitExceeded(ParticipantLimit limit, TermId termId) {
+        public EnrollmentLimitExceeded(ParticipantsLimit limit, TermId termId) {
             super(String.format(MESSAGE_PATTERN, limit, termId));
         }
     }

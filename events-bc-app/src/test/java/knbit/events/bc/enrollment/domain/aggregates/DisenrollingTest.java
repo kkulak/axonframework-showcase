@@ -9,7 +9,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
@@ -58,7 +58,7 @@ public class DisenrollingTest {
                         EnrollmentCommands.DissenrollFrom.of(
                                 eventId,
                                 TermId.of("fakeId"),
-                                ParticipantId.of("participantId")
+                                MemberId.of("participantId")
                         )
                 )
                 .expectException(
@@ -80,7 +80,7 @@ public class DisenrollingTest {
                         EnrollmentCommands.DissenrollFrom.of(
                                 eventId,
                                 firstTerm.termId(),
-                                ParticipantId.of("participantId")
+                                MemberId.of("participantId")
                         )
                 )
                 .expectException(
@@ -91,7 +91,7 @@ public class DisenrollingTest {
     @Test
     public void shouldProduceProperEventOnSuccessfulDisenrollment() throws Exception {
 
-        final ParticipantId participantId = ParticipantId.of("participantId");
+        final MemberId memberId = MemberId.of("participantId");
 
         fixture
                 .given(
@@ -104,17 +104,17 @@ public class DisenrollingTest {
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(
                                 eventId,
                                 firstTerm.termId(),
-                                participantId
+                                memberId
                         )
                 )
                 .when(
-                        EnrollmentCommands.DissenrollFrom.of(eventId, firstTerm.termId(), participantId)
+                        EnrollmentCommands.DissenrollFrom.of(eventId, firstTerm.termId(), memberId)
                 )
                 .expectEvents(
                         EnrollmentEvents.ParticipantDisenrolledFromTerm.of(
                                 eventId,
                                 firstTerm.termId(),
-                                participantId
+                                memberId
                         )
                 );
     }

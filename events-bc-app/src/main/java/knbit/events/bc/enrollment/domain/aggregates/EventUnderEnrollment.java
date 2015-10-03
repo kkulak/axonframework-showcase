@@ -87,36 +87,36 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
         }
     }
 
-    public void limitParticipants(TermId termId, ParticipantLimit newLimit) {
+    public void limitParticipants(TermId termId, ParticipantsLimit newLimit) {
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
         term.limitParticipants(newLimit);
     }
 
-    public void enrollFor(TermId termId, ParticipantId participantId) {
+    public void enrollFor(TermId termId, MemberId memberId) {
         rejectOnNotExistingTerm(termId);
-        rejectIfAlreadyEnrolledForAnyTerm(participantId);
+        rejectIfAlreadyEnrolledForAnyTerm(memberId);
 
         final Term term = terms.get(termId);
-        term.enroll(participantId);
+        term.enroll(memberId);
 
     }
 
-    private void rejectIfAlreadyEnrolledForAnyTerm(ParticipantId participantId) {
+    private void rejectIfAlreadyEnrolledForAnyTerm(MemberId memberId) {
         final boolean participantEnrolledForAnyTerm = terms.values()
                 .stream()
-                .anyMatch(term -> term.enrolled(participantId));
+                .anyMatch(term -> term.enrolled(memberId));
 
         if (participantEnrolledForAnyTerm) {
-            throw new EnrollmentExceptions.AlreadyEnrolledForEvent(participantId, id);
+            throw new EnrollmentExceptions.AlreadyEnrolledForEvent(memberId, id);
         }
     }
 
-    public void disenrollFrom(TermId termId, ParticipantId participantId) {
+    public void disenrollFrom(TermId termId, MemberId memberId) {
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
-        term.disenroll(participantId);
+        term.disenroll(memberId);
     }
 }
