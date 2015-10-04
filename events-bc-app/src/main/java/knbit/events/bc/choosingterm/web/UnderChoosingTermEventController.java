@@ -52,7 +52,7 @@ public class UnderChoosingTermEventController {
         addTerms(ImmutableList.of(termDTO), id);
     }
 
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{eventId}/terms/{termId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}")
     public void removeTerm(@PathVariable("eventId") String eventId,
                            @PathVariable("termId") String termId) {
 
