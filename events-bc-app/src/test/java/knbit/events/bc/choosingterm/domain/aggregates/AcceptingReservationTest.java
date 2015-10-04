@@ -11,6 +11,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationComma
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -19,11 +20,18 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 
 /**
  * Created by novy on 19.08.15.
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(IdFactory.class)
 public class AcceptingReservationTest {
 
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
@@ -113,26 +121,28 @@ public class AcceptingReservationTest {
                 .expectException(ReservationCancelledException.class);
     }
 
-//    @Test
-//    public void otherwiseShouldGenerateReservationAcceptedEventAndAddNewTerm() throws Exception {
-//        final Term termFromReservation = Term.of(eventDuration, capacity, Location.of("3.21c"));
-//        final TermId ignoredTermId = TermId.of("ignored");
-//
-//        fixture
-//                .given(
-//                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
-//                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity)
-//                )
-//                .when(
-//                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
-//                )
-//                .expectEventsMatching(
-//                        WithoutTermIdMatcher.withTermAddedEventIgnoringTermId(
-//
-//                        )
-//
-//                        ReservationEvents.ReservationAccepted.of(eventId, reservationId),
-//                        TermEvents.TermAdded.of(eventId, ignoredTermId, termFromReservation)
-//                );
-//    }
+    @Test
+    public void otherwiseShouldGenerateReservationAcceptedEventAndAddNewTerm() throws Exception {
+        final Term termFromReservation = Term.of(eventDuration, capacity, Location.of("3.21c"));
+        final TermId randomlyGeneratedTermId = TermId.of("id");
+        makeIdFactoryReturn(randomlyGeneratedTermId);
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        ReservationEvents.RoomRequested.of(eventId, reservationId, eventDuration, capacity)
+                )
+                .when(
+                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
+                )
+                .expectEvents(
+                        ReservationEvents.ReservationAccepted.of(eventId, reservationId),
+                        TermEvents.TermAdded.of(eventId, randomlyGeneratedTermId, termFromReservation)
+                );
+    }
+
+    private void makeIdFactoryReturn(TermId termId) {
+        PowerMockito.mockStatic(IdFactory.class);
+        Mockito.when(IdFactory.termId()).thenReturn(termId);
+    }
 }

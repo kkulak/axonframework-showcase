@@ -12,6 +12,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -62,7 +63,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
             throw new CannotAddOverlappingTermException(id, newTerm);
         }
 
-        apply(TermEvents.TermAdded.of(id, new TermId(), newTerm));
+        apply(TermEvents.TermAdded.of(id, IdFactory.termId(), newTerm));
     }
 
     private boolean newTermOverlaps(Term newTerm) {
@@ -93,8 +94,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     public void bookRoomFor(EventDuration eventDuration, Capacity capacity) {
         rejectOnTransited();
 
-        final ReservationId reservationId = new ReservationId();
-        apply(ReservationEvents.RoomRequested.of(id, reservationId, eventDuration, capacity));
+        apply(ReservationEvents.RoomRequested.of(id, IdFactory.reservationId(), eventDuration, capacity));
     }
 
     @EventSourcingHandler
@@ -113,7 +113,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.accept();
 
         final Term termFromReservation = Term.of(reservation.eventDuration(), reservation.capacity(), location);
-        apply(TermEvents.TermAdded.of(id, new TermId(), termFromReservation));
+        apply(TermEvents.TermAdded.of(id, IdFactory.termId(), termFromReservation));
     }
 
     public void rejectReservation(ReservationId reservationId) {

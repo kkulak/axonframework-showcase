@@ -9,6 +9,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -17,13 +18,19 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
-
-import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 
 /**
  * Created by novy on 19.08.15.
  */
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(IdFactory.class)
 public class AddingTermTest {
 
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
@@ -42,8 +49,7 @@ public class AddingTermTest {
     @Test
     public void tryingToAddValidTermShouldProduceTermAddedEvent() throws Exception {
         final Term newTerm = TermBuilder.defaultTerm();
-        final ImmutableList<TermEvents.TermAdded> expectedTermAddedEvent =
-                ImmutableList.of(TermEvents.TermAdded.of(eventId, termId, newTerm));
+        makeIdFactoryReturn(termId);
 
         fixture
                 .given(
@@ -58,8 +64,8 @@ public class AddingTermTest {
                                 newTerm.location().value()
                         )
                 )
-                .expectEventsMatching(
-                        matchExactlyIgnoring("termId", expectedTermAddedEvent)
+                .expectEvents(
+                        TermEvents.TermAdded.of(eventId, termId, newTerm)
                 );
     }
 
@@ -119,5 +125,10 @@ public class AddingTermTest {
                         )
                 )
                 .expectException(UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment.class);
+    }
+
+    private void makeIdFactoryReturn(TermId termId) {
+        PowerMockito.mockStatic(IdFactory.class);
+        Mockito.when(IdFactory.termId()).thenReturn(termId);
     }
 }
