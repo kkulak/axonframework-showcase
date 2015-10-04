@@ -78,6 +78,10 @@ task pushImage(type: DockerPushImage) {
     imageName = 'knbitevents/notification-bc'
 }
 
+task runApp() {
+    dependsOn bootRun
+}
+
 bootRun {
     systemProperties = System.properties
 }

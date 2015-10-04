@@ -98,6 +98,10 @@ task tagImage(type: DockerTagImage) {
     tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
+task runApp() {
+    dependsOn run
+}
+
 task pushImage(type: DockerPushImage) {
     dependsOn tagImage
     imageName = 'knbitevents/rs-integration-bc'
