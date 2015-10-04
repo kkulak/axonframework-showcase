@@ -3,10 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 import com.github.fakemongo.Fongo
 import com.gmongo.GMongo
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration
-import knbit.events.bc.choosingterm.domain.valuobjects.Location
-import knbit.events.bc.choosingterm.domain.valuobjects.Term
+import knbit.events.bc.choosingterm.domain.valuobjects.*
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents
 import knbit.events.bc.common.domain.valueobjects.EventId
 import org.joda.time.DateTime
@@ -23,6 +20,7 @@ class TermsHandlerTest extends Specification {
 
     def EventId eventId
     def Term term
+    def TermId termId
 
     void setup() {
 
@@ -39,6 +37,7 @@ class TermsHandlerTest extends Specification {
                 Capacity.of(15),
                 Location.of('3.27 A')
         )
+        termId = TermId.of("termId")
 
     }
 
@@ -51,7 +50,7 @@ class TermsHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                TermEvents.TermAdded.of(eventId, term)
+                TermEvents.TermAdded.of(eventId, termId, term)
         )
 
         then:
@@ -61,6 +60,7 @@ class TermsHandlerTest extends Specification {
 
         choosingTermsPreview.terms == [
                 [
+                        termId  : termId.value(),
                         date    : term.duration().start(),
                         duration: 90,
                         capacity: 15,
@@ -72,6 +72,7 @@ class TermsHandlerTest extends Specification {
     def "should remove given term on proper event"() {
         given:
         def termData = [
+                termId  : termId.value(),
                 date    : term.duration().start(),
                 duration: 90,
                 capacity: 15,
@@ -84,7 +85,7 @@ class TermsHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                TermEvents.TermRemoved.of(eventId, term)
+                TermEvents.TermRemoved.of(eventId, termId)
         )
 
         then:

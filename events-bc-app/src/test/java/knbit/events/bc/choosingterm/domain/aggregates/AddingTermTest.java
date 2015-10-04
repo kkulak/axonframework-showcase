@@ -58,12 +58,11 @@ public class AddingTermTest {
                                 newTerm.location().value()
                         )
                 )
-                .expectEvents(
+                .expectEventsMatching(
                         matchExactlyIgnoring("termId", expectedTermAddedEvent)
                 );
     }
 
-    // todo: builders maybe
     @Test
     public void shouldNotBeAbleToAddOverlappingTerm() throws Exception {
         final Term existingTerm = Term.of(

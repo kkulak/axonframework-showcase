@@ -90,7 +90,6 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         terms.remove(event.termId());
     }
 
-    // todo: maybe propose term or somethin' like that?
     public void bookRoomFor(EventDuration eventDuration, Capacity capacity) {
         rejectOnTransited();
 

@@ -28,20 +28,20 @@ public class WithoutFieldMatcher {
                                 .collect(Collectors.toList());
 
                 boolean bothHaveSameSize = theseObjects.size() == thoseObjects.size();
-                return bothHaveSameSize && containsSameObjectsOmittingIds(theseObjects, thoseObjects);
+                return bothHaveSameSize && containsSameObjectsOmittingField(theseObjects, thoseObjects);
             }
 
-            private boolean containsSameObjectsOmittingIds(Collection<ObjectToMatch> theseObjects,
-                                                           Collection<ObjectToMatch> thoseObjects) {
+            private boolean containsSameObjectsOmittingField(Collection<ObjectToMatch> theseObjects,
+                                                             Collection<ObjectToMatch> thoseObjects) {
 
                 final Iterator<ObjectToMatch> thisIterator = theseObjects.iterator();
                 final Iterator<ObjectToMatch> thatIterator = thoseObjects.iterator();
 
                 while (thisIterator.hasNext() && thatIterator.hasNext()) {
-                    final ObjectToMatch thisCommand = thisIterator.next();
-                    final ObjectToMatch thatCommand = thatIterator.next();
+                    final ObjectToMatch thisObject = thisIterator.next();
+                    final ObjectToMatch thatObject = thatIterator.next();
 
-                    if (!EqualsBuilder.reflectionEquals(thisCommand, thatCommand, fieldToIgnore)) {
+                    if (!EqualsBuilder.reflectionEquals(thisObject, thatObject, fieldToIgnore)) {
                         return false;
                     }
                 }

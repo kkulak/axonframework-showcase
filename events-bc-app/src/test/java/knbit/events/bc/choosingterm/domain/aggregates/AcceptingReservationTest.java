@@ -8,7 +8,9 @@ import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.Rese
 import knbit.events.bc.choosingterm.domain.exceptions.ReservationExceptions.ReservationRejectedException;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
-import knbit.events.bc.choosingterm.domain.valuobjects.events.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
+import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -36,9 +38,7 @@ public class AcceptingReservationTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.underChoosingTermEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
 
         reservationId = ReservationId.of("reservationId");
         eventDuration = EventDuration.of(DateTime.now(), Duration.standardHours(2));
@@ -113,9 +113,11 @@ public class AcceptingReservationTest {
                 .expectException(ReservationCancelledException.class);
     }
 
-//    todo fix
 //    @Test
 //    public void otherwiseShouldGenerateReservationAcceptedEventAndAddNewTerm() throws Exception {
+//        final Term termFromReservation = Term.of(eventDuration, capacity, Location.of("3.21c"));
+//        final TermId ignoredTermId = TermId.of("ignored");
+//
 //        fixture
 //                .given(
 //                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
@@ -124,9 +126,13 @@ public class AcceptingReservationTest {
 //                .when(
 //                        ReservationCommands.AcceptReservation.of(eventId, reservationId, "3.21c")
 //                )
-//                .expectEvents(
+//                .expectEventsMatching(
+//                        WithoutTermIdMatcher.withTermAddedEventIgnoringTermId(
+//
+//                        )
+//
 //                        ReservationEvents.ReservationAccepted.of(eventId, reservationId),
-//                        TermEvents.TermAdded.of(eventId, Term.of(eventDuration, capacity, Location.of("3.21c")))
+//                        TermEvents.TermAdded.of(eventId, ignoredTermId, termFromReservation)
 //                );
 //    }
 }
