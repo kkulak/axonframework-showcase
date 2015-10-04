@@ -40,10 +40,11 @@ class KanbanBoardEventStatusHandler {
     def on(InterestAwareEvents.Created event) {
         collection.update(
                 [eventDomainId: event.eventId().value()],
-                [$set: [
-                        reachableStatus: [SURVEY_INTEREST, CHOOSING_TERM],
-                        eventStatus    : SURVEY_INTEREST
-                ]
+                [
+                        $set: [
+                                reachableStatus: [SURVEY_INTEREST, CHOOSING_TERM],
+                                eventStatus    : SURVEY_INTEREST
+                        ]
                 ]
         )
     }
@@ -52,10 +53,11 @@ class KanbanBoardEventStatusHandler {
     def on(UnderChoosingTermEventEvents.Created event) {
         collection.update(
                 [eventDomainId: event.eventId().value()],
-                [$set: [
-                        reachableStatus: [CHOOSING_TERM],
-                        eventStatus    : CHOOSING_TERM
-                ]
+                [
+                        $set: [
+                                reachableStatus: [CHOOSING_TERM],
+                                eventStatus    : CHOOSING_TERM
+                        ]
                 ]
         )
     }
@@ -64,9 +66,10 @@ class KanbanBoardEventStatusHandler {
     def on(TermStatusEvents.Ready event) {
         collection.update(
                 [eventDomainId: event.eventId().value()],
-                [$set: [
-                        reachableStatus: [CHOOSING_TERM, ENROLLMENT],
-                        eventStatus    : CHOOSING_TERM]
+                [
+                        $set: [
+                                reachableStatus: [CHOOSING_TERM, ENROLLMENT],
+                                eventStatus    : CHOOSING_TERM]
                 ]
         )
     }
@@ -75,9 +78,10 @@ class KanbanBoardEventStatusHandler {
     def on(TermStatusEvents.Pending event) {
         collection.update(
                 [eventDomainId: event.eventId().value()],
-                [$set: [
-                        reachableStatus: [CHOOSING_TERM],
-                        eventStatus    : CHOOSING_TERM]
+                [
+                        $set: [
+                                reachableStatus: [CHOOSING_TERM],
+                                eventStatus    : CHOOSING_TERM]
                 ]
         )
     }
@@ -86,9 +90,10 @@ class KanbanBoardEventStatusHandler {
     def on(EventUnderEnrollmentEvents.Created event) {
         collection.update(
                 [eventDomainId: event.eventId().value()],
-                [$set: [
-                        reachableStatus: [ENROLLMENT, READY],
-                        eventStatus    : ENROLLMENT]
+                [
+                        $set: [
+                                reachableStatus: [ENROLLMENT, READY],
+                                eventStatus    : ENROLLMENT]
                 ]
         )
     }
