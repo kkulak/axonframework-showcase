@@ -3,6 +3,8 @@ package knbit.events.bc.enrollment.web;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,35 @@ public class EventUnderEnrollmentController {
         transitToEnrollment(domainEventId);
         assignLecturers(domainEventId, terms);
         setParticipantLimits(domainEventId, terms);
+    }
+
+    // todo: define better endpoint
+    @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enrollment/{memberId}")
+    public void enrollForTerm(@PathVariable("eventId") String eventId,
+                              @PathVariable("termId") String termId,
+                              @PathVariable("memberId") String memberId) {
+
+        final EventId domainEventId = EventId.of(eventId);
+        final TermId domainTermId = TermId.of(termId);
+        final MemberId domainMemberId = MemberId.of(memberId);
+
+        commandGateway.sendAndWait(
+                EnrollmentCommands.EnrollFor.of(domainEventId, domainTermId, domainMemberId)
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}/enrollment/{memberId}")
+    public void disenrollFrom(@PathVariable("eventId") String eventId,
+                              @PathVariable("termId") String termId,
+                              @PathVariable("memberId") String memberId) {
+
+        final EventId domainEventId = EventId.of(eventId);
+        final TermId domainTermId = TermId.of(termId);
+        final MemberId domainMemberId = MemberId.of(memberId);
+
+        commandGateway.sendAndWait(
+                EnrollmentCommands.DissenrollFrom.of(domainEventId, domainTermId, domainMemberId)
+        );
     }
 
     private void transitToEnrollment(EventId eventId) {
@@ -72,5 +103,4 @@ public class EventUnderEnrollmentController {
                 .map(setLimitCommandFromDTO)
                 .forEach(commandGateway::sendAndWait);
     }
-
 }
