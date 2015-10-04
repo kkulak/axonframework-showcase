@@ -2,12 +2,10 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
-import knbit.events.bc.choosingterm.domain.valuobjects.Location;
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
@@ -20,6 +18,8 @@ import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
 
+import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
+
 
 /**
  * Created by novy on 19.08.15.
@@ -29,26 +29,21 @@ public class AddingTermTest {
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
     private EventId eventId;
     private EventDetails eventDetails;
+    TermId termId;
 
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.underChoosingTermEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
+        termId = TermId.of("termId");
     }
 
     @Test
     public void tryingToAddValidTermShouldProduceTermAddedEvent() throws Exception {
-        final Term newTerm = Term.of(
-                EventDuration.of(
-                        new DateTime(2015, 1, 1, 18, 30),
-                        Duration.standardMinutes(90)
-                ),
-                Capacity.of(666),
-                Location.of("3.28c")
-        );
+        final Term newTerm = TermBuilder.defaultTerm();
+        final ImmutableList<TermEvents.TermAdded> expectedTermAddedEvent =
+                ImmutableList.of(TermEvents.TermAdded.of(eventId, termId, newTerm));
 
         fixture
                 .given(
@@ -64,7 +59,7 @@ public class AddingTermTest {
                         )
                 )
                 .expectEvents(
-                        TermEvents.TermAdded.of(eventId, newTerm)
+                        matchExactlyIgnoring("termId", expectedTermAddedEvent)
                 );
     }
 
@@ -84,7 +79,7 @@ public class AddingTermTest {
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
 
-                        TermEvents.TermAdded.of(eventId, existingTerm)
+                        TermEvents.TermAdded.of(eventId, termId, existingTerm)
 
                 )
                 .when(
@@ -101,25 +96,18 @@ public class AddingTermTest {
 
     @Test
     public void shouldNotBeAbleToAddTermIfEventAlreadyTransited() throws Exception {
-        final Term existingTerm = Term.of(
-                EventDuration.of(
-                        new DateTime(2015, 1, 1, 18, 30),
-                        Duration.standardMinutes(90)
-                ),
-                Capacity.of(666),
-                Location.of("3.21c")
-        );
+        final Term existingTerm = TermBuilder.defaultTerm();
 
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
 
-                        TermEvents.TermAdded.of(eventId, existingTerm),
+                        TermEvents.TermAdded.of(eventId, termId, existingTerm),
 
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(existingTerm)
+                                ImmutableList.of(IdentifiedTerm.of(termId, existingTerm))
                         )
                 )
                 .when(

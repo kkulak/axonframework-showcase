@@ -1,8 +1,6 @@
 package knbit.events.bc.choosingterm.domain.aggregates;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import knbit.events.bc.choosingterm.domain.entities.Reservation;
 import knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
@@ -24,6 +22,7 @@ import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.CREATED;
 import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.TRANSITED;
@@ -41,7 +40,8 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     @EventSourcedMember
     private Map<ReservationId, Reservation> reservations = Maps.newHashMap();
 
-    private Collection<Term> terms = Sets.newHashSet();
+    private Map<TermId, Term> terms = Maps.newHashMap();
+
     private UnderChoosingTermEventState state;
 
     public UnderChoosingTermEvent(EventId eventId, EventDetails eventDetails) {
@@ -62,32 +62,32 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
             throw new CannotAddOverlappingTermException(id, newTerm);
         }
 
-        apply(TermEvents.TermAdded.of(id, newTerm));
+        apply(TermEvents.TermAdded.of(id, new TermId(), newTerm));
     }
 
     private boolean newTermOverlaps(Term newTerm) {
-        return terms
+        return terms.values()
                 .stream()
                 .anyMatch(term -> term.overlaps(newTerm));
     }
 
     @EventSourcingHandler
     private void on(TermEvents.TermAdded event) {
-        terms.add(event.term());
+        terms.put(event.termId(), event.term());
     }
 
-    public void removeTerm(Term termToRemove) {
+    public void removeTerm(TermId termId) {
         rejectOnTransited();
-        if (!terms.contains(termToRemove)) {
-            throw new CannotRemoveNotExistingTermException(id, termToRemove);
+        if (!terms.containsKey(termId)) {
+            throw new CannotRemoveNotExistingTermException(id, termId);
         }
 
-        apply(TermEvents.TermRemoved.of(id, termToRemove));
+        apply(TermEvents.TermRemoved.of(id, termId));
     }
 
     @EventSourcingHandler
     private void on(TermEvents.TermRemoved event) {
-        terms.remove(event.term());
+        terms.remove(event.termId());
     }
 
     // todo: maybe propose term or somethin' like that?
@@ -114,7 +114,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.accept();
 
         final Term termFromReservation = Term.of(reservation.eventDuration(), reservation.capacity(), location);
-        apply(TermEvents.TermAdded.of(id, termFromReservation));
+        apply(TermEvents.TermAdded.of(id, new TermId(), termFromReservation));
     }
 
     public void rejectReservation(ReservationId reservationId) {
@@ -137,8 +137,15 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         rejectOnNoTerms();
 
         apply(
-                UnderChoosingTermEventEvents.TransitedToEnrollment.of(id, eventDetails, ImmutableList.copyOf(terms))
+                UnderChoosingTermEventEvents.TransitedToEnrollment.of(id, eventDetails, identifiedTerms())
         );
+    }
+
+    private Collection<IdentifiedTerm> identifiedTerms() {
+        return terms.entrySet()
+                .stream()
+                .map(termIdAndTerm -> IdentifiedTerm.of(termIdAndTerm.getKey(), termIdAndTerm.getValue()))
+                .collect(Collectors.toList());
     }
 
     @EventSourcingHandler

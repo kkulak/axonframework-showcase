@@ -54,13 +54,7 @@ public class UnderChoosingTermEventCommandHandler {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
-        final Term termToRemove = Term.of(
-                EventDuration.of(command.startDate(), command.duration()),
-                Capacity.of(command.capacity()),
-                Location.of(command.location())
-        );
-
-        underChoosingTermEvent.removeTerm(termToRemove);
+        underChoosingTermEvent.removeTerm(command.termId());
     }
 
     @CommandHandler

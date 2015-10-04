@@ -11,7 +11,7 @@ import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptio
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
-import knbit.events.bc.enrollment.domain.valueobjects.TermId;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermEvent;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;

@@ -3,6 +3,7 @@ package knbit.events.bc.choosingterm.web;
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermProposalDTO;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -51,14 +52,14 @@ public class UnderChoosingTermEventController {
         addTerms(ImmutableList.of(termDTO), id);
     }
 
-    // todo: as DELETE can't handle payload, i'm using PATCH right now
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{eventId}/terms")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{eventId}/terms/{termId}")
     public void removeTerm(@PathVariable("eventId") String eventId,
-                           @RequestBody TermDTO termDTO) {
+                           @PathVariable("termId") String termId) {
 
-        final EventId id = EventId.of(eventId);
+        final EventId eventDomainId = EventId.of(eventId);
+        final TermId termDomainId = TermId.of(termId);
         commandGateway.send(
-                CommandFactory.removeTermCommandFrom(id, termDTO)
+                CommandFactory.removeTermCommandFrom(eventDomainId, termDomainId)
         );
     }
 

@@ -2,6 +2,7 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
@@ -62,22 +63,19 @@ public class RequestingRoomTest {
     @Test
     public void shouldNotBeAbleToRequestRoomIfEventTransitedToEnrollment() throws Exception {
 
-        final Term term = Term.of(
-                EventDuration.of(DateTime.now(), Duration.standardMinutes(60)),
-                Capacity.of(60),
-                Location.of("3.27A")
-        );
+        final Term term = TermBuilder.defaultTerm();
+        final TermId termId = TermId.of("termId");
 
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
 
-                        TermEvents.TermAdded.of(eventId, term),
+                        TermEvents.TermAdded.of(eventId, termId, term),
 
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(term)
+                                ImmutableList.of(IdentifiedTerm.of(termId, term))
                         )
                 )
                 .when(

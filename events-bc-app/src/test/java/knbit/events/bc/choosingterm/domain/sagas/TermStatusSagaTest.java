@@ -1,5 +1,7 @@
 package knbit.events.bc.choosingterm.domain.sagas;
 
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents;
@@ -34,7 +36,7 @@ public class TermStatusSagaTest {
         fixture
                 .givenAggregate(eventId)
                 .published(UnderChoosingTermEventEvents.Created.of(eventId, null))
-                .whenPublishingA(TermEvents.TermAdded.of(eventId, null))
+                .whenPublishingA(TermEvents.TermAdded.of(eventId, TermId.of("id"), TermBuilder.defaultTerm()))
                 .expectPublishedEvents(TermStatusEvents.Ready.of(eventId));
     }
 
@@ -44,7 +46,7 @@ public class TermStatusSagaTest {
                 .givenAggregate(eventId)
                 .published(
                         UnderChoosingTermEventEvents.Created.of(eventId, null),
-                        TermEvents.TermAdded.of(eventId, null)
+                        TermEvents.TermAdded.of(eventId, TermId.of("id"), TermBuilder.defaultTerm())
                 )
                 .whenPublishingA(TermEvents.TermRemoved.of(eventId, null))
                 .expectPublishedEvents(TermStatusEvents.Pending.of(eventId));
