@@ -17,15 +17,28 @@ import org.springframework.stereotype.Component
 class EnrollmentHandler {
 
     def DBCollection enrollmentCollection
+    def ParticipantDetailsRepository detailsRepository
 
     @Autowired
-    EnrollmentHandler(@Qualifier("enrollment") DBCollection enrollmentCollection) {
+    EnrollmentHandler(@Qualifier("enrollment") DBCollection enrollmentCollection,
+                      ParticipantDetailsRepository detailsRepository) {
+
         this.enrollmentCollection = enrollmentCollection
+        this.detailsRepository = detailsRepository
     }
 
     @EventHandler
     def on(EnrollmentEvents.ParticipantEnrolledForTerm event) {
+        def eventId = event.eventId()
+        def termId = event.termId()
 
+        def participantId = event.memberId()
+        def participantDetails = detailsRepository.detailsFor(participantId)
+
+        enrollmentCollection.update(
+                query(eventId, termId), [
+                $push: ['terms.$.participants': participantDetails]
+        ])
     }
 
     @EventHandler

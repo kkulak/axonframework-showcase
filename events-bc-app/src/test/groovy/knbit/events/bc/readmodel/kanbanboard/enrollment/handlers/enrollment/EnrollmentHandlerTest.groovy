@@ -16,8 +16,10 @@ class EnrollmentHandlerTest extends Specification {
 
     def EnrollmentHandler objectUnderTest
     def DBCollection collection
+    def ParticipantDetailsRepository detailsRepositoryMock
 
     def EventId eventId
+    def TermId termId
 
     void setup() {
         def GMongo gMongo = new GMongo(
@@ -25,14 +27,15 @@ class EnrollmentHandlerTest extends Specification {
         )
         def db = gMongo.getDB("test-db")
         collection = db.getCollection("test-collection")
+        detailsRepositoryMock = Mock(ParticipantDetailsRepository)
 
-        objectUnderTest = new EnrollmentHandler(collection)
+        objectUnderTest = new EnrollmentHandler(collection, detailsRepositoryMock)
         eventId = EventId.of("eventId")
+        termId = TermId.of("termId")
     }
 
     def "should remove participant when needed"() {
         given:
-        def termId = TermId.of("termId")
         def participantId = MemberId.of("memberId")
         collection << [
                 domainId: eventId.value(),
@@ -58,6 +61,35 @@ class EnrollmentHandlerTest extends Specification {
                         participants: [
                                 [participantId: 'yet another participant'],
                         ]
+                ]
+        ]
+    }
+
+    def "given participant enrolled event with given participantId, it should update database with participant details"() {
+        given:
+        def memberId = MemberId.of("memberId")
+        collection << [
+                domainId: eventId.value(),
+                terms   : [
+                        [termId: termId.value(), participants: []]
+                ]
+        ]
+        def participantDetails = [
+                participantId: memberId.value(),
+                firstName    : 'firstName',
+                lastName     : 'lastName'
+        ]
+        detailsRepositoryMock.detailsFor(memberId) >> participantDetails
+
+        when:
+        objectUnderTest.on EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, termId, memberId)
+
+        then:
+        def enrollmentPreview = collection.findOne(domainId: eventId.value())
+        enrollmentPreview.terms == [
+                [
+                        termId      : termId.value(),
+                        participants: [participantDetails]
                 ]
         ]
     }
