@@ -40,7 +40,6 @@ public class EventUnderEnrollmentController {
         setParticipantLimits(domainEventId, terms);
     }
 
-    // todo: define better endpoint
     @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enroll/{memberId}")
     public void enrollForTerm(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,
