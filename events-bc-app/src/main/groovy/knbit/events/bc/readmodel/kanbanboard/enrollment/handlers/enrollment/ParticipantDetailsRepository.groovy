@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class ParticipantDetailsRepository {
 
+    // todo: implement
     def detailsFor(MemberId memberId) {
         [participantId: memberId.value(), firstName: 'John', lastName: 'Doe']
     }
