@@ -1,9 +1,6 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment
 
 import com.mongodb.DBCollection
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
-import org.joda.time.DateTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,43 +24,7 @@ class EnrollmentPreviewController {
     }
 
     @RequestMapping(value = "/{eventId}/enrollment", method = RequestMethod.GET)
-    def enrollmentPreviewFor(@PathVariable("eventId") eventId) {
-        [
-                domainId      : "eventId",
-                name          : "name",
-                description   : "desc",
-                eventType     : EventType.WORKSHOP,
-                eventFrequency: EventFrequency.ONE_OFF,
-
-                terms: [
-                        [
-                                termId           : 'termId',
-                                date             : DateTime.now(),
-                                duration         : 90,
-                                capacity         : 100,
-                                location         : '3.21A',
-                                lecturer         : [
-                                        firstName: 'firstname',
-                                        lastName : 'lastname'
-                                ],
-                                participantsLimit: 30,
-                                attendees: [
-                                        [
-                                                id: "id-1",
-                                                firstName: "Tom",
-                                                lastName: "Smith",
-                                        ],
-                                        [
-                                                id: "id-2",
-                                                firstName: "Steve",
-                                                lastName: "Jobs"
-                                        ]
-                                ]
-                        ]
-
-                ]
-        ]
-
+    def enrollmentPreviewFor(@PathVariable("eventId")  eventId) {
+        enrollmentCollection.findOne([domainId: eventId])
     }
-
 }
