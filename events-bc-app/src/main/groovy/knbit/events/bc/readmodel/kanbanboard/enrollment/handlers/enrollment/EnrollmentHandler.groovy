@@ -1,9 +1,8 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.enrollment
 
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId
-import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
+import knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.QueryForTerm
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class EnrollmentHandler {
+class EnrollmentHandler implements QueryForTerm {
 
     def DBCollection enrollmentCollection
     def ParticipantDetailsRepository detailsRepository
@@ -36,7 +35,7 @@ class EnrollmentHandler {
         def participantDetails = detailsRepository.detailsFor(participantId)
 
         enrollmentCollection.update(
-                query(eventId, termId), [
+                queryFor(eventId, termId), [
                 $push: ['terms.$.participants': participantDetails]
         ])
     }
@@ -48,18 +47,10 @@ class EnrollmentHandler {
         def participantId = event.memberId()
 
         enrollmentCollection.update(
-                query(eventId, termId), [
+                queryFor(eventId, termId), [
                 $pull: [
                         'terms.$.participants': [participantId: participantId.value()]
                 ]
         ])
-    }
-
-//    todo duplication
-    private static def query(EventId eventId, TermId termId) {
-        [
-                domainId      : eventId.value(),
-                'terms.termId': termId.value()
-        ]
     }
 }

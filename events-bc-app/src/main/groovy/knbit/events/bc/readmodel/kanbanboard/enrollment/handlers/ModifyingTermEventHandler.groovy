@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class ModifyingTermEventHandler {
+class ModifyingTermEventHandler implements QueryForTerm {
 
     def DBCollection enrollmentCollection
 
@@ -31,7 +31,7 @@ class ModifyingTermEventHandler {
         def lecturer = event.lecturer()
 
         enrollmentCollection.update(
-                query(eventId, termId),
+                queryFor(eventId, termId),
                 [$set: ['terms.$.lecturer': lecturerDataFrom(lecturer)]]
         )
     }
@@ -43,16 +43,9 @@ class ModifyingTermEventHandler {
         def participantsLimit = event.participantsLimit()
 
         enrollmentCollection.update(
-                query(eventId, termId),
+                queryFor(eventId, termId),
                 [$set: ['terms.$.participantsLimit': participantsLimit.value()]]
         )
-    }
-
-    private static def query(EventId eventId, TermId termId) {
-        [
-                domainId      : eventId.value(),
-                'terms.termId': termId.value()
-        ]
     }
 
     private static def lecturerDataFrom(Lecturer lecturer) {

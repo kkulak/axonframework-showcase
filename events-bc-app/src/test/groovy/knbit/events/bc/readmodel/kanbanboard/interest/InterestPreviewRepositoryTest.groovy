@@ -1,17 +1,15 @@
 package knbit.events.bc.readmodel.kanbanboard.interest
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import knbit.events.bc.common.domain.enums.EventFrequency
 import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.interest.domain.enums.AnswerType
-import knbit.events.bc.readmodel.kanbanboard.interest.InterestPreviewRepository
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 05.06.15.
  */
-class InterestPreviewRepositoryTest extends Specification {
+class InterestPreviewRepositoryTest extends Specification implements DBCollectionAware {
 
     def surveyCollection
     def questionnaireCollection
@@ -19,19 +17,12 @@ class InterestPreviewRepositoryTest extends Specification {
     def InterestPreviewRepository objectUnderTest
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-
-        surveyCollection = db.getCollection("survey-collection")
-        questionnaireCollection = db.getCollection("questionnaire-collection")
+        surveyCollection = testCollectionWithName("survey-collection")
+        questionnaireCollection = testCollectionWithName("questionnaire-collection")
 
         objectUnderTest = new InterestPreviewRepository(
                 surveyCollection, questionnaireCollection
         )
-
     }
 
     def "should merge survey and questionnaire, preserving question order"() {

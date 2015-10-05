@@ -1,22 +1,17 @@
 package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
-import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.common.domain.valueobjects.Name
-
+import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 04.06.15.
  */
-class CreatingInterestAwareEventEventHandlerTest extends Specification {
+class CreatingInterestAwareEventEventHandlerTest extends Specification implements DBCollectionAware {
 
     def CreatingInterestAwareEventEventHandler objectUnderTest
     def DBCollection collection
@@ -25,21 +20,10 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification {
     def EventDetails eventDetails
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new CreatingInterestAwareEventEventHandler(collection)
         eventId = EventId.of("eventId")
-        eventDetails = EventDetails.of(
-                Name.of("name"),
-                Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
-        )
+        eventDetails = EventDetailsBuilder.defaultEventDetails()
     }
 
     def "should create database entry containing only event details on InterestAwareEventCreated event"() {
@@ -53,9 +37,9 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification {
         )
 
         interestAwareEventViewModel["domainId"] == "eventId"
-        interestAwareEventViewModel["name"] == "name"
-        interestAwareEventViewModel["description"] == "desc"
-        interestAwareEventViewModel["eventType"] == EventType.WORKSHOP
-        interestAwareEventViewModel["eventFrequency"] == EventFrequency.ONE_OFF
+        interestAwareEventViewModel["name"] == eventDetails.name().value()
+        interestAwareEventViewModel["description"] == eventDetails.description().value()
+        interestAwareEventViewModel["eventType"] == eventDetails.type()
+        interestAwareEventViewModel["eventFrequency"] == eventDetails.frequency()
     }
 }

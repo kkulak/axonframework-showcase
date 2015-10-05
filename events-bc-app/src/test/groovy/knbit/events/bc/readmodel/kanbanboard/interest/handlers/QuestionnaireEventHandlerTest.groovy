@@ -1,7 +1,5 @@
 package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
@@ -9,7 +7,6 @@ import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.MultipleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.SingleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.TextChoiceAnswerPolicy
-
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
@@ -17,12 +14,13 @@ import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
 import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 04.06.15.
  */
-class QuestionnaireEventHandlerTest extends Specification {
+class QuestionnaireEventHandlerTest extends Specification implements DBCollectionAware {
 
     def QuestionnaireEventHandler objectUnderTest
     def DBCollection collection
@@ -30,13 +28,7 @@ class QuestionnaireEventHandlerTest extends Specification {
     def EventId eventId
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new QuestionnaireEventHandler(collection)
         eventId = EventId.of("eventId")
     }

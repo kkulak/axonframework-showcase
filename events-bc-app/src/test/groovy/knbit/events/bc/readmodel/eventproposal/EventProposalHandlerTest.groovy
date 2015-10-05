@@ -1,7 +1,5 @@
 package knbit.events.bc.readmodel.eventproposal
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.enums.EventFrequency
 import knbit.events.bc.common.domain.enums.EventType
@@ -10,9 +8,10 @@ import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.eventproposal.domain.enums.ProposalState
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
-class EventProposalHandlerTest extends Specification {
+class EventProposalHandlerTest extends Specification implements DBCollectionAware {
     def EventProposalEventHandler objectUnderTest
     def DBCollection collection
 
@@ -24,12 +23,7 @@ class EventProposalHandlerTest extends Specification {
     def state = ProposalState.PENDING
 
     def setup() {
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new EventProposalEventHandler(collection)
     }
 
@@ -51,12 +45,12 @@ class EventProposalHandlerTest extends Specification {
         entryWithoutMongoId.remove '_id'
 
         entryWithoutMongoId == [
-                domainId        : proposalId.value(),
-                name            : name.value(),
-                description     : description.value(),
-                eventType       : eventType,
-                eventFrequency  : frequency,
-                state           : state
+                domainId      : proposalId.value(),
+                name          : name.value(),
+                description   : description.value(),
+                eventType     : eventType,
+                eventFrequency: frequency,
+                state         : state
         ]
     }
 

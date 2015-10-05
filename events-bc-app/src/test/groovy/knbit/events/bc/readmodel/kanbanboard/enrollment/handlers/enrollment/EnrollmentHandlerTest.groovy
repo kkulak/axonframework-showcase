@@ -1,18 +1,17 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.enrollment
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 05.10.15.
  */
-class EnrollmentHandlerTest extends Specification {
+class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
 
     def EnrollmentHandler objectUnderTest
     def DBCollection collection
@@ -22,13 +21,8 @@ class EnrollmentHandlerTest extends Specification {
     def TermId termId
 
     void setup() {
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
+        collection = testCollection()
         detailsRepositoryMock = Mock(ParticipantDetailsRepository)
-
         objectUnderTest = new EnrollmentHandler(collection, detailsRepositoryMock)
         eventId = EventId.of("eventId")
         termId = TermId.of("termId")

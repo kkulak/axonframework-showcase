@@ -1,13 +1,12 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.readmodel.DBCollectionAware
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import spock.lang.Specification
@@ -15,7 +14,7 @@ import spock.lang.Specification
 /**
  * Created by novy on 13.09.15.
  */
-class ReservationsHandlerTest extends Specification {
+class ReservationsHandlerTest extends Specification implements DBCollectionAware {
 
     def ReservationsHandler objectUnderTest
     def DBCollection collection
@@ -24,13 +23,7 @@ class ReservationsHandlerTest extends Specification {
     def ReservationId reservationId
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new ReservationsHandler(collection)
         eventId = EventId.of("eventId")
         reservationId = ReservationId.of("reservationId")

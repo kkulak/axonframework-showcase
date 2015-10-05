@@ -1,21 +1,18 @@
 package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
-
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
-
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 04.06.15.
  */
-class SurveyEventHandlerTest extends Specification {
+class SurveyEventHandlerTest extends Specification implements DBCollectionAware {
 
     def SurveyEventHandler objectUnderTest
     def DBCollection collection
@@ -23,17 +20,10 @@ class SurveyEventHandlerTest extends Specification {
     def EventId eventId
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new SurveyEventHandler(collection)
         eventId = EventId.of("eventId")
     }
-
 
     def "should set votedUp and votedDown props to 0 on SurveyingInterestStartedEvent"() {
 
@@ -85,7 +75,7 @@ class SurveyEventHandlerTest extends Specification {
 
         then:
         interestAwareEventViewModel == [
-                _id      : 'id',
+                _id     : 'id',
                 domainId: eventId.value(),
                 votedUp : 1
         ]

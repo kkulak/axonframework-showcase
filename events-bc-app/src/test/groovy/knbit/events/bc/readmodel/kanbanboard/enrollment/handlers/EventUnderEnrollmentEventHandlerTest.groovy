@@ -1,7 +1,5 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder
 import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
@@ -10,12 +8,13 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 05.10.15.
  */
-class EventUnderEnrollmentEventHandlerTest extends Specification {
+class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCollectionAware {
 
     def EventUnderEnrollmentEventHandler objectUnderTest
     def DBCollection collection
@@ -24,13 +23,7 @@ class EventUnderEnrollmentEventHandlerTest extends Specification {
     def EventDetails eventDetails
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new EventUnderEnrollmentEventHandler(collection)
         eventId = EventId.of("eventId")
         eventDetails = EventDetailsBuilder.defaultEventDetails()
