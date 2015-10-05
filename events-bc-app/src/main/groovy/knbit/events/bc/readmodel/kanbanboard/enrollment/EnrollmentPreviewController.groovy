@@ -46,7 +46,19 @@ class EnrollmentPreviewController {
                                         firstName: 'firstname',
                                         lastName : 'lastname'
                                 ],
-                                participantsLimit: 30
+                                participantsLimit: 30,
+                                attendees: [
+                                        [
+                                                id: "id-1",
+                                                firstName: "Tom",
+                                                lastName: "Smith",
+                                        ],
+                                        [
+                                                id: "id-2",
+                                                firstName: "Steve",
+                                                lastName: "Jobs"
+                                        ]
+                                ]
                         ]
 
                 ]
