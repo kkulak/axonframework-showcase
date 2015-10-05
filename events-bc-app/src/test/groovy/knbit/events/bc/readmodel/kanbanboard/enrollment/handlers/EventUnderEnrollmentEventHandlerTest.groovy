@@ -15,9 +15,9 @@ import spock.lang.Specification
 /**
  * Created by novy on 05.10.15.
  */
-class EnrollmentEventHandlerTest extends Specification {
+class EventUnderEnrollmentEventHandlerTest extends Specification {
 
-    def EnrollmentEventHandler objectUnderTest
+    def EventUnderEnrollmentEventHandler objectUnderTest
     def DBCollection collection
 
     def EventId eventId
@@ -31,7 +31,7 @@ class EnrollmentEventHandlerTest extends Specification {
         def db = gMongo.getDB("test-db")
         collection = db.getCollection("test-collection")
 
-        objectUnderTest = new EnrollmentEventHandler(collection)
+        objectUnderTest = new EventUnderEnrollmentEventHandler(collection)
         eventId = EventId.of("eventId")
         eventDetails = EventDetailsBuilder.defaultEventDetails()
     }

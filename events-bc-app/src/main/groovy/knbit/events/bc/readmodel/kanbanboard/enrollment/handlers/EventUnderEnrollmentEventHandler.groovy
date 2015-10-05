@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class EnrollmentEventHandler {
+class EventUnderEnrollmentEventHandler {
 
     def DBCollection enrollmentCollection
 
     @Autowired
-    EnrollmentEventHandler(@Qualifier("enrollment") DBCollection enrollmentCollection) {
+    EventUnderEnrollmentEventHandler(@Qualifier("enrollment") DBCollection enrollmentCollection) {
         this.enrollmentCollection = enrollmentCollection
     }
 
