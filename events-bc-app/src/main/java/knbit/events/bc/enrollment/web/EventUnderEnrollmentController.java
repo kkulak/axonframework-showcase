@@ -41,7 +41,7 @@ public class EventUnderEnrollmentController {
     }
 
     // todo: define better endpoint
-    @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enrollment/{memberId}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enroll/{memberId}")
     public void enrollForTerm(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,
                               @PathVariable("memberId") String memberId) {
@@ -55,7 +55,7 @@ public class EventUnderEnrollmentController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}/enrollment/{memberId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}/disenroll/{memberId}")
     public void disenrollFrom(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,
                               @PathVariable("memberId") String memberId) {
