@@ -1,43 +1,27 @@
 package knbit.events.bc.readmodel.kanbanboard.columns
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
-import knbit.events.bc.common.domain.valueobjects.Description
-import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 import static knbit.events.bc.common.readmodel.EventStatus.*
 
-class KanbanBoardEventStatusHandlerTest extends Specification {
+class KanbanBoardEventStatusHandlerTest extends Specification implements DBCollectionAware {
     def KanbanBoardEventStatusHandler objectUnderTest
     def DBCollection collection
 
     def eventId = EventId.of("event-id")
-    def name = Name.of("name")
-    def desc = Description.of("desc")
-    def type = EventType.LECTURE
-    def freq = EventFrequency.ONE_OFF
-    def eventDetails = EventDetails.of(
-            name, desc, type, freq
-    )
+    def eventDetails = EventDetailsBuilder.defaultEventDetails()
 
     def setup() {
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new KanbanBoardEventStatusHandler(collection)
     }
 
@@ -58,9 +42,9 @@ class KanbanBoardEventStatusHandlerTest extends Specification {
 
         entryWithoutMongoId == [
                 eventDomainId  : eventId.value(),
-                name           : name.value(),
-                eventType      : type,
-                eventFrequency : freq,
+                name           : eventDetails.name().value(),
+                eventType      : eventDetails.type(),
+                eventFrequency : eventDetails.frequency(),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ]

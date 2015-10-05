@@ -57,6 +57,8 @@ dependencies {
     compile 'com.codepoetics:protonpack:1.7'
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.3'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.3'
 }
 
 docker {

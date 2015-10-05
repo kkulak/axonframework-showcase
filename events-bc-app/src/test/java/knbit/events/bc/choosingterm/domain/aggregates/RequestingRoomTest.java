@@ -2,12 +2,14 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
@@ -16,12 +18,17 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
-
-import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * Created by novy on 19.08.15.
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(IdFactory.class)
 public class RequestingRoomTest {
 
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
@@ -32,15 +39,15 @@ public class RequestingRoomTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.underChoosingTermEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
     public void shouldProduceRoomRequestedEventWithNewlyCreatedReservationId() throws Exception {
         final EventDuration eventDuration = EventDuration.of(DateTime.now(), Duration.standardMinutes(90));
         final Capacity capacity = Capacity.of(66);
+        final ReservationId randomlyGeneratedReservationId = ReservationId.of("id");
+        makeIdFactoryReturn(randomlyGeneratedReservationId);
 
         fixture
                 .given(
@@ -49,35 +56,27 @@ public class RequestingRoomTest {
                 .when(
                         ReservationCommands.BookRoom.of(eventId, eventDuration.start(), eventDuration.duration(), capacity.value())
                 )
-                .expectEventsMatching(
-                        matchExactlyIgnoring(
-                                "reservationId",
-                                ImmutableList.of(
-                                        ReservationEvents.RoomRequested.of(eventId, ReservationId.of("ignored"), eventDuration, capacity)
-                                )
-                        )
+                .expectEvents(
+                        ReservationEvents.RoomRequested.of(eventId, randomlyGeneratedReservationId, eventDuration, capacity)
                 );
     }
 
     @Test
     public void shouldNotBeAbleToRequestRoomIfEventTransitedToEnrollment() throws Exception {
 
-        final Term term = Term.of(
-                EventDuration.of(DateTime.now(), Duration.standardMinutes(60)),
-                Capacity.of(60),
-                Location.of("3.27A")
-        );
+        final Term term = TermBuilder.defaultTerm();
+        final TermId termId = TermId.of("termId");
 
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
 
-                        TermEvents.TermAdded.of(eventId, term),
+                        TermEvents.TermAdded.of(eventId, termId, term),
 
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(term)
+                                ImmutableList.of(IdentifiedTerm.of(termId, term))
                         )
                 )
                 .when(
@@ -86,5 +85,10 @@ public class RequestingRoomTest {
                 .expectException(
                         UnderChoosingTermEventExceptions.AlreadyTransitedToEnrollment.class
                 );
+    }
+
+    private void makeIdFactoryReturn(ReservationId reservationId) {
+        PowerMockito.mockStatic(IdFactory.class);
+        Mockito.when(IdFactory.reservationId()).thenReturn(reservationId);
     }
 }

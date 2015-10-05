@@ -1,14 +1,10 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration
-import knbit.events.bc.choosingterm.domain.valuobjects.Location
-import knbit.events.bc.choosingterm.domain.valuobjects.Term
+import knbit.events.bc.choosingterm.domain.valuobjects.*
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.readmodel.DBCollectionAware
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import spock.lang.Specification
@@ -16,22 +12,17 @@ import spock.lang.Specification
 /**
  * Created by novy on 13.09.15.
  */
-class TermsHandlerTest extends Specification {
+class TermsHandlerTest extends Specification implements DBCollectionAware {
 
     def TermsHandler objectUnderTest
     def DBCollection collection
 
     def EventId eventId
     def Term term
+    def TermId termId
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new TermsHandler(collection)
         eventId = EventId.of("eventId")
         term = Term.of(
@@ -39,6 +30,7 @@ class TermsHandlerTest extends Specification {
                 Capacity.of(15),
                 Location.of('3.27 A')
         )
+        termId = TermId.of("termId")
 
     }
 
@@ -51,7 +43,7 @@ class TermsHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                TermEvents.TermAdded.of(eventId, term)
+                TermEvents.TermAdded.of(eventId, termId, term)
         )
 
         then:
@@ -61,6 +53,7 @@ class TermsHandlerTest extends Specification {
 
         choosingTermsPreview.terms == [
                 [
+                        termId  : termId.value(),
                         date    : term.duration().start(),
                         duration: 90,
                         capacity: 15,
@@ -72,6 +65,7 @@ class TermsHandlerTest extends Specification {
     def "should remove given term on proper event"() {
         given:
         def termData = [
+                termId  : termId.value(),
                 date    : term.duration().start(),
                 duration: 90,
                 capacity: 15,
@@ -84,7 +78,7 @@ class TermsHandlerTest extends Specification {
 
         when:
         objectUnderTest.on(
-                TermEvents.TermRemoved.of(eventId, term)
+                TermEvents.TermRemoved.of(eventId, termId)
         )
 
         then:

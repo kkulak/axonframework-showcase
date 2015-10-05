@@ -1,21 +1,17 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
-import com.github.fakemongo.Fongo
-import com.gmongo.GMongo
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
-import knbit.events.bc.common.domain.enums.EventFrequency
-import knbit.events.bc.common.domain.enums.EventType
-import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.common.domain.valueobjects.Name
+import knbit.events.bc.interest.builders.EventDetailsBuilder
+import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
 /**
  * Created by novy on 13.09.15.
  */
-class UnderChoosingTermEventHandlerTest extends Specification {
+class UnderChoosingTermEventHandlerTest extends Specification implements DBCollectionAware {
 
     def UnderChoosingTermEventHandler objectUnderTest
     def DBCollection collection
@@ -24,21 +20,10 @@ class UnderChoosingTermEventHandlerTest extends Specification {
     def EventDetails eventDetails
 
     void setup() {
-
-        def GMongo gMongo = new GMongo(
-                new Fongo("test-fongo").getMongo()
-        )
-        def db = gMongo.getDB("test-db")
-        collection = db.getCollection("test-collection")
-
+        collection = testCollection()
         objectUnderTest = new UnderChoosingTermEventHandler(collection)
         eventId = EventId.of("eventId")
-        eventDetails = EventDetails.of(
-                Name.of("name"),
-                Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
-        )
+        eventDetails = EventDetailsBuilder.defaultEventDetails()
     }
 
     def "should create new database entry containing event details and no terms nor reservations"() {

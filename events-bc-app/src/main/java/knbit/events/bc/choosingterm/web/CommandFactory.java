@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.web;
 
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -30,14 +31,8 @@ class CommandFactory {
         );
     }
 
-    public static TermCommands.RemoveTerm removeTermCommandFrom(EventId eventId, TermsDTO.TermDTO term) {
-        return TermCommands.RemoveTerm.of(
-                eventId,
-                term.getDate(),
-                Duration.standardMinutes(term.getDuration()),
-                term.getCapacity(),
-                term.getLocation()
-        );
+    public static TermCommands.RemoveTerm removeTermCommandFrom(EventId eventId, TermId termId) {
+        return TermCommands.RemoveTerm.of(eventId, termId);
     }
 
     public static ReservationCommands.CancelReservation cancelReservationCommandFrom(EventId eventId,

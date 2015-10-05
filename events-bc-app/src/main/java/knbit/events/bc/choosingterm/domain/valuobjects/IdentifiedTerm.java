@@ -1,6 +1,5 @@
-package knbit.events.bc.enrollment.domain.valueobjects;
+package knbit.events.bc.choosingterm.domain.valuobjects;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

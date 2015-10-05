@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.domain.valuobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -31,9 +32,6 @@ public final class TermCommands {
     public static class RemoveTerm {
 
         EventId eventId;
-        DateTime startDate;
-        Duration duration;
-        int capacity;
-        String location;
+        TermId termId;
     }
 }

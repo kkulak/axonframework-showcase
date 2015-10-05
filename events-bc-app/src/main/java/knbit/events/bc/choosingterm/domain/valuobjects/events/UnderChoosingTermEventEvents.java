@@ -1,6 +1,6 @@
 package knbit.events.bc.choosingterm.domain.valuobjects.events;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.readmodel.EventStatus;
@@ -38,6 +38,6 @@ public final class UnderChoosingTermEventEvents {
 
         EventId eventId;
         EventDetails eventDetails;
-        Collection<Term> terms;
+        Collection<IdentifiedTerm> terms;
     }
 }

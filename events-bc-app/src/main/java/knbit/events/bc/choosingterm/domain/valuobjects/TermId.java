@@ -1,4 +1,4 @@
-package knbit.events.bc.enrollment.domain.valueobjects;
+package knbit.events.bc.choosingterm.domain.valuobjects;
 
 import knbit.events.bc.common.domain.UUIDBasedIdentifier;
 

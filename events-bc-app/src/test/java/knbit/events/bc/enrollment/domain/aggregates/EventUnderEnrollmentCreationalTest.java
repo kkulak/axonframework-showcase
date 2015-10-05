@@ -3,28 +3,17 @@ package knbit.events.bc.enrollment.domain.aggregates;
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
-import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
-import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
-import knbit.events.bc.choosingterm.domain.valuobjects.Location;
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
-import knbit.events.bc.common.domain.enums.EventFrequency;
-import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.enrollment.domain.valueobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTerm;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
-
-import static knbit.events.bc.matchers.WithoutFieldMatcher.matchExactlyIgnoring;
 
 /**
  * Created by novy on 02.10.15.
@@ -49,22 +38,17 @@ public class EventUnderEnrollmentCreationalTest {
                 term
         );
 
-        final ImmutableList<EventUnderEnrollmentEvents.Created> expectedEvent = ImmutableList.of(
-                EventUnderEnrollmentEvents.Created.of(
-                        eventId,
-                        eventDetails,
-                        ImmutableList.of(identifiedTerm)
-                )
-        );
-
-
         fixture
                 .givenNoPriorActivity()
                 .when(
-                        EventUnderEnrollmentCommands.Create.of(eventId, eventDetails, ImmutableList.of(term))
+                        EventUnderEnrollmentCommands.Create.of(eventId, eventDetails, ImmutableList.of(identifiedTerm))
                 )
-                .expectEventsMatching(
-                        matchExactlyIgnoring("terms", expectedEvent)
+                .expectEvents(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(identifiedTerm)
+                        )
                 );
     }
 }

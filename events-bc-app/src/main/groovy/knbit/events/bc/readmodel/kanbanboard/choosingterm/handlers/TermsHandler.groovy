@@ -1,7 +1,6 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.Term
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,8 +26,7 @@ class TermsHandler {
         def query = [
                 domainId: event.eventId().value()
         ]
-        def term = event.term()
-        def termData = termDataFrom term
+        def termData = termDataFrom event
 
         termsCollection.update(query, [
                 $push: [terms: termData]
@@ -40,16 +38,18 @@ class TermsHandler {
         def query = [
                 domainId: event.eventId().value()
         ]
-        def term = event.term()
-        def termData = termDataFrom term
+        def termId = event.termId()
 
         termsCollection.update(query, [
-                $pull: [terms: termData]
+                $pull: [terms: [termId: termId.value()]]
         ])
     }
 
-    private static def termDataFrom(Term term) {
+    private static def termDataFrom(TermEvents.TermAdded event) {
+        def term = event.term()
+
         [
+                termId  : event.termId().value(),
                 date    : term.duration().start(),
                 duration: term.duration().duration().getStandardMinutes(),
                 capacity: term.capacity().value(),

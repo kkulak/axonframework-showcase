@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.domain.valuobjects.events;
 
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public final class TermEvents {
     public static class TermAdded {
 
         EventId eventId;
+        TermId termId;
         Term term;
     }
 
@@ -27,6 +29,6 @@ public final class TermEvents {
     public static class TermRemoved {
 
         EventId eventId;
-        Term term;
+        TermId termId;
     }
 }

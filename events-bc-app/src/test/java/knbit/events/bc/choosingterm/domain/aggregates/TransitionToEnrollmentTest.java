@@ -2,6 +2,7 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.TransitionToEnrollmentExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
@@ -30,9 +31,7 @@ public class TransitionToEnrollmentTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.underChoosingTermEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -73,16 +72,13 @@ public class TransitionToEnrollmentTest {
 
     @Test
     public void otherwiseItShouldProduceProperEvent() throws Exception {
-        final Term soleTerm = Term.of(
-                EventDuration.of(DateTime.now(), Duration.standardMinutes(60)),
-                Capacity.of(60),
-                Location.of("3.27A")
-        );
+        final Term soleTerm = TermBuilder.defaultTerm();
+        final TermId termId = TermId.of("termId");
 
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
-                        TermEvents.TermAdded.of(eventId, soleTerm)
+                        TermEvents.TermAdded.of(eventId, termId, soleTerm)
                 )
                 .when(
                         UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId)
@@ -91,7 +87,7 @@ public class TransitionToEnrollmentTest {
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(soleTerm)
+                                ImmutableList.of(IdentifiedTerm.of(termId, soleTerm))
                         )
                 );
     }

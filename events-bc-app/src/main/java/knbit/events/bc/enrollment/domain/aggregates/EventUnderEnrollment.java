@@ -1,13 +1,17 @@
 package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.Maps;
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.entities.Term;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
-import knbit.events.bc.enrollment.domain.valueobjects.*;
+import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -17,8 +21,6 @@ import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by novy on 02.10.15.
@@ -34,22 +36,10 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
     public EventUnderEnrollment(EventId eventId,
                                 EventDetails eventDetails,
-                                Collection<knbit.events.bc.choosingterm.domain.valuobjects.Term> terms) {
+                                Collection<IdentifiedTerm> terms) {
         apply(
-                EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, assignTermIdsTo(terms))
+                EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, terms)
         );
-    }
-
-    private Collection<IdentifiedTerm> assignTermIdsTo(
-            Collection<knbit.events.bc.choosingterm.domain.valuobjects.Term> terms) {
-
-        final Function<knbit.events.bc.choosingterm.domain.valuobjects.Term, IdentifiedTerm> assignRandomTermId =
-                term -> IdentifiedTerm.of(new TermId(), term);
-
-        return terms
-                .stream()
-                .map(assignRandomTermId)
-                .collect(Collectors.toList());
     }
 
     @EventSourcingHandler

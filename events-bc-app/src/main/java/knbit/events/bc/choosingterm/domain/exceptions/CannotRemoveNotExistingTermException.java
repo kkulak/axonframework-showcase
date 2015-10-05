@@ -1,6 +1,6 @@
 package knbit.events.bc.choosingterm.domain.exceptions;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 
 /**
@@ -8,9 +8,9 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
  */
 public class CannotRemoveNotExistingTermException extends RuntimeException {
 
-    private static final String ERROR_MESSAGE_TEMPLATE = "Event with id %s doesn't have term %s assigned";
+    private static final String ERROR_MESSAGE_TEMPLATE = "Event with id %s doesn't have term %s";
 
-    public CannotRemoveNotExistingTermException(EventId eventId, Term term) {
-        super(String.format(ERROR_MESSAGE_TEMPLATE, eventId, term));
+    public CannotRemoveNotExistingTermException(EventId eventId, TermId termId) {
+        super(String.format(ERROR_MESSAGE_TEMPLATE, eventId, termId));
     }
 }

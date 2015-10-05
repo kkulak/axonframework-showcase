@@ -2,7 +2,7 @@ package knbit.events.bc.enrollment.domain.exceptions;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.valueobjects.TermId;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 
 /**
  * Created by novy on 03.10.15.
