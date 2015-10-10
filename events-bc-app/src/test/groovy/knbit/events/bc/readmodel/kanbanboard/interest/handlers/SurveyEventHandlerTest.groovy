@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
@@ -65,7 +66,7 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         when:
         objectUnderTest.on(
                 SurveyEvents.VotedUp.of(
-                        eventId, Attendee.of("fname", "lname")
+                        eventId, Attendee.of(new MemberId())
                 )
         )
 
@@ -93,7 +94,7 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         when:
         objectUnderTest.on(
                 SurveyEvents.VotedDown.of(
-                        eventId, Attendee.of("fname", "lname")
+                        eventId, Attendee.of(new MemberId())
                 )
         )
 

@@ -2,6 +2,7 @@ package knbit.events.bc.interest.web;
 
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.AttendeeAnswer;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.SubmittedAnswer;
@@ -40,7 +41,8 @@ public class VotingController {
 
     private Object prepareCompleteQuestionnaireCommand(
             String eventId, AttendeeDTO attendeeDTO, Optional<List<SubmittedAnswerDTO>> answers) {
-        final Attendee attendee = Attendee.of(attendeeDTO.getFirstName(), attendeeDTO.getLastName());
+        final MemberId memberId = MemberId.of(attendeeDTO.getMemberId());
+        final Attendee attendee = Attendee.of(memberId);
         final EventId id = EventId.of(eventId);
         final List<SubmittedAnswerDTO> answerDTOs = answers.get();
         final List<SubmittedAnswer> submittedAnswers = answerDTOs.stream()

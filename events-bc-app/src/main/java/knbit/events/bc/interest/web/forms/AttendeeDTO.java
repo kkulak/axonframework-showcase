@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 public class AttendeeDTO {
 
-    @NotBlank private String firstName;
-    @NotBlank private String lastName;
-
+    @NotBlank
+    String memberId;
 }

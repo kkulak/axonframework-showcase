@@ -1,5 +1,6 @@
 package knbit.events.bc.common.domain.valueobjects;
 
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -11,6 +12,5 @@ import lombok.experimental.Accessors;
 @Value(staticConstructor = "of")
 public class Attendee {
 
-    private final String firstName;
-    private final String lastName;
+    MemberId memberId;
 }

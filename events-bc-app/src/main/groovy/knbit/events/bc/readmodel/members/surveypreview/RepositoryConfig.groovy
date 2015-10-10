@@ -13,4 +13,8 @@ class RepositoryConfig {
         db.surveyEventsCollection
     }
 
+    @Bean(name = "survey-votes")
+    def DBCollection surveyVotesCollection(DB db) {
+        db.surveyVotesCollection
+    }
 }

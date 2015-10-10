@@ -1,8 +1,8 @@
 package knbit.events.bc.readmodel.members.surveypreview
 
-import com.mongodb.DBCollection
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
@@ -11,19 +11,18 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(value = "/events")
 class MembersInterestViewModelController {
 
-    def surveyEventsCollection
+    def InterestMemberViewModelQuery viewModelQuery
 
     @Autowired
-    MembersInterestViewModelController(
-            @Qualifier("survey-events") DBCollection surveyCollection) {
-
-        this.surveyEventsCollection = surveyCollection
+    MembersInterestViewModelController(InterestMemberViewModelQuery viewModelQuery) {
+        this.viewModelQuery = viewModelQuery
     }
 
-    @RequestMapping(value = "/survey", method = RequestMethod.GET)
-    def surveyEvents() {
-        surveyEventsCollection.find()
-                .toArray()
+    @RequestMapping(value = "/survey/{memberId}", method = RequestMethod.GET)
+    def surveyEvents(@PathVariable("memberId") String memberId) {
+        viewModelQuery.queryFor(
+                MemberId.of(memberId)
+        )
     }
 
 }

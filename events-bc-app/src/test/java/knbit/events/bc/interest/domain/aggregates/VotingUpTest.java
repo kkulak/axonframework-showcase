@@ -4,13 +4,15 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.interest.builders.*;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.WithFixedThresholdPolicy;
-import knbit.events.bc.interest.domain.valueobjects.events.*;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +38,7 @@ public class VotingUpTest {
     @Test
     public void shouldProduceSurveyVotedUpEventGivenVoteUpCommand() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(
@@ -72,7 +74,7 @@ public class VotingUpTest {
     @Test
     public void shouldNotBeAbleToVoteUpTwice() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(
@@ -105,7 +107,7 @@ public class VotingUpTest {
     @Test
     public void shouldNotBeAbleToVoteUpAfterVotingDown() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(
@@ -156,7 +158,7 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname1", "lastname1")
+                                        Attendee.of(new MemberId())
                                 )
                                 .build(),
 
@@ -164,7 +166,7 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname2", "lastname2")
+                                        Attendee.of(new MemberId())
                                 )
                                 .build()
                 )
@@ -173,7 +175,9 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname3", "lastname3")
+                                        Attendee.of(
+                                                MemberId.of("memberId")
+                                        )
                                 )
                                 .build()
                 )
@@ -184,7 +188,10 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname3", "lastname3")
+                                        Attendee.of(
+                                                MemberId.of("memberId")
+                                        )
+
                                 )
                                 .build()
                 );
@@ -210,7 +217,7 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname1", "lastname1")
+                                        Attendee.of(new MemberId())
                                 )
                                 .build(),
 
@@ -221,7 +228,7 @@ public class VotingUpTest {
                                 .instance()
                                 .eventId(eventId)
                                 .attendee(
-                                        Attendee.of("firstname2", "lastname2")
+                                        Attendee.of(MemberId.of("memberId"))
 
                                 )
                                 .build()
@@ -230,7 +237,7 @@ public class VotingUpTest {
                         SurveyVotedUpEventBuilder
                                 .instance()
                                 .attendee(
-                                        Attendee.of("firstname2", "lastname2")
+                                        Attendee.of(MemberId.of("memberId"))
                                 )
                                 .build()
                 );

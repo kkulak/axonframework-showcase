@@ -1,9 +1,7 @@
-package knbit.events.bc.readmodel.members.surveypreview
+package knbit.events.bc.readmodel.members.surveypreview.handlers
 
 import com.mongodb.DBCollection
-
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
-
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -17,7 +15,7 @@ class MemberSurveyEventHandler {
     def DBCollection collection
 
     @Autowired
-    SurveyEventHandler(@Qualifier("survey-events") DBCollection collection) {
+    MemberSurveyEventHandler(@Qualifier("survey-events") DBCollection collection) {
         this.collection = collection
     }
 
@@ -27,7 +25,7 @@ class MemberSurveyEventHandler {
         def eventDetails = event.eventDetails()
 
         collection.insert([
-                domainId      : eventId.value(),
+                eventId       : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
@@ -43,32 +41,33 @@ class MemberSurveyEventHandler {
         def questionsArray = flatArray(questions)
 
         collection.update(
-                [domainId: domainId],
+                [eventId: domainId],
                 [$set: [questions: questionsArray]]
         )
+    }
 
+    @EventHandler
+    def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        def eventId = event.eventId()
+
+        collection.remove([eventId: eventId.value()])
     }
 
     private static def flatArray(List<Question> questions) {
-        def questionsArray = []
 
-        questions.each {
-            def data = it.questionData()
-            def answers = []
+        questions.collect {
+            def questionData = it.questionData()
 
-            data.possibleAnswers().each {
-                answers.push(it.value())
-            }
+            def answers = questionData
+                    .possibleAnswers()
+                    .collect { it.value() }
 
-            questionsArray.push([
-                    title       : data.title().value(),
-                    description : data.description().value(),
-                    type        : data.answerType(),
-                    answers     : answers
-            ])
+            [
+                    title      : questionData.title().value(),
+                    description: questionData.description().value(),
+                    type       : questionData.answerType(),
+                    answers    : answers
+            ]
         }
-
-        questionsArray
     }
-
 }
