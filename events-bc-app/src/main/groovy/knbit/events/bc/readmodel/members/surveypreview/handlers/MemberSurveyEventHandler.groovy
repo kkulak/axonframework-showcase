@@ -1,9 +1,7 @@
 package knbit.events.bc.readmodel.members.surveypreview.handlers
 
 import com.mongodb.DBCollection
-
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
-
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -27,7 +25,7 @@ class MemberSurveyEventHandler {
         def eventDetails = event.eventDetails()
 
         collection.insert([
-                domainId      : eventId.value(),
+                eventId       : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
@@ -61,10 +59,10 @@ class MemberSurveyEventHandler {
             }
 
             questionsArray.push([
-                    title       : data.title().value(),
-                    description : data.description().value(),
-                    type        : data.answerType(),
-                    answers     : answers
+                    title      : data.title().value(),
+                    description: data.description().value(),
+                    type       : data.answerType(),
+                    answers    : answers
             ])
         }
 

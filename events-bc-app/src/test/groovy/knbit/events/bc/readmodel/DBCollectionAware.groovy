@@ -17,6 +17,13 @@ trait DBCollectionAware {
         collectionFor(collectionName)
     }
 
+    def stripMongoIdFrom(dbObject) {
+        def asMap = dbObject.toMap()
+        asMap.remove("_id")
+
+        asMap
+    }
+
     private def collectionFor(String collectionName) {
         def GMongo gMongo = new GMongo(
                 new Fongo("test-fongo").getMongo()
