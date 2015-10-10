@@ -1,10 +1,8 @@
-package knbit.events.bc.readmodel.members.surveypreview.handlers
+package knbit.events.bc.readmodel.members.surveypreview
 
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.readmodel.DBCollectionAware
-import knbit.events.bc.readmodel.members.surveypreview.InterestMemberViewModelQuery
-import knbit.events.bc.readmodel.members.surveypreview.VoteType
 import spock.lang.Specification
 
 /**
@@ -30,13 +28,12 @@ class InterestMemberViewModelQueryTest extends Specification implements DBCollec
 
     def "if member voted for given event, it should include vote result in query result"() {
         given:
-        def allEvents = [
+        surveyCollection << [
                 [eventId: 'event1', foo: 'foo'],
                 [eventId: 'event2', foo: 'bar'],
                 [eventId: 'event3', foo: 'baz'],
                 [eventId: 'event4', foo: 'foobar']
         ]
-        surveyCollection << allEvents
 
         votesCollection << [
                 [eventId: 'event2', memberId: memberId.value(), voted: VoteType.POSITIVE],
