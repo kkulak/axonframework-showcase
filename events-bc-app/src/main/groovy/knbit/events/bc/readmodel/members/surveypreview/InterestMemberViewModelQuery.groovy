@@ -2,6 +2,7 @@ package knbit.events.bc.readmodel.members.surveypreview
 
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
@@ -15,6 +16,7 @@ class InterestMemberViewModelQuery {
     private final DBCollection surveyCollection
     private final DBCollection votesCollection
 
+    @Autowired
     InterestMemberViewModelQuery(@Qualifier("survey-events") DBCollection surveyCollection,
                                  @Qualifier("survey-votes") DBCollection votesCollection) {
         this.votesCollection = votesCollection
