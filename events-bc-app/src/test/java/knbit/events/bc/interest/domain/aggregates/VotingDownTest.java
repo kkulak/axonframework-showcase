@@ -1,8 +1,10 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.interest.builders.*;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
@@ -10,7 +12,6 @@ import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedE
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
-import knbit.events.bc.common.domain.valueobjects.Attendee;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class VotingDownTest {
     @Test
     public void shouldProduceSurveyVotedDownEventGivenVoteDownCommand() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(
@@ -71,7 +72,7 @@ public class VotingDownTest {
     @Test
     public void shouldNotBeAbleToVoteDownTwice() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(
@@ -103,7 +104,7 @@ public class VotingDownTest {
     @Test
     public void shouldNotBeAbleToVoteUpAfterVotingUp() throws Exception {
 
-        final Attendee attendee = Attendee.of("firstname", "lastname");
+        final Attendee attendee = Attendee.of(new MemberId());
 
         fixture
                 .given(

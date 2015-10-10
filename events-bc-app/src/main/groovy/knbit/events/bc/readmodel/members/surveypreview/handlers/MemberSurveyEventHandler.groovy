@@ -1,4 +1,4 @@
-package knbit.events.bc.readmodel.members.surveypreview
+package knbit.events.bc.readmodel.members.surveypreview.handlers
 
 import com.mongodb.DBCollection
 

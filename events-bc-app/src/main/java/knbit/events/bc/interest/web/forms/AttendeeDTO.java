@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.NotBlank;
 @AllArgsConstructor
 public class AttendeeDTO {
 
+    @NotBlank String memberId;
+    // todo: got rid of firstname and lastname later
     @NotBlank private String firstName;
     @NotBlank private String lastName;
 

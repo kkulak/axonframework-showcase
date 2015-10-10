@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.MultipleChoiceAnswerPolicy
 import knbit.events.bc.interest.domain.policies.completingquestionnaire.SingleChoiceAnswerPolicy
@@ -135,7 +136,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on(
                 QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
-                        Attendee.of("fname", "lname"),
+                        Attendee.of(new MemberId()),
                         [
                                 AnsweredQuestion.of(
                                         QuestionData.of(
@@ -179,7 +180,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on(
                 QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
-                        Attendee.of("fname", "lname"),
+                        Attendee.of(new MemberId()),
                         [
                                 AnsweredQuestion.of(
                                         QuestionData.of(
@@ -220,7 +221,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on(
                 QuestionnaireEvents.CompletedByAttendee.of(
                         eventId,
-                        Attendee.of("fname", "lname"),
+                        Attendee.of(new MemberId()),
                         [
                                 AnsweredQuestion.of(
                                         QuestionData.of(

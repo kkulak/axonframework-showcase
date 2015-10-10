@@ -2,14 +2,17 @@ package knbit.events.bc.interest.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.interest.builders.*;
+import knbit.events.bc.interest.domain.enums.AnswerType;
 import knbit.events.bc.interest.domain.exceptions.*;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
-import knbit.events.bc.interest.domain.valueobjects.events.*;
-import knbit.events.bc.interest.domain.enums.AnswerType;
-import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
@@ -57,7 +60,7 @@ public class CompletingQuestionnaireTest {
         );
 
         attendeeAnswer = AttendeeAnswer.of(
-                Attendee.of("firstname", "lastname"),
+                Attendee.of(new MemberId()),
                 ImmutableList.of(soleAnswer)
         );
 
