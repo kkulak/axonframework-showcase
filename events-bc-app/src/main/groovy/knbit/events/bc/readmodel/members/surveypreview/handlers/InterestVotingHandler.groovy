@@ -8,10 +8,12 @@ import knbit.events.bc.readmodel.members.surveypreview.VoteType
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Component
 
 /**
  * Created by novy on 10.10.15.
  */
+@Component
 class InterestVotingHandler {
 
     def DBCollection collection

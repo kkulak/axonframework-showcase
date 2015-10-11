@@ -38,8 +38,8 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         enrollmentEventsCollection << [
                 eventId: eventId.value(),
                 terms  : [
-                        [termId: termId.value(), enrolled: 0],
-                        [termId: 'another term', enrolled: 666]
+                        [termId: termId.value(), participantsEnrolled: 0],
+                        [termId: 'another term', participantsEnrolled: 666]
                 ]
         ]
 
@@ -49,8 +49,8 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         then:
         def eventData = enrollmentEventsCollection.findOne([eventId: eventId.value()])
         eventData.terms == [
-                [termId: termId.value(), enrolled: 1],
-                [termId: 'another term', enrolled: 666]
+                [termId: termId.value(), participantsEnrolled: 1],
+                [termId: 'another term', participantsEnrolled: 666]
         ]
     }
 
@@ -74,8 +74,8 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         enrollmentEventsCollection << [
                 eventId: eventId.value(),
                 terms  : [
-                        [termId: termId.value(), enrolled: 1],
-                        [termId: 'another term', enrolled: 666]
+                        [termId: termId.value(), participantsEnrolled: 1],
+                        [termId: 'another term', participantsEnrolled: 666]
                 ]
         ]
 
@@ -85,8 +85,8 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         then:
         def eventData = enrollmentEventsCollection.findOne([eventId: eventId.value()])
         eventData.terms == [
-                [termId: termId.value(), enrolled: 0],
-                [termId: 'another term', enrolled: 666]
+                [termId: termId.value(), participantsEnrolled: 0],
+                [termId: 'another term', participantsEnrolled: 666]
         ]
     }
 

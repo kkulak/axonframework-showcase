@@ -52,7 +52,7 @@ class EnrollmentMemberHandler {
     private def changeParticipantsCountBy(EventId eventId, TermId termId, int changeBy) {
         enrollmentEvents.update(
                 [eventId: eventId.value(), 'terms.termId': termId.value()],
-                [$inc: ['terms.$.enrolled': changeBy]]
+                [$inc: ['terms.$.participantsEnrolled': changeBy]]
         )
     }
 }

@@ -34,6 +34,6 @@ class OnEnrollmentCreationHandler {
     }
 
     private static def termDataFrom(Collection<IdentifiedTerm> terms) {
-        [terms: terms.collect { TermWrapper.asMap(it) + [enrolled: 0] }]
+        [terms: terms.collect { TermWrapper.asMap(it) + [participantsEnrolled: 0] }]
     }
 }

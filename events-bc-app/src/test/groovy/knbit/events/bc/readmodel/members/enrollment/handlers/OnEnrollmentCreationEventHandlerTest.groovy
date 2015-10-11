@@ -54,20 +54,20 @@ class OnEnrollmentCreationEventHandlerTest extends Specification implements DBCo
                 eventFrequency: eventDetails.frequency(),
                 terms         : [
                         [
-                                termId  : firstTerm.termId().value(),
-                                date    : firstTerm.duration().start(),
-                                duration: firstTerm.duration().duration().getStandardMinutes(),
-                                capacity: firstTerm.capacity().value(),
-                                location: firstTerm.location().value(),
-                                enrolled: 0
+                                termId              : firstTerm.termId().value(),
+                                date                : firstTerm.duration().start(),
+                                duration            : firstTerm.duration().duration().getStandardMinutes(),
+                                capacity            : firstTerm.capacity().value(),
+                                location            : firstTerm.location().value(),
+                                participantsEnrolled: 0
                         ],
                         [
-                                termId  : secondTerm.termId().value(),
-                                date    : secondTerm.duration().start(),
-                                duration: secondTerm.duration().duration().getStandardMinutes(),
-                                capacity: secondTerm.capacity().value(),
-                                location: secondTerm.location().value(),
-                                enrolled: 0
+                                termId              : secondTerm.termId().value(),
+                                date                : secondTerm.duration().start(),
+                                duration            : secondTerm.duration().duration().getStandardMinutes(),
+                                capacity            : secondTerm.capacity().value(),
+                                location            : secondTerm.location().value(),
+                                participantsEnrolled: 0
                         ]
                 ]
         ]
