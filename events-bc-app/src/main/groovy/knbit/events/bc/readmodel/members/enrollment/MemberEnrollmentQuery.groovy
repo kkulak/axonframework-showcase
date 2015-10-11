@@ -33,22 +33,29 @@ class MemberEnrollmentQuery {
     }
 
     private def addUserPreferencesTo(eventWithoutPreferences, memberId) {
-        def termIdOrNull = preferredTermOrNull(eventWithoutPreferences.eventId, memberId.value())
-        def termsWithEnrollmentInformationAssigned =
-                eventWithoutPreferences
-                        .terms
-                        .collect { it + [enrolled: it.termId == termIdOrNull] }
+        def optionalTermId = possiblyPreferredTerm(eventWithoutPreferences.eventId, memberId.value())
 
-        def preferences = [terms: termsWithEnrollmentInformationAssigned]
-        if (termIdOrNull) {
-            preferences.chosenTerm = termIdOrNull
+        def memberEnrolledForTerm = {
+            term -> optionalTermId.map({ it == term.termId }).orElse(false)
         }
 
-        eventWithoutPreferences + preferences
+        def termsWithEnrollmentInformationAssigned =
+                eventWithoutPreferences.terms
+                        .collect { it + [enrolled: memberEnrolledForTerm(it)] }
+
+
+        def preferences = {
+            def terms = [terms: termsWithEnrollmentInformationAssigned]
+            optionalTermId.map({ [chosenTerm: it] + terms }).orElse(terms)
+        }
+
+        eventWithoutPreferences + preferences()
     }
 
-    private def preferredTermOrNull(eventId, memberId) {
+    private def Optional<String> possiblyPreferredTerm(eventId, memberId) {
         def possibleUserPreference = enrollmentParticipantCollection.findOne([eventId: eventId, memberId: memberId])
-        possibleUserPreference ? possibleUserPreference.termId : null
+
+        Optional.ofNullable(possibleUserPreference)
+                .map({ it.termId })
     }
 }
