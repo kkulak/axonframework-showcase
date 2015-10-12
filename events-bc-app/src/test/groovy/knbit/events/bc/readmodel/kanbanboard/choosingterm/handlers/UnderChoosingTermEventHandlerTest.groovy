@@ -33,14 +33,14 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         def previewExcludingMongoId = choosingTermsPreview.toMap()
         previewExcludingMongoId.remove "_id"
 
         previewExcludingMongoId == [
-                domainId      : eventId.value(),
+                eventId       : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),

@@ -30,7 +30,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
     def "should update participantsLimit when needed"() {
         given:
         collection << [
-                domainId: eventId.value(),
+                eventId: eventId.value(),
                 terms   : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
@@ -42,7 +42,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on TermModifyingEvents.ParticipantLimitSet.of(eventId, termId, participantsLimit)
 
         then:
-        def eventPreview = collection.findOne(domainId: eventId.value())
+        def eventPreview = collection.findOne(eventId: eventId.value())
         eventPreview.terms == [
                 [
                         termId           : termId.value(),
@@ -55,7 +55,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
     def "should update lecturer when needed"() {
         given:
         collection << [
-                domainId: eventId.value(),
+                eventId: eventId.value(),
                 terms   : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
@@ -67,7 +67,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on TermModifyingEvents.LecturerAssigned.of(eventId, termId, lecturer)
 
         then:
-        def eventPreview = collection.findOne(domainId: eventId.value())
+        def eventPreview = collection.findOne(eventId: eventId.value())
         eventPreview.terms == [
                 [
                         termId  : termId.value(),

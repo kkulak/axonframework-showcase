@@ -31,7 +31,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
         surveyCollection << [
                 [
                         _id           : 'anId',
-                        domainId      : "eventId",
+                        eventId       : "eventId",
                         name          : "name",
                         description   : "desc",
                         eventType     : EventType.WORKSHOP,
@@ -41,7 +41,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                 ],
 
                 [
-                        domainId: "dummyId"
+                        eventId: "dummyId"
                 ]
         ]
 
@@ -49,7 +49,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
 
                 [
                         _id           : 'questionId2',
-                        domainId      : "eventId",
+                        eventId       : "eventId",
                         questionNumber: 2,
                         title         : "title",
                         description   : "desc",
@@ -59,7 +59,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
 
                 [
                         _id           : 'questionId1',
-                        domainId      : "eventId",
+                        eventId       : "eventId",
                         questionNumber: 1,
                         title         : "title",
                         description   : "desc",
@@ -79,7 +79,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
         then:
         mergedData == [
                 _id           : 'anId',
-                domainId      : "eventId",
+                eventId       : "eventId",
                 name          : "name",
                 description   : "desc",
                 eventType     : EventType.WORKSHOP,
@@ -89,7 +89,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                 questions     : [
                         [
                                 _id           : 'questionId1',
-                                domainId      : "eventId",
+                                eventId       : "eventId",
                                 questionNumber: 1,
                                 title         : "title",
                                 description   : "desc",
@@ -102,7 +102,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                         ],
                         [
                                 _id           : 'questionId2',
-                                domainId      : "eventId",
+                                eventId       : "eventId",
                                 questionNumber: 2,
                                 title         : "title",
                                 description   : "desc",
@@ -120,7 +120,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
         surveyCollection << [
                 [
                         _id           : 'anId',
-                        domainId      : "eventId",
+                        eventId       : "eventId",
                         name          : "name",
                         description   : "desc",
                         eventType     : EventType.WORKSHOP,
@@ -130,7 +130,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                 ],
 
                 [
-                        domainId: "dummyId"
+                        eventId: "dummyId"
                 ]
         ]
 
@@ -140,7 +140,7 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
         then:
         mergedData == [
                 _id           : 'anId',
-                domainId      : "eventId",
+                eventId       : "eventId",
                 name          : "name",
                 description   : "desc",
                 eventType     : EventType.WORKSHOP,

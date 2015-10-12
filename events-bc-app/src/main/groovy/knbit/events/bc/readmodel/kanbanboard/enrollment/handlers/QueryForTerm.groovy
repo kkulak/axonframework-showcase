@@ -10,7 +10,7 @@ trait QueryForTerm {
 
     def queryFor(EventId eventId, TermId termId) {
         [
-                domainId      : eventId.value(),
+                eventId       : eventId.value(),
                 'terms.termId': termId.value()
         ]
     }

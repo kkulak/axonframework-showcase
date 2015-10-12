@@ -37,8 +37,8 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
     def "should add new term based on given event"() {
         given:
         collection << [
-                domainId: eventId.value(),
-                terms   : []
+                eventId: eventId.value(),
+                terms  : []
         ]
 
         when:
@@ -48,7 +48,7 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.terms == [
@@ -72,8 +72,8 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
                 location: '3.27 A'
         ]
         collection << [
-                domainId: eventId.value(),
-                terms   : [termData]
+                eventId: eventId.value(),
+                terms  : [termData]
         ]
 
         when:
@@ -83,7 +83,7 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.terms == []

@@ -24,7 +24,7 @@ class EnrollmentPreviewController {
     }
 
     @RequestMapping(value = "/{eventId}/enrollment", method = RequestMethod.GET)
-    def enrollmentPreviewFor(@PathVariable("eventId")  eventId) {
-        enrollmentCollection.findOne([domainId: eventId])
+    def enrollmentPreviewFor(@PathVariable("eventId") eventId) {
+        enrollmentCollection.findOne([eventId: eventId])
     }
 }

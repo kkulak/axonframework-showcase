@@ -51,7 +51,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["title"] == "title"
@@ -82,7 +82,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["title"] == "title"
@@ -108,7 +108,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["title"] == "title"
@@ -122,7 +122,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 title       : "title",
                 description : "desc",
                 questionType: AnswerType.SINGLE_CHOICE,
@@ -152,7 +152,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["answers"] == [
@@ -165,7 +165,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 title       : "title",
                 description : "desc",
                 questionType: AnswerType.MULTIPLE_CHOICE,
@@ -196,7 +196,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["answers"] == [
@@ -210,7 +210,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 title       : "title",
                 description : "desc",
                 questionType: AnswerType.TEXT,
@@ -237,7 +237,7 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
 
         then:
         def question = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         question["answers"] == ["ans1", "ans2", "ans3", "ans4"]

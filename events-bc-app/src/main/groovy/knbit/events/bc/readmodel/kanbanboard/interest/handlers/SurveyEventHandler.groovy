@@ -2,9 +2,7 @@ package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
-
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
-
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -26,9 +24,9 @@ class SurveyEventHandler {
 
     @EventHandler
     def on(SurveyStartingEvents.Started event) {
-        def domainId = event.eventId().value()
+        def eventId = event.eventId().value()
 
-        startVoting(domainId)
+        startVoting(eventId)
     }
 
     @EventHandler
@@ -43,23 +41,23 @@ class SurveyEventHandler {
         voteDown(eventId.value())
     }
 
-    private def startVoting(domainId) {
+    private def startVoting(eventId) {
         collection.update(
-                [domainId: domainId],
+                [eventId: eventId],
                 [$set: [votedUp: 0, votedDown: 0]]
         )
     }
 
-    private def voteUp(domainId) {
+    private def voteUp(eventId) {
         collection.update(
-                [domainId: domainId],
+                [eventId: eventId],
                 [$inc: [votedUp: 1]]
         )
     }
 
-    private def voteDown(domainId) {
+    private def voteDown(eventId) {
         collection.update(
-                [domainId: domainId],
+                [eventId: eventId],
                 [$inc: [votedDown: 1]]
         )
     }

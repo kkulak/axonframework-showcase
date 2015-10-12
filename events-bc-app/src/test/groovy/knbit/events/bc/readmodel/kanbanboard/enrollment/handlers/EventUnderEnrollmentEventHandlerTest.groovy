@@ -45,14 +45,14 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
 
         then:
         def enrollmentPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         def withoutMongoDBId = enrollmentPreview.toMap()
         withoutMongoDBId.remove "_id"
 
         withoutMongoDBId == [
-                domainId      : eventId.value(),
+                eventId      : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),

@@ -1,8 +1,6 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers
 
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId
-import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents
 import org.axonframework.eventhandling.annotation.EventHandler

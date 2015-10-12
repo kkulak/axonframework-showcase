@@ -1,8 +1,8 @@
 package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
 import com.mongodb.DBCollection
-
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -24,15 +24,9 @@ class CreatingInterestAwareEventEventHandler {
 
     @EventHandler
     def on(InterestAwareEvents.Created event) {
-        def eventId = event.eventId()
-        def eventDetails = event.eventDetails()
+        def eventId = [eventId: event.eventId().value()]
+        def eventDetails = EventDetailsWrapper.asMap(event.eventDetails())
 
-        collection.insert([
-                domainId      : eventId.value(),
-                name          : eventDetails.name().value(),
-                description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency()
-        ])
+        collection.insert(eventId + eventDetails)
     }
 }

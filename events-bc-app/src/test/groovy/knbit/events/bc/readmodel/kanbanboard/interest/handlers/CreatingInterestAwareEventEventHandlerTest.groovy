@@ -33,10 +33,10 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification implement
 
         then:
         def interestAwareEventViewModel = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
-        interestAwareEventViewModel["domainId"] == "eventId"
+        interestAwareEventViewModel["eventId"] == "eventId"
         interestAwareEventViewModel["name"] == eventDetails.name().value()
         interestAwareEventViewModel["description"] == eventDetails.description().value()
         interestAwareEventViewModel["eventType"] == eventDetails.type()

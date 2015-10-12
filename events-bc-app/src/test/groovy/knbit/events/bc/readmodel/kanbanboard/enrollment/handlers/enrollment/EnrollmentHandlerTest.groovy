@@ -32,7 +32,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         given:
         def participantId = MemberId.of("memberId")
         collection << [
-                domainId: eventId.value(),
+                eventId: eventId.value(),
                 terms   : [
                         [
                                 termId      : termId.value(),
@@ -48,7 +48,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         objectUnderTest.on EnrollmentEvents.ParticipantDisenrolledFromTerm.of(eventId, termId, participantId)
 
         then:
-        def enrollmentPreview = collection.findOne(domainId: eventId.value())
+        def enrollmentPreview = collection.findOne(eventId: eventId.value())
         enrollmentPreview.terms == [
                 [
                         termId      : termId.value(),
@@ -63,7 +63,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         given:
         def memberId = MemberId.of("memberId")
         collection << [
-                domainId: eventId.value(),
+                eventId: eventId.value(),
                 terms   : [
                         [termId: termId.value(), participants: []]
                 ]
@@ -79,7 +79,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         objectUnderTest.on EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, termId, memberId)
 
         then:
-        def enrollmentPreview = collection.findOne(domainId: eventId.value())
+        def enrollmentPreview = collection.findOne(eventId: eventId.value())
         enrollmentPreview.terms == [
                 [
                         termId      : termId.value(),
