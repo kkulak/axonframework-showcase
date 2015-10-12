@@ -41,7 +41,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         entryWithoutMongoId.remove '_id'
 
         entryWithoutMongoId == [
-                eventId  : eventId.value(),
+                eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
                 eventFrequency : eventDetails.frequency(),

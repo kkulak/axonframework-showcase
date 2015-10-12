@@ -1,46 +1,37 @@
-package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers
+package knbit.events.bc.readmodel
 
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents
-import org.axonframework.eventhandling.annotation.EventHandler
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.stereotype.Component
 
 /**
- * Created by novy on 05.10.15.
+ * Created by novy on 12.10.15.
  */
+class TermEditor implements QueryForTerm {
 
-@Component
-class ModifyingTermEventHandler implements QueryForTerm {
+    def DBCollection collection
 
-    def DBCollection enrollmentCollection
-
-    @Autowired
-    ModifyingTermEventHandler(@Qualifier("enrollment") DBCollection enrollmentCollection) {
-        this.enrollmentCollection = enrollmentCollection
+    TermEditor(DBCollection collection) {
+        this.collection = collection
     }
 
-    @EventHandler
-    def on(TermModifyingEvents.LecturerAssigned event) {
+    def handleLecturerAssigned(TermModifyingEvents.LecturerAssigned event) {
         def eventId = event.eventId()
         def termId = event.termId()
         def lecturer = event.lecturer()
 
-        enrollmentCollection.update(
+        collection.update(
                 queryFor(eventId, termId),
                 [$set: ['terms.$.lecturer': lecturerDataFrom(lecturer)]]
         )
     }
 
-    @EventHandler
-    def on(TermModifyingEvents.ParticipantLimitSet event) {
+    def handleParticipantLimitSet(TermModifyingEvents.ParticipantLimitSet event) {
         def eventId = event.eventId()
         def termId = event.termId()
         def participantsLimit = event.participantsLimit()
 
-        enrollmentCollection.update(
+        collection.update(
                 queryFor(eventId, termId),
                 [$set: ['terms.$.participantsLimit': participantsLimit.value()]]
         )

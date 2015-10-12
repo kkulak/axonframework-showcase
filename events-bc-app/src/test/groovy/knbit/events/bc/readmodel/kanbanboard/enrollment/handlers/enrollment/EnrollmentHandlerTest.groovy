@@ -33,7 +33,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         def participantId = MemberId.of("memberId")
         collection << [
                 eventId: eventId.value(),
-                terms   : [
+                terms  : [
                         [
                                 termId      : termId.value(),
                                 participants: [
@@ -64,7 +64,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
         def memberId = MemberId.of("memberId")
         collection << [
                 eventId: eventId.value(),
-                terms   : [
+                terms  : [
                         [termId: termId.value(), participants: []]
                 ]
         ]

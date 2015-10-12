@@ -52,7 +52,7 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
         withoutMongoDBId.remove "_id"
 
         withoutMongoDBId == [
-                eventId      : eventId.value(),
+                eventId       : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),

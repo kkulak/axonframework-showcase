@@ -8,7 +8,6 @@ import knbit.events.bc.common.dispatcher.MessageDispatcher
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.eventproposal.domain.sagas.ReservationNotifications
 import knbit.events.bc.interest.builders.EventDetailsBuilder
-import spock.lang.MockingApi
 import spock.lang.Specification
 
 class ReservationNotificationSagaUnitTest extends Specification {

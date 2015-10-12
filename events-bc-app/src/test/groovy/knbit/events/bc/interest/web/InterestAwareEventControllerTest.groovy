@@ -1,12 +1,9 @@
 package knbit.events.bc.interest.web
 
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands
-
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.enums.AnswerType
-
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands
-
 import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription

@@ -12,17 +12,17 @@ import spock.lang.Specification
 /**
  * Created by novy on 05.10.15.
  */
-class ModifyingTermEventHandlerTest extends Specification implements DBCollectionAware {
+class EventMasterReadModelTermEventHandlerTest extends Specification implements DBCollectionAware {
 
     def DBCollection collection
-    def ModifyingTermEventHandler objectUnderTest
+    def EventMasterReadModelTermEventHandler objectUnderTest
 
     def EventId eventId
     def TermId termId
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new ModifyingTermEventHandler(collection)
+        objectUnderTest = new EventMasterReadModelTermEventHandler(collection)
         eventId = EventId.of("eventId")
         termId = TermId.of("termId")
     }
@@ -31,7 +31,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         given:
         collection << [
                 eventId: eventId.value(),
-                terms   : [
+                terms  : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
                 ]
@@ -56,7 +56,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         given:
         collection << [
                 eventId: eventId.value(),
-                terms   : [
+                terms  : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
                 ]

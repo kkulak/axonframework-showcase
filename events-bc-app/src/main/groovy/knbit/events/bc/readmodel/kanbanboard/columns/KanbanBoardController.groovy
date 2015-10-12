@@ -22,7 +22,7 @@ class KanbanBoardController {
     @Authorized(Role.ADMIN)
     def kanbanBoard() {
         collection.find().toArray()
-            .groupBy { event -> event['eventStatus'] }
+                .groupBy { event -> event['eventStatus'] }
     }
 
 }

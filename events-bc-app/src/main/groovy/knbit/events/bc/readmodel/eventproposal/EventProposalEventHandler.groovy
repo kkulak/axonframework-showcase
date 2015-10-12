@@ -20,12 +20,12 @@ class EventProposalEventHandler {
     @EventHandler
     def on(EventProposalEvents.EventProposed event) {
         collection.insert([
-                domainId        : event.eventProposalId().value(),
-                name            : event.name().value(),
-                description     : event.description().value(),
-                eventType       : event.eventType(),
-                eventFrequency  : event.eventFrequency(),
-                state           : event.proposalState()
+                domainId      : event.eventProposalId().value(),
+                name          : event.name().value(),
+                description   : event.description().value(),
+                eventType     : event.eventType(),
+                eventFrequency: event.eventFrequency(),
+                state         : event.proposalState()
         ])
     }
 

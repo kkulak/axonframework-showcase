@@ -1,4 +1,4 @@
-package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers
+package knbit.events.bc.readmodel
 
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventId
