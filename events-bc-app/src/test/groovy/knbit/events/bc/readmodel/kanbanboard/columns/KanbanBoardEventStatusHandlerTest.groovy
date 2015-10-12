@@ -35,13 +35,13 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
         entryWithoutMongoId.remove '_id'
 
         entryWithoutMongoId == [
-                eventDomainId  : eventId.value(),
+                eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
                 eventFrequency : eventDetails.frequency(),
@@ -59,7 +59,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
 
@@ -76,7 +76,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
 
@@ -93,7 +93,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
 
@@ -110,7 +110,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
 
@@ -127,7 +127,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         def entry = collection.findOne([
-                eventDomainId: eventId.value()
+                eventId: eventId.value()
         ])
         def entryWithoutMongoId = entry.toMap()
 

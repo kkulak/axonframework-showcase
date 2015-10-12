@@ -2,7 +2,6 @@ package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.enums.AnswerType
-
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion
@@ -27,10 +26,10 @@ class QuestionnaireEventHandler {
 
     @EventHandler
     def on(QuestionnaireEvents.Added event) {
-        def domainId = event.eventId().value()
+        def eventId = event.eventId().value()
         def questions = event.questions()
 
-        collection << prepareForAnswering(domainId, questions)
+        collection << prepareForAnswering(eventId, questions)
     }
 
     @EventHandler
@@ -39,19 +38,19 @@ class QuestionnaireEventHandler {
         completeQuestionnaire(eventId.value(), event.answeredQuestions())
     }
 
-    private def completeQuestionnaire(String domainId, Collection<AnsweredQuestion> answeredQuestions) {
+    private def completeQuestionnaire(String eventId, Collection<AnsweredQuestion> answeredQuestions) {
         def textQuestions = answeredQuestions.findAll {
             it.questionData().answerType() == AnswerType.TEXT
         }
 
         def singleAndMultipleChoice = answeredQuestions - textQuestions
 
-        answerTextQuestions(domainId, textQuestions)
-        answerSingleAndMultipleChoiceQuestions(domainId, singleAndMultipleChoice)
+        answerTextQuestions(eventId, textQuestions)
+        answerSingleAndMultipleChoiceQuestions(eventId, singleAndMultipleChoice)
 
     }
 
-    private def answerTextQuestions(String domainId, Collection<AnsweredQuestion> questions) {
+    private def answerTextQuestions(String eventId, Collection<AnsweredQuestion> questions) {
         // todo: $each not working ??
         questions.each {
             def questionData = it.questionData()
@@ -59,7 +58,7 @@ class QuestionnaireEventHandler {
             it.answers().each {
                 collection.update(
                         [
-                                domainId    : domainId,
+                                eventId     : eventId,
                                 title       : questionData.title().value(),
                                 description : questionData.description().value(),
                                 questionType: questionData.answerType()
@@ -74,14 +73,14 @@ class QuestionnaireEventHandler {
         }
     }
 
-    def answerSingleAndMultipleChoiceQuestions(String domainId, Collection<AnsweredQuestion> answeredQuestions) {
+    def answerSingleAndMultipleChoiceQuestions(String eventId, Collection<AnsweredQuestion> answeredQuestions) {
 
         answeredQuestions.each {
             def questionData = it.questionData()
             it.answers().each {
                 collection.update(
                         [
-                                domainId       : domainId,
+                                eventId        : eventId,
                                 title          : questionData.title().value(),
                                 description    : questionData.description().value(),
                                 questionType   : questionData.answerType(),
@@ -93,14 +92,14 @@ class QuestionnaireEventHandler {
         }
     }
 
-    private static def prepareForAnswering(String domainId, List<Question> questions) {
+    private static def prepareForAnswering(String eventId, List<Question> questions) {
         def questionNumber = 0;
 
         questions.collect {
             def questionData = it.questionData()
 
             [
-                    domainId      : domainId,
+                    eventId       : eventId,
                     questionNumber: questionNumber++,
                     title         : questionData.title().value(),
                     description   : questionData.description().value(),

@@ -26,7 +26,7 @@ class ReservationsHandler {
     @EventHandler
     def on(ReservationEvents.RoomRequested event) {
         def query = [
-                domainId: event.eventId().value()
+                eventId: event.eventId().value()
         ]
         def reservationData = reservationDataFrom(event)
 
@@ -67,7 +67,7 @@ class ReservationsHandler {
 
     private removeReservationFor(EventId eventId, ReservationId reservationId) {
         def query = [
-                domainId: eventId.value()
+                eventId: eventId.value()
         ]
         termsCollection.update(query, [
                 $pull: [

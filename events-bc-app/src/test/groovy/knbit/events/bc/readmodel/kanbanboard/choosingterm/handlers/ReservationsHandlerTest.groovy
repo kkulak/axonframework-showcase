@@ -32,7 +32,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
     def "should create new reservation on corresponding event"() {
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 reservations: []
         ]
         def eventDuration = EventDuration.of(
@@ -47,7 +47,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.reservations == [
@@ -63,7 +63,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
     def "should remove reservation readmodel on cancelled reservation"() {
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 reservations: [
                         [reservationId: reservationId.value()]
                 ]
@@ -76,7 +76,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.reservations == []
@@ -85,7 +85,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
     def "should remove reservation readmodel on accepted reservation"() {
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 reservations: [
                         [reservationId: reservationId.value()]
                 ]
@@ -98,7 +98,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.reservations == []
@@ -107,7 +107,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
     def "should remove reservation readmodel on rejected reservation"() {
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 reservations: [
                         [reservationId: reservationId.value()]
                 ]
@@ -120,7 +120,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.reservations == []
@@ -129,7 +129,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
     def "should remove reservation readmodel on failed reservation"() {
         given:
         collection << [
-                domainId    : eventId.value(),
+                eventId     : eventId.value(),
                 reservations: [
                         [reservationId: reservationId.value()]
                 ]
@@ -142,7 +142,7 @@ class ReservationsHandlerTest extends Specification implements DBCollectionAware
 
         then:
         def choosingTermsPreview = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         choosingTermsPreview.reservations == []

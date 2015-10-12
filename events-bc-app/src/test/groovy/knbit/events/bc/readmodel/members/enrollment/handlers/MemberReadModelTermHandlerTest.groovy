@@ -13,18 +13,17 @@ import spock.lang.Specification
  * Created by novy on 05.10.15.
  */
 
-//TODO COPY & PASTED, REFACTOR LATER!!!!!!!
-class ModifyingTermMemberEventHandlerTest extends Specification implements DBCollectionAware {
+class MemberReadModelTermHandlerTest extends Specification implements DBCollectionAware {
 
     def DBCollection collection
-    def ModifyingTermMemberEventHandler objectUnderTest
+    def MemberReadModelTermHandler objectUnderTest
 
     def EventId eventId
     def TermId termId
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new ModifyingTermMemberEventHandler(collection)
+        objectUnderTest = new MemberReadModelTermHandler(collection)
         eventId = EventId.of("eventId")
         termId = TermId.of("termId")
     }

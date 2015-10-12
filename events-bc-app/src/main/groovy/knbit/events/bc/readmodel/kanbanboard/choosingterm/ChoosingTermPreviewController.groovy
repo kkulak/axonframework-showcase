@@ -26,7 +26,7 @@ class ChoosingTermPreviewController {
     @RequestMapping(value = "/{eventId}/choosing-term", method = RequestMethod.GET)
     def termsPreviewFor(@PathVariable("eventId") eventId) {
         termsCollection.findOne([
-                domainId: eventId
+                eventId: eventId
         ])
     }
 

@@ -12,17 +12,17 @@ import spock.lang.Specification
 /**
  * Created by novy on 05.10.15.
  */
-class ModifyingTermEventHandlerTest extends Specification implements DBCollectionAware {
+class EventMasterReadModelTermEventHandlerTest extends Specification implements DBCollectionAware {
 
     def DBCollection collection
-    def ModifyingTermEventHandler objectUnderTest
+    def EventMasterReadModelTermEventHandler objectUnderTest
 
     def EventId eventId
     def TermId termId
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new ModifyingTermEventHandler(collection)
+        objectUnderTest = new EventMasterReadModelTermEventHandler(collection)
         eventId = EventId.of("eventId")
         termId = TermId.of("termId")
     }
@@ -30,8 +30,8 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
     def "should update participantsLimit when needed"() {
         given:
         collection << [
-                domainId: eventId.value(),
-                terms   : [
+                eventId: eventId.value(),
+                terms  : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
                 ]
@@ -42,7 +42,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on TermModifyingEvents.ParticipantLimitSet.of(eventId, termId, participantsLimit)
 
         then:
-        def eventPreview = collection.findOne(domainId: eventId.value())
+        def eventPreview = collection.findOne(eventId: eventId.value())
         eventPreview.terms == [
                 [
                         termId           : termId.value(),
@@ -55,8 +55,8 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
     def "should update lecturer when needed"() {
         given:
         collection << [
-                domainId: eventId.value(),
-                terms   : [
+                eventId: eventId.value(),
+                terms  : [
                         [termId: termId.value()],
                         [termId: "anotherId"]
                 ]
@@ -67,7 +67,7 @@ class ModifyingTermEventHandlerTest extends Specification implements DBCollectio
         objectUnderTest.on TermModifyingEvents.LecturerAssigned.of(eventId, termId, lecturer)
 
         then:
-        def eventPreview = collection.findOne(domainId: eventId.value())
+        def eventPreview = collection.findOne(eventId: eventId.value())
         eventPreview.terms == [
                 [
                         termId  : termId.value(),

@@ -27,7 +27,7 @@ class KanbanBoardEventStatusHandler {
         def details = event.eventDetails()
 
         collection.insert([
-                eventDomainId  : eventId.value(),
+                eventId        : eventId.value(),
                 name           : details.name().value(),
                 eventType      : details.type(),
                 eventFrequency : details.frequency(),
@@ -39,7 +39,7 @@ class KanbanBoardEventStatusHandler {
     @EventHandler
     def on(InterestAwareEvents.Created event) {
         collection.update(
-                [eventDomainId: event.eventId().value()],
+                [eventId: event.eventId().value()],
                 [
                         $set: [
                                 reachableStatus: [SURVEY_INTEREST, CHOOSING_TERM],
@@ -52,7 +52,7 @@ class KanbanBoardEventStatusHandler {
     @EventHandler
     def on(UnderChoosingTermEventEvents.Created event) {
         collection.update(
-                [eventDomainId: event.eventId().value()],
+                [eventId: event.eventId().value()],
                 [
                         $set: [
                                 reachableStatus: [CHOOSING_TERM],
@@ -65,7 +65,7 @@ class KanbanBoardEventStatusHandler {
     @EventHandler
     def on(TermStatusEvents.Ready event) {
         collection.update(
-                [eventDomainId: event.eventId().value()],
+                [eventId: event.eventId().value()],
                 [
                         $set: [
                                 reachableStatus: [CHOOSING_TERM, ENROLLMENT],
@@ -77,7 +77,7 @@ class KanbanBoardEventStatusHandler {
     @EventHandler
     def on(TermStatusEvents.Pending event) {
         collection.update(
-                [eventDomainId: event.eventId().value()],
+                [eventId: event.eventId().value()],
                 [
                         $set: [
                                 reachableStatus: [CHOOSING_TERM],
@@ -89,7 +89,7 @@ class KanbanBoardEventStatusHandler {
     @EventHandler
     def on(EventUnderEnrollmentEvents.Created event) {
         collection.update(
-                [eventDomainId: event.eventId().value()],
+                [eventId: event.eventId().value()],
                 [
                         $set: [
                                 reachableStatus: [ENROLLMENT, READY],

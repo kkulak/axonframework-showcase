@@ -1,13 +1,10 @@
 package knbit.events.bc.choosingterm.web
 
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands
-
-
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands
-
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.joda.time.DateTime
 import org.joda.time.Duration

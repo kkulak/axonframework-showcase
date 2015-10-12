@@ -25,16 +25,16 @@ class InterestPreviewRepository {
         this.questionnaireCollection = questionnaireCollection
     }
 
-    def load(domainId) {
+    def load(eventId) {
 
         def withoutQuestions = surveyCollection.findOne(
-                domainId: domainId
+                eventId: eventId
         )
 
-        Preconditions.checkArgument(withoutQuestions != null, "No survey for %s", domainId as String)
+        Preconditions.checkArgument(withoutQuestions != null, "No survey for %s", eventId as String)
 
         def questions = questionnaireCollection
-                .find(domainId: domainId)
+                .find(eventId: eventId)
                 .sort(questionNumber: 1)
                 .toArray()
 

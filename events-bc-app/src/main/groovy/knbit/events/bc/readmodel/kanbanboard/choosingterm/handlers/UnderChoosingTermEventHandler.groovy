@@ -2,6 +2,7 @@ package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -23,17 +24,10 @@ class UnderChoosingTermEventHandler {
 
     @EventHandler
     def on(UnderChoosingTermEventEvents.Created event) {
-        def eventId = event.eventId()
-        def eventDetails = event.eventDetails()
+        def eventId = [eventId: event.eventId().value()]
+        def eventDetails = EventDetailsWrapper.asMap(event.eventDetails())
+        def termsAndReservations = [terms: [], reservations: []]
 
-        termsCollection.insert([
-                domainId      : eventId.value(),
-                name          : eventDetails.name().value(),
-                description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
-                terms         : [],
-                reservations  : []
-        ])
+        termsCollection.insert(eventId + eventDetails + termsAndReservations)
     }
 }

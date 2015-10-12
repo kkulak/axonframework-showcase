@@ -2,7 +2,7 @@ package knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.enrollment
 
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
-import knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.QueryForTerm
+import knbit.events.bc.readmodel.QueryForTerm
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

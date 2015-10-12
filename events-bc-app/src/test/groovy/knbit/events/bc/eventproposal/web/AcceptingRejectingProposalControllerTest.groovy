@@ -1,8 +1,6 @@
 package knbit.events.bc.eventproposal.web
 
-
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands
-
 import knbit.events.bc.eventproposal.web.forms.ProposalStateDto
 import org.axonframework.commandhandling.gateway.CommandGateway
 import spock.lang.Specification

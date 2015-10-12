@@ -30,8 +30,8 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
 
         given:
         collection << [
-                _id     : 'id',
-                domainId: eventId.value()
+                _id    : 'id',
+                eventId: eventId.value()
         ]
 
         when:
@@ -42,13 +42,13 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         )
 
         def interestAwareEventViewModel = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         then:
         interestAwareEventViewModel == [
                 _id      : 'id',
-                domainId : eventId.value(),
+                eventId  : eventId.value(),
                 votedUp  : 0,
                 votedDown: 0
         ]
@@ -58,9 +58,9 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
 
         given:
         collection << [
-                _id     : 'id',
-                domainId: eventId.value(),
-                votedUp : 0
+                _id    : 'id',
+                eventId: eventId.value(),
+                votedUp: 0
         ]
 
         when:
@@ -71,14 +71,14 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         )
 
         def interestAwareEventViewModel = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         then:
         interestAwareEventViewModel == [
-                _id     : 'id',
-                domainId: eventId.value(),
-                votedUp : 1
+                _id    : 'id',
+                eventId: eventId.value(),
+                votedUp: 1
         ]
     }
 
@@ -87,7 +87,7 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         given:
         collection << [
                 _id      : 'id',
-                domainId : eventId.value(),
+                eventId  : eventId.value(),
                 votedDown: 0
         ]
 
@@ -99,13 +99,13 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         )
 
         def interestAwareEventViewModel = collection.findOne(
-                domainId: eventId.value()
+                eventId: eventId.value()
         )
 
         then:
         interestAwareEventViewModel == [
                 _id      : 'id',
-                domainId : eventId.value(),
+                eventId  : eventId.value(),
                 votedDown: 1
         ]
     }

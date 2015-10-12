@@ -2,7 +2,6 @@ package knbit.events.bc.readmodel.allevents
 
 import com.mongodb.DBCollection
 import knbit.events.bc.common.readmodel.EventStatus
-
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
