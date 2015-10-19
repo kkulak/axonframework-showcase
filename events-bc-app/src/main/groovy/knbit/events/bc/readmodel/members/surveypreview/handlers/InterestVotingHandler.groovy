@@ -16,23 +16,31 @@ import org.springframework.stereotype.Component
 @Component
 class InterestVotingHandler {
 
-    def DBCollection collection
+    def DBCollection votesCollection
+    def DBCollection eventsCollection
 
     @Autowired
-    InterestVotingHandler(@Qualifier("survey-votes") DBCollection collection) {
-        this.collection = collection
+    InterestVotingHandler(@Qualifier("survey-votes") DBCollection votesCollection,
+                          @Qualifier("survey-events") DBCollection eventsCollection) {
+        this.eventsCollection = eventsCollection
+        this.votesCollection = votesCollection
     }
 
     @EventHandler
     def on(SurveyEvents.VotedUp event) {
-        collection.insert(
+        eventsCollection.update(
+                [eventId: event.eventId().value()],
+                [$inc: [votedUp: 1]]
+        )
+
+        votesCollection.insert(
                 newEntryWithVote(event.eventId(), event.attendee().memberId(), VoteType.POSITIVE)
         )
     }
 
     @EventHandler
     def on(SurveyEvents.VotedDown event) {
-        collection.insert(
+        votesCollection.insert(
                 newEntryWithVote(event.eventId(), event.attendee().memberId(), VoteType.NEGATIVE)
         )
     }

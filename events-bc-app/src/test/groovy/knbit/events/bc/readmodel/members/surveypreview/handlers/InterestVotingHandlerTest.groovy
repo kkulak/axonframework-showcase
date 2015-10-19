@@ -1,6 +1,7 @@
 package knbit.events.bc.readmodel.members.surveypreview.handlers
 
 import com.mongodb.DBCollection
+import com.mongodb.DBObject
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
@@ -14,18 +15,32 @@ import spock.lang.Specification
  */
 class InterestVotingHandlerTest extends Specification implements DBCollectionAware {
 
-    def DBCollection collection
+    def DBCollection eventsCollection
+    def DBCollection votesCollection
     def InterestVotingHandler objectUnderTest
 
     def EventId eventId
     def MemberId memberId
 
     void setup() {
-        collection = testCollection()
-        objectUnderTest = new InterestVotingHandler(collection)
+        eventsCollection = testCollectionWithName('events')
+        votesCollection = testCollectionWithName('votes')
+        objectUnderTest = new InterestVotingHandler(votesCollection, eventsCollection)
 
         eventId = EventId.of("eventId")
         memberId = MemberId.of("memberId")
+    }
+
+    def "should increase positive vote count on positive vote"() {
+        given:
+        eventsCollection << [eventId: eventId.value(), votedUp: 0]
+
+        when:
+        objectUnderTest.on SurveyEvents.VotedUp.of(eventId, Attendee.of(memberId))
+
+        then:
+        def updatedEvent = eventsCollection.findOne([eventId: eventId.value()])
+        updatedEvent.votedUp == 1
     }
 
     def "should update collection on positive vote"() {
@@ -53,7 +68,7 @@ class InterestVotingHandlerTest extends Specification implements DBCollectionAwa
     }
 
     private def collectionEntryFor(EventId eventId, MemberId memberId) {
-        stripMongoIdFrom(collection.findOne([
+        stripMongoIdFrom(votesCollection.findOne([
                 eventId: eventId.value(), memberId: memberId.value()
         ]))
     }

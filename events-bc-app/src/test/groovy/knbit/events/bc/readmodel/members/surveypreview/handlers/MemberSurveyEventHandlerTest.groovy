@@ -45,7 +45,8 @@ class MemberSurveyEventHandlerTest extends Specification implements DBCollection
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency()
+                eventFrequency: eventDetails.frequency(),
+                votedUp       : 0
         ]
     }
 
