@@ -1,7 +1,6 @@
 package knbit.events.bc.readmodel.members.dashboard
 
 import com.mongodb.DBCollection
-import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
@@ -24,9 +23,9 @@ class DashboardQuery {
         collection.find().toArray()
     }
 
-    def allWithPreferencesFor(MemberId memberId) {
+    def allWithPreferencesFor(String memberId) {
         def assignEnrolledProperty = {
-            it + [enrolled: it.attendees.contains(memberId.value())]
+            it + [enrolled: it.attendees.contains(memberId)]
         }
 
         collection

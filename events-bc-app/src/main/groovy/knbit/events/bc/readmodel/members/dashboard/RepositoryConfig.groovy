@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration
 /**
  * Created by novy on 20.10.15.
  */
-@Configuration("survey-repository-configuration")
+@Configuration("dashboard-repository-configuration")
 class RepositoryConfig {
 
     @Bean(name = "dashboard-events")
-    def DBCollection surveyEventsCollection(DB db) {
+    def DBCollection dashboardEventCollection(DB db) {
         db.dashboardEventCollection
     }
 }

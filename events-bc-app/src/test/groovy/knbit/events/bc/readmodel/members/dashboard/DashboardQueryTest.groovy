@@ -43,7 +43,7 @@ class DashboardQueryTest extends Specification implements DBCollectionAware {
         dbCollection << events
 
         when:
-        def modifiedEvents = objectUnderTest.allWithPreferencesFor(member1).collect { stripMongoIdFrom(it) }
+        def modifiedEvents = objectUnderTest.allWithPreferencesFor(member1.value()).collect { stripMongoIdFrom(it) }
 
         then:
         modifiedEvents == [
