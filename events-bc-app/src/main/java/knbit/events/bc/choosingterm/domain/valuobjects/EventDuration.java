@@ -42,4 +42,8 @@ public class EventDuration {
     public boolean overlaps(EventDuration another) {
         return interval().overlaps(another.interval());
     }
+
+    public DateTime end() {
+        return start.withDurationAdded(duration, 1);
+    }
 }
