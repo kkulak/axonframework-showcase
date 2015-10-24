@@ -1,8 +1,8 @@
 package knbit.events.bc.enrollment.domain.exceptions;
 
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 
 /**
  * Created by novy on 03.10.15.
@@ -33,6 +33,23 @@ public interface EventUnderEnrollmentExceptions {
 
         public ParticipantLimitTooHigh(TermId termId, int participantLimit) {
             super(String.format(MESSAGE_PATTERN, participantLimit, termId));
+        }
+    }
+
+    class NoLecturerAssigned extends DomainException {
+        private static final String MESSAGE_PATTERN = "No lecturer assigned for term %s";
+
+        public NoLecturerAssigned(TermId termId) {
+            super(String.format(MESSAGE_PATTERN, termId));
+        }
+    }
+
+    class AlreadyTransitedToReady extends DomainException {
+
+        private static final String MESSAGE_PATTERN = "Event %s already transited to ready.";
+
+        public AlreadyTransitedToReady(EventId eventId) {
+            super(String.format(MESSAGE_PATTERN, eventId));
         }
     }
 }

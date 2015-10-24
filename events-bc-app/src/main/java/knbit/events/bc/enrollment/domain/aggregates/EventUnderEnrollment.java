@@ -9,6 +9,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.entities.Term;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
@@ -21,6 +22,7 @@ import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 02.10.15.
@@ -33,6 +35,8 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
     @EventSourcedMember
     private Map<TermId, Term> terms = Maps.newHashMap();
+
+    private EventUnderEnrollmentStatus status;
 
     public EventUnderEnrollment(EventId eventId,
                                 EventDetails eventDetails,
@@ -61,6 +65,8 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
         event.terms()
                 .stream()
                 .forEach(createAndSaveTermEntity);
+
+        status = EventUnderEnrollmentStatus.ACTIVE;
     }
 
     public void assignLecturer(TermId termId, Lecturer lecturer) {
@@ -108,5 +114,30 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
         final Term term = terms.get(termId);
         term.disenroll(memberId);
+    }
+
+    public void transitToReady() {
+        // todo: change design so that assigning lecturer before transition is mandatory
+        rejectOnAlreadyTransited();
+        apply(
+                EventUnderEnrollmentEvents.TransitedToReady.of(id, eventDetails, terms())
+        );
+    }
+
+    private Collection<IdentifiedTermWithAttendees> terms() {
+        return terms.values().stream()
+                .map(Term::asValueObject)
+                .collect(Collectors.toList());
+    }
+
+    @EventSourcingHandler
+    private void on(EventUnderEnrollmentEvents.TransitedToReady event) {
+        this.status = EventUnderEnrollmentStatus.TRANSITED;
+    }
+
+    private void rejectOnAlreadyTransited() {
+        if (status == EventUnderEnrollmentStatus.TRANSITED) {
+            throw new EventUnderEnrollmentExceptions.AlreadyTransitedToReady(id);
+        }
     }
 }

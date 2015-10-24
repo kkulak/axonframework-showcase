@@ -67,4 +67,11 @@ public class EventUnderEnrollmentCommandHandler {
 
         eventUnderEnrollment.disenrollFrom(command.termId(), command.memberId());
     }
+
+    @CommandHandler
+    public void handle(EventUnderEnrollmentCommands.TransitToReady command) {
+        final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
+
+        eventUnderEnrollment.transitToReady();
+    }
 }
