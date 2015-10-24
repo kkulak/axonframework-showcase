@@ -70,6 +70,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void assignLecturer(TermId termId, Lecturer lecturer) {
+        rejectOnAlreadyTransited();
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
@@ -84,6 +85,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void limitParticipants(TermId termId, ParticipantsLimit newLimit) {
+        rejectOnAlreadyTransited();
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
@@ -91,6 +93,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void enrollFor(TermId termId, MemberId memberId) {
+        rejectOnAlreadyTransited();
         rejectOnNotExistingTerm(termId);
         rejectIfAlreadyEnrolledForAnyTerm(memberId);
 
@@ -110,6 +113,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void disenrollFrom(TermId termId, MemberId memberId) {
+        rejectOnAlreadyTransited();
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
