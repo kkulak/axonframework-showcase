@@ -1,6 +1,9 @@
 package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
 import com.mongodb.DBCollection
+import knbit.events.bc.choosingterm.domain.builders.TermBuilder
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
@@ -50,4 +53,15 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
         ]
     }
 
+    def "should remove event on transition"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        def term = IdentifiedTerm.of(TermId.of("id"), TermBuilder.defaultTerm())
+        objectUnderTest.on UnderChoosingTermEventEvents.TransitedToEnrollment.of(eventId, eventDetails, [term])
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

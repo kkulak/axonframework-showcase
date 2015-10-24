@@ -7,6 +7,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
@@ -76,5 +77,18 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
                         ]
                 ]
         ]
+    }
+
+    def "should cleanup database on event transition"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.TransitedToReady.of(
+                eventId, eventDetails, [IdentifiedTermWithAttendeeBuilder.defaultTerm()]
+        )
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
     }
 }
