@@ -22,4 +22,11 @@ public interface EventUnderEnrollmentCommands {
         EventDetails eventDetails;
         Collection<IdentifiedTerm> terms;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class TransitToReady {
+
+        EventId eventId;
+    }
 }

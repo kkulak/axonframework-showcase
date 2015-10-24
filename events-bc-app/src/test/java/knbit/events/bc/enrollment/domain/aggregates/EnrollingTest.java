@@ -3,19 +3,20 @@ package knbit.events.bc.enrollment.domain.aggregates;
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
+import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -61,6 +62,30 @@ public class EnrollingTest {
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToEnrollAfterEventTransition() throws Exception {
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(firstTerm, secondTerm)
+                        ),
+
+                        EventUnderEnrollmentEvents.TransitedToReady.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(IdentifiedTermWithAttendeeBuilder.defaultTerm())
+                        )
+                )
+                .when(
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), MemberId.of("id"))
+                )
+                .expectException(
+                        EventUnderEnrollmentExceptions.AlreadyTransitedToReady.class
                 );
     }
 

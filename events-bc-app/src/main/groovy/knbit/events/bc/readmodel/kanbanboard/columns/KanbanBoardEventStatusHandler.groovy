@@ -3,7 +3,10 @@ package knbit.events.bc.readmodel.kanbanboard.columns
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
+import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,64 +41,48 @@ class KanbanBoardEventStatusHandler {
 
     @EventHandler
     def on(InterestAwareEvents.Created event) {
-        collection.update(
-                [eventId: event.eventId().value()],
-                [
-                        $set: [
-                                reachableStatus: [SURVEY_INTEREST, CHOOSING_TERM],
-                                eventStatus    : SURVEY_INTEREST
-                        ]
-                ]
-        )
+        updateEventStatus(event.eventId(), SURVEY_INTEREST, [SURVEY_INTEREST, CHOOSING_TERM])
     }
 
     @EventHandler
     def on(UnderChoosingTermEventEvents.Created event) {
-        collection.update(
-                [eventId: event.eventId().value()],
-                [
-                        $set: [
-                                reachableStatus: [CHOOSING_TERM],
-                                eventStatus    : CHOOSING_TERM
-                        ]
-                ]
-        )
+        updateEventStatus(event.eventId(), CHOOSING_TERM, [CHOOSING_TERM])
     }
 
     @EventHandler
     def on(TermStatusEvents.Ready event) {
-        collection.update(
-                [eventId: event.eventId().value()],
-                [
-                        $set: [
-                                reachableStatus: [CHOOSING_TERM, ENROLLMENT],
-                                eventStatus    : CHOOSING_TERM]
-                ]
-        )
+        updateEventStatus(event.eventId(), CHOOSING_TERM, [CHOOSING_TERM, ENROLLMENT])
     }
 
     @EventHandler
     def on(TermStatusEvents.Pending event) {
-        collection.update(
-                [eventId: event.eventId().value()],
-                [
-                        $set: [
-                                reachableStatus: [CHOOSING_TERM],
-                                eventStatus    : CHOOSING_TERM]
-                ]
-        )
+        updateEventStatus(event.eventId(), CHOOSING_TERM, [CHOOSING_TERM])
     }
 
     @EventHandler
     def on(EventUnderEnrollmentEvents.Created event) {
+        updateEventStatus(event.eventId(), ENROLLMENT, [ENROLLMENT, READY])
+    }
+
+    @EventHandler
+    def on(ReadyEvents.Created event) {
+        updateEventStatus(event.eventId(), READY, [READY])
+    }
+
+    private def updateEventStatus(EventId eventId,
+                                  EventStatus currentStatus,
+                                  List<EventStatus> reachableStatus) {
+
         collection.update(
-                [eventId: event.eventId().value()],
+                [eventId: eventId.value()],
                 [
                         $set: [
-                                reachableStatus: [ENROLLMENT, READY],
-                                eventStatus    : ENROLLMENT]
+                                reachableStatus: reachableStatus,
+                                eventStatus    : currentStatus
+                        ]
                 ]
         )
     }
 
 }
+

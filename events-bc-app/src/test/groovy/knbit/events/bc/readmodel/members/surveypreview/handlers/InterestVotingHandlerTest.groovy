@@ -1,10 +1,11 @@
 package knbit.events.bc.readmodel.members.surveypreview.handlers
 
 import com.mongodb.DBCollection
-import com.mongodb.DBObject
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
+import knbit.events.bc.interest.builders.EventDetailsBuilder
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
 import knbit.events.bc.readmodel.members.surveypreview.VoteType
@@ -65,6 +66,32 @@ class InterestVotingHandlerTest extends Specification implements DBCollectionAwa
                 memberId: memberId.value(),
                 voted   : VoteType.NEGATIVE
         ]
+    }
+
+    def "should remove all db entry for given event on that event transition"() {
+        given:
+        votesCollection << [
+                [
+                        eventId : eventId.value(),
+                        memberId: 'member',
+                        voted   : VoteType.NEGATIVE
+                ],
+                [
+                        eventId : eventId.value(),
+                        memberId: 'another member',
+                        voted   : VoteType.NEGATIVE
+                ]
+        ]
+
+        when:
+        objectUnderTest.on InterestAwareEvents.TransitedToUnderChoosingTerm.of(
+                eventId,
+                EventDetailsBuilder.defaultEventDetails()
+        )
+
+        then:
+        votesCollection.find([eventId: eventId.value()]).toArray() == []
+
     }
 
     private def collectionEntryFor(EventId eventId, MemberId memberId) {

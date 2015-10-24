@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.DBCollectionAware
@@ -133,6 +134,22 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         entryWithoutMongoId['eventStatus'] == ENROLLMENT
         entryWithoutMongoId['reachableStatus'] == [ENROLLMENT, READY]
+    }
+
+    def "should set appropriate event states on ready event created"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        when:
+        objectUnderTest.on(ReadyEvents.Created.of(eventId, eventDetails, []))
+
+        then:
+        def entry = collection.findOne([
+                eventId: eventId.value()
+        ]).toMap()
+
+        entry['eventStatus'] == READY
+        entry['reachableStatus'] == [READY]
     }
 
 }

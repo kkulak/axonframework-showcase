@@ -8,6 +8,8 @@ import knbit.events.bc.enrollment.domain.EventUnderEnrollmentCommandHandler;
 import knbit.events.bc.enrollment.domain.aggregates.EventUnderEnrollment;
 import knbit.events.bc.eventproposal.domain.EventProposalCommandHandler;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
+import knbit.events.bc.eventready.domain.ReadyEventCommandHandler;
+import knbit.events.bc.eventready.domain.aggregates.ReadyEvent;
 import knbit.events.bc.interest.domain.InterestAwareEventCommandHandler;
 import knbit.events.bc.interest.domain.aggregates.InterestAwareEvent;
 import org.axonframework.test.FixtureConfiguration;
@@ -62,6 +64,17 @@ public class FixtureFactory {
         FixtureConfiguration<EventUnderEnrollment> fixture = Fixtures.newGivenWhenThenFixture(EventUnderEnrollment.class);
 
         final EventUnderEnrollmentCommandHandler handler = new EventUnderEnrollmentCommandHandler(
+                fixture.getRepository()
+        );
+
+        fixture.registerAnnotatedCommandHandler(handler);
+        return fixture;
+    }
+
+    public static FixtureConfiguration<ReadyEvent> readyEventFixtureConfiguration() {
+        FixtureConfiguration<ReadyEvent> fixture = Fixtures.newGivenWhenThenFixture(ReadyEvent.class);
+
+        final ReadyEventCommandHandler handler = new ReadyEventCommandHandler(
                 fixture.getRepository()
         );
 

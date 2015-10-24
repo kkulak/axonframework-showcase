@@ -4,6 +4,7 @@ import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import knbit.events.bc.readmodel.TermWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,12 +16,12 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class OnEnrollmentCreationHandler {
+class EnrollmentEventLifecycleHandler implements RemoveEventRelatedData {
 
     def DBCollection enrollmentEventsCollection
 
     @Autowired
-    OnEnrollmentCreationHandler(@Qualifier("enrollment-events") DBCollection enrollmentEventsCollection) {
+    EnrollmentEventLifecycleHandler(@Qualifier("enrollment-events") DBCollection enrollmentEventsCollection) {
         this.enrollmentEventsCollection = enrollmentEventsCollection
     }
 
@@ -31,6 +32,11 @@ class OnEnrollmentCreationHandler {
         def terms = termDataFrom(event.terms())
 
         enrollmentEventsCollection.insert(eventId + eventDetails + terms)
+    }
+
+    @EventHandler
+    def on(EventUnderEnrollmentEvents.TransitedToReady event) {
+        removeDataBy(event.eventId()).from(enrollmentEventsCollection)
     }
 
     private static def termDataFrom(Collection<IdentifiedTerm> terms) {

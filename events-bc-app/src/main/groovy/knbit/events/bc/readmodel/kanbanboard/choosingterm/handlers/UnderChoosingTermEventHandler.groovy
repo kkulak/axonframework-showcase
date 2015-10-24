@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class UnderChoosingTermEventHandler {
+class UnderChoosingTermEventHandler implements RemoveEventRelatedData {
 
     def DBCollection termsCollection
 
@@ -29,5 +30,10 @@ class UnderChoosingTermEventHandler {
         def termsAndReservations = [terms: [], reservations: []]
 
         termsCollection.insert(eventId + eventDetails + termsAndReservations)
+    }
+
+    @EventHandler
+    def on(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
+        removeDataBy(event.eventId()).from(termsCollection)
     }
 }

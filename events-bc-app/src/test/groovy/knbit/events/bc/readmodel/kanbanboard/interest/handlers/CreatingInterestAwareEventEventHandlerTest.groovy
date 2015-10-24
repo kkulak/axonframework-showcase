@@ -42,4 +42,15 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification implement
         interestAwareEventViewModel["eventType"] == eventDetails.type()
         interestAwareEventViewModel["eventFrequency"] == eventDetails.frequency()
     }
+
+    def "should delete entry on event transition"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

@@ -5,6 +5,8 @@ import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class EnrollmentMemberHandler {
+class EnrollmentMemberHandler implements RemoveEventRelatedData {
 
     def DBCollection enrollmentEvents
     def DBCollection enrollmentParticipants
@@ -43,6 +45,11 @@ class EnrollmentMemberHandler {
     def on(EnrollmentEvents.ParticipantDisenrolledFromTerm event) {
         changeParticipantsCountBy(event.eventId(), event.termId(), -1)
         removeParticipantPreferences(event.eventId(), event.memberId())
+    }
+
+    @EventHandler
+    def on(EventUnderEnrollmentEvents.TransitedToReady event) {
+        removeDataBy(event.eventId()).from(enrollmentParticipants)
     }
 
     private def removeParticipantPreferences(EventId eventId, MemberId memberId) {

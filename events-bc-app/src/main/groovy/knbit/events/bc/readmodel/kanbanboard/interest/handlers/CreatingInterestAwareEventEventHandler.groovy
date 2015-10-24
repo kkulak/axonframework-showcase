@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.interest.handlers
 import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class CreatingInterestAwareEventEventHandler {
+class CreatingInterestAwareEventEventHandler implements RemoveEventRelatedData {
 
     def DBCollection collection
 
@@ -28,5 +29,10 @@ class CreatingInterestAwareEventEventHandler {
         def eventDetails = EventDetailsWrapper.asMap(event.eventDetails())
 
         collection.insert(eventId + eventDetails)
+    }
+
+    @EventHandler
+    def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        removeDataBy(event.eventId()).from(collection)
     }
 }

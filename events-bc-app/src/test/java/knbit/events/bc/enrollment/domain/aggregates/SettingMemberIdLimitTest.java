@@ -4,18 +4,19 @@ import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.Capacity;
+import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
+import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
+import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -50,6 +51,26 @@ public class SettingMemberIdLimitTest {
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToSetLimitAfterTermTransition() throws Exception {
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(identifiedTerm)),
+
+                        EventUnderEnrollmentEvents.TransitedToReady.of(
+                                eventId,
+                                eventDetails,
+                                ImmutableList.of(IdentifiedTermWithAttendeeBuilder.defaultTerm())
+                        )
+                )
+                .when(
+                        TermModifyingCommands.SetParticipantLimit.of(eventId, identifiedTerm.termId(), 666)
+                )
+                .expectException(
+                        EventUnderEnrollmentExceptions.AlreadyTransitedToReady.class
                 );
     }
 

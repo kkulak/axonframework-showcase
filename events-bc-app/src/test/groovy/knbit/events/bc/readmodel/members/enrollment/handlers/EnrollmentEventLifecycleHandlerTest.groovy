@@ -14,9 +14,9 @@ import spock.lang.Specification
 /**
  * Created by novy on 11.10.15.
  */
-class OnEnrollmentCreationEventHandlerTest extends Specification implements DBCollectionAware {
+class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCollectionAware {
 
-    def OnEnrollmentCreationHandler objectUnderTest
+    def EnrollmentEventLifecycleHandler objectUnderTest
     def DBCollection collection
 
     def EventId eventId
@@ -24,7 +24,7 @@ class OnEnrollmentCreationEventHandlerTest extends Specification implements DBCo
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new OnEnrollmentCreationHandler(collection)
+        objectUnderTest = new EnrollmentEventLifecycleHandler(collection)
         eventId = EventId.of("eventId")
         eventDetails = EventDetailsBuilder.defaultEventDetails()
     }
@@ -71,5 +71,19 @@ class OnEnrollmentCreationEventHandlerTest extends Specification implements DBCo
                         ]
                 ]
         ]
+    }
+
+    def "should remove db entry on event transition"() {
+        given:
+        collection << [
+                [eventId: eventId.value()],
+                [eventId: 'anotherId']
+        ]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, [])
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
     }
 }

@@ -5,6 +5,8 @@ import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
 
@@ -105,5 +107,23 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         participantsPreferences.collect { stripMongoIdFrom(it) } == [
                 [eventId: eventId.value(), memberId: 'another member', termId: termId.value()]
         ]
+    }
+
+    def "should remove all member preferences related to event on that event transition"() {
+        given:
+        enrollmentParticipantsCollection << [
+                [eventId: eventId.value(), memberId: memberId.value(), termId: termId.value()],
+                [eventId: eventId.value(), memberId: 'another member', termId: termId.value()],
+        ]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.TransitedToReady.of(
+                eventId,
+                EventDetailsBuilder.defaultEventDetails(),
+                []
+        )
+
+        then:
+        enrollmentParticipantsCollection.find().toArray() == []
     }
 }
