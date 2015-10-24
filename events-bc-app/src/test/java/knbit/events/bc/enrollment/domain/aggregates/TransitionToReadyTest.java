@@ -50,7 +50,7 @@ public class TransitionToReadyTest {
                         EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(identifiedTerm))
                 )
                 .when(
-                        EventUnderEnrollmentCommands.TransitToReady.of(eventId, eventDetails)
+                        EventUnderEnrollmentCommands.TransitToReady.of(eventId)
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.NoLecturerAssigned.class
@@ -73,7 +73,7 @@ public class TransitionToReadyTest {
                         )
                 )
                 .when(
-                        EventUnderEnrollmentCommands.TransitToReady.of(eventId, eventDetails)
+                        EventUnderEnrollmentCommands.TransitToReady.of(eventId)
                 )
                 .expectException(
                         EventUnderEnrollmentExceptions.AlreadyTransitedToReady.class
@@ -111,7 +111,7 @@ public class TransitionToReadyTest {
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, identifiedTerm.termId(), member2)
                 )
                 .when(
-                        EventUnderEnrollmentCommands.TransitToReady.of(eventId, eventDetails)
+                        EventUnderEnrollmentCommands.TransitToReady.of(eventId)
                 )
                 .expectEvents(
                         EventUnderEnrollmentEvents.TransitedToReady.of(

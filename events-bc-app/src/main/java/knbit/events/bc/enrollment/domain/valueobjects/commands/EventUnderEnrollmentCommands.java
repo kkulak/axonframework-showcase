@@ -28,6 +28,5 @@ public interface EventUnderEnrollmentCommands {
     class TransitToReady {
 
         EventId eventId;
-        EventDetails eventDetails;
     }
 }
