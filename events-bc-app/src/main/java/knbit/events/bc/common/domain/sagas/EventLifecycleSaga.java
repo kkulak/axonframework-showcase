@@ -5,6 +5,8 @@ import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTrans
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -48,6 +50,13 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
     private void on(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
         commandGateway.send(
                 EventUnderEnrollmentCommands.Create.of(event.eventId(), event.eventDetails(), event.terms())
+        );
+    }
+
+    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
+    private void on(EventUnderEnrollmentEvents.TransitedToReady event) {
+        commandGateway.send(
+                ReadyCommands.Create.of(event.eventId(), event.eventDetails(), event.terms())
         );
     }
 

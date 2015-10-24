@@ -11,13 +11,19 @@ import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTer
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
+import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collection;
 
 public class EventLifecycleSagaTest {
     private AnnotatedSagaTestFixture fixture;
@@ -107,6 +113,24 @@ public class EventLifecycleSagaTest {
                 )
                 .expectDispatchedCommandsEqualTo(
                         EventUnderEnrollmentCommands.Create.of(eventId, eventDetails, ImmutableList.of(identifiedTerm))
+                );
+    }
+
+    @Test
+    public void shouldDispatchCreateCreateReadyEventCommandOnTransition() throws Exception {
+        final Collection<IdentifiedTermWithAttendees> term =
+                ImmutableList.of(IdentifiedTermWithAttendeeBuilder.defaultTerm());
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
+                )
+                .whenPublishingA(
+                        EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, term)
+                )
+                .expectDispatchedCommandsEqualTo(
+                        ReadyCommands.Create.of(eventId, eventDetails, term)
                 );
     }
 }
