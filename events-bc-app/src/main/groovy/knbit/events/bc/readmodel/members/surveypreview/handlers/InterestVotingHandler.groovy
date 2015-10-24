@@ -3,7 +3,9 @@ package knbit.events.bc.readmodel.members.surveypreview.handlers
 import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import knbit.events.bc.readmodel.members.surveypreview.VoteType
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component
  * Created by novy on 10.10.15.
  */
 @Component
-class InterestVotingHandler {
+class InterestVotingHandler implements RemoveEventRelatedData {
 
     def DBCollection votesCollection
     def DBCollection eventsCollection
@@ -43,6 +45,11 @@ class InterestVotingHandler {
         votesCollection.insert(
                 newEntryWithVote(event.eventId(), event.attendee().memberId(), VoteType.NEGATIVE)
         )
+    }
+
+    @EventHandler
+    def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        removeDataBy(event.eventId()).from(votesCollection)
     }
 
     private static def newEntryWithVote(EventId eventId, MemberId memberId, VoteType vote) {

@@ -4,13 +4,14 @@ import com.mongodb.DBCollection
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents
 import knbit.events.bc.interest.domain.valueobjects.question.Question
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 @Component
-class MemberSurveyEventHandler {
+class MemberSurveyEventHandler implements RemoveEventRelatedData {
 
     def DBCollection collection
 
@@ -49,9 +50,7 @@ class MemberSurveyEventHandler {
 
     @EventHandler
     def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
-        def eventId = event.eventId()
-
-        collection.remove([eventId: eventId.value()])
+        removeDataBy(event.eventId()).from(collection)
     }
 
     private static def flatArray(List<Question> questions) {
