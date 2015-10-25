@@ -48,9 +48,9 @@ class MembersHeaderQuery {
                 start    : [$gte: notEarlierThat]
         ]
         def allFields = Maps.newLinkedHashMap()
-        def orderByStartDescending = [start: 1]
+        def orderByStartAscending = [start: 1]
 
-        def nextEvent = dashboardEventsCollection.findOne(query, allFields, orderByStartDescending)
+        def nextEvent = dashboardEventsCollection.findOne(query, allFields, orderByStartAscending)
 
         [nextEvent: nextEvent ?: []]
     }
