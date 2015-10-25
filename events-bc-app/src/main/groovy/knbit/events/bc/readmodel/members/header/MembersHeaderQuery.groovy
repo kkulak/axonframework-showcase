@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.members.header
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.joda.time.DateTime
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
@@ -16,6 +17,7 @@ class MembersHeaderQuery {
     def DBCollection surveyCollection
     def DBCollection dashboardEventsCollection
 
+    @Autowired
     MembersHeaderQuery(@Qualifier("survey-events") DBCollection surveyCollection,
                        @Qualifier("dashboard-events") DBCollection dashboardEventsCollection) {
 
