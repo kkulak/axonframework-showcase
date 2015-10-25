@@ -1,5 +1,6 @@
 package knbit.events.bc.readmodel.members.header
 
+import com.google.common.collect.Maps
 import com.mongodb.DBCollection
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.joda.time.DateTime
@@ -42,10 +43,14 @@ class MembersHeaderQuery {
     }
 
     private def nextEvent(MemberId memberId, DateTime notEarlierThat) {
-        def nextEvent = dashboardEventsCollection.findOne([
+        def query = [
                 attendees: memberId.value(),
-                start: [$gte: notEarlierThat]
-        ])
+                start    : [$gte: notEarlierThat]
+        ]
+        def allFields = Maps.newLinkedHashMap()
+        def orderByStartDescending = [start: 1]
+
+        def nextEvent = dashboardEventsCollection.findOne(query, allFields, orderByStartDescending)
 
         [nextEvent: nextEvent ?: []]
     }

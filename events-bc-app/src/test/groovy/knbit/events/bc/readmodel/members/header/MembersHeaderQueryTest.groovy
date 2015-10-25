@@ -74,6 +74,11 @@ class MembersHeaderQueryTest extends Specification implements DBCollectionAware 
                 ],
                 [
                         eventId  : 'event3',
+                        start    : new DateTime(2010, 4, 3, 21, 37),
+                        attendees: ['member2', 'member1']
+                ],
+                [
+                        eventId  : 'event4',
                         start    : new DateTime(2005, 4, 3, 21, 37),
                         attendees: ['member2', 'member1']
                 ]
@@ -86,7 +91,7 @@ class MembersHeaderQueryTest extends Specification implements DBCollectionAware 
         )
 
         stripMongoIdFrom(queryResult.nextEvent) == [
-                eventId  : 'event3',
+                eventId  : 'event4',
                 start    : new DateTime(2005, 4, 3, 21, 37),
                 attendees: ['member2', 'member1']
         ]
