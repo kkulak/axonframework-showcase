@@ -52,6 +52,6 @@ class MembersHeaderQuery {
 
         def nextEvent = dashboardEventsCollection.findOne(query, allFields, orderByStartAscending)
 
-        [nextEvent: nextEvent ?: []]
+        [nextEvent: nextEvent ?: Maps.newLinkedHashMap()]
     }
 }
