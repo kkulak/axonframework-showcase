@@ -22,7 +22,7 @@ class MembersHeaderController {
         this.query = query
     }
 
-    @RequestMapping(value = "/members/header", method = RequestMethod.GET)
+    @RequestMapping(value = "/members/header/{memberId}", method = RequestMethod.GET)
     def headerFor(@PathVariable("memberId") String memberId) {
         query.newestHeaderData(MemberId.of(memberId))
     }
