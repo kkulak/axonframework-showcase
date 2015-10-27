@@ -32,7 +32,6 @@ class AllEventsEventHandler {
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
                 status        : EventStatus.SURVEY_INTEREST
         ])
     }
