@@ -1,7 +1,7 @@
 package knbit.events.bc.readmodel.eventproposal
 
 import com.mongodb.DBCollection
-import knbit.events.bc.common.domain.enums.EventFrequency
+
 import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.Name
@@ -19,7 +19,6 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def name = Name.of("name")
     def description = Description.of("description")
     def eventType = EventType.LECTURE
-    def frequency = EventFrequency.CYCLIC
     def state = ProposalState.PENDING
 
     def setup() {
@@ -34,7 +33,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should create new db entry containing event proposal"() {
         when:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, frequency, state
+                proposalId, name, description, eventType, state
         ))
 
         then:
@@ -49,7 +48,6 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
                 name          : name.value(),
                 description   : description.value(),
                 eventType     : eventType,
-                eventFrequency: frequency,
                 state         : state
         ]
     }
@@ -57,7 +55,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should update event proposal state on accepted proposal event"() {
         given:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, frequency, state
+                proposalId, name, description, eventType, state
         ))
 
         when:
@@ -77,7 +75,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should update event proposal state on rejected proposal event"() {
         given:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, frequency, state
+                proposalId, name, description, eventType, state
         ))
 
         when:

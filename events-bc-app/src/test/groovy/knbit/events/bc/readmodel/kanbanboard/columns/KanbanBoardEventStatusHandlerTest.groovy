@@ -45,7 +45,6 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
-                eventFrequency : eventDetails.frequency(),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ]

@@ -2,11 +2,9 @@ package knbit.events.bc.eventproposal.domain.sagas;
 
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.IdFactory;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
@@ -27,7 +25,6 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     private Name proposalName;
     private Description proposalDescription;
     private EventType proposalType;
-    private EventFrequency eventFrequency;
 
     private transient CommandGateway commandGateway;
 
@@ -38,7 +35,6 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
         this.proposalName = event.name();
         this.proposalDescription = event.description();
         this.proposalType = event.eventType();
-        this.eventFrequency = event.eventFrequency();
     }
 
     @EndSaga
@@ -50,8 +46,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
                         EventDetails.of(
                                 proposalName,
                                 proposalDescription,
-                                proposalType,
-                                eventFrequency
+                                proposalType
                         )
                 )
         );

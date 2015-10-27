@@ -30,7 +30,6 @@ class MemberSurveyEventHandler implements RemoveEventRelatedData {
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
                 votedUp       : 0
         ])
     }

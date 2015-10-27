@@ -33,7 +33,6 @@ class KanbanBoardEventStatusHandler {
                 eventId        : eventId.value(),
                 name           : details.name().value(),
                 eventType      : details.type(),
-                eventFrequency : details.frequency(),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ])

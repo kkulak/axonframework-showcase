@@ -1,6 +1,6 @@
 package knbit.events.bc.readmodel.kanbanboard.interest
 
-import knbit.events.bc.common.domain.enums.EventFrequency
+
 import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.interest.domain.enums.AnswerType
 import knbit.events.bc.readmodel.DBCollectionAware
@@ -35,7 +35,6 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                         name          : "name",
                         description   : "desc",
                         eventType     : EventType.WORKSHOP,
-                        eventFrequency: EventFrequency.ONE_OFF,
                         votedDown     : 15,
                         votedUp       : 17
                 ],
@@ -83,7 +82,6 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                 name          : "name",
                 description   : "desc",
                 eventType     : EventType.WORKSHOP,
-                eventFrequency: EventFrequency.ONE_OFF,
                 votedDown     : 15,
                 votedUp       : 17,
                 questions     : [
@@ -124,7 +122,6 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                         name          : "name",
                         description   : "desc",
                         eventType     : EventType.WORKSHOP,
-                        eventFrequency: EventFrequency.ONE_OFF,
                         votedDown     : 15,
                         votedUp       : 17
                 ],
@@ -144,7 +141,6 @@ class InterestPreviewRepositoryTest extends Specification implements DBCollectio
                 name          : "name",
                 description   : "desc",
                 eventType     : EventType.WORKSHOP,
-                eventFrequency: EventFrequency.ONE_OFF,
                 votedDown     : 15,
                 votedUp       : 17
 

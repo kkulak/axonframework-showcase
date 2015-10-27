@@ -39,8 +39,7 @@ public class BacklogEventController {
         return EventDetails.of(
                 Name.of(eventBacklogDTO.getName()),
                 Description.of(eventBacklogDTO.getDescription()),
-                eventBacklogDTO.getEventType(),
-                eventBacklogDTO.getEventFrequency()
+                eventBacklogDTO.getEventType()
         );
     }
 }

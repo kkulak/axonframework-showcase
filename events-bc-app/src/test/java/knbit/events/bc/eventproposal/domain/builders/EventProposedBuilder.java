@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.domain.builders;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
@@ -20,7 +19,6 @@ public class EventProposedBuilder {
     private Name name = Name.of("name");
     private Description description = Description.of("description");
     private EventType eventType = EventType.LECTURE;
-    private EventFrequency eventFrequency = EventFrequency.ONE_OFF;
     private ProposalState proposalState = ProposalState.PENDING;
 
     public EventProposedBuilder eventProposalId(EventProposalId eventProposalId) {
@@ -49,12 +47,7 @@ public class EventProposedBuilder {
         return this;
     }
 
-    public EventProposedBuilder eventFrequency(EventFrequency frequency) {
-        this.eventFrequency = frequency;
-        return this;
-    }
-
     public EventProposalEvents.EventProposed build() {
-        return new EventProposalEvents.EventProposed(eventProposalId, name, description, eventType, eventFrequency, proposalState);
+        return new EventProposalEvents.EventProposed(eventProposalId, name, description, eventType, proposalState);
     }
 }

@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.domain.valueobjects.commands;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import lombok.AccessLevel;
@@ -23,7 +22,7 @@ public final class EventProposalCommands {
         String name;
         String description;
         EventType eventType;
-        EventFrequency eventFrequency;
+
     }
 
     @Value

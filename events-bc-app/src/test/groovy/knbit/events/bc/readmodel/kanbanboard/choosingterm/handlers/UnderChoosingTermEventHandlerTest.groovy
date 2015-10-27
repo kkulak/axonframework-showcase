@@ -47,7 +47,6 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
                 terms         : [],
                 reservations  : []
         ]

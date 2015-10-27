@@ -1,6 +1,5 @@
 package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -21,11 +20,9 @@ public class EventDetailsBuilder {
     private Name name = Name.of("name");
     private Description description = Description.of("desc");
     private EventType type = EventType.WORKSHOP;
-    private EventFrequency frequency = EventFrequency.ONE_OFF;
-
 
     public EventDetails build() {
-        return EventDetails.of(name, description, type, frequency);
+        return EventDetails.of(name, description, type);
     }
 
     public static EventDetails defaultEventDetails() {

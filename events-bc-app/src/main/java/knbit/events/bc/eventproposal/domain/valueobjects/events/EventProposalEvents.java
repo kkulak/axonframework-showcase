@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.domain.valueobjects.events;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
@@ -26,7 +25,6 @@ public final class EventProposalEvents {
         Name name;
         Description description;
         EventType eventType;
-        EventFrequency eventFrequency;
         ProposalState proposalState;
     }
 

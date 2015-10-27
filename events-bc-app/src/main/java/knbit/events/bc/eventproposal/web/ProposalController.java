@@ -32,8 +32,7 @@ public class ProposalController {
         commandGateway.send(
                 new EventProposalCommands.ProposeEvent(
                         new EventProposalId(), proposalDto.getName(),
-                        proposalDto.getDescription(), proposalDto.getEventType(),
-                        proposalDto.getEventFrequency()
+                        proposalDto.getDescription(), proposalDto.getEventType()
                 )
         );
 

@@ -3,7 +3,6 @@ package knbit.events.bc.choosingterm.domain.aggregates;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -32,10 +31,8 @@ public class UnderChoosingTermEventCreationalTest {
         final EventDetails eventDetails = EventDetails.of(
                 Name.of("name"),
                 Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
+                EventType.WORKSHOP
         );
-
 
         fixture
                 .givenNoPriorActivity()

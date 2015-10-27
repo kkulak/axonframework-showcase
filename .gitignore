@@ -31,6 +31,8 @@ events-bc-app/build
 events-bc-app/logs
 notification-bc/logs
 events-bc-announcement/logs
+events-bc-core/logs
+member-questions-bc/logs
 
 # Axon temporary eventstore directory
 events-bc-app/data

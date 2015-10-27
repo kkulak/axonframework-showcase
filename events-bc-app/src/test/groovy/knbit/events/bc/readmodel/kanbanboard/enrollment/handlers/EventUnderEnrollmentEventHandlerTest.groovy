@@ -57,7 +57,6 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
                 terms         : [
                         [
                                 termId      : firstTerm.termId().value(),

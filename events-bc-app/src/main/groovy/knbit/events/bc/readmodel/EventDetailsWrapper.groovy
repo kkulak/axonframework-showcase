@@ -12,8 +12,7 @@ class EventDetailsWrapper {
         [
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency()
+                eventType     : eventDetails.type()
         ]
     }
 }

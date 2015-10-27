@@ -1,7 +1,6 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -32,8 +31,7 @@ public class InterestAwareEventCreationalTest {
         final EventDetails eventDetails = EventDetails.of(
                 Name.of("name"),
                 Description.of("desc"),
-                EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
+                EventType.WORKSHOP
         );
 
 

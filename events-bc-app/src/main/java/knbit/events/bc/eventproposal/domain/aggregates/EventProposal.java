@@ -1,7 +1,6 @@
 package knbit.events.bc.eventproposal.domain.aggregates;
 
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
@@ -22,13 +21,12 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     private Name name;
     private Description description;
     private EventType eventType;
-    private EventFrequency eventFrequency;
     private ProposalState state;
 
     EventProposal(
-            EventProposalId eventProposalId, Name name, Description description, EventType eventType, EventFrequency eventFrequency) {
+            EventProposalId eventProposalId, Name name, Description description, EventType eventType) {
         apply(new EventProposalEvents.EventProposed(
-                        eventProposalId, name, description, eventType, eventFrequency, ProposalState.PENDING
+                        eventProposalId, name, description, eventType, ProposalState.PENDING
                 )
         );
     }
@@ -67,7 +65,6 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
         );
     }
 
-
     @EventSourcingHandler
     private void on(EventProposalEvents.ProposalRejected event) {
         this.state = event.state();
@@ -79,7 +76,7 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
         this.name = event.name();
         this.description = event.description();
         this.eventType = event.eventType();
-        this.eventFrequency = event.eventFrequency();
         this.state = event.proposalState();
     }
+
 }

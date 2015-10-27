@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.web.forms;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,8 +26,5 @@ public class EventProposalDto {
 
     @NotNull
     private EventType eventType;
-
-    @NotNull
-    private EventFrequency eventFrequency;
 
 }

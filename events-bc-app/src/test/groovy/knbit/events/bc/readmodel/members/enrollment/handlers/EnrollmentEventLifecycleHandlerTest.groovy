@@ -51,7 +51,6 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                eventFrequency: eventDetails.frequency(),
                 terms         : [
                         [
                                 termId              : firstTerm.termId().value(),

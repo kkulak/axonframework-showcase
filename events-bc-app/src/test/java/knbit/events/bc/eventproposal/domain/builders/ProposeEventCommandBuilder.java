@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.domain.builders;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
@@ -17,7 +16,6 @@ public class ProposeEventCommandBuilder {
     private String name = "name";
     private String description = "description";
     private EventType eventType = EventType.LECTURE;
-    private EventFrequency eventFrequency = EventFrequency.ONE_OFF;
 
     public ProposeEventCommandBuilder eventProposalId(EventProposalId eventProposalId) {
         this.eventProposalId = eventProposalId;
@@ -39,12 +37,7 @@ public class ProposeEventCommandBuilder {
         return this;
     }
 
-    public ProposeEventCommandBuilder eventFrequency(EventFrequency frequency) {
-        this.eventFrequency = frequency;
-        return this;
-    }
-
     public EventProposalCommands.ProposeEvent build() {
-        return new EventProposalCommands.ProposeEvent(eventProposalId, name, description, eventType, eventFrequency);
+        return new EventProposalCommands.ProposeEvent(eventProposalId, name, description, eventType);
     }
 }

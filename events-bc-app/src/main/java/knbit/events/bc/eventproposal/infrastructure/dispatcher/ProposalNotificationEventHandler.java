@@ -27,8 +27,7 @@ public class ProposalNotificationEventHandler {
                 event.eventProposalId().value(),
                 event.name().value(),
                 event.description().value(),
-                event.eventType(),
-                event.eventFrequency()
+                event.eventType()
         );
 
         dispatcher.dispatch(proposalNotification, AMQPConstants.NOTIFICATION_QUEUE, NOTIFICATION_TYPE);

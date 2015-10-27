@@ -24,7 +24,6 @@ class EventProposalEventHandler {
                 name          : event.name().value(),
                 description   : event.description().value(),
                 eventType     : event.eventType(),
-                eventFrequency: event.eventFrequency(),
                 state         : event.proposalState()
         ])
     }
