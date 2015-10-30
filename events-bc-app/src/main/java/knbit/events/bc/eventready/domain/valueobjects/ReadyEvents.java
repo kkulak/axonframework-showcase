@@ -1,10 +1,9 @@
 package knbit.events.bc.eventready.domain.valueobjects;
 
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.readmodel.EventStatus;
 import knbit.events.bc.common.readmodel.EventStatusAware;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -20,8 +19,9 @@ public interface ReadyEvents {
     class Created implements EventStatusAware {
 
         EventId eventId;
-        EventDetails eventDetails;
-        Collection<IdentifiedTermWithAttendees> terms;
+        EventId correlationId;
+        EventReadyDetails eventDetails;
+        Collection<Attendee> attendees;
 
         @Override
         public EventStatus status() {

@@ -1,9 +1,9 @@
 package knbit.events.bc.eventready.domain.aggregates;
 
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,20 +18,23 @@ import java.util.Collection;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReadyEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
-    private EventDetails eventDetails;
-    private Collection<IdentifiedTermWithAttendees> terms;
+    private EventId correlationId;
+    private EventReadyDetails eventDetails;
+    private Collection<Attendee> attendees;
 
     public ReadyEvent(EventId eventId,
-                      EventDetails eventDetails,
-                      Collection<IdentifiedTermWithAttendees> terms) {
+                      EventId correlationId,
+                      EventReadyDetails eventDetails,
+                      Collection<Attendee> attendees) {
 
-        apply(ReadyEvents.Created.of(eventId, eventDetails, terms));
+        apply(ReadyEvents.Created.of(eventId, correlationId, eventDetails, attendees));
     }
 
     @EventSourcingHandler
     private void on(ReadyEvents.Created event) {
         id = event.eventId();
+        correlationId = event.correlationId();
         eventDetails = event.eventDetails();
-        terms = event.terms();
+        attendees = event.attendees();
     }
 }
