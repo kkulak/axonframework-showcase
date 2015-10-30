@@ -7,6 +7,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermE
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
@@ -153,7 +154,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 .instance()
                 .eventDetails(eventDetails)
                 .build()
-        def readyEventId = EventId.of("readyEventId")
+        def readyEventId = ReadyEventId.of("readyEventId")
 
         when:
         objectUnderTest.on(ReadyEvents.Created.of(readyEventId, eventId, eventReadyDetails, []))

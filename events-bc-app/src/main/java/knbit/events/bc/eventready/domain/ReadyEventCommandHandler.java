@@ -25,7 +25,7 @@ public class ReadyEventCommandHandler {
     @CommandHandler
     public void handle(ReadyCommands.Create command) {
         final ReadyEvent readyEvent = new ReadyEvent(
-                command.eventId(),
+                command.readyEventId(),
                 command.correlationId(),
                 command.eventDetails(),
                 command.attendees()

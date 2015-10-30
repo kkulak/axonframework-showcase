@@ -4,6 +4,7 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,13 @@ import java.util.Collection;
  */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReadyEvent extends IdentifiedDomainAggregateRoot<EventId> {
+public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
 
     private EventId correlationId;
     private EventReadyDetails eventDetails;
     private Collection<Attendee> attendees;
 
-    public ReadyEvent(EventId eventId,
+    public ReadyEvent(ReadyEventId eventId,
                       EventId correlationId,
                       EventReadyDetails eventDetails,
                       Collection<Attendee> attendees) {
@@ -32,7 +33,7 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     @EventSourcingHandler
     private void on(ReadyEvents.Created event) {
-        id = event.eventId();
+        id = event.readyEventId();
         correlationId = event.correlationId();
         eventDetails = event.eventDetails();
         attendees = event.attendees();

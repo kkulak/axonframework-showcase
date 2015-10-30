@@ -72,7 +72,7 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        def eventId = event.eventId()
+        def eventId = event.readyEventId()
         def details = event.eventDetails()
 
         // todo: location, lecturer ?

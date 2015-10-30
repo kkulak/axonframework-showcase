@@ -3,8 +3,6 @@ package knbit.events.bc.choosingterm.domain.valuobjects.events;
 import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.readmodel.EventStatus;
-import knbit.events.bc.common.readmodel.EventStatusAware;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -21,15 +19,10 @@ public final class UnderChoosingTermEventEvents {
 
     @Accessors(fluent = true)
     @Value(staticConstructor = "of")
-    public static class Created implements EventStatusAware {
+    public static class Created {
 
         EventId eventId;
         EventDetails eventDetails;
-
-        @Override
-        public EventStatus status() {
-            return EventStatus.CHOOSING_TERM;
-        }
     }
 
     @Accessors(fluent = true)

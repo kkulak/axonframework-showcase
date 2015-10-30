@@ -19,6 +19,7 @@ import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmen
 import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
@@ -143,8 +144,8 @@ public class EventLifecycleSagaTest {
 
         final Collection<IdentifiedTermWithAttendees> terms = ImmutableList.of(firstTerm, secondTerm);
 
-        final EventId firstEventReadyId = EventId.of("firstEventReadyId");
-        final EventId secondEventReadyId = EventId.of("secondEventReadyId");
+        final ReadyEventId firstEventReadyId = ReadyEventId.of("firstEventReadyId");
+        final ReadyEventId secondEventReadyId = ReadyEventId.of("secondEventReadyId");
 
         makeIdFactoryReturn(firstEventReadyId, secondEventReadyId);
 
@@ -160,35 +161,32 @@ public class EventLifecycleSagaTest {
                         ReadyCommands.Create.of(
                                 firstEventReadyId,
                                 eventId,
-                                EventReadyDetails.of(
-                                        eventDetails,
-                                        firstTerm.duration(),
-                                        firstTerm.limit(),
-                                        firstTerm.location(),
-                                        firstTerm.lecturer()
-                                ),
+                                eventReadyDetailsFrom(eventDetails, firstTerm),
                                 firstTerm.attendees()
                         ),
 
                         ReadyCommands.Create.of(
                                 secondEventReadyId,
                                 eventId,
-                                EventReadyDetails.of(
-                                        eventDetails,
-                                        secondTerm.duration(),
-                                        secondTerm.limit(),
-                                        secondTerm.location(),
-                                        secondTerm.lecturer()
-                                ),
-                                firstTerm.attendees()
+                                eventReadyDetailsFrom(eventDetails, secondTerm),
+                                secondTerm.attendees()
                         )
                 );
     }
 
-    private void makeIdFactoryReturn(EventId firstId, EventId secondId) {
+    private EventReadyDetails eventReadyDetailsFrom(EventDetails details, IdentifiedTermWithAttendees term) {
+        return EventReadyDetails.of(
+                details,
+                term.duration(),
+                term.limit(),
+                term.location(),
+                term.lecturer()
+        );
+    }
+
+    private void makeIdFactoryReturn(ReadyEventId firstId, ReadyEventId... furtherIds) {
         PowerMockito.mockStatic(IdFactory.class);
-        Mockito.when(IdFactory.eventId())
-                .thenReturn(firstId)
-                .thenReturn(secondId);
+        Mockito.when(IdFactory.readyEventId())
+                .thenReturn(firstId, furtherIds);
     }
 }

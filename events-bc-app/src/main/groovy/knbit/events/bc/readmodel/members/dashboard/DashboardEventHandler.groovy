@@ -26,7 +26,7 @@ class DashboardEventHandler {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        def eventId = [eventId: event.eventId().value()]
+        def eventId = [eventId: event.readyEventId().value()]
         def eventDetails = detailsDataFrom(event.eventDetails())
         def attendees = attendeesDataFrom(event.attendees())
 

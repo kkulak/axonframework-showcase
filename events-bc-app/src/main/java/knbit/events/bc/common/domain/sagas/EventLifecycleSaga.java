@@ -67,7 +67,7 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
 
         final Function<IdentifiedTermWithAttendees, ReadyCommands.Create> createNewEventReadyCommand =
                 term -> ReadyCommands.Create.of(
-                        IdFactory.eventId(),
+                        IdFactory.readyEventId(),
                         correlationId,
                         EventReadyDetails.of(
                                 oldEventDetails, term.duration(), term.limit(), term.location(), term.lecturer()

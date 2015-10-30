@@ -5,6 +5,7 @@ import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
 import spock.lang.Specification
@@ -24,7 +25,7 @@ class DashboardEventHandlerTest extends Specification implements DBCollectionAwa
 
     def "it should create new database entry on ready event created"() {
         given:
-        def eventId = EventId.of("eventId")
+        def eventId = ReadyEventId.of("eventId")
         def eventDetails = EventReadyDetailsBuilder.defaultEventDetails()
         def attendees = [Attendee.of(MemberId.of("attendee1"))]
 

@@ -16,7 +16,7 @@ public interface ReadyCommands {
     @Value(staticConstructor = "of")
     class Create {
 
-        EventId eventId;
+        ReadyEventId readyEventId;
         EventId correlationId;
         EventReadyDetails eventDetails;
         Collection<Attendee> attendees;

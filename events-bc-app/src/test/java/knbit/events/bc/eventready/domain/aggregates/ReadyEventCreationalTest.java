@@ -8,6 +8,7 @@ import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -28,7 +29,7 @@ public class ReadyEventCreationalTest {
     @Test
     public void shouldProduceCreatedEventOnCorrespondingCreateCommand() throws Exception {
 
-        final EventId eventId = EventId.of("eventReadyId");
+        final ReadyEventId eventId = ReadyEventId.of("eventReadyId");
         final EventId correlationId = EventId.of("correlationId");
         final EventReadyDetails eventDetails = EventReadyDetailsBuilder.defaultEventDetails();
         final ImmutableList<Attendee> attendees = ImmutableList.of(
