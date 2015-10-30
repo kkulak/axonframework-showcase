@@ -75,11 +75,16 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
         def eventId = event.readyEventId()
         def details = event.eventDetails()
 
-        // todo: location, lecturer ?
         collection.insert([
                 eventId        : eventId.value(),
                 name           : details.name().value(),
                 eventType      : details.type(),
+                start          : details.duration().start(),
+                location       : details.location().value(),
+                lecturer       : [
+                        firstName: details.lecturer().firstName(),
+                        lastName : details.lecturer().lastName(),
+                ],
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ])
