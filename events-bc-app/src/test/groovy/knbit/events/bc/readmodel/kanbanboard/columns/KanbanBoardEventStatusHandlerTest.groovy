@@ -39,10 +39,8 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         def entry = collection.findOne([
                 eventId: eventId.value()
         ])
-        def entryWithoutMongoId = entry.toMap()
-        entryWithoutMongoId.remove '_id'
 
-        entryWithoutMongoId == [
+        stripMongoIdFrom(entry) == [
                 eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
@@ -147,7 +145,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         !collection.findOne(eventId: eventId.value())
     }
 
-    def "should set appropriate event states on ready event created"() {
+    def "should add new entry with appropiate event states on ready event created"() {
         given:
         objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
 

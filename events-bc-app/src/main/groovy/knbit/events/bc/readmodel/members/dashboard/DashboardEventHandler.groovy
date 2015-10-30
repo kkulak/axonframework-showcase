@@ -1,9 +1,8 @@
 package knbit.events.bc.readmodel.members.dashboard
 
 import com.mongodb.DBCollection
-import knbit.events.bc.common.domain.valueobjects.EventDetails
-import knbit.events.bc.common.domain.valueobjects.EventId
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees
+import knbit.events.bc.common.domain.valueobjects.Attendee
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -27,29 +26,29 @@ class DashboardEventHandler {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        collection << denormalizedEvents(event.eventId(), event.eventDetails(), event.terms())
+        def eventId = [eventId: event.eventId().value()]
+        def eventDetails = detailsDataFrom(event.eventDetails())
+        def attendees = attendeesDataFrom(event.attendees())
+
+        collection << eventId + eventDetails + attendees
     }
 
-    static def denormalizedEvents(EventId eventId,
-                                  EventDetails details,
-                                  Collection<IdentifiedTermWithAttendees> terms) {
-        terms.collect {
-            [eventId: eventId.value()] + EventDetailsWrapper.asMap(details) + termDataFrom(it)
-        }
-    }
-
-    static def termDataFrom(IdentifiedTermWithAttendees term) {
-        [
-                termId           : term.termId().value(),
-                start            : term.duration().start(),
-                end              : term.duration().end(),
-                participantsLimit: term.limit().value(),
-                location         : term.location().value(),
+    private static def detailsDataFrom(EventReadyDetails details) {
+        def termRelatedData = [
+                start            : details.duration().start(),
+                end              : details.duration().end(),
+                participantsLimit: details.limit().value(),
+                location         : details.location().value(),
                 lecturer         : [
-                        firstName: term.lecturer().firstName(),
-                        lastName : term.lecturer().lastName()
-                ],
-                attendees        : term.attendees().collect { it.memberId().value() }
+                        firstName: details.lecturer().firstName(),
+                        lastName : details.lecturer().lastName()
+                ]
         ]
+
+        EventDetailsWrapper.asMap(details.eventDetails()) + termRelatedData
+    }
+
+    private static def attendeesDataFrom(Collection<Attendee> attendees) {
+        [attendees: attendees.collect { it.memberId().value() }]
     }
 }
