@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
@@ -135,20 +136,39 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         entryWithoutMongoId['reachableStatus'] == [ENROLLMENT, READY]
     }
 
-    def "should set appropriate event states on ready event created"() {
+    def "should remove previous entry on transition to ready"() {
         given:
         objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
 
         when:
-        objectUnderTest.on(ReadyEvents.Created.of(eventId, eventDetails, []))
+        objectUnderTest.on(EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, []))
 
         then:
-        def entry = collection.findOne([
-                eventId: eventId.value()
-        ]).toMap()
-
-        entry['eventStatus'] == READY
-        entry['reachableStatus'] == [READY]
+        !collection.findOne(eventId: eventId.value())
     }
 
+    def "should set appropriate event states on ready event created"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        def eventReadyDetails = EventReadyDetailsBuilder
+                .instance()
+                .eventDetails(eventDetails)
+                .build()
+        def readyEventId = EventId.of("readyEventId")
+
+        when:
+        objectUnderTest.on(ReadyEvents.Created.of(readyEventId, eventId, eventReadyDetails, []))
+
+        then:
+        def entry = collection.findOne([eventId: readyEventId.value()])
+
+        stripMongoIdFrom(entry) == [
+                eventId        : readyEventId.value(),
+                name           : eventDetails.name().value(),
+                eventType      : eventDetails.type(),
+                eventStatus    : READY,
+                reachableStatus: [READY]
+        ]
+    }
 }
