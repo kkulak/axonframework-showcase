@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
@@ -20,5 +22,9 @@ public class EventBacklogDTO {
     private String description;
     @NotNull
     private EventType eventType;
+    @NotNull
+    private Optional<String> imageUrl = Optional.empty();
+    @NotNull @Valid
+    private Optional<SectionDTO> section = Optional.empty();
 
 }

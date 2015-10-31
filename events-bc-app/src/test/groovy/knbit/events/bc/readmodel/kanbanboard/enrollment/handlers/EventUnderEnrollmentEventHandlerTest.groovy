@@ -10,7 +10,11 @@ import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmen
 import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 05.10.15.
@@ -57,6 +61,8 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 terms         : [
                         [
                                 termId      : firstTerm.termId().value(),

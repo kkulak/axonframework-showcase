@@ -4,6 +4,7 @@ import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.exceptions.*;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
@@ -22,11 +23,12 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     private Description description;
     private EventType eventType;
     private ProposalState state;
+    private URL imageUrl;
 
     EventProposal(
-            EventProposalId eventProposalId, Name name, Description description, EventType eventType) {
+            EventProposalId eventProposalId, Name name, Description description, EventType eventType, URL imageUrl) {
         apply(new EventProposalEvents.EventProposed(
-                        eventProposalId, name, description, eventType, ProposalState.PENDING
+                        eventProposalId, name, description, eventType, imageUrl, ProposalState.PENDING
                 )
         );
     }
@@ -76,6 +78,7 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
         this.name = event.name();
         this.description = event.description();
         this.eventType = event.eventType();
+        this.imageUrl = event.imageUrl().orElse(null);
         this.state = event.proposalState();
     }
 

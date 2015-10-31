@@ -8,7 +8,11 @@ import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 20.10.15.
@@ -45,6 +49,8 @@ class DashboardEventHandlerTest extends Specification implements DBCollectionAwa
                 name             : eventDetails.name().value(),
                 description      : eventDetails.description().value(),
                 eventType        : eventDetails.type(),
+                imageUrl         : urlOrNull(eventDetails.imageUrl()),
+                section          : sectionOrNull(eventDetails.section()),
                 start            : eventDetails.duration().start(),
                 end              : eventDetails.duration().end(),
                 participantsLimit: eventDetails.limit().value(),

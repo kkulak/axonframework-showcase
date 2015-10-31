@@ -6,6 +6,7 @@ import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -25,6 +26,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     private Name proposalName;
     private Description proposalDescription;
     private EventType proposalType;
+    private URL imageUrl;
 
     private transient CommandGateway commandGateway;
 
@@ -35,6 +37,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
         this.proposalName = event.name();
         this.proposalDescription = event.description();
         this.proposalType = event.eventType();
+        this.imageUrl = event.imageUrl().orElse(null);
     }
 
     @EndSaga
@@ -46,7 +49,9 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
                         EventDetails.of(
                                 proposalName,
                                 proposalDescription,
-                                proposalType
+                                proposalType,
+                                imageUrl,
+                                null
                         )
                 )
         );

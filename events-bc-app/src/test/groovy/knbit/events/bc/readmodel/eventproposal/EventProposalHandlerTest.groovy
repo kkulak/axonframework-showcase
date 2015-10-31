@@ -5,6 +5,7 @@ import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.common.domain.valueobjects.Description
 import knbit.events.bc.common.domain.valueobjects.Name
+import knbit.events.bc.common.domain.valueobjects.URL
 import knbit.events.bc.eventproposal.domain.enums.ProposalState
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId
 import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents
@@ -18,6 +19,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def proposalId = EventProposalId.of("proposal-id")
     def name = Name.of("name")
     def description = Description.of("description")
+    def imageUrl = URL.of("https://www.google.pl/")
     def eventType = EventType.LECTURE
     def state = ProposalState.PENDING
 
@@ -33,7 +35,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should create new db entry containing event proposal"() {
         when:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, state
+                proposalId, name, description, eventType, imageUrl, state
         ))
 
         then:
@@ -48,6 +50,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
                 name          : name.value(),
                 description   : description.value(),
                 eventType     : eventType,
+                imageUrl      : imageUrl.value(),
                 state         : state
         ]
     }
@@ -55,7 +58,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should update event proposal state on accepted proposal event"() {
         given:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, state
+                proposalId, name, description, eventType, imageUrl, state
         ))
 
         when:
@@ -75,7 +78,7 @@ class EventProposalHandlerTest extends Specification implements DBCollectionAwar
     def "should update event proposal state on rejected proposal event"() {
         given:
         objectUnderTest.on(new EventProposalEvents.EventProposed(
-                proposalId, name, description, eventType, state
+                proposalId, name, description, eventType, imageUrl, state
         ))
 
         when:

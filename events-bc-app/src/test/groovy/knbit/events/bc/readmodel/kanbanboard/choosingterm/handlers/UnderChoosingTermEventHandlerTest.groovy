@@ -9,7 +9,11 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 13.09.15.
@@ -47,6 +51,8 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 terms         : [],
                 reservations  : []
         ]

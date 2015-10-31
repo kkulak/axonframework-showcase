@@ -24,6 +24,7 @@ class EventProposalEventHandler {
                 name          : event.name().value(),
                 description   : event.description().value(),
                 eventType     : event.eventType(),
+                imageUrl      : event.imageUrl().map { v -> v.value() }.orElse(null),
                 state         : event.proposalState()
         ])
     }

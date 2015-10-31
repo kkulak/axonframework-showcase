@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
+import java.util.Optional;
+
 /**
  * Created by novy on 22.08.15.
  */
@@ -22,6 +24,7 @@ public final class EventProposalCommands {
         String name;
         String description;
         EventType eventType;
+        Optional<String> imageUrl;
 
     }
 
