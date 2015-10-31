@@ -174,6 +174,23 @@ public class EventLifecycleSagaTest {
                 );
     }
 
+    @Test
+    public void shouldEndOnTransitionToReady() throws Exception {
+
+        final ImmutableList<IdentifiedTermWithAttendees> soleTerm =
+                ImmutableList.of(IdentifiedTermWithAttendeeBuilder.defaultTerm());
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
+                )
+                .whenPublishingA(
+                        EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, soleTerm)
+                )
+                .expectActiveSagas(0);
+    }
+
     private EventReadyDetails eventReadyDetailsFrom(EventDetails details, IdentifiedTermWithAttendees term) {
         return EventReadyDetails.of(
                 details,

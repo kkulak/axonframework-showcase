@@ -21,4 +21,13 @@ public interface ReadyEvents {
         EventReadyDetails eventDetails;
         Collection<Attendee> attendees;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class TookPlace {
+
+        ReadyEventId readyEventId;
+        EventReadyDetails eventDetails;
+        Collection<Attendee> attendees;
+    }
 }

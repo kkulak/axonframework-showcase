@@ -4,7 +4,9 @@ import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
+import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
@@ -175,5 +177,20 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ]
+    }
+
+    def "should remove db entry on event took place"() {
+        given:
+        def readyEventId = ReadyEventId.of("readyEventId")
+        def eventReadyDetails = EventReadyDetailsBuilder.defaultEventDetails()
+        def attendees = [Attendee.of(MemberId.of("member"))]
+
+        objectUnderTest.on(ReadyEvents.Created.of(readyEventId, eventId, eventReadyDetails, attendees))
+
+        when:
+        objectUnderTest.on(ReadyEvents.TookPlace.of(readyEventId, eventReadyDetails, attendees))
+
+        then:
+        !collection.findOne([eventId: readyEventId.value()])
     }
 }

@@ -79,6 +79,8 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
                 .stream()
                 .map(createNewEventReadyCommand)
                 .forEach(commandGateway::send);
+
+        end();
     }
 
     @Autowired

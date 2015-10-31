@@ -90,6 +90,11 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
         ])
     }
 
+    @EventHandler
+    def on(ReadyEvents.TookPlace event) {
+        removeDataBy(event.readyEventId()).from(collection)
+    }
+
     private def updateEventStatus(EventId eventId,
                                   EventStatus currentStatus,
                                   List<EventStatus> reachableStatus) {
