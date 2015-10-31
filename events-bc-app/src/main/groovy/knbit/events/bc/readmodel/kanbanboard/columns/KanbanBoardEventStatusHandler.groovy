@@ -8,6 +8,7 @@ import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component
 import static knbit.events.bc.common.readmodel.EventStatus.*
 
 @Component
-class KanbanBoardEventStatusHandler {
+class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
     def collection
 
     @Autowired
@@ -63,9 +64,35 @@ class KanbanBoardEventStatusHandler {
         updateEventStatus(event.eventId(), ENROLLMENT, [ENROLLMENT, READY])
     }
 
+
+    @EventHandler
+    def on(EventUnderEnrollmentEvents.TransitedToReady event) {
+        removeDataBy(event.eventId()).from(collection)
+    }
+
     @EventHandler
     def on(ReadyEvents.Created event) {
-        updateEventStatus(event.eventId(), READY, [READY])
+        def eventId = event.readyEventId()
+        def details = event.eventDetails()
+
+        collection.insert([
+                eventId        : eventId.value(),
+                name           : details.name().value(),
+                eventType      : details.type(),
+                start          : details.duration().start(),
+                location       : details.location().value(),
+                lecturer       : [
+                        firstName: details.lecturer().firstName(),
+                        lastName : details.lecturer().lastName(),
+                ],
+                eventStatus    : READY,
+                reachableStatus: [READY]
+        ])
+    }
+
+    @EventHandler
+    def on(ReadyEvents.TookPlace event) {
+        removeDataBy(event.readyEventId()).from(collection)
     }
 
     private def updateEventStatus(EventId eventId,

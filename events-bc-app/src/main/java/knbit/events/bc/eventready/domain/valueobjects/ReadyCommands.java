@@ -1,8 +1,7 @@
 package knbit.events.bc.eventready.domain.valueobjects;
 
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -17,8 +16,9 @@ public interface ReadyCommands {
     @Value(staticConstructor = "of")
     class Create {
 
-        EventId eventId;
-        EventDetails eventDetails;
-        Collection<IdentifiedTermWithAttendees> terms;
+        ReadyEventId readyEventId;
+        EventId correlationId;
+        EventReadyDetails eventDetails;
+        Collection<Attendee> attendees;
     }
 }

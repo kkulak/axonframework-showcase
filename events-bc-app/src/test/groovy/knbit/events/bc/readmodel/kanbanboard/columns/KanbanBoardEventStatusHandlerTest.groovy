@@ -4,8 +4,12 @@ import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
+import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
@@ -38,10 +42,8 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         def entry = collection.findOne([
                 eventId: eventId.value()
         ])
-        def entryWithoutMongoId = entry.toMap()
-        entryWithoutMongoId.remove '_id'
 
-        entryWithoutMongoId == [
+        stripMongoIdFrom(entry) == [
                 eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
@@ -135,20 +137,60 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
         entryWithoutMongoId['reachableStatus'] == [ENROLLMENT, READY]
     }
 
-    def "should set appropriate event states on ready event created"() {
+    def "should remove previous entry on transition to ready"() {
         given:
         objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
 
         when:
-        objectUnderTest.on(ReadyEvents.Created.of(eventId, eventDetails, []))
+        objectUnderTest.on(EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, []))
 
         then:
-        def entry = collection.findOne([
-                eventId: eventId.value()
-        ]).toMap()
-
-        entry['eventStatus'] == READY
-        entry['reachableStatus'] == [READY]
+        !collection.findOne(eventId: eventId.value())
     }
 
+    def "should add new entry with appropriate event states on ready event created"() {
+        given:
+        objectUnderTest.on(BacklogEventEvents.Created.of(eventId, eventDetails))
+
+        def eventReadyDetails = EventReadyDetailsBuilder
+                .instance()
+                .eventDetails(eventDetails)
+                .build()
+        def readyEventId = ReadyEventId.of("readyEventId")
+
+        when:
+        objectUnderTest.on(ReadyEvents.Created.of(readyEventId, eventId, eventReadyDetails, []))
+
+        then:
+        def entry = collection.findOne([eventId: readyEventId.value()])
+
+        stripMongoIdFrom(entry) == [
+                eventId        : readyEventId.value(),
+                name           : eventReadyDetails.name().value(),
+                eventType      : eventReadyDetails.type(),
+                start          : eventReadyDetails.duration().start(),
+                location       : eventReadyDetails.location().value(),
+                lecturer       : [
+                        firstName: eventReadyDetails.lecturer().firstName(),
+                        lastName : eventReadyDetails.lecturer().lastName(),
+                ],
+                eventStatus    : READY,
+                reachableStatus: [READY]
+        ]
+    }
+
+    def "should remove db entry on event took place"() {
+        given:
+        def readyEventId = ReadyEventId.of("readyEventId")
+        def eventReadyDetails = EventReadyDetailsBuilder.defaultEventDetails()
+        def attendees = [Attendee.of(MemberId.of("member"))]
+
+        objectUnderTest.on(ReadyEvents.Created.of(readyEventId, eventId, eventReadyDetails, attendees))
+
+        when:
+        objectUnderTest.on(ReadyEvents.TookPlace.of(readyEventId, eventReadyDetails, attendees))
+
+        then:
+        !collection.findOne([eventId: readyEventId.value()])
+    }
 }

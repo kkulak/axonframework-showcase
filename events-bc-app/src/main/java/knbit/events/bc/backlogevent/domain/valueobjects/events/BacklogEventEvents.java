@@ -2,8 +2,6 @@ package knbit.events.bc.backlogevent.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.readmodel.EventStatus;
-import knbit.events.bc.common.readmodel.EventStatusAware;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
@@ -18,13 +16,9 @@ public final class BacklogEventEvents {
 
     @Value(staticConstructor = "of")
     @Accessors(fluent = true)
-    public static class Created implements EventStatusAware {
+    public static class Created {
 
         EventId eventId;
         EventDetails eventDetails;
-
-        public EventStatus status() {
-            return EventStatus.BACKLOG;
-        }
     }
 }
