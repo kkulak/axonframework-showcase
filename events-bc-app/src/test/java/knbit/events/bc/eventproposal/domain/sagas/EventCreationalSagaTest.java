@@ -3,7 +3,10 @@ package knbit.events.bc.eventproposal.domain.sagas;
 import knbit.events.bc.backlogevent.domain.builders.CreateBacklogEventCommandBuilder;
 import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.enums.EventType;
+import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.Section;
 import knbit.events.bc.eventproposal.domain.builders.EventProposedBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalAcceptedEventBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalRejectedEventBuilder;
@@ -16,6 +19,8 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.Optional;
 
 /**
  * Created by novy on 07.05.15.
@@ -80,8 +85,8 @@ public class EventCreationalSagaTest {
     public void shouldProduceCreateEventCommandWhenCorrespondingProposalIsAccepted() throws Exception {
 
         final EventProposalId eventProposalId = EventProposalId.of("anId");
-        final String proposalName = "proposalName";
-        final String proposalDescription = "proposalDescription";
+        final Name proposalName = Name.of("proposalName");
+        final Description proposalDescription = Description.of("proposalDescription");
         final EventType proposalType = EventType.LECTURE;
         final EventId randomEventId = EventId.of("eventId");
         makeIdFactoryReturn(randomEventId);
@@ -110,6 +115,7 @@ public class EventCreationalSagaTest {
                                 .name(proposalName)
                                 .description(proposalDescription)
                                 .eventType(proposalType)
+                                .section(null)
                                 .build()
                 );
     }

@@ -3,12 +3,13 @@ package knbit.events.bc.eventproposal.domain.valueobjects.events;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.Optional;
 
 /**
  * Created by novy on 22.08.15.
@@ -17,15 +18,21 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EventProposalEvents {
 
-    @Value
+    @AllArgsConstructor
     @Accessors(fluent = true)
     public static class EventProposed {
 
-        EventProposalId eventProposalId;
-        Name name;
-        Description description;
-        EventType eventType;
-        ProposalState proposalState;
+        @Getter EventProposalId eventProposalId;
+        @Getter Name name;
+        @Getter Description description;
+        @Getter EventType eventType;
+        URL imageUrl;
+        @Getter ProposalState proposalState;
+
+        public Optional<URL> imageUrl() {
+            return Optional.ofNullable(imageUrl);
+        }
+
     }
 
     public interface ProposalStateChanged {

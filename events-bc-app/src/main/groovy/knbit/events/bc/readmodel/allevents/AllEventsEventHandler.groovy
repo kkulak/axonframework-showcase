@@ -32,6 +32,8 @@ class AllEventsEventHandler {
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
+                imageUrl      : eventDetails.imageUrl().orElse(null),
+                section       : eventDetails.section().orElse(null),
                 status        : EventStatus.SURVEY_INTEREST
         ])
     }

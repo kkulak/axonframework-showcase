@@ -9,7 +9,11 @@ import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 11.10.15.
@@ -51,6 +55,8 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 terms         : [
                         [
                                 termId              : firstTerm.termId().value(),

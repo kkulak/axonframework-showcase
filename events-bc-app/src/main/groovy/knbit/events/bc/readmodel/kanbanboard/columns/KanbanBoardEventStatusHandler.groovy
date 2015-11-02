@@ -8,6 +8,7 @@ import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 import static knbit.events.bc.common.readmodel.EventStatus.*
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 @Component
 class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
@@ -34,6 +37,8 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
                 eventId        : eventId.value(),
                 name           : details.name().value(),
                 eventType      : details.type(),
+                imageUrl       : urlOrNull(details.imageUrl()),
+                section        : sectionOrNull(details.section()),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ])
@@ -79,6 +84,8 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
                 eventId        : eventId.value(),
                 name           : details.name().value(),
                 eventType      : details.type(),
+                imageUrl       : urlOrNull(details.imageUrl()),
+                section        : sectionOrNull(details.section()),
                 start          : details.duration().start(),
                 location       : details.location().value(),
                 lecturer       : [

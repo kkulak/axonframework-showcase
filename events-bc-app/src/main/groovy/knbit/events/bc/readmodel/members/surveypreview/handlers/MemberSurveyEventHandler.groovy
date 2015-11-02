@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
+
 @Component
 class MemberSurveyEventHandler implements RemoveEventRelatedData {
 
@@ -29,6 +32,8 @@ class MemberSurveyEventHandler implements RemoveEventRelatedData {
                 eventId       : eventId.value(),
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 eventType     : eventDetails.type(),
                 votedUp       : 0
         ])

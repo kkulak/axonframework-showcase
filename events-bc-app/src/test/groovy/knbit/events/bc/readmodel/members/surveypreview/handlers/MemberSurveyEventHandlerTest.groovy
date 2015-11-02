@@ -13,7 +13,11 @@ import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
 import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 10.10.15.
@@ -45,6 +49,8 @@ class MemberSurveyEventHandlerTest extends Specification implements DBCollection
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 votedUp       : 0
         ]
     }

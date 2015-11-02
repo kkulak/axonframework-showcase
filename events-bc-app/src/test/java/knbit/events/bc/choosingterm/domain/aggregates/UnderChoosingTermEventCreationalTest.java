@@ -4,10 +4,7 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.common.domain.valueobjects.Description;
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.*;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +28,9 @@ public class UnderChoosingTermEventCreationalTest {
         final EventDetails eventDetails = EventDetails.of(
                 Name.of("name"),
                 Description.of("desc"),
-                EventType.WORKSHOP
+                EventType.WORKSHOP,
+                URL.of("https://www.google.pl/"),
+                Section.of("0", "Idea Factory")
         );
 
         fixture

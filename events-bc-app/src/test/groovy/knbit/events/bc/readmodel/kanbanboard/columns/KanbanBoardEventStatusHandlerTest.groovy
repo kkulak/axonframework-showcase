@@ -14,9 +14,13 @@ import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.common.readmodel.EventStatus.*
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 class KanbanBoardEventStatusHandlerTest extends Specification implements DBCollectionAware {
     def KanbanBoardEventStatusHandler objectUnderTest
@@ -47,6 +51,8 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 eventId        : eventId.value(),
                 name           : eventDetails.name().value(),
                 eventType      : eventDetails.type(),
+                imageUrl       : urlOrNull(eventDetails.imageUrl()),
+                section        : sectionOrNull(eventDetails.section()),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ]
@@ -168,6 +174,8 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 eventId        : readyEventId.value(),
                 name           : eventReadyDetails.name().value(),
                 eventType      : eventReadyDetails.type(),
+                imageUrl       : urlOrNull(eventReadyDetails.imageUrl()),
+                section        : sectionOrNull(eventReadyDetails.section()),
                 start          : eventReadyDetails.duration().start(),
                 location       : eventReadyDetails.location().value(),
                 lecturer       : [

@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Created by novy on 05.05.15.
@@ -26,5 +27,8 @@ public class EventProposalDto {
 
     @NotNull
     private EventType eventType;
+
+    @NotNull
+    private Optional<String> imageUrl;
 
 }
