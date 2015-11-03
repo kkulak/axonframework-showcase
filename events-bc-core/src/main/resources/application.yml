@@ -1,6 +1,6 @@
 aa-bc:
-  authenticationEndpoint: http://rossum.knbit.edu.pl:41000/authenticate
-  authorizationEndpoint: http://rossum.knbit.edu.pl:41000/authorize
+  authenticationEndpoint: http://rossum.knbit.edu.pl:41001/authenticate
+  authorizationEndpoint: http://rossum.knbit.edu.pl:41001/authorize
   authHeaderKey: knbit-aa-auth
 spring:
   profiles:
