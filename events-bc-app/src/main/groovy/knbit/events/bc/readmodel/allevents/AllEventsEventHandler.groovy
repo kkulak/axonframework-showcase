@@ -3,10 +3,14 @@ package knbit.events.bc.readmodel.allevents
 import com.mongodb.DBCollection
 import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
+import knbit.events.bc.readmodel.EventDetailsWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
+
+import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
+import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 /**
  * Created by novy on 29.06.15.
@@ -32,8 +36,8 @@ class AllEventsEventHandler {
                 name          : eventDetails.name().value(),
                 description   : eventDetails.description().value(),
                 eventType     : eventDetails.type(),
-                imageUrl      : eventDetails.imageUrl().orElse(null),
-                section       : eventDetails.section().orElse(null),
+                imageUrl      : urlOrNull(eventDetails.imageUrl()),
+                section       : sectionOrNull(eventDetails.section()),
                 status        : EventStatus.SURVEY_INTEREST
         ])
     }
