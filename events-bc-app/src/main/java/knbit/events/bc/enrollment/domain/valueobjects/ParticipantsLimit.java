@@ -32,7 +32,4 @@ public class ParticipantsLimit {
         this.value = value;
     }
 
-    public boolean fitsCapacity(Capacity capacity) {
-        return value <= capacity.value();
-    }
 }

@@ -68,7 +68,6 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     }
 
     public void limitParticipants(ParticipantsLimit newLimit) {
-        checkIfLimitIsNotTooHigh(newLimit);
         checkIfLimitIsNotTooLowForCurrentParticipants(newLimit);
 
         apply(TermModifyingEvents.ParticipantLimitSet.of(eventId, id, newLimit));
@@ -77,12 +76,6 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private void checkIfLimitIsNotTooLowForCurrentParticipants(ParticipantsLimit newLimit) {
         if (newLimit.value() < enrolledUsers.size()) {
             throw new EventUnderEnrollmentExceptions.ParticipantLimitTooLow(id, newLimit.value());
-        }
-    }
-
-    private void checkIfLimitIsNotTooHigh(ParticipantsLimit newLimit) {
-        if (!newLimit.fitsCapacity(capacity)) {
-            throw new EventUnderEnrollmentExceptions.ParticipantLimitTooHigh(id, newLimit.value());
         }
     }
 

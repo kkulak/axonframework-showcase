@@ -112,24 +112,6 @@ public class SettingMemberIdLimitTest {
     }
 
     @Test
-    public void shouldNotBeAbleToSetLimitHigherThanRoomCapacity() throws Exception {
-        fixture
-                .given(
-                        EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(identifiedTerm))
-                )
-                .when(
-                        TermModifyingCommands.SetParticipantLimit.of(
-                                eventId,
-                                identifiedTerm.termId(),
-                                identifiedTerm.capacity().value() + 1
-                        )
-                )
-                .expectException(
-                        EventUnderEnrollmentExceptions.ParticipantLimitTooHigh.class
-                );
-    }
-
-    @Test
     public void otherwiseItShouldProduceProperDomainEvent() throws Exception {
         final Term term = TermBuilder
                 .instance()

@@ -27,15 +27,6 @@ public interface EventUnderEnrollmentExceptions {
         }
     }
 
-    class ParticipantLimitTooHigh extends DomainException {
-
-        private static final String MESSAGE_PATTERN = "Participant limit (%d) for term %s too high.";
-
-        public ParticipantLimitTooHigh(TermId termId, int participantLimit) {
-            super(String.format(MESSAGE_PATTERN, participantLimit, termId));
-        }
-    }
-
     class NoLecturerAssigned extends DomainException {
         private static final String MESSAGE_PATTERN = "No lecturer assigned for term %s";
 
