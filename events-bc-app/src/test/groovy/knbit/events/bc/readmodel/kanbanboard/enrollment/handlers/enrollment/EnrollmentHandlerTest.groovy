@@ -6,6 +6,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.kanbanboard.common.participantdetails.ParticipantDetailsRepository
 import spock.lang.Specification
 
 /**
