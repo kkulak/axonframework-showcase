@@ -15,6 +15,7 @@ import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.kanbanboard.common.participantdetails.ParticipantDetailsRepository
 import knbit.events.bc.readmodel.kanbanboard.enrollment.handlers.EventUnderEnrollmentEventHandler
 import spock.lang.Specification
 
@@ -24,6 +25,7 @@ import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 class ReadyEventEventHandlerTest extends Specification implements DBCollectionAware {
     def ReadyEventEventHandler objectUnderTest
     def DBCollection collection
+    def ParticipantDetailsRepository participantRepository
 
     def ReadyEventId readyEventId
     def EventId correlationId
@@ -32,7 +34,8 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new ReadyEventEventHandler(collection)
+        participantRepository = Mock(ParticipantDetailsRepository)
+        objectUnderTest = new ReadyEventEventHandler(collection, participantRepository)
         readyEventId = ReadyEventId.of('readyEventId')
         correlationId = EventId.of('eventId')
         eventDetails = EventReadyDetailsBuilder.defaultEventDetails()
@@ -40,6 +43,9 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
     }
 
     def "should create new database entry containing event details and one participant"() {
+        given:
+        participantRepository.detailsFor(MemberId.of('member-id')) >> [userId: 'member-id', firstName: 'John', lastName: 'Doe']
+
         when:
         objectUnderTest.on ReadyEvents.Created.of(
                 readyEventId, correlationId, eventDetails, attendees
@@ -66,7 +72,9 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
                         duration    : eventDetails.duration().duration().getStandardMinutes(),
                         limit       : eventDetails.limit().value(),
                         location    : eventDetails.location().value(),
-                        participants: []
+                        participants: [
+                                [userId: 'member-id', firstName: 'John', lastName: 'Doe']
+                        ]
                 ]
         ]
     }
