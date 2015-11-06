@@ -62,7 +62,7 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                                 termId              : firstTerm.termId().value(),
                                 date                : firstTerm.duration().start(),
                                 duration            : firstTerm.duration().duration().getStandardMinutes(),
-                                capacity            : firstTerm.capacity().value(),
+                                limit               : firstTerm.capacity().value(),
                                 location            : firstTerm.location().value(),
                                 participantsEnrolled: 0
                         ],
@@ -70,7 +70,7 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                                 termId              : secondTerm.termId().value(),
                                 date                : secondTerm.duration().start(),
                                 duration            : secondTerm.duration().duration().getStandardMinutes(),
-                                capacity            : secondTerm.capacity().value(),
+                                limit               : secondTerm.capacity().value(),
                                 location            : secondTerm.location().value(),
                                 participantsEnrolled: 0
                         ]

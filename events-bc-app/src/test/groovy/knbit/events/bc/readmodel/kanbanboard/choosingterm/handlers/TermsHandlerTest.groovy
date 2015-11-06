@@ -56,7 +56,7 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
                         termId  : termId.value(),
                         date    : term.duration().start(),
                         duration: 90,
-                        capacity: 15,
+                        limit   : 15,
                         location: '3.27 A'
                 ]
         ]
@@ -68,7 +68,7 @@ class TermsHandlerTest extends Specification implements DBCollectionAware {
                 termId  : termId.value(),
                 date    : term.duration().start(),
                 duration: 90,
-                capacity: 15,
+                limit   : 15,
                 location: '3.27 A'
         ]
         collection << [
