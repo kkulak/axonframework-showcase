@@ -26,7 +26,7 @@ import java.io.File;
 @Configuration
 public class AppConfig {
 
-    private static final String EVENTSTORE_FILEPATH = "/home/kkulak/data/";
+    private static final String EVENTSTORE_FILEPATH = "data/eventstore";
 
     @Bean
     public EventBus eventBus() {
