@@ -1,5 +1,6 @@
 package knbit.events.bc.interest.domain.sagas;
 
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyingTimeExceededEvent;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
@@ -35,7 +36,7 @@ public class InterestSaga extends AbstractAnnotatedSaga {
         scheduleToken = eventScheduler.schedule(
                 event.endingSurveyDate(),
                 SurveyingTimeExceededEvent.of(
-                        eventId, event.endingSurveyDate()
+                        eventId, event.eventDetails(), event.endingSurveyDate()
                 )
         );
     }

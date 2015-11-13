@@ -1,5 +1,6 @@
 package knbit.events.bc.interest.builders;
 
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
@@ -18,11 +19,12 @@ import org.joda.time.DateTime;
 public class SurveyingInterestWithEndingDateStartedEventBuilder {
 
     private EventId eventId = EventId.of("eventId");
+    private EventDetails eventDetails = EventDetailsBuilder.defaultEventDetails();
     private InterestPolicy thresholdPolicy = new InterestThresholdTurnedOffPolicy();
     private DateTime endingSurveyDate = DateTime.now();
 
     public SurveyStartingEvents.StartedWithEndingDate build() {
-        return SurveyStartingEvents.StartedWithEndingDate.of(eventId, thresholdPolicy, endingSurveyDate);
+        return SurveyStartingEvents.StartedWithEndingDate.of(eventId, eventDetails, thresholdPolicy, endingSurveyDate);
     }
 
 }

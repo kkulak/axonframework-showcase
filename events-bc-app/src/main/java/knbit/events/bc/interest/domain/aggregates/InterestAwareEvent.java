@@ -10,7 +10,9 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.enums.InterestAwareEventState;
 import knbit.events.bc.interest.domain.exceptions.*;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy;
-import knbit.events.bc.interest.domain.valueobjects.events.*;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.factory.SurveyStartedEventFactory;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
@@ -66,7 +68,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectIfVotingNotAllowed(attendee);
 
         if (interestPolicy.reachedBy(positiveVoters.size() + 1)) {
-            apply(SurveyEvents.InterestThresholdReached.of(id));
+            apply(SurveyEvents.InterestThresholdReached.of(id, eventDetails));
         }
 
         apply(SurveyEvents.VotedUp.of(id, attendee));
@@ -88,7 +90,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
         rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
 
         apply(
-                factory.newSurveyingInterestStartedEvent(id, interestPolicy)
+                factory.newSurveyingInterestStartedEvent(id, eventDetails, interestPolicy)
         );
     }
 
