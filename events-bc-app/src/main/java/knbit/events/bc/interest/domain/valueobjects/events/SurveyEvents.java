@@ -1,6 +1,7 @@
 package knbit.events.bc.interest.domain.valueobjects.events;
 
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public final class SurveyEvents {
     public static class InterestThresholdReached {
 
         EventId eventId;
+        EventDetails eventDetails;
     }
 
     @Accessors(fluent = true)

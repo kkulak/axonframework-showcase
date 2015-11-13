@@ -4,6 +4,7 @@ import com.mongodb.DBCollection
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
+import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.policies.surveyinginterest.InterestPolicy
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents
@@ -37,7 +38,7 @@ class SurveyEventHandlerTest extends Specification implements DBCollectionAware 
         when:
         objectUnderTest.on(
                 SurveyStartingEvents.Started.of(
-                        eventId, Mock(InterestPolicy.class)
+                        eventId, EventDetailsBuilder.defaultEventDetails(), Mock(InterestPolicy.class)
                 )
         )
 

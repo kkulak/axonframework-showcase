@@ -182,7 +182,7 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectEvents(
-                        SurveyEvents.InterestThresholdReached.of(eventId),
+                        SurveyEvents.InterestThresholdReached.of(eventId, eventDetails),
 
                         SurveyVotedUpEventBuilder
                                 .instance()
@@ -221,7 +221,7 @@ public class VotingUpTest {
                                 )
                                 .build(),
 
-                        SurveyEvents.InterestThresholdReached.of(eventId)
+                        SurveyEvents.InterestThresholdReached.of(eventId, eventDetails)
                 )
                 .when(
                         VoteUpCommandBuilder
