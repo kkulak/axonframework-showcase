@@ -2,6 +2,8 @@ package knbit.events.bc.eventready.infrastructure.kafka;
 
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.Section;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
@@ -10,6 +12,7 @@ import org.joda.time.DateTime;
 import pl.agh.knbit.generated.protobuffs.EventsBc;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by novy on 01.11.15.
@@ -33,11 +36,12 @@ public class EventTookPlace {
                 .setEventName(eventDetails.name().value())
                 .setEventDescription(eventDetails.description().value())
                 .setUtcDateAsEpochSeconds(epochSecondsFrom(eventDetails.duration().start()))
+                .setEventPictureUrl(imageFrom(eventDetails.imageUrl()))
+                .setSectionId(sectionIdFrom(eventDetails.section()))
                 .setEventType(typeFrom(eventDetails.type()))
                 .addSpeakers(speakerFrom(eventDetails.lecturer()))
                 .setAttendesCount(attendees.size())
                 .build();
-
     }
 
     private EventsBc.EventTookPlaceEvent.Speaker speakerFrom(Lecturer lecturer) {
@@ -46,6 +50,18 @@ public class EventTookPlace {
                 .setFirstName(lecturer.firstName())
                 .setLastName(lecturer.lastName())
                 .build();
+    }
+
+    private String imageFrom(Optional<URL> imageUrl) {
+        return imageUrl
+                .map(URL::value)
+                .orElse(null);
+    }
+
+    private String sectionIdFrom(Optional<Section> section) {
+        return section
+                .map(Section::id)
+                .orElse(null);
     }
 
     private EventsBc.EventTookPlaceEvent.EventType typeFrom(EventType domainType) {
