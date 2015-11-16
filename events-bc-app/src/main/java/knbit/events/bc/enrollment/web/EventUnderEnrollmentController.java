@@ -1,5 +1,7 @@
 package knbit.events.bc.enrollment.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
@@ -29,6 +31,7 @@ public class EventUnderEnrollmentController {
         this.commandGateway = commandGateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/enrollment")
     public void startEnrollment(@PathVariable("eventId") String eventId,
                                 @RequestBody @Valid Collection<TermDTO> terms) {
@@ -40,6 +43,7 @@ public class EventUnderEnrollmentController {
         setParticipantLimits(domainEventId, terms);
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enroll/{memberId}")
     public void enrollForTerm(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,
@@ -54,6 +58,7 @@ public class EventUnderEnrollmentController {
         );
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}/disenroll/{memberId}")
     public void disenrollFrom(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,

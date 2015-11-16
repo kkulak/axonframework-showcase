@@ -1,6 +1,8 @@
 package knbit.events.bc.choosingterm.web;
 
 import com.google.common.collect.ImmutableList;
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
@@ -29,6 +31,7 @@ public class UnderChoosingTermEventController {
         this.commandGateway = commandGateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/choosing-term")
     public void startChoosingTerm(@PathVariable("eventId") String eventId,
                                   @RequestParam("fromState") TransitFrom previousState,
@@ -44,6 +47,7 @@ public class UnderChoosingTermEventController {
     }
 
     // todo: maybe separate controller?
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/terms")
     public void addTerm(@PathVariable("eventId") String eventId,
                         @RequestBody TermDTO termDTO) {
@@ -52,6 +56,7 @@ public class UnderChoosingTermEventController {
         addTerms(ImmutableList.of(termDTO), id);
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}")
     public void removeTerm(@PathVariable("eventId") String eventId,
                            @PathVariable("termId") String termId) {
@@ -63,6 +68,7 @@ public class UnderChoosingTermEventController {
         );
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/reservations")
     public void bookRoom(@PathVariable("eventId") String eventId,
                          @RequestBody TermProposalDTO termProposalDTO) {
@@ -71,6 +77,7 @@ public class UnderChoosingTermEventController {
         bookRoomsFor(ImmutableList.of(termProposalDTO), id);
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/reservations/{reservationId}")
     public void cancelReservation(@PathVariable("eventId") String eventId,
                          @PathVariable("reservationId") String reservationId) {

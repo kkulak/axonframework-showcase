@@ -1,6 +1,8 @@
 package knbit.events.bc.readmodel.kanbanboard.enrollment
 
 import com.mongodb.DBCollection
+import knbit.events.bc.auth.Authorized
+import knbit.events.bc.auth.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,6 +25,7 @@ class EnrollmentPreviewController {
         this.enrollmentCollection = enrollmentCollection
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{eventId}/enrollment", method = RequestMethod.GET)
     def enrollmentPreviewFor(@PathVariable("eventId") eventId) {
         enrollmentCollection.findOne([eventId: eventId])

@@ -1,6 +1,7 @@
 package knbit.events.bc.readmodel.allevents
 
 import com.mongodb.DBCollection
+import knbit.events.bc.auth.Authenticated
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,6 +22,7 @@ class AllEventsController {
         this.allEventsCollection = allEventsCollection
     }
 
+    @Authenticated
     @RequestMapping
     def allEvents() {
         allEventsCollection.find().toArray()

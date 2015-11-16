@@ -19,7 +19,7 @@ class KanbanBoardController {
     }
 
     @RequestMapping
-    @Authorized(Role.ADMIN)
+    @Authorized(Role.EVENTS_MANAGEMENT)
     def kanbanBoard() {
         collection.find().toArray()
                 .groupBy { event -> event['eventStatus'] }

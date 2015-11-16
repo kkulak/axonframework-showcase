@@ -1,5 +1,6 @@
 package knbit.events.bc.readmodel.members.enrollment
 
+import knbit.events.bc.auth.Authenticated
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,6 +23,7 @@ class MemberEnrollmentViewModelController {
         this.viewModelQuery = viewModelQuery
     }
 
+    @Authenticated
     @RequestMapping(value = "/enrollment/{memberId}", method = RequestMethod.GET)
     def enrollmentEvents(@PathVariable("memberId") String memberId) {
         viewModelQuery.queryFor(

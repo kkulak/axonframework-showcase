@@ -1,5 +1,7 @@
 package knbit.events.bc.eventready.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -24,6 +26,7 @@ public class ReadyEventController {
         this.commandGateway = commandGateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.POST, value = "/{eventId}/ready")
     public void markReady(@PathVariable("eventId") String eventId) {
 

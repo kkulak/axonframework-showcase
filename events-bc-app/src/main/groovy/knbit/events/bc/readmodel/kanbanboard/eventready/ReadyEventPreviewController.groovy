@@ -1,6 +1,8 @@
 package knbit.events.bc.readmodel.kanbanboard.eventready
 
 import com.mongodb.DBCollection
+import knbit.events.bc.auth.Authorized
+import knbit.events.bc.auth.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,6 +21,7 @@ class ReadyEventPreviewController {
         this.readyEventCollection = readyEventCollection
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{readyEventId}/ready-event")
     def readyEventPreviewFor(@PathVariable readyEventId) {
         readyEventCollection.findOne([readyEventId: readyEventId])

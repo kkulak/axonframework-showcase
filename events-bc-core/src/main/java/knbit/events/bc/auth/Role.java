@@ -6,6 +6,6 @@ package knbit.events.bc.auth;
 public enum Role {
 
     ADMIN,
-    EVENT_MASTER,
+    EVENTS_MANAGEMENT,
     MEMBER
 }

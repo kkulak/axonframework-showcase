@@ -31,7 +31,7 @@ class SecurityInterceptorTest extends Specification {
         @RequestMapping(method = RequestMethod.POST)
         def authenticatedMethod() {}
 
-        @Authorized(Role.EVENT_MASTER)
+        @Authorized(Role.EVENTS_MANAGEMENT)
         @RequestMapping(method = RequestMethod.PUT)
         def authorizedMethod() {}
     }
@@ -188,7 +188,7 @@ class SecurityInterceptorTest extends Specification {
         given:
         def AABCClient aabcClientMock = Mock(AABCClient)
         def validToken = "validToken"
-        def role = Role.EVENT_MASTER
+        def role = Role.EVENTS_MANAGEMENT
         def authKey = "authKey"
         aabcClientMock.authorizeWith(validToken, role) >> new SuccessfulAuthorization(HttpStatus.OK, "refreshedToken")
         def exampleController = new ExampleController()
@@ -213,7 +213,7 @@ class SecurityInterceptorTest extends Specification {
         given:
         def AABCClient aabcClientMock = Mock(AABCClient)
         def validToken = "validToken"
-        def role = Role.EVENT_MASTER
+        def role = Role.EVENTS_MANAGEMENT
         def authKey = "authKey"
         aabcClientMock.authorizeWith(validToken, role) >> new SuccessfulAuthorization(HttpStatus.OK, "refreshedToken")
         def exampleController = new ExampleController()
@@ -238,7 +238,7 @@ class SecurityInterceptorTest extends Specification {
         given:
         def AABCClient aabcClientMock = Mock(AABCClient)
         def invalidToken = "invalidToken"
-        def role = Role.EVENT_MASTER
+        def role = Role.EVENTS_MANAGEMENT
         def authKey = "authKey"
         aabcClientMock.authorizeWith(invalidToken, role) >> new FailureAuthorization(HttpStatus.UNAUTHORIZED)
         def exampleController = new ExampleController()
@@ -262,7 +262,7 @@ class SecurityInterceptorTest extends Specification {
         given:
         def AABCClient aabcClientMock = Mock(AABCClient)
         def invalidToken = "invalidToken"
-        def role = Role.EVENT_MASTER
+        def role = Role.EVENTS_MANAGEMENT
         def authKey = "authKey"
         aabcClientMock.authorizeWith(invalidToken, role) >> new FailureAuthorization(HttpStatus.UNAUTHORIZED)
         def exampleController = new ExampleController()

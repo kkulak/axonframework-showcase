@@ -1,5 +1,6 @@
 package knbit.events.bc.readmodel.members.dashboard
 
+import knbit.events.bc.auth.Authenticated
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,6 +22,7 @@ class DashboardController {
         this.query = query
     }
 
+    @Authenticated
     @RequestMapping(value = "/dashboard/{memberId}", method = RequestMethod.GET)
     def eventsWithPreferencesFor(@PathVariable("memberId") String memberId) {
         query.allWithPreferencesFor(memberId)

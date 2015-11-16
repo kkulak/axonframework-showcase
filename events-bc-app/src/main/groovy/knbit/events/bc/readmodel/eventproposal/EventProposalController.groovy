@@ -1,6 +1,8 @@
 package knbit.events.bc.readmodel.eventproposal
 
 import com.mongodb.DBCollection
+import knbit.events.bc.auth.Authorized
+import knbit.events.bc.auth.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,11 +19,13 @@ class EventProposalController {
         this.eventsProposalCollection = eventsProposalCollection
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping
     def allEventProposals() {
         eventsProposalCollection.find().toArray()
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{id}")
     def eventProposal(@PathVariable String id) {
         eventsProposalCollection.findOne([

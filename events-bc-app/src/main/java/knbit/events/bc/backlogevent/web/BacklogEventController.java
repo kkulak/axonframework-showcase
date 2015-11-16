@@ -1,5 +1,7 @@
 package knbit.events.bc.backlogevent.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.backlogevent.web.forms.EventBacklogDTO;
 import knbit.events.bc.backlogevent.web.forms.SectionDTO;
@@ -23,6 +25,7 @@ public class BacklogEventController {
         this.gateway = gateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createBacklogEvent(@RequestBody @Valid EventBacklogDTO eventBacklogDTO) {

@@ -1,5 +1,7 @@
 package knbit.events.bc.interest.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
@@ -27,6 +29,7 @@ public class VotingController {
         this.gateway = gateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{eventId}/survey/votes", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void vote(@RequestBody @Valid VoteForm form,
@@ -47,8 +50,8 @@ public class VotingController {
         final List<SubmittedAnswerDTO> answerDTOs = answers.get();
         final List<SubmittedAnswer> submittedAnswers = answerDTOs.stream()
                 .map(dto -> SubmittedAnswer.of(
-                                MappingUtils.toQuestionData(dto.getQuestion()),
-                                MappingUtils.toDomainAnswers(dto.getAnswers()))
+                        MappingUtils.toQuestionData(dto.getQuestion()),
+                        MappingUtils.toDomainAnswers(dto.getAnswers()))
                 )
                 .collect(Collectors.toList());
         final AttendeeAnswer attendeeAnswer = AttendeeAnswer.of(attendee, submittedAnswers);

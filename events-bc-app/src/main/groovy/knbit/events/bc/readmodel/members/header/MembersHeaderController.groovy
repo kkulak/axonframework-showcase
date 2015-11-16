@@ -1,5 +1,6 @@
 package knbit.events.bc.readmodel.members.header
 
+import knbit.events.bc.auth.Authenticated
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,6 +23,7 @@ class MembersHeaderController {
         this.query = query
     }
 
+    @Authenticated
     @RequestMapping(value = "/members/header/{memberId}", method = RequestMethod.GET)
     def headerFor(@PathVariable("memberId") String memberId) {
         query.newestHeaderData(MemberId.of(memberId))

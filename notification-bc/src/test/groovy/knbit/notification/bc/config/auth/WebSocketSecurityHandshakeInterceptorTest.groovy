@@ -21,7 +21,7 @@ class WebSocketSecurityHandshakeInterceptorTest extends Specification {
 
     def tokenKey = "tokenKey"
     def token = "token"
-    def requiredRole = Role.EVENT_MASTER
+    def requiredRole = Role.EVENTS_MANAGEMENT
     def AABCClient aabcClientMock
     def WebSocketSecurityHandshakeInterceptor objectUnderTest
 

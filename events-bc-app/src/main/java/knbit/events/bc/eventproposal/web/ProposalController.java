@@ -1,5 +1,7 @@
 package knbit.events.bc.eventproposal.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import knbit.events.bc.eventproposal.web.forms.EventProposalDto;
@@ -26,6 +28,7 @@ public class ProposalController {
         this.commandGateway = commandGateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
     public void proposeAnEvent(@RequestBody @Valid EventProposalDto proposalDto) {
@@ -39,6 +42,7 @@ public class ProposalController {
 
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public void changeProposalState(@PathVariable String id, @RequestBody @Valid ProposalStateDto proposalStateDto) {
         final ProposalStateDto.ProposalState proposalState = proposalStateDto.getState();

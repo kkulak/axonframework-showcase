@@ -35,7 +35,7 @@ class AuthorizationTest extends Specification {
                 .andRespond(withStatus(responseCode))
 
         when:
-        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("valid token", Role.EVENT_MASTER)
+        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("valid token", Role.EVENTS_MANAGEMENT)
 
         then:
         authorizationResult.wasSuccessful()
@@ -53,7 +53,7 @@ class AuthorizationTest extends Specification {
                 .andRespond(withStatus(responseCode))
 
         when:
-        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("invalid token", Role.EVENT_MASTER)
+        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("invalid token", Role.EVENTS_MANAGEMENT)
 
         then:
         !authorizationResult.wasSuccessful()
@@ -71,7 +71,7 @@ class AuthorizationTest extends Specification {
                 .andRespond(withStatus(responseCode))
 
         when:
-        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("invalid token", Role.EVENT_MASTER)
+        def AuthorizationResult authorizationResult = objectUnderTest.authorizeWith("invalid token", Role.EVENTS_MANAGEMENT)
 
         then:
         !authorizationResult.wasSuccessful()
@@ -94,7 +94,7 @@ class AuthorizationTest extends Specification {
                 restTemplateMock)
 
         when:
-        def authorizationResult = objectUnderTest.authorizeWith("token", Role.EVENT_MASTER)
+        def authorizationResult = objectUnderTest.authorizeWith("token", Role.EVENTS_MANAGEMENT)
 
         then:
         !authorizationResult.wasSuccessful()
@@ -115,11 +115,11 @@ class AuthorizationTest extends Specification {
                 .expect(requestTo(authorizationUrl))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(header("knbit-aa-auth", expectedToken))
-                .andExpect(jsonPath("permission").value(Role.EVENT_MASTER.name()))
+                .andExpect(jsonPath("permission").value(Role.EVENTS_MANAGEMENT.name()))
                 .andRespond(withStatus(HttpStatus.OK))
 
         when:
-        objectUnderTest.authorizeWith(expectedToken, Role.EVENT_MASTER)
+        objectUnderTest.authorizeWith(expectedToken, Role.EVENTS_MANAGEMENT)
 
         then:
         mockRestServiceServer.verify()

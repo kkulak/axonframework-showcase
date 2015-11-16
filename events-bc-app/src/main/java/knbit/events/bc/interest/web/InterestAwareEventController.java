@@ -1,5 +1,7 @@
 package knbit.events.bc.interest.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
@@ -26,6 +28,7 @@ public class InterestAwareEventController {
         this.gateway = gateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{eventId}/survey", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createSurvey(@PathVariable("eventId") String eventId,
