@@ -70,7 +70,7 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
                         IdFactory.readyEventId(),
                         correlationId,
                         EventReadyDetails.of(
-                                oldEventDetails, term.duration(), term.limit(), term.location(), term.lecturer()
+                                oldEventDetails, term.duration(), term.limit(), term.location(), term.lecturers()
                         ),
                         term.attendees()
                 );

@@ -55,11 +55,14 @@ class DashboardEventHandlerTest extends Specification implements DBCollectionAwa
                 end              : eventDetails.duration().end(),
                 participantsLimit: eventDetails.limit().value(),
                 location         : eventDetails.location().value(),
-                lecturer         : [
-                        firstName: eventDetails.lecturer().firstName(),
-                        lastName : eventDetails.lecturer().lastName()
+                lecturers        : [
+                        [
+                                name: 'John Doe',
+                                id  : 'john-doe'
+                        ]
                 ],
                 attendees        : ['attendee1']
         ]
     }
+
 }

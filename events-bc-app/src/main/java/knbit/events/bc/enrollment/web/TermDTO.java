@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by novy on 04.10.15.
@@ -20,7 +23,8 @@ class TermDTO {
     @NotBlank
     private String termId;
     @NotNull
-    private Lecturer lecturer;
+    @Valid
+    private List<Lecturer> lecturers;
     @NotNull
     private Integer participantsLimit;
 
@@ -30,8 +34,9 @@ class TermDTO {
     static class Lecturer {
 
         @NotBlank
-        private String firstName;
-        @NotBlank
-        private String lastName;
+        private String name;
+        @NotNull
+        private Optional<String> id = Optional.empty();
+
     }
 }

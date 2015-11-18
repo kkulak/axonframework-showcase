@@ -39,16 +39,15 @@ public class EventTookPlace {
                 .setEventPictureUrl(imageFrom(eventDetails.imageUrl()))
                 .setSectionId(sectionIdFrom(eventDetails.section()))
                 .setEventType(typeFrom(eventDetails.type()))
-                .addSpeakers(speakerFrom(eventDetails.lecturer()))
+                .addSpeakers(speakerFrom(eventDetails.lecturers()))
                 .setAttendesCount(attendees.size())
                 .build();
     }
 
-    private EventsBc.EventTookPlaceEvent.Speaker speakerFrom(Lecturer lecturer) {
+    // TODO: change event definition in knbit-system-commons
+    private EventsBc.EventTookPlaceEvent.Speaker speakerFrom(Collection<Lecturer> lecturer) {
         return EventsBc.EventTookPlaceEvent.Speaker
                 .newBuilder()
-                .setFirstName(lecturer.firstName())
-                .setLastName(lecturer.lastName())
                 .build();
     }
 

@@ -1,7 +1,7 @@
 package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.Maps;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -10,7 +10,6 @@ import knbit.events.bc.enrollment.domain.entities.Term;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
-import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
@@ -40,7 +39,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
     public EventUnderEnrollment(EventId eventId,
                                 EventDetails eventDetails,
-                                Collection<IdentifiedTerm> terms) {
+                                Collection<EnrollmentIdentifiedTerm> terms) {
         apply(
                 EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, terms)
         );
@@ -51,14 +50,16 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
         id = event.eventId();
         eventDetails = event.eventDetails();
 
-        final Consumer<IdentifiedTerm> createAndSaveTermEntity = identifiedTerm -> terms.put(
+        final Consumer<EnrollmentIdentifiedTerm> createAndSaveTermEntity = identifiedTerm -> terms.put(
                 identifiedTerm.termId(),
                 new Term(
                         this.id,
                         identifiedTerm.termId(),
                         identifiedTerm.duration(),
                         identifiedTerm.capacity(),
-                        identifiedTerm.location()
+                        identifiedTerm.location(),
+                        identifiedTerm.participantsLimit(),
+                        identifiedTerm.lecturers()
                 )
         );
 
@@ -69,27 +70,10 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
         status = EventUnderEnrollmentStatus.ACTIVE;
     }
 
-    public void assignLecturer(TermId termId, Lecturer lecturer) {
-        rejectOnAlreadyTransited();
-        rejectOnNotExistingTerm(termId);
-
-        final Term term = terms.get(termId);
-        term.assignLecturer(lecturer);
-    }
-
-
     private void rejectOnNotExistingTerm(TermId termId) {
         if (!terms.containsKey(termId)) {
             throw new EventUnderEnrollmentExceptions.NoSuchTermException(id, termId);
         }
-    }
-
-    public void limitParticipants(TermId termId, ParticipantsLimit newLimit) {
-        rejectOnAlreadyTransited();
-        rejectOnNotExistingTerm(termId);
-
-        final Term term = terms.get(termId);
-        term.limitParticipants(newLimit);
     }
 
     public void enrollFor(TermId termId, MemberId memberId) {
@@ -99,7 +83,6 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
         final Term term = terms.get(termId);
         term.enroll(memberId);
-
     }
 
     private void rejectIfAlreadyEnrolledForAnyTerm(MemberId memberId) {
@@ -121,7 +104,6 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void transitToReady() {
-        // todo: change design so that assigning lecturer before transition is mandatory
         rejectOnAlreadyTransited();
         apply(
                 EventUnderEnrollmentEvents.TransitedToReady.of(id, eventDetails, terms())

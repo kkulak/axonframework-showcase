@@ -21,6 +21,6 @@ public class IdentifiedTermWithAttendees {
     EventDuration duration;
     ParticipantsLimit limit;
     Location location;
-    Lecturer lecturer;
+    Collection<Lecturer> lecturers;
     Collection<Attendee> attendees;
 }

@@ -10,6 +10,7 @@ import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
 import knbit.events.bc.readmodel.RemoveEventRelatedData
+import knbit.events.bc.readmodel.TermWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -88,10 +89,7 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
                 section        : sectionOrNull(details.section()),
                 start          : details.duration().start(),
                 location       : details.location().value(),
-                lecturer       : [
-                        firstName: details.lecturer().firstName(),
-                        lastName : details.lecturer().lastName(),
-                ],
+                lecturer       : TermWrapper.lecturersOf(details.lecturers()),
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ])

@@ -12,6 +12,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermE
 import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
@@ -102,6 +103,9 @@ public class AddingTermTest {
     @Test
     public void shouldNotBeAbleToAddTermIfEventAlreadyTransited() throws Exception {
         final Term existingTerm = TermBuilder.defaultTerm();
+        final EnrollmentIdentifiedTerm enrollmentIdentifiedTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(termId)
+                .build();
 
         fixture
                 .given(
@@ -112,7 +116,7 @@ public class AddingTermTest {
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(IdentifiedTerm.of(termId, existingTerm))
+                                ImmutableList.of(enrollmentIdentifiedTerm)
                         )
                 )
                 .when(

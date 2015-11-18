@@ -9,6 +9,8 @@ import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Delegate;
 
+import java.util.Collection;
+
 /**
  * Created by novy on 30.10.15.
  */
@@ -22,5 +24,5 @@ public class EventReadyDetails {
     EventDuration duration;
     ParticipantsLimit limit;
     Location location;
-    Lecturer lecturer;
+    Collection<Lecturer> lecturers;
 }

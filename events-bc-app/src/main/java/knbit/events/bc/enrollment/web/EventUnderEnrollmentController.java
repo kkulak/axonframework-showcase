@@ -5,16 +5,20 @@ import knbit.events.bc.auth.Role;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
-import knbit.events.bc.enrollment.domain.valueobjects.commands.TermModifyingCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 04.10.15.
@@ -37,10 +41,7 @@ public class EventUnderEnrollmentController {
                                 @RequestBody @Valid Collection<TermDTO> terms) {
 
         final EventId domainEventId = EventId.of(eventId);
-
-        transitToEnrollment(domainEventId);
-        assignLecturers(domainEventId, terms);
-        setParticipantLimits(domainEventId, terms);
+        transitToEnrollment(domainEventId, terms);
     }
 
     @Authorized(Role.EVENTS_MANAGEMENT)
@@ -73,38 +74,32 @@ public class EventUnderEnrollmentController {
         );
     }
 
-    private void transitToEnrollment(EventId eventId) {
+    private void transitToEnrollment(EventId eventId, Collection<TermDTO> terms) {
         commandGateway.sendAndWait(
-                UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId)
+                UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosureOf(terms))
         );
     }
 
-    private void assignLecturers(EventId eventId, Collection<TermDTO> terms) {
-        final Function<TermDTO, TermModifyingCommands.AssignLecturer> assignLecturerCommandFromDTO = termDTO -> {
-            final TermDTO.Lecturer lecturerDto = termDTO.getLecturer();
-            final TermId termId = TermId.of(termDTO.getTermId());
-
-            return TermModifyingCommands.AssignLecturer.of(
-                    eventId,
-                    termId,
-                    lecturerDto.getFirstName(),
-                    lecturerDto.getLastName()
-            );
-        };
-
-        terms.stream()
-                .map(assignLecturerCommandFromDTO)
-                .forEach(commandGateway::sendAndWait);
+    private Collection<Lecturer> domainLecturersOf(Collection<TermDTO.Lecturer> dtos) {
+        return dtos
+                .stream()
+                .map(dto -> Lecturer.of(dto.getName(), dto.getId().orElse(null)))
+                .collect(Collectors.toList());
     }
 
-    private void setParticipantLimits(EventId eventId, Collection<TermDTO> terms) {
-        final Function<TermDTO, TermModifyingCommands.SetParticipantLimit> setLimitCommandFromDTO = termDTO -> {
+    private List<TermClosure> termClosureOf(Collection<TermDTO> terms) {
+        final Function<TermDTO, TermClosure> mapToClosureFromTermDTO = termDTO -> {
             final TermId termId = TermId.of(termDTO.getTermId());
-            return TermModifyingCommands.SetParticipantLimit.of(eventId, termId, termDTO.getParticipantsLimit());
+            final Collection<Lecturer> lecturers = domainLecturersOf(termDTO.getLecturers());
+            final ParticipantsLimit participantsLimit = ParticipantsLimit.of(termDTO.getParticipantsLimit());
+
+            return TermClosure.of(termId, lecturers, participantsLimit);
         };
 
-        terms.stream()
-                .map(setLimitCommandFromDTO)
-                .forEach(commandGateway::sendAndWait);
+        return terms
+                .stream()
+                .map(mapToClosureFromTermDTO)
+                .collect(Collectors.toList());
     }
+
 }

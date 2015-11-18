@@ -2,10 +2,13 @@ package knbit.events.bc.choosingterm.domain.valuobjects.commands;
 
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * Created by novy on 22.08.15.
@@ -28,5 +31,6 @@ public final class UnderChoosingTermEventCommands {
     public static class TransitToEnrollment {
 
         EventId eventId;
+        List<TermClosure> termClosures;
     }
 }

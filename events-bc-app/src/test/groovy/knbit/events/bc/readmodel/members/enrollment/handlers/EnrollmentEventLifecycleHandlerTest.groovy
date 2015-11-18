@@ -2,14 +2,14 @@ package knbit.events.bc.readmodel.members.enrollment.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
-import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
@@ -35,12 +35,10 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
 
     def "should create new database entry containing event details and terms with zero participant count"() {
         given:
-        def firstTerm = IdentifiedTerm.of(
-                TermId.of("id1"), TermBuilder.defaultTerm()
-        )
-        def secondTerm = IdentifiedTerm.of(
-                TermId.of("id2"), TermBuilder.defaultTerm()
-        )
+        def firstTerm = EnrollmentIdentifiedTermBuilder.defaultTerm()
+        def secondTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(TermId.of('term-id-2'))
+                .build()
 
         when:
         objectUnderTest.on EventUnderEnrollmentEvents.Created.of(
@@ -64,6 +62,14 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                                 duration            : firstTerm.duration().duration().getStandardMinutes(),
                                 limit               : firstTerm.capacity().value(),
                                 location            : firstTerm.location().value(),
+                                participantsLimit   : firstTerm.participantsLimit().value(),
+                                lecturers           : [
+                                        [
+                                                name : 'John Doe',
+                                                id   : 'john-doe'
+                                        ]
+
+                                ],
                                 participantsEnrolled: 0
                         ],
                         [
@@ -72,6 +78,14 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
                                 duration            : secondTerm.duration().duration().getStandardMinutes(),
                                 limit               : secondTerm.capacity().value(),
                                 location            : secondTerm.location().value(),
+                                participantsLimit   : secondTerm.participantsLimit().value(),
+                                lecturers           : [
+                                        [
+                                                name : 'John Doe',
+                                                id   : 'john-doe'
+                                        ]
+
+                                ],
                                 participantsEnrolled: 0
                         ]
                 ]

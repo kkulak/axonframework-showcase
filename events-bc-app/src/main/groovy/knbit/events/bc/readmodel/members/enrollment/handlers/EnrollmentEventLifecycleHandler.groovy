@@ -1,7 +1,7 @@
 package knbit.events.bc.readmodel.members.enrollment.handlers
 
 import com.mongodb.DBCollection
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
 import knbit.events.bc.readmodel.RemoveEventRelatedData
@@ -39,7 +39,7 @@ class EnrollmentEventLifecycleHandler implements RemoveEventRelatedData {
         removeDataBy(event.eventId()).from(enrollmentEventsCollection)
     }
 
-    private static def termDataFrom(Collection<IdentifiedTerm> terms) {
+    private static def termDataFrom(Collection<EnrollmentIdentifiedTerm> terms) {
         [terms: terms.collect { TermWrapper.asMap(it) + [participantsEnrolled: 0] }]
     }
 }

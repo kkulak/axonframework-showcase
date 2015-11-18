@@ -11,12 +11,18 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.TermClosureBuilder;
+import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
+import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
+import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Created by novy on 02.10.15.
@@ -26,12 +32,14 @@ public class TransitionToEnrollmentTest {
     private FixtureConfiguration<UnderChoosingTermEvent> fixture;
     private EventId eventId;
     private EventDetails eventDetails;
+    private List<TermClosure> termClosures;
 
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.underChoosingTermEventFixtureConfiguration();
         eventId = EventId.of("eventId");
         eventDetails = EventDetailsBuilder.defaultEventDetails();
+        termClosures = ImmutableList.of(TermClosureBuilder.defaultTerm());
     }
 
     @Test
@@ -49,7 +57,7 @@ public class TransitionToEnrollmentTest {
                         roomRequestedEvent
                 )
                 .when(
-                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId)
+                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosures)
                 )
                 .expectException(
                         TransitionToEnrollmentExceptions.HasPendingReservations.class
@@ -63,7 +71,7 @@ public class TransitionToEnrollmentTest {
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId)
+                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosures)
                 )
                 .expectException(
                         TransitionToEnrollmentExceptions.DoesNotHaveAnyTerms.class
@@ -71,9 +79,9 @@ public class TransitionToEnrollmentTest {
     }
 
     @Test
-    public void otherwiseItShouldProduceProperEvent() throws Exception {
+    public void shouldProduceProperEventOnTransition() throws Exception {
         final Term soleTerm = TermBuilder.defaultTerm();
-        final TermId termId = TermId.of("termId");
+        final TermId termId = TermId.of("term-id");
 
         fixture
                 .given(
@@ -81,14 +89,20 @@ public class TransitionToEnrollmentTest {
                         TermEvents.TermAdded.of(eventId, termId, soleTerm)
                 )
                 .when(
-                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId)
+                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosures)
                 )
                 .expectEvents(
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(IdentifiedTerm.of(termId, soleTerm))
+                                ImmutableList.of(
+                                        EnrollmentIdentifiedTerm.of(
+                                                termId, soleTerm,
+                                                ImmutableList.of(Lecturer.of("John Doe", "john-doe")),
+                                                ParticipantsLimit.of(10))
+                                )
                         )
                 );
     }
+
 }

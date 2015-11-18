@@ -110,7 +110,7 @@ public class UnderChoosingTermEventCommandHandler {
         final UnderChoosingTermEvent underChoosingTermEvent =
                 repository.load(command.eventId());
 
-        underChoosingTermEvent.transitToEnrollment();
+        underChoosingTermEvent.transitToEnrollment(command.termClosures());
     }
 
 }

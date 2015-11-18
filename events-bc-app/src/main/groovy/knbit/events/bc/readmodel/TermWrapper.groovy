@@ -1,8 +1,9 @@
 package knbit.events.bc.readmodel
 
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm
 import knbit.events.bc.choosingterm.domain.valuobjects.Term
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId
+import knbit.events.bc.enrollment.domain.valueobjects.Lecturer
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 
 /**
@@ -10,13 +11,15 @@ import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
  */
 class TermWrapper {
 
-    static asMap(IdentifiedTerm term) {
+    static asMap(EnrollmentIdentifiedTerm term) {
         [
-                termId  : term.termId().value(),
-                date    : term.duration().start(),
-                duration: term.duration().duration().getStandardMinutes(),
-                limit   : term.capacity().value(),
-                location: term.location().value()
+                termId              : term.termId().value(),
+                date                : term.duration().start(),
+                duration            : term.duration().duration().getStandardMinutes(),
+                limit               : term.capacity().value(),
+                location            : term.location().value(),
+                participantsLimit   : term.participantsLimit().value(),
+                lecturers           : lecturersOf(term.lecturers())
         ]
     }
 
@@ -29,7 +32,21 @@ class TermWrapper {
         ]
     }
 
-    static asMap(TermId termId, Term term) {
-        asMap(IdentifiedTerm.of(termId, term))
+    static asMap(TermId id, Term term) {
+        [
+                termId              : id.value(),
+                date                : term.duration().start(),
+                duration            : term.duration().duration().getStandardMinutes(),
+                limit               : term.capacity().value(),
+                location            : term.location().value(),
+        ]
     }
+
+    static lecturersOf(Collection<Lecturer> lecturers) {
+        lecturers.collect {[
+                name : it.name(),
+                id   : it.id().orElse(null)
+        ]}
+    }
+
 }
