@@ -9,6 +9,7 @@ import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
+import knbit.events.bc.readmodel.TermWrapper
 import knbit.events.bc.readmodel.kanbanboard.common.participantdetails.ParticipantDetailsRepository
 import spock.lang.Specification
 
@@ -65,6 +66,7 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
                         duration    : eventDetails.duration().duration().getStandardMinutes(),
                         limit       : eventDetails.limit().value(),
                         location    : eventDetails.location().value(),
+                        lecturers   : TermWrapper.lecturersOf(eventDetails.lecturers()),
                         participants: [
                                 [userId: 'member-id', firstName: 'John', lastName: 'Doe']
                         ]

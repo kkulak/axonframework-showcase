@@ -25,10 +25,11 @@ class TermWrapper {
 
     static asMap(EventReadyDetails details) {
         [
-                date    : details.duration().start(),
-                duration: details.duration().duration().getStandardMinutes(),
-                limit   : details.limit().value(),
-                location: details.location().value()
+                date        : details.duration().start(),
+                duration    : details.duration().duration().getStandardMinutes(),
+                limit       : details.limit().value(),
+                location    : details.location().value(),
+                lecturers   : lecturersOf(details.lecturers())
         ]
     }
 
