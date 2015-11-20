@@ -3,6 +3,7 @@ package knbit.events.bc.readmodel.kanbanboard.columns
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
+import knbit.events.bc.common.domain.valueobjects.EventCancelled
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
@@ -98,6 +99,11 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
     @EventHandler
     def on(ReadyEvents.TookPlace event) {
         removeDataBy(event.readyEventId()).from(collection)
+    }
+
+    @EventHandler
+    def on(EventCancelled event) {
+        removeDataBy(event.eventId()).from(collection)
     }
 
     private def updateEventStatus(EventId eventId,

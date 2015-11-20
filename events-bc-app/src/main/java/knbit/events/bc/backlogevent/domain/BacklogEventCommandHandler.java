@@ -27,6 +27,12 @@ public class BacklogEventCommandHandler {
     }
 
     @CommandHandler
+    public void handle(BacklogEventCommands.Cancel command) {
+        final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
+        backlogEvent.cancel();
+    }
+
+    @CommandHandler
     public void handle(BacklogEventCommands.TransitToInterestAwareEventCommand command) {
         final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
         backlogEvent.transitToSurveyInterestAwareEvent();

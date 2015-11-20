@@ -5,6 +5,7 @@ import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvent
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.Attendee
+import knbit.events.bc.common.domain.valueobjects.EventCancelled
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
@@ -198,5 +199,18 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
 
         then:
         !collection.findOne([eventId: readyEventId.value()])
+    }
+
+    def "should remove db entry on event cancelled"() {
+        given:
+        def eventId = EventId.of("eventId")
+
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on([eventId: { return eventId }] as EventCancelled)
+
+        then:
+        !collection.findOne([eventId: eventId.value()])
     }
 }

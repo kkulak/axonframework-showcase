@@ -37,6 +37,17 @@ public class BacklogEventController {
         );
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(value = "/{eventId}/backlog", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void cancelBacklogEvent(@PathVariable("eventId") String eventId) {
+        final EventId domainId = EventId.of(eventId);
+
+        gateway.send(
+                BacklogEventCommands.Cancel.of(domainId)
+        );
+    }
+
     private EventDetails eventDetailsFrom(EventBacklogDTO eventBacklogDTO) {
         return EventDetails.of(
                 Name.of(eventBacklogDTO.getName()),
