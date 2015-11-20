@@ -89,7 +89,7 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
                 section        : sectionOrNull(details.section()),
                 start          : details.duration().start(),
                 location       : details.location().value(),
-                lecturer       : TermWrapper.lecturersOf(details.lecturers()),
+                lecturers      : TermWrapper.lecturersOf(details.lecturers()),
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ])

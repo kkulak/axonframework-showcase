@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,6 +32,6 @@ public final class UnderChoosingTermEventCommands {
     public static class TransitToEnrollment {
 
         EventId eventId;
-        List<TermClosure> termClosures;
+        Collection<TermClosure> termClosures;
     }
 }

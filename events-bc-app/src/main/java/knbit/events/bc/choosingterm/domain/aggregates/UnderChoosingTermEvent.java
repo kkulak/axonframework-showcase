@@ -133,7 +133,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.cancel();
     }
 
-    public void transitToEnrollment(List<TermClosure> termClosures) {
+    public void transitToEnrollment(Collection<TermClosure> termClosures) {
         rejectOnTransited();
         rejectIfThereArePendingReservations();
         rejectOnNoTerms();
@@ -145,7 +145,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         );
     }
 
-    private Collection<EnrollmentIdentifiedTerm> identifiedTerms(List<TermClosure> termClosures) {
+    private Collection<EnrollmentIdentifiedTerm> identifiedTerms(Collection<TermClosure> termClosures) {
         return terms.entrySet()
                 .stream()
                 .map(termIdAndTerm -> enrollmentIdentifiedTermOf(
@@ -154,12 +154,12 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
                 .collect(Collectors.toList());
     }
 
-    private EnrollmentIdentifiedTerm enrollmentIdentifiedTermOf(TermId id, Term term, List<TermClosure> termClosures) {
+    private EnrollmentIdentifiedTerm enrollmentIdentifiedTermOf(TermId id, Term term, Collection<TermClosure> termClosures) {
         final TermClosure termClosure = findTermClosureOrThrowException(id, termClosures);
         return EnrollmentIdentifiedTerm.of(id, term, termClosure.lecturers(), termClosure.participantsLimit());
     }
 
-    private TermClosure findTermClosureOrThrowException(TermId termId, List<TermClosure> termClosures) {
+    private TermClosure findTermClosureOrThrowException(TermId termId, Collection<TermClosure> termClosures) {
         return termClosures
                 .stream()
                 .filter(term -> term.termId().equals(termId))

@@ -179,7 +179,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 section        : sectionOrNull(eventReadyDetails.section()),
                 start          : eventReadyDetails.duration().start(),
                 location       : eventReadyDetails.location().value(),
-                lecturer       : TermWrapper.lecturersOf(eventReadyDetails.lecturers()),
+                lecturers      : TermWrapper.lecturersOf(eventReadyDetails.lecturers()),
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ]

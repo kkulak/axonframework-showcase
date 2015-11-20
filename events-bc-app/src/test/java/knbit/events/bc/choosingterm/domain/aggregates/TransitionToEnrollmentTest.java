@@ -12,6 +12,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermE
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.builders.TermClosureBuilder;
+import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
@@ -75,6 +76,24 @@ public class TransitionToEnrollmentTest {
                 )
                 .expectException(
                         TransitionToEnrollmentExceptions.DoesNotHaveAnyTerms.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToTransitGivenIncompleteTermClosuresList() throws Exception {
+        final TermId termId = TermId.of("another-term-id");
+        final Term term = TermBuilder.defaultTerm();
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        TermEvents.TermAdded.of(eventId, termId, term)
+                )
+                .when(
+                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosures)
+                )
+                .expectException(
+                        EventUnderEnrollmentExceptions.NoSuchTermException.class
                 );
     }
 
