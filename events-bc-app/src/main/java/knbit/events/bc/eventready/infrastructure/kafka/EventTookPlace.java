@@ -13,6 +13,7 @@ import pl.agh.knbit.generated.protobuffs.EventsBc;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by novy on 01.11.15.
@@ -39,15 +40,23 @@ public class EventTookPlace {
                 .setEventPictureUrl(imageFrom(eventDetails.imageUrl()))
                 .setSectionId(sectionIdFrom(eventDetails.section()))
                 .setEventType(typeFrom(eventDetails.type()))
-                .addSpeakers(speakerFrom(eventDetails.lecturers()))
+                .addAllSpeakers(speakersFrom(eventDetails.lecturers()))
                 .setAttendesCount(attendees.size())
                 .build();
     }
 
-    // TODO: change event definition in knbit-system-commons
-    private EventsBc.EventTookPlaceEvent.Speaker speakerFrom(Collection<Lecturer> lecturer) {
+    private Iterable<EventsBc.EventTookPlaceEvent.Speaker> speakersFrom(Collection<Lecturer> lecturers) {
+        return lecturers
+                .stream()
+                .map(this::speakerOf)
+                .collect(Collectors.toList());
+    }
+
+    private EventsBc.EventTookPlaceEvent.Speaker speakerOf(Lecturer lecturer) {
         return EventsBc.EventTookPlaceEvent.Speaker
                 .newBuilder()
+                .setName(lecturer.name())
+                .setAccountId(lecturer.id().orElse(null))
                 .build();
     }
 
