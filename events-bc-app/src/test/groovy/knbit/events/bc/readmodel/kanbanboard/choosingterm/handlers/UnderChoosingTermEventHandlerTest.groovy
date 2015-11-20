@@ -2,14 +2,14 @@ package knbit.events.bc.readmodel.kanbanboard.choosingterm.handlers
 
 import com.mongodb.DBCollection
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder
 import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.readmodel.DBCollectionAware
-import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
@@ -63,7 +63,7 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
         collection << [eventId: eventId.value()]
 
         when:
-        def term = IdentifiedTerm.of(TermId.of("id"), TermBuilder.defaultTerm())
+        def term = EnrollmentIdentifiedTermBuilder.defaultTerm()
         objectUnderTest.on UnderChoosingTermEventEvents.TransitedToEnrollment.of(eventId, eventDetails, [term])
 
         then:

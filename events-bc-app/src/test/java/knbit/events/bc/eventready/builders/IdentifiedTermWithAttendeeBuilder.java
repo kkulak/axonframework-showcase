@@ -32,14 +32,16 @@ public class IdentifiedTermWithAttendeeBuilder {
     );
     private ParticipantsLimit limit = ParticipantsLimit.of(100);
     private Location location = Location.of("default location");
-    private Lecturer lecturer = Lecturer.of("John", "Doe");
+    private Collection<Lecturer> lecturers = ImmutableList.of(
+            Lecturer.of("John Doe", "john-doe")
+    );
     private Collection<Attendee> attendees = ImmutableList.of(
             Attendee.of(MemberId.of("member1")), Attendee.of(MemberId.of("member2"))
     );
 
     public IdentifiedTermWithAttendees build() {
         return IdentifiedTermWithAttendees.of(
-                termId, duration, limit, location, lecturer, attendees
+                termId, duration, limit, location, lecturers, attendees
         );
     }
 

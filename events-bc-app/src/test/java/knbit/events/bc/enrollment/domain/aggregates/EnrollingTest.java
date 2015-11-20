@@ -2,12 +2,11 @@ package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
-import knbit.events.bc.choosingterm.domain.valuobjects.Location;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
@@ -15,7 +14,6 @@ import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
-import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import knbit.events.bc.eventready.builders.IdentifiedTermWithAttendeeBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
@@ -30,21 +28,18 @@ public class EnrollingTest {
     private FixtureConfiguration<EventUnderEnrollment> fixture;
     private EventId eventId;
     private EventDetails eventDetails;
-    private IdentifiedTerm firstTerm;
-    private IdentifiedTerm secondTerm;
+    private EnrollmentIdentifiedTerm firstTerm;
+    private EnrollmentIdentifiedTerm secondTerm;
 
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.eventUnderEnrollmentFixtureConfiguration();
         eventId = EventId.of("id");
         eventDetails = EventDetailsBuilder.defaultEventDetails();
-        firstTerm = IdentifiedTerm.of(
-                TermId.of("id1"),
-                TermBuilder.instance().location(Location.of("3.21A")).build());
-        secondTerm = IdentifiedTerm.of(
-                TermId.of("id1"),
-                TermBuilder.instance().location(Location.of("3.21B")).build());
-
+        firstTerm = EnrollmentIdentifiedTermBuilder.defaultTerm();
+        secondTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(TermId.of("term-id-2"))
+                .build();
     }
 
     @Test
@@ -136,21 +131,22 @@ public class EnrollingTest {
     @Test
     public void shouldNotBeAbleToEnrollIfLimitExceeded() throws Exception {
         final MemberId memberId = MemberId.of("participant1");
+        final EnrollmentIdentifiedTerm term = EnrollmentIdentifiedTermBuilder
+                .instance()
+                .participantsLimit(ParticipantsLimit.of(1))
+                .build();
 
         fixture
                 .given(
                         EventUnderEnrollmentEvents.Created.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(firstTerm, secondTerm)
+                                ImmutableList.of(term)
                         ),
-
-                        TermModifyingEvents.ParticipantLimitSet.of(eventId, firstTerm.termId(), ParticipantsLimit.of(1)),
-
-                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId)
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, term.termId(), memberId)
                 )
                 .when(
-                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), MemberId.of("participant2"))
+                        EnrollmentCommands.EnrollFor.of(eventId, term.termId(), MemberId.of("participant2"))
                 )
                 .expectException(
                         EnrollmentExceptions.EnrollmentLimitExceeded.class

@@ -9,14 +9,12 @@ import knbit.events.bc.common.domain.IdentifiedDomainEntity;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
-import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.Lecturer;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
 import knbit.events.bc.enrollment.domain.valueobjects.events.TermEvent;
-import knbit.events.bc.enrollment.domain.valueobjects.events.TermModifyingEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
@@ -24,8 +22,9 @@ import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Created by novy on 03.10.15.
@@ -39,50 +38,24 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     private Capacity capacity;
     private Location location;
 
-    // todo: refactor to pass it on construction
-    private Optional<Lecturer> lecturer;
+    private Collection<Lecturer> lecturers;
 
     private ParticipantsLimit participantsLimit;
 
     private List<MemberId> enrolledUsers = Lists.newLinkedList();
 
-    public Term(EventId eventId, TermId termId, EventDuration duration, Capacity capacity, Location location) {
+    public Term(EventId eventId, TermId termId, EventDuration duration,
+                Capacity capacity, Location location,
+                ParticipantsLimit participantsLimit, Collection<Lecturer> lecturers) {
+        checkArgument(lecturers != null && !lecturers.isEmpty(), "Lecturers list is required");
+
         this.eventId = eventId;
         this.id = termId;
         this.duration = duration;
         this.capacity = capacity;
         this.location = location;
-        this.participantsLimit = ParticipantsLimit.of(capacity);
-        this.lecturer = Optional.empty();
-    }
-
-
-    public void assignLecturer(Lecturer lecturer) {
-        apply(TermModifyingEvents.LecturerAssigned.of(eventId, id, lecturer));
-    }
-
-    @EventSourcingHandler
-    private void on(TermModifyingEvents.LecturerAssigned event) {
-        eventPossiblyMatchingCurrentTerm(event)
-                .ifPresent(matchingEvent -> this.lecturer = Optional.of(matchingEvent.lecturer()));
-    }
-
-    public void limitParticipants(ParticipantsLimit newLimit) {
-        checkIfLimitIsNotTooLowForCurrentParticipants(newLimit);
-
-        apply(TermModifyingEvents.ParticipantLimitSet.of(eventId, id, newLimit));
-    }
-
-    private void checkIfLimitIsNotTooLowForCurrentParticipants(ParticipantsLimit newLimit) {
-        if (newLimit.value() < enrolledUsers.size()) {
-            throw new EventUnderEnrollmentExceptions.ParticipantLimitTooLow(id, newLimit.value());
-        }
-    }
-
-    @EventSourcingHandler
-    private void on(TermModifyingEvents.ParticipantLimitSet event) {
-        eventPossiblyMatchingCurrentTerm(event)
-                .ifPresent(matchingEvent -> this.participantsLimit = matchingEvent.participantsLimit());
+        this.participantsLimit = participantsLimit;
+        this.lecturers = lecturers;
     }
 
     public void enroll(MemberId memberId) {
@@ -138,15 +111,9 @@ public class Term extends IdentifiedDomainEntity<TermId> {
     }
 
     public IdentifiedTermWithAttendees asValueObject() {
-        final Function<Lecturer, IdentifiedTermWithAttendees> createValueObject =
-                lecturer -> IdentifiedTermWithAttendees.of(
-                        id, duration, participantsLimit, location, lecturer, attendees()
-                );
-
-
-        return lecturer
-                .map(createValueObject)
-                .orElseThrow(() -> new EventUnderEnrollmentExceptions.NoLecturerAssigned(id));
+        return IdentifiedTermWithAttendees.of(
+                id, duration, participantsLimit, location, lecturers, attendees()
+        );
     }
 
     private Collection<Attendee> attendees() {

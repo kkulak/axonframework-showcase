@@ -1,6 +1,6 @@
 package knbit.events.bc.choosingterm.domain.valuobjects.events;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
@@ -31,6 +31,6 @@ public final class UnderChoosingTermEventEvents {
 
         EventId eventId;
         EventDetails eventDetails;
-        Collection<IdentifiedTerm> terms;
+        Collection<EnrollmentIdentifiedTerm> terms;
     }
 }

@@ -1,6 +1,6 @@
 package knbit.events.bc.enrollment.domain.valueobjects.commands;
 
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.Value;
@@ -20,7 +20,7 @@ public interface EventUnderEnrollmentCommands {
 
         EventId eventId;
         EventDetails eventDetails;
-        Collection<IdentifiedTerm> terms;
+        Collection<EnrollmentIdentifiedTerm> terms;
     }
 
     @Accessors(fluent = true)

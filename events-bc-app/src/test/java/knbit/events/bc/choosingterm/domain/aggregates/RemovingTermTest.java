@@ -5,7 +5,7 @@ import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotRemoveNotExistingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
@@ -13,6 +13,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -66,9 +67,13 @@ public class RemovingTermTest {
                 );
     }
 
-
     @Test
     public void shouldNotBeAbleRemoveTermIfEventTransitedToEnrollment() throws Exception {
+        final EnrollmentIdentifiedTerm enrollmentIdentifiedTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(termId)
+                .term(termToRemove)
+                .build();
+
         fixture
                 .given(
                         UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
@@ -78,7 +83,7 @@ public class RemovingTermTest {
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(IdentifiedTerm.of(termId, termToRemove))
+                                ImmutableList.of(enrollmentIdentifiedTerm)
                         )
                 )
                 .when(

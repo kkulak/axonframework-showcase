@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents;
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTransitionEvents;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.Term;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
@@ -13,6 +13,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermE
 import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
@@ -109,7 +110,7 @@ public class EventLifecycleSagaTest {
     @Test
     public void shouldDispatchCreateEventUnderEnrollmentCommandOnTransition() throws Exception {
         final Term term = TermBuilder.defaultTerm();
-        final IdentifiedTerm identifiedTerm = IdentifiedTerm.of(TermId.of("id"), term);
+        final EnrollmentIdentifiedTerm identifiedTerm = EnrollmentIdentifiedTermBuilder.defaultTerm();
 
         fixture
                 .givenAggregate(eventId)
@@ -197,7 +198,7 @@ public class EventLifecycleSagaTest {
                 term.duration(),
                 term.limit(),
                 term.location(),
-                term.lecturer()
+                term.lecturers()
         );
     }
 

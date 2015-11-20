@@ -1,5 +1,6 @@
 package knbit.events.bc.eventready.builders;
 
+import com.google.common.collect.ImmutableList;
 import knbit.events.bc.choosingterm.domain.valuobjects.EventDuration;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
@@ -12,6 +13,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+
+import java.util.Collection;
 
 /**
  * Created by novy on 30.10.15.
@@ -27,10 +30,12 @@ public class EventReadyDetailsBuilder {
     private EventDuration duration = EventDuration.of(DateTime.now(), Duration.standardHours(1));
     private ParticipantsLimit limit = ParticipantsLimit.of(100);
     private Location location = Location.of("3.27A");
-    private Lecturer lecturer = Lecturer.of("John", "Doe");
+    private Collection<Lecturer> lecturers = ImmutableList.of(
+            Lecturer.of("John Doe", "john-doe")
+    );
 
     public EventReadyDetails build() {
-        return EventReadyDetails.of(eventDetails, duration, limit, location, lecturer);
+        return EventReadyDetails.of(eventDetails, duration, limit, location, lecturers);
     }
 
     public static EventReadyDetails defaultEventDetails() {

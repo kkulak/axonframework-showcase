@@ -12,6 +12,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermE
 import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
@@ -66,6 +67,10 @@ public class RequestingRoomTest {
 
         final Term term = TermBuilder.defaultTerm();
         final TermId termId = TermId.of("termId");
+        final EnrollmentIdentifiedTerm enrollmentIdentifiedTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(termId)
+                .term(term)
+                .build();
 
         fixture
                 .given(
@@ -76,7 +81,7 @@ public class RequestingRoomTest {
                         UnderChoosingTermEventEvents.TransitedToEnrollment.of(
                                 eventId,
                                 eventDetails,
-                                ImmutableList.of(IdentifiedTerm.of(termId, term))
+                                ImmutableList.of(enrollmentIdentifiedTerm)
                         )
                 )
                 .when(

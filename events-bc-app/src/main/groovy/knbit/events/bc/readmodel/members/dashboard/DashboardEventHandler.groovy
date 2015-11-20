@@ -5,10 +5,13 @@ import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.TermWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
+
+import static knbit.events.bc.readmodel.TermWrapper.lecturersOf
 
 /**
  * Created by novy on 20.10.15.
@@ -39,10 +42,7 @@ class DashboardEventHandler {
                 end              : details.duration().end(),
                 participantsLimit: details.limit().value(),
                 location         : details.location().value(),
-                lecturer         : [
-                        firstName: details.lecturer().firstName(),
-                        lastName : details.lecturer().lastName()
-                ]
+                lecturers        : lecturersOf(details.lecturers())
         ]
 
         EventDetailsWrapper.asMap(details.eventDetails()) + termRelatedData

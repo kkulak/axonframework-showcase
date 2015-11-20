@@ -3,11 +3,12 @@ package knbit.events.bc.enrollment.domain.aggregates;
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
-import knbit.events.bc.choosingterm.domain.valuobjects.IdentifiedTerm;
+import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
 import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
@@ -28,21 +29,18 @@ public class DisenrollingTest {
     private FixtureConfiguration<EventUnderEnrollment> fixture;
     private EventId eventId;
     private EventDetails eventDetails;
-    private IdentifiedTerm firstTerm;
-    private IdentifiedTerm secondTerm;
+    private EnrollmentIdentifiedTerm firstTerm;
+    private EnrollmentIdentifiedTerm secondTerm;
 
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.eventUnderEnrollmentFixtureConfiguration();
         eventId = EventId.of("id");
         eventDetails = EventDetailsBuilder.defaultEventDetails();
-        firstTerm = IdentifiedTerm.of(
-                TermId.of("id1"),
-                TermBuilder.instance().location(Location.of("3.21A")).build());
-        secondTerm = IdentifiedTerm.of(
-                TermId.of("id1"),
-                TermBuilder.instance().location(Location.of("3.21B")).build());
-
+        firstTerm = EnrollmentIdentifiedTermBuilder.defaultTerm();
+        secondTerm = EnrollmentIdentifiedTermBuilder.instance()
+                .termId(TermId.of("term-id-2"))
+                .build();
     }
 
     @Test

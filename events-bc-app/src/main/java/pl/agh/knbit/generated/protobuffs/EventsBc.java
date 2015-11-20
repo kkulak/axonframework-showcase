@@ -8,10 +8,10 @@ public final class EventsBc {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface EventTookPlaceEventOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+  public interface EventTookPlaceEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:EventTookPlaceEvent)
+      com.google.protobuf.MessageOrBuilder {
 
-    // required int64 utc_date_as_epoch_seconds = 1;
     /**
      * <code>required int64 utc_date_as_epoch_seconds = 1;</code>
      */
@@ -21,7 +21,6 @@ public final class EventsBc {
      */
     long getUtcDateAsEpochSeconds();
 
-    // required string event_id = 2;
     /**
      * <code>required string event_id = 2;</code>
      */
@@ -29,14 +28,13 @@ public final class EventsBc {
     /**
      * <code>required string event_id = 2;</code>
      */
-    String getEventId();
+    java.lang.String getEventId();
     /**
      * <code>required string event_id = 2;</code>
      */
     com.google.protobuf.ByteString
         getEventIdBytes();
 
-    // required string event_name = 3;
     /**
      * <code>required string event_name = 3;</code>
      */
@@ -44,14 +42,13 @@ public final class EventsBc {
     /**
      * <code>required string event_name = 3;</code>
      */
-    String getEventName();
+    java.lang.String getEventName();
     /**
      * <code>required string event_name = 3;</code>
      */
     com.google.protobuf.ByteString
         getEventNameBytes();
 
-    // optional string event_description = 4;
     /**
      * <code>optional string event_description = 4;</code>
      */
@@ -59,14 +56,13 @@ public final class EventsBc {
     /**
      * <code>optional string event_description = 4;</code>
      */
-    String getEventDescription();
+    java.lang.String getEventDescription();
     /**
      * <code>optional string event_description = 4;</code>
      */
     com.google.protobuf.ByteString
         getEventDescriptionBytes();
 
-    // optional .EventTookPlaceEvent.EventType event_type = 5;
     /**
      * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
      */
@@ -74,9 +70,8 @@ public final class EventsBc {
     /**
      * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
      */
-    EventTookPlaceEvent.EventType getEventType();
+    pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType getEventType();
 
-    // optional string section_id = 6;
     /**
      * <code>optional string section_id = 6;</code>
      */
@@ -84,23 +79,22 @@ public final class EventsBc {
     /**
      * <code>optional string section_id = 6;</code>
      */
-    String getSectionId();
+    java.lang.String getSectionId();
     /**
      * <code>optional string section_id = 6;</code>
      */
     com.google.protobuf.ByteString
         getSectionIdBytes();
 
-    // repeated .EventTookPlaceEvent.Speaker speakers = 7;
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    java.util.List<EventTookPlaceEvent.Speaker>
+    java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> 
         getSpeakersList();
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    EventTookPlaceEvent.Speaker getSpeakers(int index);
+    pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker getSpeakers(int index);
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
@@ -108,15 +102,14 @@ public final class EventsBc {
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    java.util.List<? extends EventTookPlaceEvent.SpeakerOrBuilder>
+    java.util.List<? extends pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder> 
         getSpeakersOrBuilderList();
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    EventTookPlaceEvent.SpeakerOrBuilder getSpeakersOrBuilder(
-            int index);
+    pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder getSpeakersOrBuilder(
+        int index);
 
-    // optional int64 attendes_count = 8;
     /**
      * <code>optional int64 attendes_count = 8;</code>
      */
@@ -126,7 +119,6 @@ public final class EventsBc {
      */
     long getAttendesCount();
 
-    // optional string event_picture_url = 9;
     /**
      * <code>optional string event_picture_url = 9;</code>
      */
@@ -134,7 +126,7 @@ public final class EventsBc {
     /**
      * <code>optional string event_picture_url = 9;</code>
      */
-    String getEventPictureUrl();
+    java.lang.String getEventPictureUrl();
     /**
      * <code>optional string event_picture_url = 9;</code>
      */
@@ -145,8 +137,9 @@ public final class EventsBc {
    * Protobuf type {@code EventTookPlaceEvent}
    */
   public static final class EventTookPlaceEvent extends
-      com.google.protobuf.GeneratedMessage
-      implements EventTookPlaceEventOrBuilder {
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:EventTookPlaceEvent)
+      EventTookPlaceEventOrBuilder {
     // Use EventTookPlaceEvent.newBuilder() to construct.
     private EventTookPlaceEvent(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
@@ -164,7 +157,7 @@ public final class EventsBc {
     }
 
     private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @Override
+    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
         getUnknownFields() {
       return this.unknownFields;
@@ -198,23 +191,26 @@ public final class EventsBc {
               break;
             }
             case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              eventId_ = input.readBytes();
+              eventId_ = bs;
               break;
             }
             case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              eventName_ = input.readBytes();
+              eventName_ = bs;
               break;
             }
             case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000008;
-              eventDescription_ = input.readBytes();
+              eventDescription_ = bs;
               break;
             }
             case 40: {
               int rawValue = input.readEnum();
-              EventType value = EventType.valueOf(rawValue);
+              pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType value = pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(5, rawValue);
               } else {
@@ -224,16 +220,17 @@ public final class EventsBc {
               break;
             }
             case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
-              sectionId_ = input.readBytes();
+              sectionId_ = bs;
               break;
             }
             case 58: {
               if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-                speakers_ = new java.util.ArrayList<Speaker>();
+                speakers_ = new java.util.ArrayList<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker>();
                 mutable_bitField0_ |= 0x00000040;
               }
-              speakers_.add(input.readMessage(Speaker.PARSER, extensionRegistry));
+              speakers_.add(input.readMessage(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.PARSER, extensionRegistry));
               break;
             }
             case 64: {
@@ -242,8 +239,9 @@ public final class EventsBc {
               break;
             }
             case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000080;
-              eventPictureUrl_ = input.readBytes();
+              eventPictureUrl_ = bs;
               break;
             }
           }
@@ -263,14 +261,14 @@ public final class EventsBc {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return EventsBc.internal_static_EventTookPlaceEvent_descriptor;
+      return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_descriptor;
     }
 
-    protected FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return EventsBc.internal_static_EventTookPlaceEvent_fieldAccessorTable
+      return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              EventTookPlaceEvent.class, Builder.class);
+              pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.class, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Builder.class);
     }
 
     public static com.google.protobuf.Parser<EventTookPlaceEvent> PARSER =
@@ -283,7 +281,7 @@ public final class EventsBc {
       }
     };
 
-    @Override
+    @java.lang.Override
     public com.google.protobuf.Parser<EventTookPlaceEvent> getParserForType() {
       return PARSER;
     }
@@ -354,7 +352,7 @@ public final class EventsBc {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return EventTookPlaceEvent.getDescriptor().getEnumTypes().get(0);
+        return pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final EventType[] VALUES = values();
@@ -362,7 +360,7 @@ public final class EventsBc {
       public static EventType valueOf(
           com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
         if (desc.getType() != getDescriptor()) {
-          throw new IllegalArgumentException(
+          throw new java.lang.IllegalArgumentException(
             "EnumValueDescriptor is not for this type.");
         }
         return VALUES[desc.getIndex()];
@@ -379,65 +377,48 @@ public final class EventsBc {
       // @@protoc_insertion_point(enum_scope:EventTookPlaceEvent.EventType)
     }
 
-    public interface SpeakerOrBuilder
-        extends com.google.protobuf.MessageOrBuilder {
+    public interface SpeakerOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:EventTookPlaceEvent.Speaker)
+        com.google.protobuf.MessageOrBuilder {
 
-      // required string first_name = 1;
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
-      boolean hasFirstName();
+      boolean hasName();
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
-      String getFirstName();
+      java.lang.String getName();
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
       com.google.protobuf.ByteString
-          getFirstNameBytes();
+          getNameBytes();
 
-      // required string last_name = 2;
       /**
-       * <code>required string last_name = 2;</code>
-       */
-      boolean hasLastName();
-      /**
-       * <code>required string last_name = 2;</code>
-       */
-      String getLastName();
-      /**
-       * <code>required string last_name = 2;</code>
-       */
-      com.google.protobuf.ByteString
-          getLastNameBytes();
-
-      // optional string email = 3;
-      /**
-       * <code>optional string email = 3;</code>
+       * <code>optional string email = 2;</code>
        */
       boolean hasEmail();
       /**
-       * <code>optional string email = 3;</code>
+       * <code>optional string email = 2;</code>
        */
-      String getEmail();
+      java.lang.String getEmail();
       /**
-       * <code>optional string email = 3;</code>
+       * <code>optional string email = 2;</code>
        */
       com.google.protobuf.ByteString
           getEmailBytes();
 
-      // optional string account_id = 4;
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
       boolean hasAccountId();
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
-      String getAccountId();
+      java.lang.String getAccountId();
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
       com.google.protobuf.ByteString
           getAccountIdBytes();
@@ -446,8 +427,9 @@ public final class EventsBc {
      * Protobuf type {@code EventTookPlaceEvent.Speaker}
      */
     public static final class Speaker extends
-        com.google.protobuf.GeneratedMessage
-        implements SpeakerOrBuilder {
+        com.google.protobuf.GeneratedMessage implements
+        // @@protoc_insertion_point(message_implements:EventTookPlaceEvent.Speaker)
+        SpeakerOrBuilder {
       // Use Speaker.newBuilder() to construct.
       private Speaker(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
         super(builder);
@@ -465,7 +447,7 @@ public final class EventsBc {
       }
 
       private final com.google.protobuf.UnknownFieldSet unknownFields;
-      @Override
+      @java.lang.Override
       public final com.google.protobuf.UnknownFieldSet
           getUnknownFields() {
         return this.unknownFields;
@@ -494,23 +476,21 @@ public final class EventsBc {
                 break;
               }
               case 10: {
+                com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000001;
-                firstName_ = input.readBytes();
+                name_ = bs;
                 break;
               }
               case 18: {
+                com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000002;
-                lastName_ = input.readBytes();
+                email_ = bs;
                 break;
               }
               case 26: {
+                com.google.protobuf.ByteString bs = input.readBytes();
                 bitField0_ |= 0x00000004;
-                email_ = input.readBytes();
-                break;
-              }
-              case 34: {
-                bitField0_ |= 0x00000008;
-                accountId_ = input.readBytes();
+                accountId_ = bs;
                 break;
               }
             }
@@ -527,14 +507,14 @@ public final class EventsBc {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
+        return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
       }
 
-      protected FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return EventsBc.internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable
+        return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                Speaker.class, Builder.class);
+                pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.class, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder.class);
       }
 
       public static com.google.protobuf.Parser<Speaker> PARSER =
@@ -547,118 +527,73 @@ public final class EventsBc {
         }
       };
 
-      @Override
+      @java.lang.Override
       public com.google.protobuf.Parser<Speaker> getParserForType() {
         return PARSER;
       }
 
       private int bitField0_;
-      // required string first_name = 1;
-      public static final int FIRST_NAME_FIELD_NUMBER = 1;
-      private Object firstName_;
+      public static final int NAME_FIELD_NUMBER = 1;
+      private java.lang.Object name_;
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
-      public boolean hasFirstName() {
+      public boolean hasName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
-      public String getFirstName() {
-        Object ref = firstName_;
-        if (ref instanceof String) {
-          return (String) ref;
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
         } else {
           com.google.protobuf.ByteString bs = 
               (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
+          java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            firstName_ = s;
+            name_ = s;
           }
           return s;
         }
       }
       /**
-       * <code>required string first_name = 1;</code>
+       * <code>required string name = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getFirstNameBytes() {
-        Object ref = firstName_;
-        if (ref instanceof String) {
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          firstName_ = b;
+                  (java.lang.String) ref);
+          name_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
 
-      // required string last_name = 2;
-      public static final int LAST_NAME_FIELD_NUMBER = 2;
-      private Object lastName_;
+      public static final int EMAIL_FIELD_NUMBER = 2;
+      private java.lang.Object email_;
       /**
-       * <code>required string last_name = 2;</code>
+       * <code>optional string email = 2;</code>
        */
-      public boolean hasLastName() {
+      public boolean hasEmail() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string last_name = 2;</code>
+       * <code>optional string email = 2;</code>
        */
-      public String getLastName() {
-        Object ref = lastName_;
-        if (ref instanceof String) {
-          return (String) ref;
+      public java.lang.String getEmail() {
+        java.lang.Object ref = email_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
         } else {
           com.google.protobuf.ByteString bs = 
               (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            lastName_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>required string last_name = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getLastNameBytes() {
-        Object ref = lastName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          lastName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      // optional string email = 3;
-      public static final int EMAIL_FIELD_NUMBER = 3;
-      private Object email_;
-      /**
-       * <code>optional string email = 3;</code>
-       */
-      public boolean hasEmail() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string email = 3;</code>
-       */
-      public String getEmail() {
-        Object ref = email_;
-        if (ref instanceof String) {
-          return (String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
+          java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
             email_ = s;
           }
@@ -666,15 +601,15 @@ public final class EventsBc {
         }
       }
       /**
-       * <code>optional string email = 3;</code>
+       * <code>optional string email = 2;</code>
        */
       public com.google.protobuf.ByteString
           getEmailBytes() {
-        Object ref = email_;
-        if (ref instanceof String) {
+        java.lang.Object ref = email_;
+        if (ref instanceof java.lang.String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           email_ = b;
           return b;
         } else {
@@ -682,26 +617,25 @@ public final class EventsBc {
         }
       }
 
-      // optional string account_id = 4;
-      public static final int ACCOUNT_ID_FIELD_NUMBER = 4;
-      private Object accountId_;
+      public static final int ACCOUNT_ID_FIELD_NUMBER = 3;
+      private java.lang.Object accountId_;
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
       public boolean hasAccountId() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
-      public String getAccountId() {
-        Object ref = accountId_;
-        if (ref instanceof String) {
-          return (String) ref;
+      public java.lang.String getAccountId() {
+        java.lang.Object ref = accountId_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
         } else {
           com.google.protobuf.ByteString bs = 
               (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
+          java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
             accountId_ = s;
           }
@@ -709,15 +643,15 @@ public final class EventsBc {
         }
       }
       /**
-       * <code>optional string account_id = 4;</code>
+       * <code>optional string account_id = 3;</code>
        */
       public com.google.protobuf.ByteString
           getAccountIdBytes() {
-        Object ref = accountId_;
-        if (ref instanceof String) {
+        java.lang.Object ref = accountId_;
+        if (ref instanceof java.lang.String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           accountId_ = b;
           return b;
         } else {
@@ -726,21 +660,17 @@ public final class EventsBc {
       }
 
       private void initFields() {
-        firstName_ = "";
-        lastName_ = "";
+        name_ = "";
         email_ = "";
         accountId_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
-        if (isInitialized != -1) return isInitialized == 1;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
 
-        if (!hasFirstName()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasLastName()) {
+        if (!hasName()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -752,16 +682,13 @@ public final class EventsBc {
                           throws java.io.IOException {
         getSerializedSize();
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeBytes(1, getFirstNameBytes());
+          output.writeBytes(1, getNameBytes());
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeBytes(2, getLastNameBytes());
+          output.writeBytes(2, getEmailBytes());
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          output.writeBytes(3, getEmailBytes());
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          output.writeBytes(4, getAccountIdBytes());
+          output.writeBytes(3, getAccountIdBytes());
         }
         getUnknownFields().writeTo(output);
       }
@@ -774,19 +701,15 @@ public final class EventsBc {
         size = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(1, getFirstNameBytes());
+            .computeBytesSize(1, getNameBytes());
         }
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(2, getLastNameBytes());
+            .computeBytesSize(2, getEmailBytes());
         }
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(3, getEmailBytes());
-        }
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(4, getAccountIdBytes());
+            .computeBytesSize(3, getAccountIdBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -794,59 +717,59 @@ public final class EventsBc {
       }
 
       private static final long serialVersionUID = 0L;
-      @Override
-      protected Object writeReplace()
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
           throws java.io.ObjectStreamException {
         return super.writeReplace();
       }
 
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static Speaker parseFrom(byte[] data)
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static Speaker parseFrom(java.io.InputStream input)
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return PARSER.parseFrom(input);
       }
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return PARSER.parseFrom(input, extensionRegistry);
       }
-      public static Speaker parseDelimitedFrom(java.io.InputStream input)
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return PARSER.parseDelimitedFrom(input);
       }
-      public static Speaker parseDelimitedFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return PARSER.parseDelimitedFrom(input, extensionRegistry);
       }
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return PARSER.parseFrom(input);
       }
-      public static Speaker parseFrom(
+      public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
@@ -855,14 +778,14 @@ public final class EventsBc {
 
       public static Builder newBuilder() { return Builder.create(); }
       public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(Speaker prototype) {
+      public static Builder newBuilder(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker prototype) {
         return newBuilder().mergeFrom(prototype);
       }
       public Builder toBuilder() { return newBuilder(this); }
 
-      @Override
+      @java.lang.Override
       protected Builder newBuilderForType(
-          BuilderParent parent) {
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
         Builder builder = new Builder(parent);
         return builder;
       }
@@ -870,18 +793,19 @@ public final class EventsBc {
        * Protobuf type {@code EventTookPlaceEvent.Speaker}
        */
       public static final class Builder extends
-          com.google.protobuf.GeneratedMessage.Builder<Builder>
-         implements SpeakerOrBuilder {
+          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:EventTookPlaceEvent.Speaker)
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
+          return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
         }
 
-        protected FieldAccessorTable
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return EventsBc.internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable
+          return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                  Speaker.class, Builder.class);
+                  pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.class, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder.class);
         }
 
         // Construct using pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.newBuilder()
@@ -890,7 +814,7 @@ public final class EventsBc {
         }
 
         private Builder(
-            BuilderParent parent) {
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
           super(parent);
           maybeForceBuilderInitialization();
         }
@@ -904,14 +828,12 @@ public final class EventsBc {
 
         public Builder clear() {
           super.clear();
-          firstName_ = "";
+          name_ = "";
           bitField0_ = (bitField0_ & ~0x00000001);
-          lastName_ = "";
-          bitField0_ = (bitField0_ & ~0x00000002);
           email_ = "";
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
           accountId_ = "";
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
           return this;
         }
 
@@ -921,39 +843,35 @@ public final class EventsBc {
 
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
+          return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_Speaker_descriptor;
         }
 
-        public Speaker getDefaultInstanceForType() {
-          return Speaker.getDefaultInstance();
+        public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker getDefaultInstanceForType() {
+          return pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.getDefaultInstance();
         }
 
-        public Speaker build() {
-          Speaker result = buildPartial();
+        public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker build() {
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
           return result;
         }
 
-        public Speaker buildPartial() {
-          Speaker result = new Speaker(this);
+        public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker buildPartial() {
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker result = new pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
             to_bitField0_ |= 0x00000001;
           }
-          result.firstName_ = firstName_;
+          result.name_ = name_;
           if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
             to_bitField0_ |= 0x00000002;
           }
-          result.lastName_ = lastName_;
+          result.email_ = email_;
           if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
             to_bitField0_ |= 0x00000004;
-          }
-          result.email_ = email_;
-          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-            to_bitField0_ |= 0x00000008;
           }
           result.accountId_ = accountId_;
           result.bitField0_ = to_bitField0_;
@@ -962,33 +880,28 @@ public final class EventsBc {
         }
 
         public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof Speaker) {
-            return mergeFrom((Speaker)other);
+          if (other instanceof pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker) {
+            return mergeFrom((pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker)other);
           } else {
             super.mergeFrom(other);
             return this;
           }
         }
 
-        public Builder mergeFrom(Speaker other) {
-          if (other == Speaker.getDefaultInstance()) return this;
-          if (other.hasFirstName()) {
+        public Builder mergeFrom(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker other) {
+          if (other == pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.getDefaultInstance()) return this;
+          if (other.hasName()) {
             bitField0_ |= 0x00000001;
-            firstName_ = other.firstName_;
-            onChanged();
-          }
-          if (other.hasLastName()) {
-            bitField0_ |= 0x00000002;
-            lastName_ = other.lastName_;
+            name_ = other.name_;
             onChanged();
           }
           if (other.hasEmail()) {
-            bitField0_ |= 0x00000004;
+            bitField0_ |= 0x00000002;
             email_ = other.email_;
             onChanged();
           }
           if (other.hasAccountId()) {
-            bitField0_ |= 0x00000008;
+            bitField0_ |= 0x00000004;
             accountId_ = other.accountId_;
             onChanged();
           }
@@ -997,11 +910,7 @@ public final class EventsBc {
         }
 
         public final boolean isInitialized() {
-          if (!hasFirstName()) {
-            
-            return false;
-          }
-          if (!hasLastName()) {
+          if (!hasName()) {
             
             return false;
           }
@@ -1012,11 +921,11 @@ public final class EventsBc {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          Speaker parsedMessage = null;
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker parsedMessage = null;
           try {
             parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (Speaker) e.getUnfinishedMessage();
+            parsedMessage = (pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker) e.getUnfinishedMessage();
             throw e;
           } finally {
             if (parsedMessage != null) {
@@ -1027,186 +936,116 @@ public final class EventsBc {
         }
         private int bitField0_;
 
-        // required string first_name = 1;
-        private Object firstName_ = "";
+        private java.lang.Object name_ = "";
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
-        public boolean hasFirstName() {
+        public boolean hasName() {
           return ((bitField0_ & 0x00000001) == 0x00000001);
         }
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
-        public String getFirstName() {
-          Object ref = firstName_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            firstName_ = s;
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              name_ = s;
+            }
             return s;
           } else {
-            return (String) ref;
+            return (java.lang.String) ref;
           }
         }
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
         public com.google.protobuf.ByteString
-            getFirstNameBytes() {
-          Object ref = firstName_;
+            getNameBytes() {
+          java.lang.Object ref = name_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            firstName_ = b;
+                    (java.lang.String) ref);
+            name_ = b;
             return b;
           } else {
             return (com.google.protobuf.ByteString) ref;
           }
         }
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
-        public Builder setFirstName(
-            String value) {
+        public Builder setName(
+            java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-          firstName_ = value;
+          name_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
-        public Builder clearFirstName() {
+        public Builder clearName() {
           bitField0_ = (bitField0_ & ~0x00000001);
-          firstName_ = getDefaultInstance().getFirstName();
+          name_ = getDefaultInstance().getName();
           onChanged();
           return this;
         }
         /**
-         * <code>required string first_name = 1;</code>
+         * <code>required string name = 1;</code>
          */
-        public Builder setFirstNameBytes(
+        public Builder setNameBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-          firstName_ = value;
+          name_ = value;
           onChanged();
           return this;
         }
 
-        // required string last_name = 2;
-        private Object lastName_ = "";
+        private java.lang.Object email_ = "";
         /**
-         * <code>required string last_name = 2;</code>
+         * <code>optional string email = 2;</code>
          */
-        public boolean hasLastName() {
+        public boolean hasEmail() {
           return ((bitField0_ & 0x00000002) == 0x00000002);
         }
         /**
-         * <code>required string last_name = 2;</code>
+         * <code>optional string email = 2;</code>
          */
-        public String getLastName() {
-          Object ref = lastName_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            lastName_ = s;
+        public java.lang.String getEmail() {
+          java.lang.Object ref = email_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              email_ = s;
+            }
             return s;
           } else {
-            return (String) ref;
+            return (java.lang.String) ref;
           }
         }
         /**
-         * <code>required string last_name = 2;</code>
-         */
-        public com.google.protobuf.ByteString
-            getLastNameBytes() {
-          Object ref = lastName_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            lastName_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>required string last_name = 2;</code>
-         */
-        public Builder setLastName(
-            String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-          lastName_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string last_name = 2;</code>
-         */
-        public Builder clearLastName() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          lastName_ = getDefaultInstance().getLastName();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string last_name = 2;</code>
-         */
-        public Builder setLastNameBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-          lastName_ = value;
-          onChanged();
-          return this;
-        }
-
-        // optional string email = 3;
-        private Object email_ = "";
-        /**
-         * <code>optional string email = 3;</code>
-         */
-        public boolean hasEmail() {
-          return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-        /**
-         * <code>optional string email = 3;</code>
-         */
-        public String getEmail() {
-          Object ref = email_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            email_ = s;
-            return s;
-          } else {
-            return (String) ref;
-          }
-        }
-        /**
-         * <code>optional string email = 3;</code>
+         * <code>optional string email = 2;</code>
          */
         public com.google.protobuf.ByteString
             getEmailBytes() {
-          Object ref = email_;
+          java.lang.Object ref = email_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
+                    (java.lang.String) ref);
             email_ = b;
             return b;
           } else {
@@ -1214,73 +1053,75 @@ public final class EventsBc {
           }
         }
         /**
-         * <code>optional string email = 3;</code>
+         * <code>optional string email = 2;</code>
          */
         public Builder setEmail(
-            String value) {
+            java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
           email_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string email = 3;</code>
+         * <code>optional string email = 2;</code>
          */
         public Builder clearEmail() {
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
           email_ = getDefaultInstance().getEmail();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string email = 3;</code>
+         * <code>optional string email = 2;</code>
          */
         public Builder setEmailBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000002;
           email_ = value;
           onChanged();
           return this;
         }
 
-        // optional string account_id = 4;
-        private Object accountId_ = "";
+        private java.lang.Object accountId_ = "";
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
         public boolean hasAccountId() {
-          return ((bitField0_ & 0x00000008) == 0x00000008);
+          return ((bitField0_ & 0x00000004) == 0x00000004);
         }
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
-        public String getAccountId() {
-          Object ref = accountId_;
-          if (!(ref instanceof String)) {
-            String s = ((com.google.protobuf.ByteString) ref)
-                .toStringUtf8();
-            accountId_ = s;
+        public java.lang.String getAccountId() {
+          java.lang.Object ref = accountId_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            if (bs.isValidUtf8()) {
+              accountId_ = s;
+            }
             return s;
           } else {
-            return (String) ref;
+            return (java.lang.String) ref;
           }
         }
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
         public com.google.protobuf.ByteString
             getAccountIdBytes() {
-          Object ref = accountId_;
+          java.lang.Object ref = accountId_;
           if (ref instanceof String) {
             com.google.protobuf.ByteString b = 
                 com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
+                    (java.lang.String) ref);
             accountId_ = b;
             return b;
           } else {
@@ -1288,36 +1129,36 @@ public final class EventsBc {
           }
         }
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
         public Builder setAccountId(
-            String value) {
+            java.lang.String value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
           accountId_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
         public Builder clearAccountId() {
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
           accountId_ = getDefaultInstance().getAccountId();
           onChanged();
           return this;
         }
         /**
-         * <code>optional string account_id = 4;</code>
+         * <code>optional string account_id = 3;</code>
          */
         public Builder setAccountIdBytes(
             com.google.protobuf.ByteString value) {
           if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000004;
           accountId_ = value;
           onChanged();
           return this;
@@ -1335,7 +1176,6 @@ public final class EventsBc {
     }
 
     private int bitField0_;
-    // required int64 utc_date_as_epoch_seconds = 1;
     public static final int UTC_DATE_AS_EPOCH_SECONDS_FIELD_NUMBER = 1;
     private long utcDateAsEpochSeconds_;
     /**
@@ -1351,9 +1191,8 @@ public final class EventsBc {
       return utcDateAsEpochSeconds_;
     }
 
-    // required string event_id = 2;
     public static final int EVENT_ID_FIELD_NUMBER = 2;
-    private Object eventId_;
+    private java.lang.Object eventId_;
     /**
      * <code>required string event_id = 2;</code>
      */
@@ -1363,14 +1202,14 @@ public final class EventsBc {
     /**
      * <code>required string event_id = 2;</code>
      */
-    public String getEventId() {
-      Object ref = eventId_;
-      if (ref instanceof String) {
-        return (String) ref;
+    public java.lang.String getEventId() {
+      java.lang.Object ref = eventId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           eventId_ = s;
         }
@@ -1382,11 +1221,11 @@ public final class EventsBc {
      */
     public com.google.protobuf.ByteString
         getEventIdBytes() {
-      Object ref = eventId_;
-      if (ref instanceof String) {
+      java.lang.Object ref = eventId_;
+      if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         eventId_ = b;
         return b;
       } else {
@@ -1394,9 +1233,8 @@ public final class EventsBc {
       }
     }
 
-    // required string event_name = 3;
     public static final int EVENT_NAME_FIELD_NUMBER = 3;
-    private Object eventName_;
+    private java.lang.Object eventName_;
     /**
      * <code>required string event_name = 3;</code>
      */
@@ -1406,14 +1244,14 @@ public final class EventsBc {
     /**
      * <code>required string event_name = 3;</code>
      */
-    public String getEventName() {
-      Object ref = eventName_;
-      if (ref instanceof String) {
-        return (String) ref;
+    public java.lang.String getEventName() {
+      java.lang.Object ref = eventName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           eventName_ = s;
         }
@@ -1425,11 +1263,11 @@ public final class EventsBc {
      */
     public com.google.protobuf.ByteString
         getEventNameBytes() {
-      Object ref = eventName_;
-      if (ref instanceof String) {
+      java.lang.Object ref = eventName_;
+      if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         eventName_ = b;
         return b;
       } else {
@@ -1437,9 +1275,8 @@ public final class EventsBc {
       }
     }
 
-    // optional string event_description = 4;
     public static final int EVENT_DESCRIPTION_FIELD_NUMBER = 4;
-    private Object eventDescription_;
+    private java.lang.Object eventDescription_;
     /**
      * <code>optional string event_description = 4;</code>
      */
@@ -1449,14 +1286,14 @@ public final class EventsBc {
     /**
      * <code>optional string event_description = 4;</code>
      */
-    public String getEventDescription() {
-      Object ref = eventDescription_;
-      if (ref instanceof String) {
-        return (String) ref;
+    public java.lang.String getEventDescription() {
+      java.lang.Object ref = eventDescription_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           eventDescription_ = s;
         }
@@ -1468,11 +1305,11 @@ public final class EventsBc {
      */
     public com.google.protobuf.ByteString
         getEventDescriptionBytes() {
-      Object ref = eventDescription_;
-      if (ref instanceof String) {
+      java.lang.Object ref = eventDescription_;
+      if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         eventDescription_ = b;
         return b;
       } else {
@@ -1480,9 +1317,8 @@ public final class EventsBc {
       }
     }
 
-    // optional .EventTookPlaceEvent.EventType event_type = 5;
     public static final int EVENT_TYPE_FIELD_NUMBER = 5;
-    private EventType eventType_;
+    private pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType eventType_;
     /**
      * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
      */
@@ -1492,13 +1328,12 @@ public final class EventsBc {
     /**
      * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
      */
-    public EventType getEventType() {
+    public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType getEventType() {
       return eventType_;
     }
 
-    // optional string section_id = 6;
     public static final int SECTION_ID_FIELD_NUMBER = 6;
-    private Object sectionId_;
+    private java.lang.Object sectionId_;
     /**
      * <code>optional string section_id = 6;</code>
      */
@@ -1508,14 +1343,14 @@ public final class EventsBc {
     /**
      * <code>optional string section_id = 6;</code>
      */
-    public String getSectionId() {
-      Object ref = sectionId_;
-      if (ref instanceof String) {
-        return (String) ref;
+    public java.lang.String getSectionId() {
+      java.lang.Object ref = sectionId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           sectionId_ = s;
         }
@@ -1527,11 +1362,11 @@ public final class EventsBc {
      */
     public com.google.protobuf.ByteString
         getSectionIdBytes() {
-      Object ref = sectionId_;
-      if (ref instanceof String) {
+      java.lang.Object ref = sectionId_;
+      if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         sectionId_ = b;
         return b;
       } else {
@@ -1539,19 +1374,18 @@ public final class EventsBc {
       }
     }
 
-    // repeated .EventTookPlaceEvent.Speaker speakers = 7;
     public static final int SPEAKERS_FIELD_NUMBER = 7;
-    private java.util.List<Speaker> speakers_;
+    private java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> speakers_;
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    public java.util.List<Speaker> getSpeakersList() {
+    public java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> getSpeakersList() {
       return speakers_;
     }
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    public java.util.List<? extends SpeakerOrBuilder>
+    public java.util.List<? extends pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder> 
         getSpeakersOrBuilderList() {
       return speakers_;
     }
@@ -1564,18 +1398,17 @@ public final class EventsBc {
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    public Speaker getSpeakers(int index) {
+    public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker getSpeakers(int index) {
       return speakers_.get(index);
     }
     /**
      * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
      */
-    public SpeakerOrBuilder getSpeakersOrBuilder(
+    public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder getSpeakersOrBuilder(
         int index) {
       return speakers_.get(index);
     }
 
-    // optional int64 attendes_count = 8;
     public static final int ATTENDES_COUNT_FIELD_NUMBER = 8;
     private long attendesCount_;
     /**
@@ -1591,9 +1424,8 @@ public final class EventsBc {
       return attendesCount_;
     }
 
-    // optional string event_picture_url = 9;
     public static final int EVENT_PICTURE_URL_FIELD_NUMBER = 9;
-    private Object eventPictureUrl_;
+    private java.lang.Object eventPictureUrl_;
     /**
      * <code>optional string event_picture_url = 9;</code>
      */
@@ -1603,14 +1435,14 @@ public final class EventsBc {
     /**
      * <code>optional string event_picture_url = 9;</code>
      */
-    public String getEventPictureUrl() {
-      Object ref = eventPictureUrl_;
-      if (ref instanceof String) {
-        return (String) ref;
+    public java.lang.String getEventPictureUrl() {
+      java.lang.Object ref = eventPictureUrl_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
       } else {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
-        String s = bs.toStringUtf8();
+        java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
           eventPictureUrl_ = s;
         }
@@ -1622,11 +1454,11 @@ public final class EventsBc {
      */
     public com.google.protobuf.ByteString
         getEventPictureUrlBytes() {
-      Object ref = eventPictureUrl_;
-      if (ref instanceof String) {
+      java.lang.Object ref = eventPictureUrl_;
+      if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+                (java.lang.String) ref);
         eventPictureUrl_ = b;
         return b;
       } else {
@@ -1639,7 +1471,7 @@ public final class EventsBc {
       eventId_ = "";
       eventName_ = "";
       eventDescription_ = "";
-      eventType_ = EventType.LECTURE;
+      eventType_ = pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType.LECTURE;
       sectionId_ = "";
       speakers_ = java.util.Collections.emptyList();
       attendesCount_ = 0L;
@@ -1648,7 +1480,8 @@ public final class EventsBc {
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
 
       if (!hasUtcDateAsEpochSeconds()) {
         memoizedIsInitialized = 0;
@@ -1753,59 +1586,59 @@ public final class EventsBc {
     }
 
     private static final long serialVersionUID = 0L;
-    @Override
-    protected Object writeReplace()
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
         throws java.io.ObjectStreamException {
       return super.writeReplace();
     }
 
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static EventTookPlaceEvent parseFrom(byte[] data)
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static EventTookPlaceEvent parseFrom(java.io.InputStream input)
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static EventTookPlaceEvent parseDelimitedFrom(java.io.InputStream input)
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static EventTookPlaceEvent parseDelimitedFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static EventTookPlaceEvent parseFrom(
+    public static pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1814,14 +1647,14 @@ public final class EventsBc {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(EventTookPlaceEvent prototype) {
+    public static Builder newBuilder(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
 
-    @Override
+    @java.lang.Override
     protected Builder newBuilderForType(
-        BuilderParent parent) {
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -1829,18 +1662,19 @@ public final class EventsBc {
      * Protobuf type {@code EventTookPlaceEvent}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements EventTookPlaceEventOrBuilder {
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:EventTookPlaceEvent)
+        pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEventOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return EventsBc.internal_static_EventTookPlaceEvent_descriptor;
+        return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_descriptor;
       }
 
-      protected FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return EventsBc.internal_static_EventTookPlaceEvent_fieldAccessorTable
+        return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                EventTookPlaceEvent.class, Builder.class);
+                pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.class, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Builder.class);
       }
 
       // Construct using pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.newBuilder()
@@ -1849,7 +1683,7 @@ public final class EventsBc {
       }
 
       private Builder(
-          BuilderParent parent) {
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
@@ -1872,7 +1706,7 @@ public final class EventsBc {
         bitField0_ = (bitField0_ & ~0x00000004);
         eventDescription_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
-        eventType_ = EventType.LECTURE;
+        eventType_ = pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType.LECTURE;
         bitField0_ = (bitField0_ & ~0x00000010);
         sectionId_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -1895,23 +1729,23 @@ public final class EventsBc {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return EventsBc.internal_static_EventTookPlaceEvent_descriptor;
+        return pl.agh.knbit.generated.protobuffs.EventsBc.internal_static_EventTookPlaceEvent_descriptor;
       }
 
-      public EventTookPlaceEvent getDefaultInstanceForType() {
-        return EventTookPlaceEvent.getDefaultInstance();
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent getDefaultInstanceForType() {
+        return pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.getDefaultInstance();
       }
 
-      public EventTookPlaceEvent build() {
-        EventTookPlaceEvent result = buildPartial();
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent build() {
+        pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public EventTookPlaceEvent buildPartial() {
-        EventTookPlaceEvent result = new EventTookPlaceEvent(this);
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent buildPartial() {
+        pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent result = new pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1961,16 +1795,16 @@ public final class EventsBc {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof EventTookPlaceEvent) {
-          return mergeFrom((EventTookPlaceEvent)other);
+        if (other instanceof pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent) {
+          return mergeFrom((pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(EventTookPlaceEvent other) {
-        if (other == EventTookPlaceEvent.getDefaultInstance()) return this;
+      public Builder mergeFrom(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent other) {
+        if (other == pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.getDefaultInstance()) return this;
         if (other.hasUtcDateAsEpochSeconds()) {
           setUtcDateAsEpochSeconds(other.getUtcDateAsEpochSeconds());
         }
@@ -2061,11 +1895,11 @@ public final class EventsBc {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        EventTookPlaceEvent parsedMessage = null;
+        pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (EventTookPlaceEvent) e.getUnfinishedMessage();
+          parsedMessage = (pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -2076,7 +1910,6 @@ public final class EventsBc {
       }
       private int bitField0_;
 
-      // required int64 utc_date_as_epoch_seconds = 1;
       private long utcDateAsEpochSeconds_ ;
       /**
        * <code>required int64 utc_date_as_epoch_seconds = 1;</code>
@@ -2109,8 +1942,7 @@ public final class EventsBc {
         return this;
       }
 
-      // required string event_id = 2;
-      private Object eventId_ = "";
+      private java.lang.Object eventId_ = "";
       /**
        * <code>required string event_id = 2;</code>
        */
@@ -2120,15 +1952,18 @@ public final class EventsBc {
       /**
        * <code>required string event_id = 2;</code>
        */
-      public String getEventId() {
-        Object ref = eventId_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          eventId_ = s;
+      public java.lang.String getEventId() {
+        java.lang.Object ref = eventId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            eventId_ = s;
+          }
           return s;
         } else {
-          return (String) ref;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -2136,11 +1971,11 @@ public final class EventsBc {
        */
       public com.google.protobuf.ByteString
           getEventIdBytes() {
-        Object ref = eventId_;
+        java.lang.Object ref = eventId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           eventId_ = b;
           return b;
         } else {
@@ -2151,7 +1986,7 @@ public final class EventsBc {
        * <code>required string event_id = 2;</code>
        */
       public Builder setEventId(
-          String value) {
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -2183,8 +2018,7 @@ public final class EventsBc {
         return this;
       }
 
-      // required string event_name = 3;
-      private Object eventName_ = "";
+      private java.lang.Object eventName_ = "";
       /**
        * <code>required string event_name = 3;</code>
        */
@@ -2194,15 +2028,18 @@ public final class EventsBc {
       /**
        * <code>required string event_name = 3;</code>
        */
-      public String getEventName() {
-        Object ref = eventName_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          eventName_ = s;
+      public java.lang.String getEventName() {
+        java.lang.Object ref = eventName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            eventName_ = s;
+          }
           return s;
         } else {
-          return (String) ref;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -2210,11 +2047,11 @@ public final class EventsBc {
        */
       public com.google.protobuf.ByteString
           getEventNameBytes() {
-        Object ref = eventName_;
+        java.lang.Object ref = eventName_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           eventName_ = b;
           return b;
         } else {
@@ -2225,7 +2062,7 @@ public final class EventsBc {
        * <code>required string event_name = 3;</code>
        */
       public Builder setEventName(
-          String value) {
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -2257,8 +2094,7 @@ public final class EventsBc {
         return this;
       }
 
-      // optional string event_description = 4;
-      private Object eventDescription_ = "";
+      private java.lang.Object eventDescription_ = "";
       /**
        * <code>optional string event_description = 4;</code>
        */
@@ -2268,15 +2104,18 @@ public final class EventsBc {
       /**
        * <code>optional string event_description = 4;</code>
        */
-      public String getEventDescription() {
-        Object ref = eventDescription_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          eventDescription_ = s;
+      public java.lang.String getEventDescription() {
+        java.lang.Object ref = eventDescription_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            eventDescription_ = s;
+          }
           return s;
         } else {
-          return (String) ref;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -2284,11 +2123,11 @@ public final class EventsBc {
        */
       public com.google.protobuf.ByteString
           getEventDescriptionBytes() {
-        Object ref = eventDescription_;
+        java.lang.Object ref = eventDescription_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           eventDescription_ = b;
           return b;
         } else {
@@ -2299,7 +2138,7 @@ public final class EventsBc {
        * <code>optional string event_description = 4;</code>
        */
       public Builder setEventDescription(
-          String value) {
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -2331,8 +2170,7 @@ public final class EventsBc {
         return this;
       }
 
-      // optional .EventTookPlaceEvent.EventType event_type = 5;
-      private EventType eventType_ = EventType.LECTURE;
+      private pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType eventType_ = pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType.LECTURE;
       /**
        * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
        */
@@ -2342,13 +2180,13 @@ public final class EventsBc {
       /**
        * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
        */
-      public EventType getEventType() {
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType getEventType() {
         return eventType_;
       }
       /**
        * <code>optional .EventTookPlaceEvent.EventType event_type = 5;</code>
        */
-      public Builder setEventType(EventType value) {
+      public Builder setEventType(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -2362,13 +2200,12 @@ public final class EventsBc {
        */
       public Builder clearEventType() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        eventType_ = EventType.LECTURE;
+        eventType_ = pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.EventType.LECTURE;
         onChanged();
         return this;
       }
 
-      // optional string section_id = 6;
-      private Object sectionId_ = "";
+      private java.lang.Object sectionId_ = "";
       /**
        * <code>optional string section_id = 6;</code>
        */
@@ -2378,15 +2215,18 @@ public final class EventsBc {
       /**
        * <code>optional string section_id = 6;</code>
        */
-      public String getSectionId() {
-        Object ref = sectionId_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          sectionId_ = s;
+      public java.lang.String getSectionId() {
+        java.lang.Object ref = sectionId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sectionId_ = s;
+          }
           return s;
         } else {
-          return (String) ref;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -2394,11 +2234,11 @@ public final class EventsBc {
        */
       public com.google.protobuf.ByteString
           getSectionIdBytes() {
-        Object ref = sectionId_;
+        java.lang.Object ref = sectionId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           sectionId_ = b;
           return b;
         } else {
@@ -2409,7 +2249,7 @@ public final class EventsBc {
        * <code>optional string section_id = 6;</code>
        */
       public Builder setSectionId(
-          String value) {
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -2441,23 +2281,22 @@ public final class EventsBc {
         return this;
       }
 
-      // repeated .EventTookPlaceEvent.Speaker speakers = 7;
-      private java.util.List<Speaker> speakers_ =
+      private java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> speakers_ =
         java.util.Collections.emptyList();
       private void ensureSpeakersIsMutable() {
         if (!((bitField0_ & 0x00000040) == 0x00000040)) {
-          speakers_ = new java.util.ArrayList<Speaker>(speakers_);
+          speakers_ = new java.util.ArrayList<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker>(speakers_);
           bitField0_ |= 0x00000040;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          Speaker, Speaker.Builder, SpeakerOrBuilder> speakersBuilder_;
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder> speakersBuilder_;
 
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public java.util.List<Speaker> getSpeakersList() {
+      public java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> getSpeakersList() {
         if (speakersBuilder_ == null) {
           return java.util.Collections.unmodifiableList(speakers_);
         } else {
@@ -2477,7 +2316,7 @@ public final class EventsBc {
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public Speaker getSpeakers(int index) {
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker getSpeakers(int index) {
         if (speakersBuilder_ == null) {
           return speakers_.get(index);
         } else {
@@ -2488,7 +2327,7 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder setSpeakers(
-          int index, Speaker value) {
+          int index, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker value) {
         if (speakersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2505,7 +2344,7 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder setSpeakers(
-          int index, Speaker.Builder builderForValue) {
+          int index, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder builderForValue) {
         if (speakersBuilder_ == null) {
           ensureSpeakersIsMutable();
           speakers_.set(index, builderForValue.build());
@@ -2518,7 +2357,7 @@ public final class EventsBc {
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public Builder addSpeakers(Speaker value) {
+      public Builder addSpeakers(pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker value) {
         if (speakersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2535,7 +2374,7 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder addSpeakers(
-          int index, Speaker value) {
+          int index, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker value) {
         if (speakersBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2552,7 +2391,7 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder addSpeakers(
-          Speaker.Builder builderForValue) {
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder builderForValue) {
         if (speakersBuilder_ == null) {
           ensureSpeakersIsMutable();
           speakers_.add(builderForValue.build());
@@ -2566,7 +2405,7 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder addSpeakers(
-          int index, Speaker.Builder builderForValue) {
+          int index, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder builderForValue) {
         if (speakersBuilder_ == null) {
           ensureSpeakersIsMutable();
           speakers_.add(index, builderForValue.build());
@@ -2580,10 +2419,11 @@ public final class EventsBc {
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
       public Builder addAllSpeakers(
-          Iterable<? extends Speaker> values) {
+          java.lang.Iterable<? extends pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker> values) {
         if (speakersBuilder_ == null) {
           ensureSpeakersIsMutable();
-          super.addAll(values, speakers_);
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, speakers_);
           onChanged();
         } else {
           speakersBuilder_.addAllMessages(values);
@@ -2619,14 +2459,14 @@ public final class EventsBc {
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public Speaker.Builder getSpeakersBuilder(
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder getSpeakersBuilder(
           int index) {
         return getSpeakersFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public SpeakerOrBuilder getSpeakersOrBuilder(
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder getSpeakersOrBuilder(
           int index) {
         if (speakersBuilder_ == null) {
           return speakers_.get(index);  } else {
@@ -2636,7 +2476,7 @@ public final class EventsBc {
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public java.util.List<? extends SpeakerOrBuilder>
+      public java.util.List<? extends pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder> 
            getSpeakersOrBuilderList() {
         if (speakersBuilder_ != null) {
           return speakersBuilder_.getMessageOrBuilderList();
@@ -2647,31 +2487,31 @@ public final class EventsBc {
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public Speaker.Builder addSpeakersBuilder() {
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder addSpeakersBuilder() {
         return getSpeakersFieldBuilder().addBuilder(
-            Speaker.getDefaultInstance());
+            pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.getDefaultInstance());
       }
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public Speaker.Builder addSpeakersBuilder(
+      public pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder addSpeakersBuilder(
           int index) {
         return getSpeakersFieldBuilder().addBuilder(
-            index, Speaker.getDefaultInstance());
+            index, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.getDefaultInstance());
       }
       /**
        * <code>repeated .EventTookPlaceEvent.Speaker speakers = 7;</code>
        */
-      public java.util.List<Speaker.Builder>
+      public java.util.List<pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder> 
            getSpeakersBuilderList() {
         return getSpeakersFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          Speaker, Speaker.Builder, SpeakerOrBuilder>
+          pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder> 
           getSpeakersFieldBuilder() {
         if (speakersBuilder_ == null) {
           speakersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              Speaker, Speaker.Builder, SpeakerOrBuilder>(
+              pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.Speaker.Builder, pl.agh.knbit.generated.protobuffs.EventsBc.EventTookPlaceEvent.SpeakerOrBuilder>(
                   speakers_,
                   ((bitField0_ & 0x00000040) == 0x00000040),
                   getParentForChildren(),
@@ -2681,7 +2521,6 @@ public final class EventsBc {
         return speakersBuilder_;
       }
 
-      // optional int64 attendes_count = 8;
       private long attendesCount_ ;
       /**
        * <code>optional int64 attendes_count = 8;</code>
@@ -2714,8 +2553,7 @@ public final class EventsBc {
         return this;
       }
 
-      // optional string event_picture_url = 9;
-      private Object eventPictureUrl_ = "";
+      private java.lang.Object eventPictureUrl_ = "";
       /**
        * <code>optional string event_picture_url = 9;</code>
        */
@@ -2725,15 +2563,18 @@ public final class EventsBc {
       /**
        * <code>optional string event_picture_url = 9;</code>
        */
-      public String getEventPictureUrl() {
-        Object ref = eventPictureUrl_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref)
-              .toStringUtf8();
-          eventPictureUrl_ = s;
+      public java.lang.String getEventPictureUrl() {
+        java.lang.Object ref = eventPictureUrl_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            eventPictureUrl_ = s;
+          }
           return s;
         } else {
-          return (String) ref;
+          return (java.lang.String) ref;
         }
       }
       /**
@@ -2741,11 +2582,11 @@ public final class EventsBc {
        */
       public com.google.protobuf.ByteString
           getEventPictureUrlBytes() {
-        Object ref = eventPictureUrl_;
+        java.lang.Object ref = eventPictureUrl_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
+                  (java.lang.String) ref);
           eventPictureUrl_ = b;
           return b;
         } else {
@@ -2756,7 +2597,7 @@ public final class EventsBc {
        * <code>optional string event_picture_url = 9;</code>
        */
       public Builder setEventPictureUrl(
-          String value) {
+          java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
@@ -2799,12 +2640,12 @@ public final class EventsBc {
     // @@protoc_insertion_point(class_scope:EventTookPlaceEvent)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_EventTookPlaceEvent_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_EventTookPlaceEvent_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_EventTookPlaceEvent_Speaker_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -2817,45 +2658,44 @@ public final class EventsBc {
   private static com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
-    String[] descriptorData = {
-      "\n\017events_bc.proto\"\262\003\n\023EventTookPlaceEven" +
+    java.lang.String[] descriptorData = {
+      "\n\017events_bc.proto\"\231\003\n\023EventTookPlaceEven" +
       "t\022!\n\031utc_date_as_epoch_seconds\030\001 \002(\003\022\020\n\010" +
       "event_id\030\002 \002(\t\022\022\n\nevent_name\030\003 \002(\t\022\031\n\021ev" +
       "ent_description\030\004 \001(\t\0222\n\nevent_type\030\005 \001(" +
       "\0162\036.EventTookPlaceEvent.EventType\022\022\n\nsec" +
       "tion_id\030\006 \001(\t\022.\n\010speakers\030\007 \003(\0132\034.EventT" +
       "ookPlaceEvent.Speaker\022\026\n\016attendes_count\030" +
-      "\010 \001(\003\022\031\n\021event_picture_url\030\t \001(\t\032S\n\007Spea" +
-      "ker\022\022\n\nfirst_name\030\001 \002(\t\022\021\n\tlast_name\030\002 \002" +
-      "(\t\022\r\n\005email\030\003 \001(\t\022\022\n\naccount_id\030\004 \001(\t\"7\n",
-      "\tEventType\022\013\n\007LECTURE\020\000\022\014\n\010WORKSHOP\020\001\022\017\n" +
-      "\013STUDY_GROUP\020\002B#\n!pl.agh.knbit.generated" +
-      ".protobuffs"
+      "\010 \001(\003\022\031\n\021event_picture_url\030\t \001(\t\032:\n\007Spea" +
+      "ker\022\014\n\004name\030\001 \002(\t\022\r\n\005email\030\002 \001(\t\022\022\n\nacco" +
+      "unt_id\030\003 \001(\t\"7\n\tEventType\022\013\n\007LECTURE\020\000\022\014",
+      "\n\010WORKSHOP\020\001\022\017\n\013STUDY_GROUP\020\002B#\n!pl.agh." +
+      "knbit.generated.protobuffs"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_EventTookPlaceEvent_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_EventTookPlaceEvent_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_EventTookPlaceEvent_descriptor,
-              new String[] { "UtcDateAsEpochSeconds", "EventId", "EventName", "EventDescription", "EventType", "SectionId", "Speakers", "AttendesCount", "EventPictureUrl", });
-          internal_static_EventTookPlaceEvent_Speaker_descriptor =
-            internal_static_EventTookPlaceEvent_descriptor.getNestedTypes().get(0);
-          internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_EventTookPlaceEvent_Speaker_descriptor,
-              new String[] { "FirstName", "LastName", "Email", "AccountId", });
-          return null;
-        }
-      };
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
     com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
+    internal_static_EventTookPlaceEvent_descriptor =
+      getDescriptor().getMessageTypes().get(0);
+    internal_static_EventTookPlaceEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_EventTookPlaceEvent_descriptor,
+        new java.lang.String[] { "UtcDateAsEpochSeconds", "EventId", "EventName", "EventDescription", "EventType", "SectionId", "Speakers", "AttendesCount", "EventPictureUrl", });
+    internal_static_EventTookPlaceEvent_Speaker_descriptor =
+      internal_static_EventTookPlaceEvent_descriptor.getNestedTypes().get(0);
+    internal_static_EventTookPlaceEvent_Speaker_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_EventTookPlaceEvent_Speaker_descriptor,
+        new java.lang.String[] { "Name", "Email", "AccountId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

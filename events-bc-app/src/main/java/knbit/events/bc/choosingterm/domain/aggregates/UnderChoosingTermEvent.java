@@ -16,12 +16,15 @@ import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.axonframework.eventsourcing.annotation.EventSourcedMember;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -130,21 +133,38 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.cancel();
     }
 
-    public void transitToEnrollment() {
+    public void transitToEnrollment(Collection<TermClosure> termClosures) {
         rejectOnTransited();
         rejectIfThereArePendingReservations();
         rejectOnNoTerms();
 
         apply(
-                UnderChoosingTermEventEvents.TransitedToEnrollment.of(id, eventDetails, identifiedTerms())
+                UnderChoosingTermEventEvents.TransitedToEnrollment.of(
+                        id, eventDetails, identifiedTerms(termClosures)
+                )
         );
     }
 
-    private Collection<IdentifiedTerm> identifiedTerms() {
+    private Collection<EnrollmentIdentifiedTerm> identifiedTerms(Collection<TermClosure> termClosures) {
         return terms.entrySet()
                 .stream()
-                .map(termIdAndTerm -> IdentifiedTerm.of(termIdAndTerm.getKey(), termIdAndTerm.getValue()))
+                .map(termIdAndTerm -> enrollmentIdentifiedTermOf(
+                                termIdAndTerm.getKey(), termIdAndTerm.getValue(), termClosures)
+                )
                 .collect(Collectors.toList());
+    }
+
+    private EnrollmentIdentifiedTerm enrollmentIdentifiedTermOf(TermId id, Term term, Collection<TermClosure> termClosures) {
+        final TermClosure termClosure = findTermClosureOrThrowException(id, termClosures);
+        return EnrollmentIdentifiedTerm.of(id, term, termClosure.lecturers(), termClosure.participantsLimit());
+    }
+
+    private TermClosure findTermClosureOrThrowException(TermId termId, Collection<TermClosure> termClosures) {
+        return termClosures
+                .stream()
+                .filter(term -> term.termId().equals(termId))
+                .findFirst()
+                .orElseThrow(() -> new EventUnderEnrollmentExceptions.NoSuchTermException(id, termId));
     }
 
     @EventSourcingHandler

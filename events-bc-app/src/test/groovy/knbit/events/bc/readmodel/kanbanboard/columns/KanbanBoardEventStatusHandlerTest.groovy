@@ -15,6 +15,7 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.DBCollectionAware
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.TermWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.common.readmodel.EventStatus.*
@@ -178,10 +179,7 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 section        : sectionOrNull(eventReadyDetails.section()),
                 start          : eventReadyDetails.duration().start(),
                 location       : eventReadyDetails.location().value(),
-                lecturer       : [
-                        firstName: eventReadyDetails.lecturer().firstName(),
-                        lastName : eventReadyDetails.lecturer().lastName(),
-                ],
+                lecturers      : TermWrapper.lecturersOf(eventReadyDetails.lecturers()),
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ]
