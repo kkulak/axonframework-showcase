@@ -39,7 +39,7 @@ public class BacklogEventController {
 
     @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{eventId}/backlog", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public void cancelBacklogEvent(@PathVariable("eventId") String eventId) {
         final EventId domainId = EventId.of(eventId);
 
