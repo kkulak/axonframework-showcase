@@ -47,8 +47,14 @@ class InterestVotingHandler implements RemoveEventRelatedData {
         )
     }
 
+    // todo yet another duplication, extract later
     @EventHandler
     def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        removeDataBy(event.eventId()).from(votesCollection)
+    }
+
+    @EventHandler
+    def on(InterestAwareEvents.InterestAwareEventCancelled event) {
         removeDataBy(event.eventId()).from(votesCollection)
     }
 

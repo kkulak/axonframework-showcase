@@ -2,10 +2,7 @@ package knbit.events.bc.interest.domain.enums;
 
 import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
+import knbit.events.bc.interest.domain.exceptions.*;
 
 /**
  * Created by novy on 30.05.15.
@@ -38,6 +35,13 @@ public enum InterestAwareEventState {
         @Override
         public DomainException correspondingIncorrectStateException(EventId eventId) {
             return new InterestAwareEventAlreadyTransitedException(eventId);
+        }
+    },
+
+    CANCELLED {
+        @Override
+        public DomainException correspondingIncorrectStateException(EventId eventId) {
+            return new InterestAwareEventAlreadyCancelledException(eventId);
         }
     };
 

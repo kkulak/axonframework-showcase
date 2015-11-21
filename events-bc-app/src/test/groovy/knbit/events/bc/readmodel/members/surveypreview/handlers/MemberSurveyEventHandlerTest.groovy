@@ -13,7 +13,6 @@ import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle
 import knbit.events.bc.interest.domain.valueobjects.question.answer.DomainAnswer
 import knbit.events.bc.readmodel.DBCollectionAware
-import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
@@ -45,13 +44,13 @@ class MemberSurveyEventHandlerTest extends Specification implements DBCollection
         then:
         def collectionEntry = collection.findOne(eventId: eventId.value())
         stripMongoIdFrom(collectionEntry) == [
-                eventId       : eventId.value(),
-                name          : eventDetails.name().value(),
-                description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                imageUrl      : urlOrNull(eventDetails.imageUrl()),
-                section       : sectionOrNull(eventDetails.section()),
-                votedUp       : 0
+                eventId    : eventId.value(),
+                name       : eventDetails.name().value(),
+                description: eventDetails.description().value(),
+                eventType  : eventDetails.type(),
+                imageUrl   : urlOrNull(eventDetails.imageUrl()),
+                section    : sectionOrNull(eventDetails.section()),
+                votedUp    : 0
         ]
     }
 
@@ -115,5 +114,18 @@ class MemberSurveyEventHandlerTest extends Specification implements DBCollection
                 [eventId: 'anotherId'],
                 [eventId: 'andYetAnother']
         ]
+    }
+
+    def "should delete collection entry on event cancellation"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on(
+                [eventId: { return eventId }] as InterestAwareEvents.InterestAwareEventCancelled
+        )
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
     }
 }

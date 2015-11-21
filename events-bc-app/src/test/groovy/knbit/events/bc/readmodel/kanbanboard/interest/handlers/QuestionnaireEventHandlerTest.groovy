@@ -275,4 +275,25 @@ class QuestionnaireEventHandlerTest extends Specification implements DBCollectio
         then:
         collection.find([eventId: eventId.value()]).toArray() == []
     }
+
+    def "should delete all questions on event cancellation"() {
+        given:
+        collection << [
+                eventId     : eventId.value(),
+                title       : "title",
+                description : "desc",
+                questionType: AnswerType.SINGLE_CHOICE,
+                answers     : [
+                        [value: "ans1", answered: 0],
+                        [value: "ans2", answered: 0]
+                ]
+        ]
+
+
+        when:
+        objectUnderTest.on([eventId: {return eventId}] as InterestAwareEvents.InterestAwareEventCancelled)
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

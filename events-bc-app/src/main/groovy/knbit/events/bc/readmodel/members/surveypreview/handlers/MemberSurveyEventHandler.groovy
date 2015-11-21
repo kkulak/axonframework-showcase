@@ -52,8 +52,14 @@ class MemberSurveyEventHandler implements RemoveEventRelatedData {
         )
     }
 
+    // todo common trait for both handlers
     @EventHandler
     def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        removeDataBy(event.eventId()).from(collection)
+    }
+
+    @EventHandler
+    def on(InterestAwareEvents.InterestAwareEventCancelled event) {
         removeDataBy(event.eventId()).from(collection)
     }
 

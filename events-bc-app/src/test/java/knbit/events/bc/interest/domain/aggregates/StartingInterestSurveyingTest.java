@@ -7,6 +7,7 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.StartSurveyingInterestCommandBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyCancelledException;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
@@ -32,9 +33,7 @@ public class StartingInterestSurveyingTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -82,6 +81,25 @@ public class StartingInterestSurveyingTest {
                                 .eventId(eventId)
                                 .endingSurveyDate(now)
                                 .build()
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToStartInCancelledInMeantime() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+                        InterestAwareEvents.CancelledBeforeSurveyStarted.of(eventId)
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(
+                        InterestAwareEventAlreadyCancelledException.class
                 );
     }
 

@@ -91,7 +91,30 @@ class InterestVotingHandlerTest extends Specification implements DBCollectionAwa
 
         then:
         votesCollection.find([eventId: eventId.value()]).toArray() == []
+    }
 
+    def "should remove all db entry for given event on that event cancellation"() {
+        given:
+        votesCollection << [
+                [
+                        eventId : eventId.value(),
+                        memberId: 'member',
+                        voted   : VoteType.NEGATIVE
+                ],
+                [
+                        eventId : eventId.value(),
+                        memberId: 'another member',
+                        voted   : VoteType.NEGATIVE
+                ]
+        ]
+
+        when:
+        objectUnderTest.on(
+                [eventId: {return eventId}] as InterestAwareEvents.InterestAwareEventCancelled
+        )
+
+        then:
+        votesCollection.find([eventId: eventId.value()]).toArray() == []
     }
 
     private def collectionEntryFor(EventId eventId, MemberId memberId) {
