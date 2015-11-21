@@ -22,6 +22,7 @@ $RECYCLE.BIN/
 
 ### Gradle template
 .gradle
+gradle/wrapper/gradle-wrapper.properties
 build/
 events-bc-core/build
 events-bc-announcement/build
