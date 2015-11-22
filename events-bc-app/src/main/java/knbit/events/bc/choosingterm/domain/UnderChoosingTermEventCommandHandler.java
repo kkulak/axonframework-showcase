@@ -113,4 +113,12 @@ public class UnderChoosingTermEventCommandHandler {
         underChoosingTermEvent.transitToEnrollment(command.termClosures());
     }
 
+    @CommandHandler
+    public void handle(UnderChoosingTermEventCommands.Cancel command) {
+        final UnderChoosingTermEvent underChoosingTermEvent =
+                repository.load(command.eventId());
+
+        underChoosingTermEvent.cancel();
+    }
+
 }

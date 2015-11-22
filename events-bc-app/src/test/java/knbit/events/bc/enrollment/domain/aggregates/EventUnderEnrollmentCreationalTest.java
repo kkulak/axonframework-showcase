@@ -2,10 +2,7 @@ package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
-import knbit.events.bc.choosingterm.domain.valuobjects.Term;
-import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;

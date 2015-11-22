@@ -64,6 +64,7 @@ dependencies {
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
     testCompile 'org.powermock:powermock-api-mockito:1.6.3'
     testCompile 'org.powermock:powermock-module-junit4:1.6.3'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.4'
 }
 
 docker {

@@ -5,6 +5,7 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyCancelledException;
 import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
@@ -13,6 +14,8 @@ import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Created by novy on 16.08.15.
@@ -27,9 +30,7 @@ public class TransitionToUnderChoosingTermEventTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -108,6 +109,33 @@ public class TransitionToUnderChoosingTermEventTest {
                 )
                 .expectException(
                         InterestAwareEventAlreadyTransitedException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToTransitIfCancelled() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+
+                        SurveyingInterestStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        SurveyEvents.Ended.of(eventId),
+
+                        InterestAwareEvents.CancelledDuringOrAfterSurveying.of(
+                                eventId,
+                                Collections.emptyList()
+                        )
+                )
+                .when(
+                        InterestAwareEventCommands.TransitToUnderTermChoosingEvent.of(eventId)
+                )
+                .expectException(
+                        InterestAwareEventAlreadyCancelledException.class
                 );
     }
 }

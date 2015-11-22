@@ -1,5 +1,6 @@
 package knbit.events.bc.backlogevent.domain.valueobjects.events;
 
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
@@ -20,5 +21,12 @@ public final class BacklogEventEvents {
 
         EventId eventId;
         EventDetails eventDetails;
+    }
+
+    @Value(staticConstructor = "of")
+    @Accessors(fluent = true)
+    public static class Cancelled implements EventCancelled {
+
+        EventId eventId;
     }
 }

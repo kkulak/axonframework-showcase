@@ -6,16 +6,15 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.interest.builders.*;
-import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyAlreadyVotedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
+import knbit.events.bc.interest.domain.exceptions.*;
 import knbit.events.bc.interest.domain.policies.surveyinginterest.WithFixedThresholdPolicy;
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Created by novy on 28.05.15.
@@ -268,6 +267,34 @@ public class VotingUpTest {
                                 .build()
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToVoteOnCancelledEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(
+                                eventId, eventDetails
+                        ),
+
+                        SurveyingStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        InterestAwareEvents.CancelledDuringOrAfterSurveying.of(
+                                eventId,
+                                Collections.emptyList()
+                        )
+                )
+                .when(
+                        VoteUpCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(InterestAwareEventAlreadyCancelledException.class);
     }
 
     @Test

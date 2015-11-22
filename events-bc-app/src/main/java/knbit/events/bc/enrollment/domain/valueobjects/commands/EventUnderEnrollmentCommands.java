@@ -29,4 +29,11 @@ public interface EventUnderEnrollmentCommands {
 
         EventId eventId;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class Cancel {
+
+        EventId eventId;
+    }
 }

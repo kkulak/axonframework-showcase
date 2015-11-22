@@ -67,6 +67,10 @@ public class ReservationNotificationSaga extends AbstractAnnotatedSaga {
         end();
     }
 
+    @SagaEventHandler(associationProperty = "eventId")
+    public void handle(UnderChoosingTermEventEvents.Cancelled event) {
+        end();
+    }
 
     @Autowired
     public void setDispatcher(MessageDispatcher dispatcher) {

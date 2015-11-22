@@ -11,6 +11,7 @@ import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.IdFactory;
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
@@ -188,6 +189,22 @@ public class EventLifecycleSagaTest {
                 )
                 .whenPublishingA(
                         EventUnderEnrollmentEvents.TransitedToReady.of(eventId, eventDetails, soleTerm)
+                )
+                .expectActiveSagas(0);
+    }
+
+    @Test
+    public void shouldEndOnCancellation() throws Exception {
+
+        final EventCancelled eventCancelled = () -> eventId;
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        BacklogEventEvents.Created.of(eventId, eventDetails)
+                )
+                .whenPublishingA(
+                        eventCancelled
                 )
                 .expectActiveSagas(0);
     }

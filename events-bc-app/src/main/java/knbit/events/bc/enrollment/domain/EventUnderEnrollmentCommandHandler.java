@@ -53,4 +53,11 @@ public class EventUnderEnrollmentCommandHandler {
 
         eventUnderEnrollment.transitToReady();
     }
+
+    @CommandHandler
+    public void handle(EventUnderEnrollmentCommands.Cancel command) {
+        final EventUnderEnrollment eventUnderEnrollment = repository.load(command.eventId());
+
+        eventUnderEnrollment.cancel();
+    }
 }

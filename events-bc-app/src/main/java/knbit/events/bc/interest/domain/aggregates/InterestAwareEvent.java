@@ -1,6 +1,8 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
@@ -21,9 +23,12 @@ import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
 import knbit.events.bc.interest.domain.valueobjects.question.answer.AnsweredQuestion;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.AttendeeAnswer;
 import knbit.events.bc.interest.domain.valueobjects.submittedanswer.SubmittedAnswer;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +39,8 @@ import static knbit.events.bc.interest.domain.enums.InterestAwareEventState.*;
 /**
  * Created by novy on 28.05.15.
  */
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
 
     private EventDetails eventDetails;
@@ -46,9 +53,6 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     private Collection<Attendee> interviewees = Sets.newHashSet();
 
     private InterestAwareEventState state;
-
-    private InterestAwareEvent() {
-    }
 
     public InterestAwareEvent(EventId eventId, EventDetails eventDetails) {
         apply(
@@ -82,12 +86,12 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     private void rejectIfVotingNotAllowed(Attendee attendee) {
-        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED, CANCELLED);
         rejectOnAlreadyVoted(attendee);
     }
 
     public void startSurveying(InterestPolicy interestPolicy, SurveyStartedEventFactory factory) {
-        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
+        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED, CANCELLED);
 
         apply(
                 factory.newSurveyingInterestStartedEvent(id, eventDetails, interestPolicy)
@@ -95,7 +99,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void endSurveying() {
-        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED, CANCELLED);
 
         apply(SurveyEvents.Ended.of(id));
     }
@@ -151,7 +155,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void addQuestionnaire(List<QuestionData> questionData) {
-        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED);
+        rejectOnInvalidStates(IN_PROGRESS, ENDED, TRANSITED, CANCELLED);
         rejectOnQuestionnaireAlreadyExists();
 
         apply(
@@ -182,7 +186,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     public void transitToUnderChoosingTermEvent() {
-        rejectOnInvalidStates(CREATED, TRANSITED);
+        rejectOnInvalidStates(CREATED, TRANSITED, CANCELLED);
         endIfSurveyingInProgress();
 
         apply(InterestAwareEvents.TransitedToUnderChoosingTerm.of(id, eventDetails));
@@ -200,7 +204,7 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     private void rejectOnCompletingQuestionnaireNotAllowed(Attendee attendee) {
-        rejectOnInvalidStates(CREATED, ENDED, TRANSITED);
+        rejectOnInvalidStates(CREATED, ENDED, TRANSITED, CANCELLED);
         rejectOnQuestionnaireDoesNotExist();
         rejectOnVotedDown(attendee);
         rejectOnNotYetVotedUp(attendee);
@@ -253,5 +257,28 @@ public class InterestAwareEvent extends IdentifiedDomainAggregateRoot<EventId> {
                 .stream()
                 .map(QuestionFactory::newQuestion)
                 .collect(Collectors.toList());
+    }
+
+    public void cancel() {
+        rejectOnInvalidStates(CANCELLED, TRANSITED);
+
+        final InterestAwareEvents.InterestAwareEventCancelled eventToApply = surveyInProgressOrEnded() ?
+                InterestAwareEvents.CancelledDuringOrAfterSurveying.of(id, allVoters()) :
+                InterestAwareEvents.CancelledBeforeSurveyStarted.of(id);
+
+        apply(eventToApply);
+    }
+
+    private Collection<Attendee> allVoters() {
+        return Lists.newLinkedList(Iterables.concat(positiveVoters, negativeVoters));
+    }
+
+    private boolean surveyInProgressOrEnded() {
+        return EnumSet.of(IN_PROGRESS, ENDED).contains(state);
+    }
+
+    @EventSourcingHandler
+    private void on(InterestAwareEvents.InterestAwareEventCancelled event) {
+        this.state = CANCELLED;
     }
 }

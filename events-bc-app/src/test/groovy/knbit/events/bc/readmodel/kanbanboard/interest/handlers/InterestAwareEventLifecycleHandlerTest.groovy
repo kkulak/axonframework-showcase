@@ -11,9 +11,9 @@ import spock.lang.Specification
 /**
  * Created by novy on 04.06.15.
  */
-class CreatingInterestAwareEventEventHandlerTest extends Specification implements DBCollectionAware {
+class InterestAwareEventLifecycleHandlerTest extends Specification implements DBCollectionAware {
 
-    def CreatingInterestAwareEventEventHandler objectUnderTest
+    def InterestAwareEventLifecycleHandler objectUnderTest
     def DBCollection collection
 
     def EventId eventId
@@ -21,7 +21,7 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification implement
 
     void setup() {
         collection = testCollection()
-        objectUnderTest = new CreatingInterestAwareEventEventHandler(collection)
+        objectUnderTest = new InterestAwareEventLifecycleHandler(collection)
         eventId = EventId.of("eventId")
         eventDetails = EventDetailsBuilder.defaultEventDetails()
     }
@@ -48,6 +48,17 @@ class CreatingInterestAwareEventEventHandlerTest extends Specification implement
 
         when:
         objectUnderTest.on InterestAwareEvents.TransitedToUnderChoosingTerm.of(eventId, eventDetails)
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
+
+    def "should delete entry on event cancellation"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on([eventId: {return eventId}] as InterestAwareEvents.InterestAwareEventCancelled)
 
         then:
         collection.find([eventId: eventId.value()]).toArray() == []

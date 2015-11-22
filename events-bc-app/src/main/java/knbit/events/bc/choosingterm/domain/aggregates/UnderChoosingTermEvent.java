@@ -24,12 +24,10 @@ import org.axonframework.eventsourcing.annotation.EventSourcedMember;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.CREATED;
-import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.TRANSITED;
+import static knbit.events.bc.choosingterm.domain.enums.UnderChoosingTermEventState.*;
 
 
 /**
@@ -61,7 +59,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void addTerm(Term newTerm) {
-        rejectOnTransited();
+        rejectOnCancelledOrTransited();
         if (newTermOverlaps(newTerm)) {
             throw new CannotAddOverlappingTermException(id, newTerm);
         }
@@ -81,7 +79,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void removeTerm(TermId termId) {
-        rejectOnTransited();
+        rejectOnCancelledOrTransited();
         if (!terms.containsKey(termId)) {
             throw new CannotRemoveNotExistingTermException(id, termId);
         }
@@ -95,7 +93,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void bookRoomFor(EventDuration eventDuration, Capacity capacity) {
-        rejectOnTransited();
+        rejectOnCancelledOrTransited();
 
         apply(ReservationEvents.RoomRequested.of(id, IdFactory.reservationId(), eventDuration, capacity));
     }
@@ -134,7 +132,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     }
 
     public void transitToEnrollment(Collection<TermClosure> termClosures) {
-        rejectOnTransited();
+        rejectOnCancelledOrTransited();
         rejectIfThereArePendingReservations();
         rejectOnNoTerms();
 
@@ -149,7 +147,7 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         return terms.entrySet()
                 .stream()
                 .map(termIdAndTerm -> enrollmentIdentifiedTermOf(
-                                termIdAndTerm.getKey(), termIdAndTerm.getValue(), termClosures)
+                        termIdAndTerm.getKey(), termIdAndTerm.getValue(), termClosures)
                 )
                 .collect(Collectors.toList());
     }
@@ -179,6 +177,24 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
         reservation.fail(reason);
     }
 
+    public void cancel() {
+        rejectOnCancelledOrTransited();
+
+        cancelAllPendingReservations();
+        apply(UnderChoosingTermEventEvents.Cancelled.of(id));
+    }
+
+    private void cancelAllPendingReservations() {
+        reservations.values().stream()
+                .filter(Reservation::pending)
+                .forEach(Reservation::cancel);
+    }
+
+    @EventSourcingHandler
+    private void on(UnderChoosingTermEventEvents.Cancelled event) {
+        this.state = CANCELLED;
+    }
+
     private void rejectOnNotExistingReservation(ReservationId reservationId) {
         if (!reservations.containsKey(reservationId)) {
             throw new ReservationDoesNotExist(reservationId);
@@ -198,6 +214,17 @@ public class UnderChoosingTermEvent extends IdentifiedDomainAggregateRoot<EventI
     private void rejectOnNoTerms() {
         if (terms.isEmpty()) {
             throw new TransitionToEnrollmentExceptions.DoesNotHaveAnyTerms(id);
+        }
+    }
+
+    private void rejectOnCancelledOrTransited() {
+        rejectOnCancelled();
+        rejectOnTransited();
+    }
+
+    private void rejectOnCancelled() {
+        if (state == CANCELLED) {
+            throw new UnderChoosingTermEventExceptions.AlreadyCancelled(id);
         }
     }
 

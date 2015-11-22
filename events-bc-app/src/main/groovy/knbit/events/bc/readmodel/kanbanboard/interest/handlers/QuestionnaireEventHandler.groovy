@@ -45,6 +45,11 @@ class QuestionnaireEventHandler implements RemoveEventRelatedData {
         removeDataBy(event.eventId()).from(collection)
     }
 
+    @EventHandler
+    def on(InterestAwareEvents.InterestAwareEventCancelled event) {
+        removeDataBy(event.eventId()).from(collection)
+    }
+
     private def completeQuestionnaire(String eventId, Collection<AnsweredQuestion> answeredQuestions) {
         def textQuestions = answeredQuestions.findAll {
             it.questionData().answerType() == AnswerType.TEXT

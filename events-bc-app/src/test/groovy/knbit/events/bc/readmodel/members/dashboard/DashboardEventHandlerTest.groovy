@@ -8,7 +8,6 @@ import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
-import knbit.events.bc.readmodel.EventDetailsWrapper
 import spock.lang.Specification
 
 import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
@@ -65,4 +64,15 @@ class DashboardEventHandlerTest extends Specification implements DBCollectionAwa
         ]
     }
 
+    def "should create that entry on cancellation"() {
+        given:
+        def eventId = ReadyEventId.of("anId")
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on ReadyEvents.Cancelled.of(eventId, [])
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

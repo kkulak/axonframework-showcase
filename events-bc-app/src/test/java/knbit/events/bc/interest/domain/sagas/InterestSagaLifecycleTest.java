@@ -6,6 +6,7 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingTimeExceededEventBuilder;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;
@@ -25,9 +26,7 @@ public class InterestSagaLifecycleTest {
     public void setUp() throws Exception {
         fixture = new AnnotatedSagaTestFixture(InterestSaga.class);
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -123,7 +122,28 @@ public class InterestSagaLifecycleTest {
                         SurveyEvents.Ended.of(eventId)
                 )
                 .expectActiveSagas(0);
+    }
 
+    @Test
+    public void shouldEndIfEventCancelled() throws Exception {
+
+        final DateTime endingSurveyDate = DateTime.now().plusDays(15);
+        final InterestAwareEvents.InterestAwareEventCancelled cancellationEvent =
+                () -> eventId;
+
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        SurveyingInterestWithEndingDateStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .endingSurveyDate(endingSurveyDate)
+                                .build()
+                )
+                .whenPublishingA(
+                        cancellationEvent
+                )
+                .expectActiveSagas(0);
     }
 
     @Test

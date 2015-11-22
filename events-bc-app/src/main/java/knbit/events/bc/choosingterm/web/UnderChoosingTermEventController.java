@@ -6,12 +6,14 @@ import knbit.events.bc.auth.Role;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.ReservationId;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermDTO;
 import knbit.events.bc.choosingterm.web.TermsDTO.TermProposalDTO;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -80,12 +82,22 @@ public class UnderChoosingTermEventController {
     @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/reservations/{reservationId}")
     public void cancelReservation(@PathVariable("eventId") String eventId,
-                         @PathVariable("reservationId") String reservationId) {
+                                  @PathVariable("reservationId") String reservationId) {
 
         final EventId eventDomainId = EventId.of(eventId);
         final ReservationId reservationDomainId = ReservationId.of(reservationId);
         commandGateway.send(
                 CommandFactory.cancelReservationCommandFrom(eventDomainId, reservationDomainId)
+        );
+    }
+
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/choosing-term")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void cancel(@PathVariable("eventId") String eventId) {
+        final EventId eventDomainId = EventId.of(eventId);
+        commandGateway.send(
+                UnderChoosingTermEventCommands.Cancel.of(eventDomainId)
         );
     }
 

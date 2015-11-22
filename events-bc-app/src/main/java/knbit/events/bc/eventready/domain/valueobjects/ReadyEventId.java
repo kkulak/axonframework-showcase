@@ -1,11 +1,11 @@
 package knbit.events.bc.eventready.domain.valueobjects;
 
-import knbit.events.bc.common.domain.UUIDBasedIdentifier;
+import knbit.events.bc.common.domain.valueobjects.EventId;
 
 /**
  * Created by novy on 30.10.15.
  */
-public class ReadyEventId extends UUIDBasedIdentifier {
+public class ReadyEventId extends EventId {
 
     public ReadyEventId() {
         super();

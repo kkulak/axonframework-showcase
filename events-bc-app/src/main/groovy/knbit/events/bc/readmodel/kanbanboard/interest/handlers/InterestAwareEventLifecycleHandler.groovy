@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class CreatingInterestAwareEventEventHandler implements RemoveEventRelatedData {
+class InterestAwareEventLifecycleHandler implements RemoveEventRelatedData {
 
     def DBCollection collection
 
     @Autowired
-    CreatingInterestAwareEventEventHandler(@Qualifier("survey") DBCollection collection) {
+    InterestAwareEventLifecycleHandler(@Qualifier("survey") DBCollection collection) {
         this.collection = collection
     }
 
@@ -33,6 +33,12 @@ class CreatingInterestAwareEventEventHandler implements RemoveEventRelatedData {
 
     @EventHandler
     def on(InterestAwareEvents.TransitedToUnderChoosingTerm event) {
+        removeDataBy(event.eventId()).from(collection)
+    }
+
+    // todo: common trait?
+    @EventHandler
+    def on(InterestAwareEvents.InterestAwareEventCancelled event) {
         removeDataBy(event.eventId()).from(collection)
     }
 }

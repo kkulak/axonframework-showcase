@@ -73,6 +73,11 @@ public class TermStatusSaga extends AbstractAnnotatedSaga {
         end();
     }
 
+    @SagaEventHandler(associationProperty = "eventId")
+    public void handle(UnderChoosingTermEventEvents.Cancelled event) {
+        end();
+    }
+
     private void sendAppropriateEvent() {
         if (termsAmount > 0 && reservationAmount == 0)
             eventTemplate.publishEvent(TermStatusEvents.Ready.of(eventId));

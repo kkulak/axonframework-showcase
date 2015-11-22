@@ -24,7 +24,7 @@ class ReadyEventPreviewController {
     @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{readyEventId}/ready-event")
     def readyEventPreviewFor(@PathVariable readyEventId) {
-        readyEventCollection.findOne([readyEventId: readyEventId])
+        readyEventCollection.findOne([eventId: readyEventId])
     }
 
 }

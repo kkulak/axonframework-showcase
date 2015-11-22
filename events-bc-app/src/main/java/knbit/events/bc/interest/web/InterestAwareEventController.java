@@ -4,6 +4,7 @@ import knbit.events.bc.auth.Authorized;
 import knbit.events.bc.auth.Role;
 import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
 import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import knbit.events.bc.interest.web.forms.QuestionDataDTO;
@@ -40,6 +41,15 @@ public class InterestAwareEventController {
         startSurveying(id, form);
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(value = "/{eventId}/survey", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void cancel(@PathVariable("eventId") String eventId) {
+        final EventId id = EventId.of(eventId);
+
+        gateway.send(InterestAwareEventCommands.Cancel.of(id));
+    }
+
     private void transitFromBacklog(EventId id) {
         gateway.sendAndWait(BacklogEventCommands.TransitToInterestAwareEventCommand.of(id));
     }
@@ -60,5 +70,4 @@ public class InterestAwareEventController {
                 )
         );
     }
-
 }

@@ -29,4 +29,11 @@ public final class InterestAwareEventCommands {
 
         EventId eventId;
     }
+
+    @Value(staticConstructor = "of")
+    @Accessors(fluent = true)
+    public static class Cancel {
+
+        EventId eventId;
+    }
 }

@@ -34,4 +34,11 @@ public final class UnderChoosingTermEventCommands {
         EventId eventId;
         Collection<TermClosure> termClosures;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class Cancel {
+
+        EventId eventId;
+    }
 }

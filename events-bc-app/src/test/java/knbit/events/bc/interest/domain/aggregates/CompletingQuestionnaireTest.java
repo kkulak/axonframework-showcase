@@ -24,6 +24,8 @@ import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 /**
  * Created by novy on 31.05.15.
  */
@@ -41,9 +43,7 @@ public class CompletingQuestionnaireTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
 
         soleQuestionData = QuestionDataBuilder
                 .instance()
@@ -63,8 +63,6 @@ public class CompletingQuestionnaireTest {
                 Attendee.of(new MemberId()),
                 ImmutableList.of(soleAnswer)
         );
-
-
     }
 
     @Test
@@ -81,6 +79,38 @@ public class CompletingQuestionnaireTest {
 
                 )
                 .expectException(SurveyingInterestNotYetStartedException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToCompleteQuestionnaireIfCancelledInTheMeantime() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(
+                                eventId, eventDetails
+                        ),
+
+                        QuestionnaireEvents.Added.of(
+                                eventId,
+                                ImmutableList.of(soleQuestion)
+                        ),
+
+                        SurveyingInterestStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        InterestAwareEvents.CancelledDuringOrAfterSurveying.of(
+                                eventId,
+                                Collections.emptyList()
+                        )
+                )
+                .when(
+                        QuestionnaireCommands.Complete.of(eventId, attendeeAnswer)
+
+                )
+                .expectException(InterestAwareEventAlreadyCancelledException.class);
 
     }
 

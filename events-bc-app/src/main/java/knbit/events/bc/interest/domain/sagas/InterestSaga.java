@@ -1,9 +1,9 @@
 package knbit.events.bc.interest.domain.sagas;
 
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.domain.valueobjects.SurveyingTimeExceededEvent;
 import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.interest.domain.valueobjects.events.surveystarting.SurveyStartingEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -51,6 +51,15 @@ public class InterestSaga extends AbstractAnnotatedSaga {
 
     @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
     public void on(SurveyEvents.Ended event) {
+        cancelScheduleAndTerminate();
+    }
+
+    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
+    public void on(InterestAwareEvents.InterestAwareEventCancelled event) {
+        cancelScheduleAndTerminate();
+    }
+
+    private void cancelScheduleAndTerminate() {
         eventScheduler.cancelSchedule(scheduleToken);
         end();
     }

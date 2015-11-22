@@ -10,8 +10,10 @@ import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.TermClosure;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
+import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,6 +44,14 @@ public class EventUnderEnrollmentController {
 
         final EventId domainEventId = EventId.of(eventId);
         transitToEnrollment(domainEventId, terms);
+    }
+
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/enrollment")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void cancel(@PathVariable("eventId") String eventId) {
+        final EventId domainEventId = EventId.of(eventId);
+        commandGateway.send(EventUnderEnrollmentCommands.Cancel.of(domainEventId));
     }
 
     @Authorized(Role.EVENTS_MANAGEMENT)

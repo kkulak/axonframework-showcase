@@ -32,4 +32,10 @@ public class ReadyEventCommandHandler {
         );
         repository.add(readyEvent);
     }
+
+    @CommandHandler
+    public void handle(ReadyCommands.Cancel command) {
+        final ReadyEvent readyEvent = repository.load(command.readyEventId());
+        readyEvent.cancel();
+    }
 }

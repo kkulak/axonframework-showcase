@@ -3,6 +3,7 @@ package knbit.events.bc.eventready.domain.aggregates;
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.eventready.domain.EventReadyExceptions;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents;
@@ -22,6 +23,7 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
     private EventId correlationId;
     private EventReadyDetails eventDetails;
     private Collection<Attendee> attendees;
+    private ReadyEventStatus status;
 
     public ReadyEvent(ReadyEventId eventId,
                       EventId correlationId,
@@ -37,5 +39,21 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
         correlationId = event.correlationId();
         eventDetails = event.eventDetails();
         attendees = event.attendees();
+    }
+
+    public void cancel() {
+        rejectIfAlreadyCancelled();
+        apply(ReadyEvents.Cancelled.of(id, attendees));
+    }
+
+    @EventSourcingHandler
+    private void on(ReadyEvents.Cancelled event) {
+        status = ReadyEventStatus.CANCELLED;
+    }
+
+    private void rejectIfAlreadyCancelled() {
+        if (status == ReadyEventStatus.CANCELLED) {
+            throw new EventReadyExceptions.AlreadyCancelled(id);
+        }
     }
 }

@@ -9,6 +9,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
@@ -19,6 +20,8 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Created by novy on 03.10.15.
@@ -151,6 +154,29 @@ public class EnrollingTest {
                 .expectException(
                         EnrollmentExceptions.EnrollmentLimitExceeded.class
                 );
+    }
+
+    @Test
+    public void shouldNotEnrollIfEventCancelled() throws Exception {
+        final IdentifiedTermWithAttendees termWithAttendees = IdentifiedTermWithAttendees.of(
+                firstTerm.termId(),
+                firstTerm.duration(),
+                firstTerm.participantsLimit(),
+                firstTerm.location(),
+                firstTerm.lecturers(),
+                Collections.emptyList()
+        );
+
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(firstTerm)),
+
+                        EventUnderEnrollmentEvents.Cancelled.of(eventId, ImmutableList.of(termWithAttendees))
+                )
+                .when(
+                        EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), MemberId.of("id"))
+                )
+                .expectException(EventUnderEnrollmentExceptions.AlreadyCancelled.class);
     }
 
     @Test

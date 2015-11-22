@@ -103,4 +103,10 @@ public class InterestAwareEventCommandHandler {
         final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
         interestAwareEvent.transitToUnderChoosingTermEvent();
     }
+
+    @CommandHandler
+    public void handle(InterestAwareEventCommands.Cancel command) {
+        final InterestAwareEvent interestAwareEvent = repository.load(command.eventId());
+        interestAwareEvent.cancel();
+    }
 }

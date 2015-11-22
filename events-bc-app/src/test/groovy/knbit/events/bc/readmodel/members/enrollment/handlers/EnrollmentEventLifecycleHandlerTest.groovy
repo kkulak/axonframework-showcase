@@ -105,4 +105,18 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
         then:
         collection.find([eventId: eventId.value()]).toArray() == []
     }
+
+    def "should remove db entry on event cancellation"() {
+        given:
+        collection << [
+                [eventId: eventId.value()],
+                [eventId: 'anotherId']
+        ]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, [])
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

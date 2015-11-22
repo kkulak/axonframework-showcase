@@ -5,6 +5,7 @@ import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventTrans
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
 import knbit.events.bc.common.domain.IdFactory;
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
@@ -80,6 +81,11 @@ public class EventLifecycleSaga extends AbstractAnnotatedSaga {
                 .map(createNewEventReadyCommand)
                 .forEach(commandGateway::send);
 
+        end();
+    }
+
+    @SagaEventHandler(associationProperty = EVENT_ID_PROPERTY)
+    private void on(EventCancelled event) {
         end();
     }
 

@@ -11,7 +11,11 @@ import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BacklogEventTest {
+/**
+ * Created by novy on 20.11.15.
+ */
+public class TransitionToOtherStatesTest {
+
     private FixtureConfiguration<BacklogEvent> fixture;
     private EventId eventId = EventId.of("id");
     private EventDetails eventDetails;
@@ -22,18 +26,6 @@ public class BacklogEventTest {
         eventDetails = EventDetailsBuilder
                 .instance()
                 .build();
-    }
-
-    @Test
-    public void shouldCreateBacklogEventGivenCreateBacklogEventCommand() throws Exception {
-        fixture
-                .given()
-                .when(
-                        BacklogEventCommands.Create.of(eventId, eventDetails)
-                )
-                .expectEvents(
-                        BacklogEventEvents.Created.of(eventId, eventDetails)
-                );
     }
 
     @Test
@@ -64,6 +56,19 @@ public class BacklogEventTest {
     }
 
     @Test
+    public void shouldNotBeAbleToTransitToInterestAwareEventIfCancelled() throws Exception {
+        fixture
+                .given(
+                        BacklogEventEvents.Created.of(eventId, eventDetails),
+                        BacklogEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        BacklogEventCommands.TransitToInterestAwareEventCommand.of(eventId)
+                )
+                .expectException(IllegalStateException.class);
+    }
+
+    @Test
     public void shouldTransitToUnderChoosingTermEventGivenCorrespondingCommand() throws Exception {
         fixture
                 .given(
@@ -78,6 +83,19 @@ public class BacklogEventTest {
     }
 
     @Test
+    public void shouldNotBeAbleToTransitToChoosingTermEventIfCancelled() throws Exception {
+        fixture
+                .given(
+                        BacklogEventEvents.Created.of(eventId, eventDetails),
+                        BacklogEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        BacklogEventCommands.TransitToUnderChoosingTermEventCommand.of(eventId)
+                )
+                .expectException(IllegalStateException.class);
+    }
+
+    @Test
     public void shouldNotBeAbleToTransitBacklogEventToUnderChoosingTermEventMoreThanOnce() throws Exception {
         fixture
                 .given(
@@ -89,5 +107,4 @@ public class BacklogEventTest {
                 )
                 .expectException(IllegalStateException.class);
     }
-
 }
