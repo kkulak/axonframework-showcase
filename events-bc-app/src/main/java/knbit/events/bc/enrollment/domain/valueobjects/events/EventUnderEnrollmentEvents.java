@@ -1,6 +1,7 @@
 package knbit.events.bc.enrollment.domain.valueobjects.events;
 
 import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
@@ -32,5 +33,13 @@ public interface EventUnderEnrollmentEvents {
         EventId eventId;
         EventDetails eventDetails;
         Collection<IdentifiedTermWithAttendees> terms;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class Cancelled implements EventCancelled {
+
+        EventId eventId;
+        Collection<IdentifiedTermWithAttendees> termsWithAttendees;
     }
 }

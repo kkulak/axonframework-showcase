@@ -39,6 +39,11 @@ class EventUnderEnrollmentEventHandler implements RemoveEventRelatedData {
         removeDataBy(event.eventId()).from(enrollmentCollection)
     }
 
+    @EventHandler
+    def on(EventUnderEnrollmentEvents.Cancelled event) {
+        removeDataBy(event.eventId()).from(enrollmentCollection)
+    }
+
     private static def termsDataFrom(Collection<EnrollmentIdentifiedTerm> identifiedTerms) {
         [terms: identifiedTerms.collect { TermWrapper.asMap(it) + [participants: []] }]
     }

@@ -52,6 +52,11 @@ class EnrollmentMemberHandler implements RemoveEventRelatedData {
         removeDataBy(event.eventId()).from(enrollmentParticipants)
     }
 
+    @EventHandler
+    def on(EventUnderEnrollmentEvents.Cancelled event) {
+        removeDataBy(event.eventId()).from(enrollmentParticipants)
+    }
+
     private def removeParticipantPreferences(EventId eventId, MemberId memberId) {
         enrollmentParticipants.remove([eventId: eventId.value(), memberId: memberId.value()])
     }

@@ -77,7 +77,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void enrollFor(TermId termId, MemberId memberId) {
-        rejectOnAlreadyTransited();
+        rejectOnCancelledOrTransited();
         rejectOnNotExistingTerm(termId);
         rejectIfAlreadyEnrolledForAnyTerm(memberId);
 
@@ -96,7 +96,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void disenrollFrom(TermId termId, MemberId memberId) {
-        rejectOnAlreadyTransited();
+        rejectOnCancelledOrTransited();
         rejectOnNotExistingTerm(termId);
 
         final Term term = terms.get(termId);
@@ -104,7 +104,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     }
 
     public void transitToReady() {
-        rejectOnAlreadyTransited();
+        rejectOnCancelledOrTransited();
         apply(
                 EventUnderEnrollmentEvents.TransitedToReady.of(id, eventDetails, terms())
         );
@@ -119,6 +119,27 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
     @EventSourcingHandler
     private void on(EventUnderEnrollmentEvents.TransitedToReady event) {
         this.status = EventUnderEnrollmentStatus.TRANSITED;
+    }
+
+    public void cancel() {
+        rejectOnCancelledOrTransited();
+        apply(EventUnderEnrollmentEvents.Cancelled.of(id, terms()));
+    }
+
+    @EventSourcingHandler
+    private void on(EventUnderEnrollmentEvents.Cancelled event) {
+        this.status = EventUnderEnrollmentStatus.CANCELLED;
+    }
+
+    private void rejectOnCancelledOrTransited() {
+        rejectOnCancelled();
+        rejectOnAlreadyTransited();
+    }
+
+    private void rejectOnCancelled(){
+        if (status == EventUnderEnrollmentStatus.CANCELLED) {
+            throw new EventUnderEnrollmentExceptions.AlreadyCancelled(id);
+        }
     }
 
     private void rejectOnAlreadyTransited() {

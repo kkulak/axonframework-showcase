@@ -2,15 +2,15 @@ package knbit.events.bc.enrollment.domain.aggregates;
 
 import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
-import knbit.events.bc.choosingterm.domain.valuobjects.Location;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
+import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.builders.EnrollmentIdentifiedTermBuilder;
 import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
+import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EnrollmentCommands;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EnrollmentEvents;
@@ -121,6 +121,33 @@ public class DisenrollingTest {
                 .expectException(
                         EventUnderEnrollmentExceptions.AlreadyTransitedToReady.class
                 );
+    }
+
+    @Test
+    public void shouldNotDisenrollIfEventCancelled() throws Exception {
+        final MemberId memberId = MemberId.of("participantId");
+
+        final IdentifiedTermWithAttendees termWithAttendees = IdentifiedTermWithAttendees.of(
+                firstTerm.termId(),
+                firstTerm.duration(),
+                firstTerm.participantsLimit(),
+                firstTerm.location(),
+                firstTerm.lecturers(),
+                ImmutableList.of(Attendee.of(memberId))
+        );
+
+        fixture
+                .given(
+                        EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(firstTerm)),
+
+                        EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId),
+
+                        EventUnderEnrollmentEvents.Cancelled.of(eventId, ImmutableList.of(termWithAttendees))
+                )
+                .when(
+                        EnrollmentCommands.DissenrollFrom.of(eventId, firstTerm.termId(), memberId)
+                )
+                .expectException(EventUnderEnrollmentExceptions.AlreadyCancelled.class);
     }
 
     @Test

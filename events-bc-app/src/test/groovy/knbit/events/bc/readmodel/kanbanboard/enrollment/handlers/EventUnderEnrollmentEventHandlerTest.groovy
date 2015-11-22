@@ -108,4 +108,17 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
         then:
         collection.find([eventId: eventId.value()]).toArray() == []
     }
+
+    def "should cleanup database on event cancellation"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(
+                eventId, [IdentifiedTermWithAttendeeBuilder.defaultTerm()]
+        )
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

@@ -18,28 +18,20 @@ public interface EventUnderEnrollmentExceptions {
         }
     }
 
-    class ParticipantLimitTooLow extends DomainException {
-
-        private static final String MESSAGE_PATTERN = "Participant limit (%d) for term %s too low.";
-
-        public ParticipantLimitTooLow(TermId termId, int participantLimit) {
-            super(String.format(MESSAGE_PATTERN, participantLimit, termId));
-        }
-    }
-
-    class NoLecturerAssigned extends DomainException {
-        private static final String MESSAGE_PATTERN = "No lecturer assigned for term %s";
-
-        public NoLecturerAssigned(TermId termId) {
-            super(String.format(MESSAGE_PATTERN, termId));
-        }
-    }
-
     class AlreadyTransitedToReady extends DomainException {
 
         private static final String MESSAGE_PATTERN = "Event %s already transited to ready.";
 
         public AlreadyTransitedToReady(EventId eventId) {
+            super(String.format(MESSAGE_PATTERN, eventId));
+        }
+    }
+
+    class AlreadyCancelled extends DomainException {
+
+        private static final String MESSAGE_PATTERN = "Event %s has been cancelled.";
+
+        public AlreadyCancelled(EventId eventId) {
             super(String.format(MESSAGE_PATTERN, eventId));
         }
     }

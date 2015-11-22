@@ -126,4 +126,18 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         then:
         enrollmentParticipantsCollection.find().toArray() == []
     }
+
+    def "should remove all member preferences related to event on that event cancellation"() {
+        given:
+        enrollmentParticipantsCollection << [
+                [eventId: eventId.value(), memberId: memberId.value(), termId: termId.value()],
+                [eventId: eventId.value(), memberId: 'another member', termId: termId.value()],
+        ]
+
+        when:
+        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, [])
+
+        then:
+        enrollmentParticipantsCollection.find().toArray() == []
+    }
 }

@@ -5,5 +5,5 @@ package knbit.events.bc.enrollment.domain.aggregates;
  */
 enum EventUnderEnrollmentStatus {
 
-    ACTIVE, TRANSITED
+    ACTIVE, TRANSITED, CANCELLED
 }
