@@ -50,7 +50,7 @@ class EnrollmentHandler implements QueryForTerm {
         enrollmentCollection.update(
                 queryFor(eventId, termId), [
                 $pull: [
-                        'terms.$.participants': [participantId: participantId.value()]
+                        'terms.$.participants': [userId: participantId.value()]
                 ]
         ])
     }

@@ -38,8 +38,8 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
                         [
                                 termId      : termId.value(),
                                 participants: [
-                                        [participantId: 'yet another participant'],
-                                        [participantId: participantId.value()]
+                                        [userId: 'yet another participant'],
+                                        [userId: participantId.value()]
                                 ]
                         ]
                 ]
@@ -54,7 +54,7 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
                 [
                         termId      : termId.value(),
                         participants: [
-                                [participantId: 'yet another participant'],
+                                [userId: 'yet another participant'],
                         ]
                 ]
         ]
@@ -70,9 +70,9 @@ class EnrollmentHandlerTest extends Specification implements DBCollectionAware {
                 ]
         ]
         def participantDetails = [
-                participantId: memberId.value(),
-                firstName    : 'firstName',
-                lastName     : 'lastName'
+                userId   : memberId.value(),
+                firstName: 'firstName',
+                lastName : 'lastName'
         ]
         detailsRepositoryMock.detailsFor(memberId) >> participantDetails
 
