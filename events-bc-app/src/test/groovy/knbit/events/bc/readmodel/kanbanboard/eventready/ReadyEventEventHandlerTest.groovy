@@ -47,21 +47,21 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
 
         then:
         def readyEventPreview = collection.findOne(
-                readyEventId: readyEventId.value()
+                eventId: readyEventId.value()
         )
 
         def withoutMongoDBId = readyEventPreview.toMap()
         withoutMongoDBId.remove "_id"
 
         withoutMongoDBId == [
-                readyEventId  : readyEventId.value(),
-                correlationId : correlationId.value(),
-                name          : eventDetails.name().value(),
-                description   : eventDetails.description().value(),
-                eventType     : eventDetails.type(),
-                imageUrl      : urlOrNull(eventDetails.imageUrl()),
-                section       : sectionOrNull(eventDetails.section()),
-                term          : [
+                eventId      : readyEventId.value(),
+                correlationId: correlationId.value(),
+                name         : eventDetails.name().value(),
+                description  : eventDetails.description().value(),
+                eventType    : eventDetails.type(),
+                imageUrl     : urlOrNull(eventDetails.imageUrl()),
+                section      : sectionOrNull(eventDetails.section()),
+                term         : [
                         date        : eventDetails.duration().start(),
                         duration    : eventDetails.duration().duration().getStandardMinutes(),
                         limit       : eventDetails.limit().value(),
@@ -74,4 +74,17 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
         ]
     }
 
+    def "should remove db entry on cancellation"() {
+        given:
+        collection << [
+                eventId      : readyEventId.value(),
+                correlationId: correlationId.value()
+        ]
+
+        when:
+        objectUnderTest.on ReadyEvents.Cancelled.of(readyEventId, [])
+
+        then:
+        collection.find([eventId: readyEventId.value()]).toArray() == []
+    }
 }

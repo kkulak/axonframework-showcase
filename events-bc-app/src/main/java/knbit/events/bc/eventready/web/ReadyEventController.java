@@ -4,12 +4,12 @@ import knbit.events.bc.auth.Authorized;
 import knbit.events.bc.auth.Role;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.commands.EventUnderEnrollmentCommands;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by novy on 24.10.15.
@@ -34,6 +34,18 @@ public class ReadyEventController {
 
         commandGateway.sendAndWait(
                 EventUnderEnrollmentCommands.TransitToReady.of(domainEventId)
+        );
+    }
+
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/ready")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void cancel(@PathVariable("eventId") String eventId) {
+
+        final ReadyEventId domainEventId = ReadyEventId.of(eventId);
+
+        commandGateway.sendAndWait(
+                ReadyCommands.Cancel.of(domainEventId)
         );
     }
 }

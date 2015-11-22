@@ -21,4 +21,11 @@ public interface ReadyCommands {
         EventReadyDetails eventDetails;
         Collection<Attendee> attendees;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class Cancel {
+
+        ReadyEventId readyEventId;
+    }
 }

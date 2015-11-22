@@ -5,6 +5,7 @@ import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import knbit.events.bc.readmodel.TermWrapper
 import knbit.events.bc.readmodel.kanbanboard.common.participantdetails.ParticipantDetailsRepository
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 @Component
-class ReadyEventEventHandler {
+class ReadyEventEventHandler implements RemoveEventRelatedData {
     def DBCollection readyEventCollection
     def ParticipantDetailsRepository participantsRepository
 
@@ -26,7 +27,7 @@ class ReadyEventEventHandler {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        def readyEventId = [readyEventId: event.readyEventId().value()]
+        def readyEventId = [eventId: event.readyEventId().value()]
         def correlationId = [correlationId: event.correlationId().value()]
         def eventDetails = EventDetailsWrapper.asMap(event.eventDetails().eventDetails())
         def term = termAndAttendeeDataFrom(event.eventDetails(), event.attendees())
@@ -45,4 +46,8 @@ class ReadyEventEventHandler {
         attendees.collect { participantsRepository.detailsFor(it.memberId()) }
     }
 
+    @EventHandler
+    def on(ReadyEvents.Cancelled event) {
+        removeDataBy(event.eventId()).from(readyEventCollection)
+    }
 }

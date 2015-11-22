@@ -5,7 +5,7 @@ import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.EventDetailsWrapper
-import knbit.events.bc.readmodel.TermWrapper
+import knbit.events.bc.readmodel.RemoveEventRelatedData
 import org.axonframework.eventhandling.annotation.EventHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -18,7 +18,7 @@ import static knbit.events.bc.readmodel.TermWrapper.lecturersOf
  */
 
 @Component
-class DashboardEventHandler {
+class DashboardEventHandler implements RemoveEventRelatedData {
 
     def DBCollection collection
 
@@ -34,6 +34,11 @@ class DashboardEventHandler {
         def attendees = attendeesDataFrom(event.attendees())
 
         collection << eventId + eventDetails + attendees
+    }
+
+    @EventHandler
+    def on(ReadyEvents.Cancelled evt) {
+        removeDataBy(evt.eventId()).from(collection)
     }
 
     private static def detailsDataFrom(EventReadyDetails details) {

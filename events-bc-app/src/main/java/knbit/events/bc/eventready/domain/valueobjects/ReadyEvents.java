@@ -1,6 +1,7 @@
 package knbit.events.bc.eventready.domain.valueobjects;
 
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -28,6 +29,14 @@ public interface ReadyEvents {
 
         ReadyEventId readyEventId;
         EventReadyDetails eventDetails;
+        Collection<Attendee> attendees;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class Cancelled implements EventCancelled {
+
+        ReadyEventId eventId;
         Collection<Attendee> attendees;
     }
 }

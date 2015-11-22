@@ -1,5 +1,6 @@
 package knbit.events.bc.choosingterm.domain.exceptions;
 
+import knbit.events.bc.common.domain.exceptions.DomainException;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 
 /**
@@ -7,7 +8,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
  */
 public interface UnderChoosingTermEventExceptions {
 
-    class AlreadyTransitedToEnrollment extends RuntimeException {
+    class AlreadyTransitedToEnrollment extends DomainException {
         private static final String ERROR_MESSAGE_TEMPLATE = "Enrollment has already started for event with id %s!";
 
         public AlreadyTransitedToEnrollment(EventId eventId) {
@@ -15,7 +16,7 @@ public interface UnderChoosingTermEventExceptions {
         }
     }
 
-    class AlreadyCancelled extends RuntimeException {
+    class AlreadyCancelled extends DomainException {
         private static final String ERROR_MESSAGE_TEMPLATE = "UnderChoosingTermEvent %s has been cancelled before!";
 
         public AlreadyCancelled(EventId eventId) {

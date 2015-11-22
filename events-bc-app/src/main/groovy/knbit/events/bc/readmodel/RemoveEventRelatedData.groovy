@@ -13,10 +13,6 @@ trait RemoveEventRelatedData {
         new RemoveFrom(eventId.value())
     }
 
-    def RemoveFrom removeDataBy(ReadyEventId eventId) {
-        new RemoveFrom(eventId.value())
-    }
-
     static class RemoveFrom {
         private def String eventId
 
