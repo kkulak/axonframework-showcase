@@ -92,6 +92,23 @@ public class RequestingRoomTest {
                 );
     }
 
+    @Test
+    public void shouldNotBeAbleToRequestRoomIfEventCancelled() throws Exception {
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        ReservationCommands.BookRoom.of(eventId, DateTime.now(), Duration.standardHours(1), 100)
+                )
+                .expectException(
+                        UnderChoosingTermEventExceptions.AlreadyCancelled.class
+                );
+    }
+
     private void makeIdFactoryReturn(ReservationId reservationId) {
         PowerMockito.mockStatic(IdFactory.class);
         Mockito.when(IdFactory.reservationId()).thenReturn(reservationId);

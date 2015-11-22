@@ -6,6 +6,7 @@ import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.CannotAddOverlappingTermException;
 import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
+import knbit.events.bc.choosingterm.domain.valuobjects.commands.ReservationCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.TermCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermEvents;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents;
@@ -98,6 +99,30 @@ public class AddingTermTest {
                         )
                 )
                 .expectException(CannotAddOverlappingTermException.class);
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddTermIfEventCancelled() throws Exception {
+        final Term newTerm = TermBuilder.defaultTerm();
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        TermCommands.AddTerm.of(
+                                eventId,
+                                newTerm.duration().start(),
+                                newTerm.duration().duration(),
+                                newTerm.capacity().value(),
+                                newTerm.location().value()
+                        )
+                )
+                .expectException(
+                        UnderChoosingTermEventExceptions.AlreadyCancelled.class
+                );
     }
 
     @Test

@@ -69,4 +69,15 @@ class UnderChoosingTermEventHandlerTest extends Specification implements DBColle
         then:
         collection.find([eventId: eventId.value()]).toArray() == []
     }
+
+    def "should remove event on cancellation"() {
+        given:
+        collection << [eventId: eventId.value()]
+
+        when:
+        objectUnderTest.on UnderChoosingTermEventEvents.Cancelled.of(eventId)
+
+        then:
+        collection.find([eventId: eventId.value()]).toArray() == []
+    }
 }

@@ -36,4 +36,9 @@ class UnderChoosingTermEventHandler implements RemoveEventRelatedData {
     def on(UnderChoosingTermEventEvents.TransitedToEnrollment event) {
         removeDataBy(event.eventId()).from(termsCollection)
     }
+
+    @EventHandler
+    def on(UnderChoosingTermEventEvents.Cancelled event) {
+        removeDataBy(event.eventId()).from(termsCollection)
+    }
 }

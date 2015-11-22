@@ -72,4 +72,16 @@ public class TermStatusSagaTest {
                 )
                 .expectActiveSagas(0);
     }
+
+    @Test
+    public void shouldEndOnEventCancellation() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(UnderChoosingTermEventEvents.Created.of(eventId, null))
+                .whenAggregate(eventId)
+                .publishes(
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .expectActiveSagas(0);
+    }
 }

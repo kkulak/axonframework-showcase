@@ -68,6 +68,20 @@ public class RemovingTermTest {
     }
 
     @Test
+    public void shouldNotBeAbleToRemoveTermIfTransited() throws Exception {
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        TermEvents.TermAdded.of(eventId, termId, termToRemove),
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        TermCommands.RemoveTerm.of(eventId, termId)
+                )
+                .expectException(UnderChoosingTermEventExceptions.AlreadyCancelled.class);
+    }
+
+    @Test
     public void shouldNotBeAbleRemoveTermIfEventTransitedToEnrollment() throws Exception {
         final EnrollmentIdentifiedTerm enrollmentIdentifiedTerm = EnrollmentIdentifiedTermBuilder.instance()
                 .termId(termId)

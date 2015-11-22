@@ -14,4 +14,12 @@ public interface UnderChoosingTermEventExceptions {
             super(String.format(ERROR_MESSAGE_TEMPLATE, eventId));
         }
     }
+
+    class AlreadyCancelled extends RuntimeException {
+        private static final String ERROR_MESSAGE_TEMPLATE = "UnderChoosingTermEvent %s has been cancelled before!";
+
+        public AlreadyCancelled(EventId eventId) {
+            super(String.format(ERROR_MESSAGE_TEMPLATE, eventId));
+        }
+    }
 }

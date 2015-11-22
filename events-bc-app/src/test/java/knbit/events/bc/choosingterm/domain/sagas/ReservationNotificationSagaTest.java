@@ -19,9 +19,7 @@ public class ReservationNotificationSagaTest {
     public void setUp() throws Exception {
         fixture = new AnnotatedSagaTestFixture(ReservationNotificationSaga.class);
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -54,4 +52,19 @@ public class ReservationNotificationSagaTest {
                 .expectActiveSagas(0);
     }
 
+    @Test
+    public void shouldEndSagaOnEventCancellation() throws Exception {
+        fixture
+                .givenAggregate(eventId)
+                .published(
+                        UnderChoosingTermEventEvents.Created.of(
+                                eventId, eventDetails
+                        )
+                )
+                .whenAggregate(eventId)
+                .publishes(
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .expectActiveSagas(0);
+    }
 }

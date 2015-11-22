@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import knbit.events.bc.FixtureFactory;
 import knbit.events.bc.choosingterm.domain.builders.TermBuilder;
 import knbit.events.bc.choosingterm.domain.exceptions.TransitionToEnrollmentExceptions;
+import knbit.events.bc.choosingterm.domain.exceptions.UnderChoosingTermEventExceptions;
 import knbit.events.bc.choosingterm.domain.valuobjects.*;
 import knbit.events.bc.choosingterm.domain.valuobjects.commands.UnderChoosingTermEventCommands;
 import knbit.events.bc.choosingterm.domain.valuobjects.events.ReservationEvents;
@@ -95,6 +96,23 @@ public class TransitionToEnrollmentTest {
                 .expectException(
                         EventUnderEnrollmentExceptions.NoSuchTermException.class
                 );
+    }
+
+    @Test
+    public void shouldNotBeAbleToTransitIfCancelledBefore() throws Exception {
+        final Term soleTerm = TermBuilder.defaultTerm();
+        final TermId termId = TermId.of("term-id");
+
+        fixture
+                .given(
+                        UnderChoosingTermEventEvents.Created.of(eventId, eventDetails),
+                        TermEvents.TermAdded.of(eventId, termId, soleTerm),
+                        UnderChoosingTermEventEvents.Cancelled.of(eventId)
+                )
+                .when(
+                        UnderChoosingTermEventCommands.TransitToEnrollment.of(eventId, termClosures)
+                )
+                .expectException(UnderChoosingTermEventExceptions.AlreadyCancelled.class);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package knbit.events.bc.choosingterm.domain.valuobjects.events;
 
 import knbit.events.bc.choosingterm.domain.valuobjects.EnrollmentIdentifiedTerm;
+import knbit.events.bc.common.domain.valueobjects.EventCancelled;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.AccessLevel;
@@ -23,6 +24,13 @@ public final class UnderChoosingTermEventEvents {
 
         EventId eventId;
         EventDetails eventDetails;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class Cancelled implements EventCancelled {
+
+        EventId eventId;
     }
 
     @Accessors(fluent = true)
