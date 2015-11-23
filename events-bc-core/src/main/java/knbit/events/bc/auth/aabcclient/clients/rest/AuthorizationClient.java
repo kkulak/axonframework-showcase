@@ -5,7 +5,9 @@ import knbit.events.bc.auth.Role;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult.FailureAuthorization;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult.SuccessfulAuthorization;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -70,6 +72,7 @@ class AuthorizationClient {
     }
 
     @Data
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class AuthorizationResponseDto {
         private String userId;
     }

@@ -4,7 +4,9 @@ import com.aol.cyclops.trycatch.Try;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.FailureAuthentication;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult.SuccessfulAuthentication;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +63,8 @@ class AuthenticationClient {
     }
 
     @Data
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static class AuthenticationResponseDto {
-        private final String userId;
+        private String userId;
     }
 }
