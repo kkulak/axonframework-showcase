@@ -6,7 +6,9 @@ import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventCancelled
+import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
+import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
@@ -55,6 +57,38 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 eventType      : eventDetails.type(),
                 imageUrl       : urlOrNull(eventDetails.imageUrl()),
                 section        : sectionOrNull(eventDetails.section()),
+                eventStatus    : BACKLOG,
+                reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
+        ]
+    }
+
+    def "should update db entry if details changed on backlog event"() {
+        given:
+        collection << [
+                eventId        : eventId.value(),
+                name           : eventDetails.name().value(),
+                eventType      : eventDetails.type(),
+                imageUrl       : urlOrNull(eventDetails.imageUrl()),
+                section        : sectionOrNull(eventDetails.section()),
+                eventStatus    : BACKLOG,
+                reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
+        ]
+
+        when:
+        def newDetails = EventDetailsBuilder.instance().name(Name.of("differentName")).build()
+        objectUnderTest.on(BacklogEventEvents.EventDetailsChanged.of(eventId, eventDetails, newDetails))
+
+        then:
+        def entry = collection.findOne([
+                eventId: eventId.value()
+        ])
+
+        stripMongoIdFrom(entry) == [
+                eventId        : eventId.value(),
+                name           : newDetails.name().value(),
+                eventType      : newDetails.type(),
+                imageUrl       : urlOrNull(newDetails.imageUrl()),
+                section        : sectionOrNull(newDetails.section()),
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
         ]

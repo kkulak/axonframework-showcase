@@ -48,6 +48,18 @@ public class BacklogEventController {
         );
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(value = "/{eventId}/backlog/details", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void changeEventDetails(@PathVariable("eventId") String eventId, @RequestBody @Valid EventBacklogDTO newDetailsDTO) {
+        final EventId domainId = EventId.of(eventId);
+        final EventDetails newEventDetails = eventDetailsFrom(newDetailsDTO);
+
+        gateway.send(
+                BacklogEventCommands.ChangeDetails.of(domainId, newEventDetails)
+        );
+    }
+
     private EventDetails eventDetailsFrom(EventBacklogDTO eventBacklogDTO) {
         return EventDetails.of(
                 Name.of(eventBacklogDTO.getName()),
