@@ -38,6 +38,14 @@ public final class BacklogEventCommands {
 
     @Value(staticConstructor = "of")
     @Accessors(fluent = true)
+    public static class ChangeDetails {
+
+        EventId eventId;
+        EventDetails newEventDetails;
+    }
+
+    @Value(staticConstructor = "of")
+    @Accessors(fluent = true)
     public static class Cancel {
 
         EventId eventId;
