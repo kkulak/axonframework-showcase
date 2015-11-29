@@ -23,9 +23,7 @@ public class CancellingBacklogEventTest {
     @Before
     public void setUp() throws Exception {
         fixture = FixtureFactory.backlogEventFixtureConfiguration();
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test

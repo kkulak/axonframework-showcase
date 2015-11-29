@@ -23,6 +23,15 @@ public final class BacklogEventEvents {
         EventDetails eventDetails;
     }
 
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    public static class EventDetailsChanged {
+
+        EventId eventId;
+        EventDetails oldDetails;
+        EventDetails newDetails;
+    }
+
     @Value(staticConstructor = "of")
     @Accessors(fluent = true)
     public static class Cancelled implements EventCancelled {

@@ -1,15 +1,18 @@
 package knbit.events.bc.readmodel.kanbanboard.columns
 
+import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
+import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents.EventDetailsChanged
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.EventCancelled
+import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
-import knbit.events.bc.readmodel.EventDetailsWrapper
 import knbit.events.bc.readmodel.RemoveEventRelatedData
 import knbit.events.bc.readmodel.TermWrapper
 import org.axonframework.eventhandling.annotation.EventHandler
@@ -23,7 +26,7 @@ import static knbit.events.bc.readmodel.EventDetailsWrapper.urlOrNull
 
 @Component
 class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
-    def collection
+    def DBCollection collection
 
     @Autowired
     KanbanBoardEventStatusHandler(@Qualifier("kanban-board") collection) {
@@ -32,18 +35,31 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
 
     @EventHandler
     def on(BacklogEventEvents.Created event) {
-        def eventId = event.eventId()
-        def details = event.eventDetails()
-
-        collection.insert([
-                eventId        : eventId.value(),
-                name           : details.name().value(),
-                eventType      : details.type(),
-                imageUrl       : urlOrNull(details.imageUrl()),
-                section        : sectionOrNull(details.section()),
+        def eventId = [eventId: event.eventId().value()]
+        def detailsMap = detailsAsMap(event.eventDetails())
+        def statusData = [
                 eventStatus    : BACKLOG,
                 reachableStatus: [BACKLOG, SURVEY_INTEREST, CHOOSING_TERM]
-        ])
+        ]
+
+        collection.insert(eventId + detailsMap + statusData)
+    }
+
+    @EventHandler
+    def on(EventDetailsChanged event) {
+        def queryById = [eventId: event.eventId().value()]
+        def newDetailsAsMap = detailsAsMap(event.newDetails())
+
+        collection.update(queryById, [$set: newDetailsAsMap])
+    }
+
+    private def detailsAsMap(EventDetails details) {
+        return [
+                name     : details.name().value(),
+                eventType: details.type(),
+                imageUrl : urlOrNull(details.imageUrl()),
+                section  : sectionOrNull(details.section())
+        ]
     }
 
     @EventHandler
@@ -79,21 +95,31 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        def eventId = event.readyEventId()
-        def details = event.eventDetails()
+        def eventId = [eventId: event.readyEventId().value()]
+        def detailsAsMap = eventReadyDetailsFrom(event.eventDetails())
+        def statusData = [eventStatus: READY, reachableStatus: [READY]]
 
-        collection.insert([
-                eventId        : eventId.value(),
-                name           : details.name().value(),
-                eventType      : details.type(),
-                imageUrl       : urlOrNull(details.imageUrl()),
-                section        : sectionOrNull(details.section()),
-                start          : details.duration().start(),
-                location       : details.location().value(),
-                lecturers      : TermWrapper.lecturersOf(details.lecturers()),
-                eventStatus    : READY,
-                reachableStatus: [READY]
-        ])
+        collection.insert(eventId + detailsAsMap + statusData)
+    }
+
+    @EventHandler
+    def on(ReadyEvents.DetailsChanged event) {
+        def queryById = [eventId: event.readyEventId().value()]
+        def detailsAsMap = eventReadyDetailsFrom(event.newDetails())
+
+        collection.update(queryById, [$set: detailsAsMap])
+    }
+
+    private static def eventReadyDetailsFrom(EventReadyDetails details) {
+        return [
+                name     : details.name().value(),
+                eventType: details.type(),
+                imageUrl : urlOrNull(details.imageUrl()),
+                section  : sectionOrNull(details.section()),
+                start    : details.duration().start(),
+                location : details.location().value(),
+                lecturers: TermWrapper.lecturersOf(details.lecturers())
+        ]
     }
 
     @EventHandler
@@ -120,6 +146,5 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
                 ]
         )
     }
-
 }
 

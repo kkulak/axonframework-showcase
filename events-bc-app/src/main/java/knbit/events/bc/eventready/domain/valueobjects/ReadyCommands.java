@@ -28,4 +28,19 @@ public interface ReadyCommands {
 
         ReadyEventId readyEventId;
     }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class MarkTookPlace {
+
+        ReadyEventId eventId;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class ChangeDetails {
+
+        ReadyEventId eventId;
+        EventReadyDetails newDetails;
+    }
 }

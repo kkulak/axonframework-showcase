@@ -27,6 +27,10 @@ public class EventDuration {
         return new EventDuration(start, duration);
     }
 
+    public static EventDuration of(DateTime start, DateTime end) {
+        return new EventDuration(start, new Duration(start, end));
+    }
+
     private EventDuration(DateTime start, Duration duration) {
         Preconditions.checkNotNull(start);
         Preconditions.checkNotNull(duration);

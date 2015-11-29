@@ -1,6 +1,7 @@
 package knbit.events.bc.readmodel.kanbanboard.eventready
 
 import com.mongodb.DBCollection
+import knbit.events.bc.common.domain.enums.EventType
 import knbit.events.bc.common.domain.valueobjects.Attendee
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
@@ -11,6 +12,7 @@ import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.readmodel.DBCollectionAware
 import knbit.events.bc.readmodel.TermWrapper
 import knbit.events.bc.readmodel.kanbanboard.common.participantdetails.ParticipantDetailsRepository
+import org.joda.time.DateTime
 import spock.lang.Specification
 
 import static knbit.events.bc.readmodel.EventDetailsWrapper.sectionOrNull
@@ -67,6 +69,60 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
                         limit       : eventDetails.limit().value(),
                         location    : eventDetails.location().value(),
                         lecturers   : TermWrapper.lecturersOf(eventDetails.lecturers()),
+                        participants: [
+                                [userId: 'member-id', firstName: 'John', lastName: 'Doe']
+                        ]
+                ]
+        ]
+    }
+
+    def "should update details if needed"() {
+        given:
+        collection << [
+                eventId      : readyEventId.value(),
+                correlationId: correlationId.value(),
+                name         : 'just a name',
+                description  : 'just a description',
+                eventType    : EventType.LECTURE,
+                imageUrl     : 'http://example.com/example.jpg',
+                section      : null,
+                term         : [
+                        date        : DateTime.now(),
+                        duration    : 60,
+                        limit       : 333,
+                        location    : '3.21A',
+                        lecturers   : [
+                                name: 'Kamil Kulak',
+                                id  : 'kulakkam'
+                        ],
+                        participants: [
+                                [userId: 'member-id', firstName: 'John', lastName: 'Doe']
+                        ]
+                ]
+        ]
+
+        when:
+        def newDetails = EventReadyDetailsBuilder.defaultEventDetails()
+
+        objectUnderTest.on(ReadyEvents.DetailsChanged.of(readyEventId, null, newDetails))
+
+        then:
+        def readyEventPreview = collection.findOne([eventId: readyEventId.value()])
+
+        stripMongoIdFrom(readyEventPreview) == [
+                eventId      : readyEventId.value(),
+                correlationId: correlationId.value(),
+                name         : newDetails.name().value(),
+                description  : newDetails.description().value(),
+                eventType    : newDetails.type(),
+                imageUrl     : urlOrNull(newDetails.imageUrl()),
+                section      : sectionOrNull(newDetails.section()),
+                term         : [
+                        date        : newDetails.duration().start(),
+                        duration    : newDetails.duration().duration().getStandardMinutes(),
+                        limit       : newDetails.limit().value(),
+                        location    : newDetails.location().value(),
+                        lecturers   : TermWrapper.lecturersOf(newDetails.lecturers()),
                         participants: [
                                 [userId: 'member-id', firstName: 'John', lastName: 'Doe']
                         ]

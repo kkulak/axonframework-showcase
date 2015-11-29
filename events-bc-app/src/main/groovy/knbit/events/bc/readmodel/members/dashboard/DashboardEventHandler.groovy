@@ -37,6 +37,14 @@ class DashboardEventHandler implements RemoveEventRelatedData {
     }
 
     @EventHandler
+    def on(ReadyEvents.DetailsChanged event) {
+        def queryById = [eventId: event.readyEventId().value()]
+        def detailsAsMap = detailsDataFrom(event.newDetails())
+
+        collection.update(queryById, [$set: detailsAsMap])
+    }
+
+    @EventHandler
     def on(ReadyEvents.Cancelled evt) {
         removeDataBy(evt.eventId()).from(collection)
     }

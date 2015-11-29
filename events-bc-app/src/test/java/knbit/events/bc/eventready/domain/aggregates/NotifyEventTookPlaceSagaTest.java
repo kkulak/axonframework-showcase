@@ -6,6 +6,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder;
 import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
+import knbit.events.bc.eventready.domain.valueobjects.ReadyCommands;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId;
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by novy on 31.10.15.
@@ -38,8 +40,7 @@ public class NotifyEventTookPlaceSagaTest {
     }
 
     @Test
-    public void shouldScheduleTookPlaceEvent() throws Exception {
-
+    public void shouldScheduleReadyEventEndedOnEventCreation() throws Exception {
         final DateTime scheduledAt = details.duration().end();
 
         fixture
@@ -50,7 +51,49 @@ public class NotifyEventTookPlaceSagaTest {
                 )
                 .expectScheduledEvent(
                         scheduledAt,
-                        ReadyEvents.TookPlace.of(readyEventId, details, attendees)
+                        ReadyEventEnded.of(readyEventId)
                 );
+    }
+
+    @Test
+    public void shouldSendCommandToMarkAggregateItTookPlaceIfEventEnded() throws Exception {
+        final DateTime endingDate = details.duration().end();
+
+        fixture
+                .givenAggregate(readyEventId)
+                .published(
+                        ReadyEvents.Created.of(readyEventId, correlationId, details, attendees)
+                )
+                .whenTimeAdvancesTo(endingDate)
+                .expectDispatchedCommandsEqualTo(
+                        ReadyCommands.MarkTookPlace.of(readyEventId)
+                );
+    }
+
+    @Test
+    public void shouldEndIfEventEnded() throws Exception {
+        final DateTime endingDate = details.duration().end();
+
+        fixture
+                .givenAggregate(readyEventId)
+                .published(
+                        ReadyEvents.Created.of(readyEventId, correlationId, details, attendees)
+                )
+                .whenTimeAdvancesTo(endingDate)
+                .expectActiveSagas(0);
+    }
+
+    @Test
+    public void shouldEndIfReadyEventCancelled() throws Exception {
+        fixture
+                .givenAggregate(readyEventId)
+                .published(
+                        ReadyEvents.Created.of(readyEventId, correlationId, details, attendees)
+                )
+                .whenAggregate(readyEventId)
+                .publishes(
+                        ReadyEvents.Cancelled.of(readyEventId, Collections.emptyList())
+                )
+                .expectActiveSagas(0);
     }
 }
