@@ -35,6 +35,20 @@ class ReadyEventEventHandler implements RemoveEventRelatedData {
         readyEventCollection.insert(readyEventId + correlationId + eventDetails + term)
     }
 
+    @EventHandler
+    def on(ReadyEvents.DetailsChanged event) {
+        def queryById = [eventId: event.readyEventId().value()]
+        def detailsAsMap = EventDetailsWrapper.asMap(event.newDetails().eventDetails())
+        def termAsMap = TermWrapper.asMap(event.newDetails())
+
+        // todo any idea how to do it without double db trip?
+        def previousReadyEventEntry = readyEventCollection.findOne(queryById).toMap()
+        previousReadyEventEntry += detailsAsMap
+        previousReadyEventEntry.term += termAsMap
+
+        readyEventCollection.update(queryById, previousReadyEventEntry)
+    }
+
     private def termAndAttendeeDataFrom(EventReadyDetails details, Collection<Attendee> attendees) {
         def term = TermWrapper.asMap(details)
         def participants = [participants: participantsDetailsOf(attendees)]

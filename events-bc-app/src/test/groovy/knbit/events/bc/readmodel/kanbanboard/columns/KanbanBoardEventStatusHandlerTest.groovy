@@ -2,6 +2,7 @@ package knbit.events.bc.readmodel.kanbanboard.columns
 
 import com.mongodb.DBCollection
 import knbit.events.bc.backlogevent.domain.valueobjects.events.BacklogEventEvents
+import knbit.events.bc.choosingterm.domain.valuobjects.Location
 import knbit.events.bc.choosingterm.domain.valuobjects.events.TermStatusEvents
 import knbit.events.bc.choosingterm.domain.valuobjects.events.UnderChoosingTermEventEvents
 import knbit.events.bc.common.domain.valueobjects.Attendee
@@ -12,6 +13,7 @@ import knbit.events.bc.common.domain.valueobjects.Name
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
 import knbit.events.bc.eventready.builders.EventReadyDetailsBuilder
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEventId
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.builders.EventDetailsBuilder
@@ -215,6 +217,47 @@ class KanbanBoardEventStatusHandlerTest extends Specification implements DBColle
                 start          : eventReadyDetails.duration().start(),
                 location       : eventReadyDetails.location().value(),
                 lecturers      : TermWrapper.lecturersOf(eventReadyDetails.lecturers()),
+                eventStatus    : READY,
+                reachableStatus: [READY]
+        ]
+    }
+
+    def "should update collection on ready event details change"() {
+        given:
+        def oldDetails = EventReadyDetailsBuilder.defaultEventDetails()
+        def readyEventId = ReadyEventId.of("readyEventId")
+
+        collection << [
+                eventId        : readyEventId.value(),
+                name           : oldDetails.name().value(),
+                eventType      : oldDetails.type(),
+                imageUrl       : urlOrNull(oldDetails.imageUrl()),
+                section        : sectionOrNull(oldDetails.section()),
+                start          : oldDetails.duration().start(),
+                location       : oldDetails.location().value(),
+                lecturers      : TermWrapper.lecturersOf(oldDetails.lecturers()),
+                eventStatus    : READY,
+                reachableStatus: [READY]
+        ]
+
+        when:
+        def newDetails =
+                EventReadyDetailsBuilder.instance().location(Location.of("totally different location")).build()
+
+        objectUnderTest.on(ReadyEvents.DetailsChanged.of(readyEventId, oldDetails, newDetails))
+
+        then:
+        def entry = collection.findOne([eventId: readyEventId.value()])
+
+        stripMongoIdFrom(entry) == [
+                eventId        : readyEventId.value(),
+                name           : newDetails.name().value(),
+                eventType      : newDetails.type(),
+                imageUrl       : urlOrNull(newDetails.imageUrl()),
+                section        : sectionOrNull(newDetails.section()),
+                start          : newDetails.duration().start(),
+                location       : newDetails.location().value(),
+                lecturers      : TermWrapper.lecturersOf(newDetails.lecturers()),
                 eventStatus    : READY,
                 reachableStatus: [READY]
         ]

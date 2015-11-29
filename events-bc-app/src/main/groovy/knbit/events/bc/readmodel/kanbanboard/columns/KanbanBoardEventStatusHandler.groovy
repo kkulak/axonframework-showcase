@@ -10,6 +10,7 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails
 import knbit.events.bc.common.domain.valueobjects.EventId
 import knbit.events.bc.common.readmodel.EventStatus
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails
 import knbit.events.bc.eventready.domain.valueobjects.ReadyEvents
 import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents
 import knbit.events.bc.readmodel.RemoveEventRelatedData
@@ -94,21 +95,31 @@ class KanbanBoardEventStatusHandler implements RemoveEventRelatedData {
 
     @EventHandler
     def on(ReadyEvents.Created event) {
-        def eventId = event.readyEventId()
-        def details = event.eventDetails()
+        def eventId = [eventId: event.readyEventId().value()]
+        def detailsAsMap = eventReadyDetailsFrom(event.eventDetails())
+        def statusData = [eventStatus: READY, reachableStatus: [READY]]
 
-        collection.insert([
-                eventId        : eventId.value(),
-                name           : details.name().value(),
-                eventType      : details.type(),
-                imageUrl       : urlOrNull(details.imageUrl()),
-                section        : sectionOrNull(details.section()),
-                start          : details.duration().start(),
-                location       : details.location().value(),
-                lecturers      : TermWrapper.lecturersOf(details.lecturers()),
-                eventStatus    : READY,
-                reachableStatus: [READY]
-        ])
+        collection.insert(eventId + detailsAsMap + statusData)
+    }
+
+    @EventHandler
+    def on(ReadyEvents.DetailsChanged event) {
+        def queryById = [eventId: event.readyEventId().value()]
+        def detailsAsMap = eventReadyDetailsFrom(event.newDetails())
+
+        collection.update(queryById, [$set: detailsAsMap])
+    }
+
+    private static def eventReadyDetailsFrom(EventReadyDetails details) {
+        return [
+                name     : details.name().value(),
+                eventType: details.type(),
+                imageUrl : urlOrNull(details.imageUrl()),
+                section  : sectionOrNull(details.section()),
+                start    : details.duration().start(),
+                location : details.location().value(),
+                lecturers: TermWrapper.lecturersOf(details.lecturers())
+        ]
     }
 
     @EventHandler
