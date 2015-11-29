@@ -40,6 +40,12 @@ public class ReadyEventCommandHandler {
     }
 
     @CommandHandler
+    public void handle(ReadyCommands.ChangeDetails command) {
+        final ReadyEvent readyEvent = repository.load(command.eventId());
+        readyEvent.changeDetails(command.newDetails());
+    }
+
+    @CommandHandler
     public void handle(ReadyCommands.Cancel command) {
         final ReadyEvent readyEvent = repository.load(command.readyEventId());
         readyEvent.cancel();

@@ -25,6 +25,15 @@ public interface ReadyEvents {
 
     @Accessors(fluent = true)
     @Value(staticConstructor = "of")
+    class DetailsChanged {
+
+        ReadyEventId readyEventId;
+        EventReadyDetails oldDetails;
+        EventReadyDetails newDetails;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
     class TookPlace {
 
         ReadyEventId readyEventId;

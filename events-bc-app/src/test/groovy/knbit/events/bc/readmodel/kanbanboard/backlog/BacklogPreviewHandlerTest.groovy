@@ -69,10 +69,6 @@ class BacklogPreviewHandlerTest extends Specification implements DBCollectionAwa
 
         objectUnderTest.on BacklogEventEvents.EventDetailsChanged.of(eventId, eventDetails, newDetails)
 
-        println collection.findOne(
-                eventId: eventId.value()
-        )
-
         then:
         def backlogPreview = collection.findOne(
                 eventId: eventId.value()

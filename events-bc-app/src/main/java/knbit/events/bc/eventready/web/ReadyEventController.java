@@ -48,4 +48,13 @@ public class ReadyEventController {
                 ReadyCommands.Cancel.of(domainEventId)
         );
     }
+
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/ready/details")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void changeDetails(@PathVariable("eventId") String eventId) {
+
+        final ReadyEventId domainEventId = ReadyEventId.of(eventId);
+        // todo: implementme
+    }
 }

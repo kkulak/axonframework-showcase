@@ -18,6 +18,9 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static knbit.events.bc.eventready.domain.aggregates.ReadyEventStatus.CANCELLED;
+import static knbit.events.bc.eventready.domain.aggregates.ReadyEventStatus.TOOK_PLACE;
+
 /**
  * Created by novy on 24.10.15.
  */
@@ -46,6 +49,16 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
         attendees = event.attendees();
     }
 
+    public void changeDetails(EventReadyDetails newDetails) {
+        rejectIfAlreadyCancelledOrTookPlace();
+        apply(ReadyEvents.DetailsChanged.of(id, eventDetails, newDetails));
+    }
+
+    @EventSourcingHandler
+    private void on(ReadyEvents.DetailsChanged event) {
+        eventDetails = event.newDetails();
+    }
+
     public void markItTookPlace() {
         rejectIfAlreadyCancelledOrTookPlace();
         apply(ReadyEvents.TookPlace.of(id, eventDetails, attendees));
@@ -53,7 +66,7 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
 
     @EventSourcingHandler
     private void on(ReadyEvents.TookPlace event) {
-        status = ReadyEventStatus.TOOK_PLACE;
+        status = TOOK_PLACE;
     }
 
     public void cancel() {
@@ -63,16 +76,16 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
 
     @EventSourcingHandler
     private void on(ReadyEvents.Cancelled event) {
-        status = ReadyEventStatus.CANCELLED;
+        status = CANCELLED;
     }
 
     private void rejectIfAlreadyCancelledOrTookPlace() {
         final Map<ReadyEventStatus, Supplier<DomainException>> exceptionForStatus = ImmutableMap.of(
-                ReadyEventStatus.CANCELLED, () -> new EventReadyExceptions.AlreadyCancelled(id),
-                ReadyEventStatus.TOOK_PLACE, () -> new EventReadyExceptions.AlreadyMarkedItTookPlace(id)
+                CANCELLED, () -> new EventReadyExceptions.AlreadyCancelled(id),
+                TOOK_PLACE, () -> new EventReadyExceptions.AlreadyMarkedItTookPlace(id)
         );
 
-        if (EnumSet.of(ReadyEventStatus.CANCELLED, ReadyEventStatus.TOOK_PLACE).contains(status)) {
+        if (EnumSet.of(CANCELLED, TOOK_PLACE).contains(status)) {
             throw exceptionForStatus.get(status).get();
         }
     }
