@@ -2,6 +2,7 @@ package knbit.events.bc.eventready.domain.valueobjects;
 
 import knbit.events.bc.common.domain.valueobjects.Attendee;
 import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.eventready.domain.aggregates.ReadyEvent;
 import lombok.Value;
 import lombok.experimental.Accessors;
 
@@ -27,5 +28,12 @@ public interface ReadyCommands {
     class Cancel {
 
         ReadyEventId readyEventId;
+    }
+
+    @Accessors(fluent = true)
+    @Value(staticConstructor = "of")
+    class MarkTookPlace {
+
+        ReadyEventId eventId;
     }
 }

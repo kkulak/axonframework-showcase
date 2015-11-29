@@ -18,9 +18,9 @@ import org.junit.Test;
 import java.util.Collection;
 
 /**
- * Created by novy on 22.11.15.
+ * Created by novy on 29.11.15.
  */
-public class CancellingEventReadyTest {
+public class MarkingAsArchiveTest {
 
     private FixtureConfiguration<ReadyEvent> fixture;
     private EventId correlationId;
@@ -30,6 +30,7 @@ public class CancellingEventReadyTest {
 
     @Before
     public void setUp() throws Exception {
+        // todo: fix duplication
         fixture = FixtureFactory.readyEventFixtureConfiguration();
         correlationId = EventId.of("correlationId");
         eventId = ReadyEventId.of("id");
@@ -41,45 +42,32 @@ public class CancellingEventReadyTest {
     }
 
     @Test
-    public void shouldNotBeAbleToCancelTwice() throws Exception {
+    public void shouldBeAbleToMarkThatEventTookPlace() throws Exception {
         fixture
-                .given(
-                        ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees),
-
-                        ReadyEvents.Cancelled.of(eventId, attendees)
-
-                )
-                .when(
-                        ReadyCommands.Cancel.of(eventId)
-                )
-                .expectException(EventReadyExceptions.AlreadyCancelled.class);
+                .given(ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees))
+                .when(ReadyCommands.MarkTookPlace.of(eventId))
+                .expectEvents(ReadyEvents.TookPlace.of(eventId, eventReadyDetails, attendees));
     }
 
     @Test
-    public void shouldNotBeAbleToCancelIfAlreadyTookPlace() throws Exception {
+    public void shouldNotBeAbleToMarkItTwice() throws Exception {
         fixture
                 .given(
                         ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees),
                         ReadyEvents.TookPlace.of(eventId, eventReadyDetails, attendees)
-
                 )
-                .when(
-                        ReadyCommands.Cancel.of(eventId)
-                )
+                .when(ReadyCommands.MarkTookPlace.of(eventId))
                 .expectException(EventReadyExceptions.AlreadyMarkedItTookPlace.class);
     }
 
     @Test
-    public void shouldBeAbleToCancelReadyEvent() throws Exception {
+    public void shouldNotBeAbleToMarkIfCancelledBefore() throws Exception {
         fixture
                 .given(
-                        ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees)
-                )
-                .when(
-                        ReadyCommands.Cancel.of(eventId)
-                )
-                .expectEvents(
+                        ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees),
                         ReadyEvents.Cancelled.of(eventId, attendees)
-                );
+                )
+                .when(ReadyCommands.MarkTookPlace.of(eventId))
+                .expectException(EventReadyExceptions.AlreadyCancelled.class);
     }
 }

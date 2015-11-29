@@ -34,6 +34,12 @@ public class ReadyEventCommandHandler {
     }
 
     @CommandHandler
+    public void handle(ReadyCommands.MarkTookPlace command) {
+        final ReadyEvent readyEvent = repository.load(command.eventId());
+        readyEvent.markItTookPlace();
+    }
+
+    @CommandHandler
     public void handle(ReadyCommands.Cancel command) {
         final ReadyEvent readyEvent = repository.load(command.readyEventId());
         readyEvent.cancel();
