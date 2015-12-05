@@ -25,6 +25,7 @@ class AABCPropertiesConfig {
 
     @Data
     static class AABCProperties {
+        private String loginEndpoint;
         private String authenticationEndpoint;
         private String authorizationEndpoint;
         private String authHeaderKey;

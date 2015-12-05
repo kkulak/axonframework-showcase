@@ -4,10 +4,14 @@ import knbit.events.bc.auth.Role;
 import knbit.events.bc.auth.aabcclient.authentication.AuthenticationResult;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult;
 
+import java.util.Optional;
+
 /**
  * Created by novy on 25.07.15.
  */
 public interface AABCClient {
+
+    Optional<String> obtainToken(String email, String password);
 
     AuthenticationResult authenticateWith(String token);
 

@@ -1,7 +1,12 @@
 aa-bc:
+  loginEndpoint: http://rossum.knbit.edu.pl:41001/login
   authenticationEndpoint: http://rossum.knbit.edu.pl:41001/authenticate
   authorizationEndpoint: http://rossum.knbit.edu.pl:41001/authorize
   authHeaderKey: knbit-aa-auth
+
+notification-bc:
+  endpoint: http://notification-bc:41004/mail
+
 spring:
   profiles:
     active: development

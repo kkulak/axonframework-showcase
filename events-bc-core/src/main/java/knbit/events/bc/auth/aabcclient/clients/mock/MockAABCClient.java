@@ -8,10 +8,18 @@ import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult;
 import knbit.events.bc.auth.aabcclient.authorization.AuthorizationResult.SuccessfulAuthorization;
 import org.springframework.http.HttpStatus;
 
+import java.util.Optional;
+
 /**
  * Created by novy on 25.07.15.
  */
 public class MockAABCClient implements AABCClient {
+
+    @Override
+    public Optional<String> obtainToken(String email, String password) {
+        return Optional.of("fake token");
+    }
+
     @Override
     public AuthenticationResult authenticateWith(String token) {
         return new SuccessfulAuthentication(HttpStatus.NO_CONTENT, token);

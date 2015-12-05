@@ -82,7 +82,7 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/events-bc-app-*.jar', 'events-bc.jar'
     runCommand 'bash -c "touch /events-bc.jar"'
-    entryPoint 'java', '-Xmx768m', '-jar', '/events-bc.jar'
+    entryPoint 'java', '-Xmx512m', '-jar', '/events-bc.jar'
     exposePort 5672
 }
 
