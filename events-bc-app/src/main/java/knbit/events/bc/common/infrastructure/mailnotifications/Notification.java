@@ -1,6 +1,5 @@
 package knbit.events.bc.common.infrastructure.mailnotifications;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 
 /**
@@ -8,7 +7,6 @@ import lombok.Value;
  */
 
 @Value
-@AllArgsConstructor
 public class Notification {
 
     String subject;
