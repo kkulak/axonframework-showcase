@@ -1,7 +1,7 @@
-package knbit.events.bc.common.mailnotifications.rest
+package knbit.events.bc.common.infrastructure.mailnotifications.rest
 
-import knbit.events.bc.common.mailnotifications.Notification
-import knbit.events.bc.common.mailnotifications.NotificationBCClient
+import knbit.events.bc.common.infrastructure.mailnotifications.Notification
+import knbit.events.bc.common.infrastructure.mailnotifications.NotificationBCClient
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId
 import net.minidev.json.JSONArray
 import org.springframework.http.HttpMethod
@@ -19,14 +19,17 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  */
 class RestNotificationBCClientTest extends Specification {
 
-    def NotificationBCConfiguration config
+    def NotificationEndpoints config
     def RestTemplate restTemplate
     def MockRestServiceServer mockRestServiceServer
     @Shared
     def NotificationBCClient objectUnderTest
 
     void setup() {
-        config = new NotificationBCConfiguration("http://example.com/mail", "http://example.com/mail/all")
+        config = [
+                getNotifyMembersEndpoint   : { -> "http://example.com/mail" },
+                getNotifyAllMembersEndpoint: { -> "http://example.com/mail/all" }
+        ] as NotificationEndpoints
         restTemplate = new RestTemplate()
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate)
     }

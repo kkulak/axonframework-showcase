@@ -1,4 +1,4 @@
-package knbit.events.bc.common.mailnotifications.rest;
+package knbit.events.bc.common.infrastructure.mailnotifications.rest;
 
 import java.util.Optional;
 

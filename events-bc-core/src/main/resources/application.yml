@@ -5,7 +5,10 @@ aa-bc:
   authHeaderKey: knbit-aa-auth
 
 notification-bc:
-  endpoint: http://notification-bc:41004/mail
+  knbitEmail: knbit@email.com
+  knbitPassword: knbitPass
+  notifyMembersEndpoint: http://notification-bc:41004/mail
+  notifyAllMembersEndpoint: http://notification-bc:41004/mail/all
 
 spring:
   profiles:

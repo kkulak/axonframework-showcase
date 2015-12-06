@@ -1,4 +1,4 @@
-package knbit.events.bc.common.mailnotifications;
+package knbit.events.bc.common.infrastructure.mailnotifications;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
