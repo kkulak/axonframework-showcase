@@ -59,6 +59,7 @@ dependencies {
     compile 'commons-validator:commons-validator:1.4.1'
     compile 'org.apache.kafka:kafka_2.10:0.8.2.2'
     compile 'com.google.protobuf:protobuf-java:3.0.0-beta-1'
+    compile 'org.freemarker:freemarker:2.3.23'
 
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
@@ -66,6 +67,8 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4:1.6.3'
     testCompile 'pl.pragmatists:JUnitParams:1.0.4'
     testCompile 'com.jayway.jsonpath:json-path'
+    testCompile 'org.freemarker:freemarker:2.3.23'
+
 }
 
 docker {
