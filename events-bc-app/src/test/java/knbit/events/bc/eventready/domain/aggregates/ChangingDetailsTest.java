@@ -57,7 +57,7 @@ public class ChangingDetailsTest {
         fixture
                 .given(
                         ReadyEvents.Created.of(eventId, correlationId, oldDetails, attendees),
-                        ReadyEvents.Cancelled.of(eventId, attendees)
+                        ReadyEvents.Cancelled.of(eventId, oldDetails, attendees)
                 )
                 .when(ReadyCommands.ChangeDetails.of(eventId, EventReadyDetailsBuilder.defaultEventDetails()))
                 .expectException(EventReadyExceptions.AlreadyCancelled.class);

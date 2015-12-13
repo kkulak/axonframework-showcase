@@ -123,7 +123,7 @@ class DashboardEventHandlerTest extends Specification implements DBCollectionAwa
         collection << [eventId: eventId.value()]
 
         when:
-        objectUnderTest.on ReadyEvents.Cancelled.of(eventId, [])
+        objectUnderTest.on ReadyEvents.Cancelled.of(eventId, EventReadyDetailsBuilder.defaultEventDetails(), [])
 
         then:
         collection.find([eventId: eventId.value()]).toArray() == []

@@ -1,14 +1,10 @@
 package knbit.events.bc.common.domain.mailnotifications;
 
-import com.google.common.collect.ImmutableMap;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.common.infrastructure.mailnotifications.Notification;
+import knbit.events.bc.eventready.domain.valueobjects.EventReadyDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Created by novy on 06.12.15.
@@ -25,26 +21,50 @@ class NotificationFactory {
     }
 
     public Notification newSurveyingEventMessageFrom(EventDetails eventDetails) {
-        final String messageContent =
-                reader.templateFrom("templates/emails/new_surveying_event.ftl").fillWith(eventData(eventDetails));
+        final String messageContent = reader
+                .templateFrom("templates/emails/new_surveying_event.ftl")
+                .fillWith(
+                        TemplateDataAssembler
+                                .prepopulate(DetailsParser.parse(eventDetails))
+                                .data()
+                );
+
         return new Notification("New event proposal!", messageContent);
     }
 
     public Notification newEnrollmentFrom(EventDetails eventDetails) {
-        final String messageContent =
-                reader.templateFrom("templates/emails/new_upcoming_event.ftl").fillWith(eventData(eventDetails));
+        final String messageContent = reader
+                .templateFrom("templates/emails/new_upcoming_event.ftl")
+                .fillWith(
+                        TemplateDataAssembler
+                                .prepopulate(DetailsParser.parse(eventDetails))
+                                .data()
+                );
+
         return new Notification("New upcoming event!", messageContent);
     }
 
-    private Map<String, String> eventData(EventDetails details) {
-        final ImmutableMap.Builder<String, String> mapBuilder = ImmutableMap.builder();
-        mapBuilder.put("eventName", details.name().value());
-        mapBuilder.put("eventDescription", details.description().value());
+    public Notification enrollmentEventCancelled(EventDetails details) {
+        final String messageContent = reader
+                .templateFrom("templates/emails/enrollment_cancelled.ftl")
+                .fillWith(
+                        TemplateDataAssembler
+                                .prepopulate(DetailsParser.parse(details))
+                                .data()
+                );
 
-        // todo: fix
-        final Optional<URL> maybeUrl = details.imageUrl();
-        maybeUrl.ifPresent(url -> mapBuilder.put("imageUrl", url.value()));
+        return new Notification("Enrollment cancelled", messageContent);
+    }
 
-        return mapBuilder.build();
+    public Notification readyEventCancelled(EventReadyDetails details) {
+        final String messageContent = reader
+                .templateFrom("templates/emails/event_cancelled.ftl")
+                .fillWith(
+                        TemplateDataAssembler
+                                .prepopulate(DetailsParser.parse(details))
+                                .data()
+                );
+
+        return new Notification("Event cancelled", messageContent);
     }
 }

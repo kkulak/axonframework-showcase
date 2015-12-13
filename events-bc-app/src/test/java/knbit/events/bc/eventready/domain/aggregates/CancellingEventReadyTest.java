@@ -46,7 +46,7 @@ public class CancellingEventReadyTest {
                 .given(
                         ReadyEvents.Created.of(eventId, correlationId, eventReadyDetails, attendees),
 
-                        ReadyEvents.Cancelled.of(eventId, attendees)
+                        ReadyEvents.Cancelled.of(eventId, eventReadyDetails, attendees)
 
                 )
                 .when(
@@ -79,7 +79,7 @@ public class CancellingEventReadyTest {
                         ReadyCommands.Cancel.of(eventId)
                 )
                 .expectEvents(
-                        ReadyEvents.Cancelled.of(eventId, attendees)
+                        ReadyEvents.Cancelled.of(eventId, eventReadyDetails, attendees)
                 );
     }
 }

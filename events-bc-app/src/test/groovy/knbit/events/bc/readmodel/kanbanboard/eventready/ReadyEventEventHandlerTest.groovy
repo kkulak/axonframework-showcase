@@ -138,7 +138,7 @@ class ReadyEventEventHandlerTest extends Specification implements DBCollectionAw
         ]
 
         when:
-        objectUnderTest.on ReadyEvents.Cancelled.of(readyEventId, [])
+        objectUnderTest.on ReadyEvents.Cancelled.of(readyEventId, EventReadyDetailsBuilder.defaultEventDetails(), [])
 
         then:
         collection.find([eventId: readyEventId.value()]).toArray() == []

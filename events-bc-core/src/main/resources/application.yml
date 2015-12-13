@@ -8,7 +8,7 @@ notification-bc:
   knbitEmail: knbit@email.com
   knbitPassword: knbitPass
   notifyMembersEndpoint: http://notification-bc:41004/mail
-  notifyAllMembersEndpoint: http://notification-bc:41004/mail/all
+  notifyAllMembersEndpoint: http://notification-bc:41004/mail?sendToAllBitMembers=true
 
 spring:
   profiles:

@@ -71,7 +71,7 @@ public class ReadyEvent extends IdentifiedDomainAggregateRoot<ReadyEventId> {
 
     public void cancel() {
         rejectIfAlreadyCancelledOrTookPlace();
-        apply(ReadyEvents.Cancelled.of(id, attendees));
+        apply(ReadyEvents.Cancelled.of(id, eventDetails, attendees));
     }
 
     @EventSourcingHandler

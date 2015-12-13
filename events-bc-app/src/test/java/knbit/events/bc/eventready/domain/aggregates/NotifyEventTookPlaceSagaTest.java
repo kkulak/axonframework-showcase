@@ -92,7 +92,7 @@ public class NotifyEventTookPlaceSagaTest {
                 )
                 .whenAggregate(readyEventId)
                 .publishes(
-                        ReadyEvents.Cancelled.of(readyEventId, Collections.emptyList())
+                        ReadyEvents.Cancelled.of(readyEventId, details, Collections.emptyList())
                 )
                 .expectActiveSagas(0);
     }

@@ -46,6 +46,7 @@ public interface ReadyEvents {
     class Cancelled implements EventCancelled {
 
         ReadyEventId eventId;
+        EventReadyDetails eventDetails;
         Collection<Attendee> attendees;
     }
 }

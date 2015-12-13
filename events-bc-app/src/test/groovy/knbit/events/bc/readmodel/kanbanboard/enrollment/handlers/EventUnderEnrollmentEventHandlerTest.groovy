@@ -115,7 +115,7 @@ class EventUnderEnrollmentEventHandlerTest extends Specification implements DBCo
 
         when:
         objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(
-                eventId, [IdentifiedTermWithAttendeeBuilder.defaultTerm()]
+                eventId, EventDetailsBuilder.defaultEventDetails(), [IdentifiedTermWithAttendeeBuilder.defaultTerm()]
         )
 
         then:
