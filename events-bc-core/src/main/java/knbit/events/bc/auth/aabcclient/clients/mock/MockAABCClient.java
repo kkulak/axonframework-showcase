@@ -16,7 +16,7 @@ import java.util.Optional;
 public class MockAABCClient implements AABCClient {
 
     @Override
-    public Optional<String> obtainToken(String email, String password) {
+    public Optional<String> obtainToken(String serviceId, String password) {
         return Optional.of("fake token");
     }
 

@@ -33,7 +33,7 @@ class AABCClientConfig {
     public AABCClient aabcClient(AABCProperties aabcProperties, RestTemplate restTemplate) {
         log.debug("creating rest aabcClient with props {}", aabcProperties.toString());
         return new RestAABCClient(
-                aabcProperties.getLoginEndpoint(),
+                aabcProperties.getObtainTokenEndpoint(),
                 aabcProperties.getAuthenticationEndpoint(),
                 aabcProperties.getAuthorizationEndpoint(),
                 aabcProperties.getAuthHeaderKey(),

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 class NotificationBCProperties implements NotificationEndpoints {
 
-    private String knbitEmail;
+    private String knbitServiceId;
     private String knbitPassword;
     private String notifyMembersEndpoint;
     private String notifyAllMembersEndpoint;

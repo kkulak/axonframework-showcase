@@ -25,7 +25,7 @@ class NotificationBCClientConfig {
     public NotificationBCClient restNotificationBCClient(AABCClient aabcClient, NotificationBCProperties props) {
         log.debug("creating notification bc client with properties " + props);
         final RestTemplate notificationRestTemplate = new RestTemplate();
-        final TokenProvider tokenProvider = () -> aabcClient.obtainToken(props.getKnbitEmail(), props.getKnbitPassword());
+        final TokenProvider tokenProvider = () -> aabcClient.obtainToken(props.getKnbitServiceId(), props.getKnbitPassword());
 
         return new RestNotificationBCClient(tokenProvider, props, notificationRestTemplate);
     }

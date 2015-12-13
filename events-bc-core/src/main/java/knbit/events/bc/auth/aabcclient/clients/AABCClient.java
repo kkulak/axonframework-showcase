@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface AABCClient {
 
-    Optional<String> obtainToken(String email, String password);
+    Optional<String> obtainToken(String serviceId, String password);
 
     AuthenticationResult authenticateWith(String token);
 

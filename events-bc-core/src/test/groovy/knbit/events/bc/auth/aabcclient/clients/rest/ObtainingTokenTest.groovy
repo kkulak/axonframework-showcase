@@ -34,23 +34,23 @@ class ObtainingTokenTest extends Specification {
                 .andRespond(withStatus(HttpStatus.UNAUTHORIZED))
 
         when:
-        def emptyToken = objectUnderTest.obtainToken("invalidEmail", "invalid password")
+        def emptyToken = objectUnderTest.obtainToken("invalidUserId", "invalid password")
 
         then:
         !emptyToken.isPresent()
     }
 
-    def "given valid email and password, should return token from response"() {
+    def "given valid serviceId and password, should return token from response"() {
         given:
         mockRestServiceServer
                 .expect(requestTo(loginUrl))
                 .andExpect(method(HttpMethod.POST))
-                .andExpect(jsonPath("email").value("valid@email.com"))
+                .andExpect(jsonPath("userId").value("validUserId"))
                 .andExpect(jsonPath("password").value("validPassword"))
-                .andRespond(withSuccess('{"token": "token", "userId": "anId"}', MediaType.APPLICATION_JSON))
+                .andRespond(withSuccess('{"token": "token"}', MediaType.APPLICATION_JSON))
 
         when:
-        def token = objectUnderTest.obtainToken("valid@email.com", "validPassword")
+        def token = objectUnderTest.obtainToken("validUserId", "validPassword")
 
         then:
         token.get() == "token"
@@ -64,7 +64,7 @@ class ObtainingTokenTest extends Specification {
                 .andRespond(withStatus(statusCode))
 
         when:
-        def emptyToken = objectUnderTest.obtainToken("invalidEmail", "invalid password")
+        def emptyToken = objectUnderTest.obtainToken("invalidServiceId", "invalid password")
 
         then:
         !emptyToken.isPresent()

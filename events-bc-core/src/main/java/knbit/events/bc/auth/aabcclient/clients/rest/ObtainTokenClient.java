@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 
 @Value
-class LoginClient {
+class ObtainTokenClient {
 
     String tokenObtainingEndpoint;
     RestTemplate restTemplate;
@@ -22,27 +22,26 @@ class LoginClient {
     public Optional<String> obtainToken(String email, String password) {
         return tryToRetrieveToken(email, password)
                 .map(HttpEntity::getBody)
-                .map(LoginResponse::getToken)
+                .map(ObtainTokenResponse::getToken)
                 .toOptional();
     }
 
-    private Try<ResponseEntity<LoginResponse>> tryToRetrieveToken(String email, String password) {
+    private Try<ResponseEntity<ObtainTokenResponse>> tryToRetrieveToken(String email, String password) {
         return Try.apply(() -> restTemplate.postForEntity(
                 tokenObtainingEndpoint,
-                new LoginRequest(email, password),
-                LoginResponse.class
+                new ObtainTokenRequest(email, password),
+                ObtainTokenResponse.class
         ));
     }
 }
 
 @Value
-class LoginRequest {
-    String email;
+class ObtainTokenRequest {
+    String userId;
     String password;
 }
 
 @Data
-class LoginResponse {
+class ObtainTokenResponse {
     String token;
-    String userId;
 }

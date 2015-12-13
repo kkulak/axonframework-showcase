@@ -10,14 +10,14 @@ import org.springframework.web.client.RestTemplate;
 public class RestAABCClient implements AABCClient {
 
     @Delegate
-    private final LoginClient loginClient;
+    private final ObtainTokenClient obtainTokenClient;
     @Delegate
     private final AuthenticationClient authenticationClient;
     @Delegate
     private final AuthorizationClient authorizationClient;
 
     public RestAABCClient(String tokenObtainingEndpoint, String authenticationEndpoint, String authorizationEndpoint, String tokenHeaderKey, RestTemplate restTemplate) {
-        this.loginClient = new LoginClient(tokenObtainingEndpoint, restTemplate);
+        this.obtainTokenClient = new ObtainTokenClient(tokenObtainingEndpoint, restTemplate);
         this.authenticationClient = new AuthenticationClient(authenticationEndpoint, restTemplate);
         this.authorizationClient = new AuthorizationClient(authorizationEndpoint, tokenHeaderKey, restTemplate);
     }
