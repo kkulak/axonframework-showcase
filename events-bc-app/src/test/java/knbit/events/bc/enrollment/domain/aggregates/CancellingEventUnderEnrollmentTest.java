@@ -71,6 +71,7 @@ public class CancellingEventUnderEnrollmentTest {
 
                         EventUnderEnrollmentEvents.Cancelled.of(
                                 eventId,
+                                details,
                                 ImmutableList.of(termWithAttendees)
                         )
                 )
@@ -97,6 +98,7 @@ public class CancellingEventUnderEnrollmentTest {
                 .expectEvents(
                         EventUnderEnrollmentEvents.Cancelled.of(
                                 eventId,
+                                details,
                                 ImmutableList.of(termWithAttendees)
                         )
                 );

@@ -171,7 +171,7 @@ public class EnrollingTest {
                 .given(
                         EventUnderEnrollmentEvents.Created.of(eventId, eventDetails, ImmutableList.of(firstTerm)),
 
-                        EventUnderEnrollmentEvents.Cancelled.of(eventId, ImmutableList.of(termWithAttendees))
+                        EventUnderEnrollmentEvents.Cancelled.of(eventId, eventDetails, ImmutableList.of(termWithAttendees))
                 )
                 .when(
                         EnrollmentCommands.EnrollFor.of(eventId, firstTerm.termId(), MemberId.of("id"))

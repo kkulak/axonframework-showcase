@@ -114,7 +114,7 @@ class EnrollmentEventLifecycleHandlerTest extends Specification implements DBCol
         ]
 
         when:
-        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, [])
+        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, EventDetailsBuilder.defaultEventDetails(), [])
 
         then:
         collection.find([eventId: eventId.value()]).toArray() == []

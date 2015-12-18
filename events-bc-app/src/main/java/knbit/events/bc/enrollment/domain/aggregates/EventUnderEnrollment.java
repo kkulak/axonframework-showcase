@@ -11,7 +11,6 @@ import knbit.events.bc.enrollment.domain.exceptions.EnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.exceptions.EventUnderEnrollmentExceptions;
 import knbit.events.bc.enrollment.domain.valueobjects.IdentifiedTermWithAttendees;
 import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
-import knbit.events.bc.enrollment.domain.valueobjects.ParticipantsLimit;
 import knbit.events.bc.enrollment.domain.valueobjects.events.EventUnderEnrollmentEvents;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -123,7 +122,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
 
     public void cancel() {
         rejectOnCancelledOrTransited();
-        apply(EventUnderEnrollmentEvents.Cancelled.of(id, terms()));
+        apply(EventUnderEnrollmentEvents.Cancelled.of(id, eventDetails, terms()));
     }
 
     @EventSourcingHandler
@@ -136,7 +135,7 @@ public class EventUnderEnrollment extends IdentifiedDomainAggregateRoot<EventId>
         rejectOnAlreadyTransited();
     }
 
-    private void rejectOnCancelled(){
+    private void rejectOnCancelled() {
         if (status == EventUnderEnrollmentStatus.CANCELLED) {
             throw new EventUnderEnrollmentExceptions.AlreadyCancelled(id);
         }

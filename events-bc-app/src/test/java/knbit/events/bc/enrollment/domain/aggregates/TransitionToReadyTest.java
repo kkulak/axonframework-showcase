@@ -109,7 +109,7 @@ public class TransitionToReadyTest {
 
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, identifiedTerm.termId(), member2),
 
-                        EventUnderEnrollmentEvents.Cancelled.of(eventId, ImmutableList.of(termWithAttendees))
+                        EventUnderEnrollmentEvents.Cancelled.of(eventId, eventDetails, ImmutableList.of(termWithAttendees))
                 )
                 .when(
                         EventUnderEnrollmentCommands.TransitToReady.of(eventId)

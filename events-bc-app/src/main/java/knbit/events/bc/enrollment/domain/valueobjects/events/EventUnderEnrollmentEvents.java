@@ -40,6 +40,7 @@ public interface EventUnderEnrollmentEvents {
     class Cancelled implements EventCancelled {
 
         EventId eventId;
+        EventDetails eventDetails;
         Collection<IdentifiedTermWithAttendees> termsWithAttendees;
     }
 }

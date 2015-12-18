@@ -79,7 +79,7 @@ task createDockerfile(type: Dockerfile) {
     addFile 'libs/events-bc-announcement-*.jar', 'announcement-bc.jar'
     runCommand 'bash -c "touch /announcement-bc.jar"'
 
-    entryPoint 'java', '-Xmx512m', '-jar', '/announcement-bc.jar'
+    entryPoint 'java', '-Xmx256m', '-jar', '/announcement-bc.jar'
 }
 
 task buildImage(type: DockerBuildImage) {

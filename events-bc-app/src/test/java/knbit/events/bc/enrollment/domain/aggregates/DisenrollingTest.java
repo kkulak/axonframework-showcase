@@ -142,7 +142,7 @@ public class DisenrollingTest {
 
                         EnrollmentEvents.ParticipantEnrolledForTerm.of(eventId, firstTerm.termId(), memberId),
 
-                        EventUnderEnrollmentEvents.Cancelled.of(eventId, ImmutableList.of(termWithAttendees))
+                        EventUnderEnrollmentEvents.Cancelled.of(eventId, eventDetails, ImmutableList.of(termWithAttendees))
                 )
                 .when(
                         EnrollmentCommands.DissenrollFrom.of(eventId, firstTerm.termId(), memberId)

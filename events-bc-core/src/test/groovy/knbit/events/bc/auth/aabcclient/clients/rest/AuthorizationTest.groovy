@@ -24,7 +24,7 @@ class AuthorizationTest extends Specification {
     void setup() {
         def RestTemplate restTemplate = new RestTemplate()
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate)
-        objectUnderTest = new RestAABCClient("authentication url", authorizationUrl, "tokenHeaderKey", restTemplate)
+        objectUnderTest = new RestAABCClient("login url", "authentication url", authorizationUrl, "tokenHeaderKey", restTemplate)
     }
 
     def "should authorize successfully on successful aa-bc response"() {
@@ -88,6 +88,7 @@ class AuthorizationTest extends Specification {
             throw new RestClientException("ex")
         }
         objectUnderTest = new RestAABCClient(
+                "login url doesn't matter",
                 "url doesnt matter",
                 "url doesnt matter",
                 "token doesnt matter",
@@ -107,6 +108,7 @@ class AuthorizationTest extends Specification {
         def restTemplate = new RestTemplate()
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate)
         objectUnderTest = new RestAABCClient(
+                "login url doesn't matter",
                 "authenticationEndpoint doesnt matter",
                 authorizationUrl,
                 tokenHeaderKey, restTemplate)

@@ -135,7 +135,7 @@ class EnrollmentMemberHandlerTest extends Specification implements DBCollectionA
         ]
 
         when:
-        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, [])
+        objectUnderTest.on EventUnderEnrollmentEvents.Cancelled.of(eventId, EventDetailsBuilder.defaultEventDetails(), [])
 
         then:
         enrollmentParticipantsCollection.find().toArray() == []
