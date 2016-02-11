@@ -57,7 +57,7 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/member-questions-bc-*.jar', 'member-questions-bc.jar'
     runCommand 'bash -c "touch /member-questions-bc.jar"'
-    entryPoint 'java', '-Xmx372m', '-jar', '/member-questions-bc.jar'
+    entryPoint '/bin/sh', '-c', 'java -Xmx$HEAP_SIZE -jar /member-questions-bc.jar'
 }
 
 task buildImage(type: DockerBuildImage) {

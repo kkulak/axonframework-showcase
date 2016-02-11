@@ -22,7 +22,7 @@ class NotificationFactory {
 
     public Notification newSurveyingEventMessageFrom(EventDetails eventDetails) {
         final String messageContent = reader
-                .templateFrom("templates/emails/new_surveying_event.ftl")
+                .templateFrom("emails/new_surveying_event.ftl")
                 .fillWith(
                         TemplateDataAssembler
                                 .prepopulate(DetailsParser.parse(eventDetails))
@@ -34,7 +34,7 @@ class NotificationFactory {
 
     public Notification newEnrollmentFrom(EventDetails eventDetails) {
         final String messageContent = reader
-                .templateFrom("templates/emails/new_upcoming_event.ftl")
+                .templateFrom("emails/new_upcoming_event.ftl")
                 .fillWith(
                         TemplateDataAssembler
                                 .prepopulate(DetailsParser.parse(eventDetails))
@@ -46,7 +46,7 @@ class NotificationFactory {
 
     public Notification enrollmentEventCancelled(EventDetails details) {
         final String messageContent = reader
-                .templateFrom("templates/emails/enrollment_cancelled.ftl")
+                .templateFrom("emails/enrollment_cancelled.ftl")
                 .fillWith(
                         TemplateDataAssembler
                                 .prepopulate(DetailsParser.parse(details))
@@ -58,7 +58,7 @@ class NotificationFactory {
 
     public Notification readyEventCancelled(EventReadyDetails details) {
         final String messageContent = reader
-                .templateFrom("templates/emails/event_cancelled.ftl")
+                .templateFrom("emails/event_cancelled.ftl")
                 .fillWith(
                         TemplateDataAssembler
                                 .prepopulate(DetailsParser.parse(details))

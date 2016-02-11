@@ -82,7 +82,7 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/rs-integration-bc-*-all.jar', 'rs-integration-bc.jar'
     runCommand 'bash -c "touch /rs-integration-bc.jar"'
-    defaultCommand 'sh', '-c', 'java -Dknbit.rsintegration.env=${ENVIRONMENT} -Xmx512m -jar /rs-integration-bc.jar'
+    defaultCommand 'sh', '-c', 'java -Dknbit.rsintegration.env=${ENVIRONMENT} -Xmx${HEAP_SIZE} -jar /rs-integration-bc.jar'
 }
 
 task buildImage(type: DockerBuildImage) {
