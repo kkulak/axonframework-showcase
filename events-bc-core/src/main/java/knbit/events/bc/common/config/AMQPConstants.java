@@ -7,8 +7,7 @@ public class AMQPConstants {
     public static final String NOTIFICATION_QUEUE = "notification.queue";
     public static final String EXCHANGE = "knbit.events.bc";
 
+    public static final String RABBITMQ_SERVER_HOST = "rabbitmq";
     public static final int RABBITMQ_SERVER_PORT = 5672;
-    public static final String RABBITMQ_ADDRESS_ENVIRONMENT_VARIABLE = "RABBITMQ_PORT_" + RABBITMQ_SERVER_PORT + "_TCP_ADDR";
-    public static final String DEFAULT_SERVER_IP = "127.0.0.1";
-
+    public static final String DEFAULT_SERVER_HOST = "127.0.0.1";
 }

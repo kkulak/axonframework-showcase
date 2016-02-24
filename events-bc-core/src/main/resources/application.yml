@@ -1,14 +1,14 @@
 aa-bc:
-  obtainTokenEndpoint: http://rossum.knbit.edu.pl:41001/request-token
-  authenticationEndpoint: http://rossum.knbit.edu.pl:41001/authenticate
-  authorizationEndpoint: http://rossum.knbit.edu.pl:41001/authorize
+  obtainTokenEndpoint: http://knbitaa:41001/request-token
+  authenticationEndpoint: http://knbitaa:41001/authenticate
+  authorizationEndpoint: http://knbitaa:41001/authorize
   authHeaderKey: knbit-aa-auth
 
 notification-bc:
   knbitServiceId: d8ddac8f-dad4-48e5-88d8-8dabd63ac2e7
   knbitPassword: =NxC=mGPUt)h9S:@>+%K-sTeTSK3r*/ZW.6Et)+B[4&vJ$Ru
-  notifyMembersEndpoint: http://notification-bc:41004/mail
-  notifyAllMembersEndpoint: http://notification-bc:41004/mail?sendToAllBitMembers=true
+  notifyMembersEndpoint: http://notificationbc:41004/mail
+  notifyAllMembersEndpoint: http://notificationbc:41004/mail?sendToAllBitMembers=true
 
 spring:
   profiles:
