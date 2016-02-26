@@ -28,7 +28,6 @@ public class ProposalController {
         this.commandGateway = commandGateway;
     }
 
-    @Authorized(Role.EVENTS_MANAGEMENT)
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
     public void proposeAnEvent(@RequestBody @Valid EventProposalDto proposalDto) {

@@ -1,5 +1,6 @@
 package knbit.events.bc.enrollment.web;
 
+import knbit.events.bc.auth.Authenticated;
 import knbit.events.bc.auth.Authorized;
 import knbit.events.bc.auth.Role;
 import knbit.events.bc.choosingterm.domain.valuobjects.TermId;
@@ -54,7 +55,7 @@ public class EventUnderEnrollmentController {
         commandGateway.send(EventUnderEnrollmentCommands.Cancel.of(domainEventId));
     }
 
-    @Authorized(Role.EVENTS_MANAGEMENT)
+    @Authenticated
     @RequestMapping(method = RequestMethod.PUT, value = "/{eventId}/terms/{termId}/enroll/{memberId}")
     public void enrollForTerm(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,
@@ -69,7 +70,7 @@ public class EventUnderEnrollmentController {
         );
     }
 
-    @Authorized(Role.EVENTS_MANAGEMENT)
+    @Authenticated
     @RequestMapping(method = RequestMethod.DELETE, value = "/{eventId}/terms/{termId}/disenroll/{memberId}")
     public void disenrollFrom(@PathVariable("eventId") String eventId,
                               @PathVariable("termId") String termId,

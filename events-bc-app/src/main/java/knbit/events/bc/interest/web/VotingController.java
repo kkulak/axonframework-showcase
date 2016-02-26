@@ -1,5 +1,6 @@
 package knbit.events.bc.interest.web;
 
+import knbit.events.bc.auth.Authenticated;
 import knbit.events.bc.auth.Authorized;
 import knbit.events.bc.auth.Role;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
@@ -29,7 +30,7 @@ public class VotingController {
         this.gateway = gateway;
     }
 
-    @Authorized(Role.EVENTS_MANAGEMENT)
+    @Authenticated
     @RequestMapping(value = "/{eventId}/survey/votes", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void vote(@RequestBody @Valid VoteForm form,
