@@ -41,12 +41,13 @@ dependencies {
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
     // axon
-    compile 'org.axonframework:axon-core:2.4'
+    compile 'org.axonframework:axon-core:2.4.4'
+    compile 'org.axonframework:axon-mongo:2.4.4'
     compile 'org.springframework:spring-tx:4.1.6.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
     compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
     compile 'org.quartz-scheduler:quartz:2.2.1'
-    testCompile 'org.axonframework:axon-test:2.4'
+    testCompile 'org.axonframework:axon-test:2.4.4'
 
     // groovy
     compile 'org.codehaus.groovy:groovy-all:2.4.3'

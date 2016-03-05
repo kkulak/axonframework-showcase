@@ -58,8 +58,8 @@ public class BacklogEvent extends IdentifiedDomainAggregateRoot<EventId> {
     }
 
     private void checkIfNotCancelledOrTransited() {
-        Preconditions.checkState(status != CANCELLED, "Cannot transit cancelled BacklogEvent");
-        Preconditions.checkState(status != TRANSITED, "Cannot transit already transited BacklogEvent");
+        Preconditions.checkState(status != CANCELLED, "Already cancelled");
+        Preconditions.checkState(status != TRANSITED, "Already transited");
     }
 
     @EventSourcingHandler
