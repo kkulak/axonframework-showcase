@@ -42,4 +42,8 @@ public class QuestionDataBuilder {
     public QuestionData build() {
         return QuestionData.of(title, description, answerType, answers.isEmpty() ? defaultAnswers : answers);
     }
+
+    public static QuestionData defaultQuestionData() {
+        return QuestionDataBuilder.instance().build();
+    }
 }

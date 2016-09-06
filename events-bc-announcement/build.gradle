@@ -1,11 +1,14 @@
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
-mainClassName = 'knbit.events.bc.Application'
+mainClassName = 'knbit.events.bc.announcement.Application'
 
 buildscript {
     repositories {
@@ -30,11 +33,17 @@ dependencies {
     // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-data-jpa:1.2.6.RELEASE') {
+        exclude group: 'org.springframework.data', module: 'spring-data-jpa'
+    }
+    compile 'org.springframework.data:spring-data-jpa:1.9.0.RELEASE'
+    compile 'hsqldb:hsqldb:1.8.0.10'
+    compile 'org.postgresql:postgresql:9.4-1203-jdbc42'
 
     // publishers
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'org.facebook4j:facebook4j-core:2.2.2'
-    compile 'net.sourceforge.htmlunit:htmlunit:2.15'
+    compile 'net.sourceforge.htmlunit:htmlunit:2.18'
 
     compile 'commons-validator:commons-validator:1.4.0'
     compile 'org.apache.commons:commons-imaging:1.0-SNAPSHOT'
@@ -61,20 +70,38 @@ task createDockerfile(type: Dockerfile) {
     destFile = project.file('build/Dockerfile')
     from 'java:8'
     volume '/tmp'
+
+    runCommand 'openssl s_client -showcerts -connect accounts.iiet.pl:443 </dev/null 2>/dev/null|openssl x509 -outform PEM > accounts.pem'
+    runCommand 'openssl s_client -showcerts -connect forum.iiet.pl:443 -servername forum.iiet.pl </dev/null 2>/dev/null|openssl x509 -outform PEM > forum.pem'
+    runCommand 'keytool -import -alias \'accounts.iiet.pl\' -file accounts.pem -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -noprompt'
+    runCommand 'keytool -import -alias \'forum.iiet.pl\' -file forum.pem -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit -noprompt'
+
     addFile 'libs/events-bc-announcement-*.jar', 'announcement-bc.jar'
     runCommand 'bash -c "touch /announcement-bc.jar"'
-    entryPoint 'java', '-jar', '/announcement-bc.jar'
+
+    entryPoint '/bin/sh', '-c', 'java -Xmx$HEAP_SIZE -jar /announcement-bc.jar'
 }
 
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'knbiteventsbc/announcement-bc' + ':' + version
+    tag = 'knbitevents/announcement-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/announcement-bc'
+    imageId = 'knbitevents/announcement-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
 task pushImage(type: DockerPushImage) {
-    dependsOn buildImage
-    imageName 'knbiteventsbc/announcement-bc'
+    dependsOn tagImage
+    imageName = 'knbitevents/announcement-bc'
+}
+
+task runApp() {
+    dependsOn bootRun
 }
 
 springBoot {

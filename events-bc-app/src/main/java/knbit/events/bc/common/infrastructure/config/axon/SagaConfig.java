@@ -1,7 +1,10 @@
 package knbit.events.bc.common.infrastructure.config.axon;
 
+import knbit.events.bc.choosingterm.domain.sagas.ReservationNotificationSaga;
+import knbit.events.bc.choosingterm.domain.sagas.TermStatusSaga;
 import knbit.events.bc.common.domain.sagas.EventLifecycleSaga;
 import knbit.events.bc.eventproposal.domain.sagas.EventCreationalSaga;
+import knbit.events.bc.eventready.domain.aggregates.NotifyEventTookPlaceSaga;
 import knbit.events.bc.interest.domain.sagas.InterestSaga;
 import org.axonframework.eventhandling.EventBus;
 import org.axonframework.eventhandling.scheduling.EventScheduler;
@@ -27,9 +30,11 @@ public class SagaConfig {
 
     @Bean
     public AnnotatedSagaManager sagaManager(SagaRepository sagaRepository, EventBus eventBus) {
+        @SuppressWarnings("unchecked")
         final AnnotatedSagaManager annotatedSagaManager = new AnnotatedSagaManager(
                 sagaRepository, sagaFactory(),
-                EventCreationalSaga.class, InterestSaga.class, EventLifecycleSaga.class
+                EventCreationalSaga.class, InterestSaga.class, EventLifecycleSaga.class,
+                ReservationNotificationSaga.class, TermStatusSaga.class, NotifyEventTookPlaceSaga.class
         );
         eventBus.subscribe(annotatedSagaManager);
         return annotatedSagaManager;

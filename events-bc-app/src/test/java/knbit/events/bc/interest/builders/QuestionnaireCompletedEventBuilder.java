@@ -2,10 +2,11 @@ package knbit.events.bc.interest.builders;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireCompletedEvent;
-import knbit.events.bc.interest.domain.enums.AnswerType;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.interest.domain.enums.AnswerType;
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionDescription;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionTitle;
@@ -28,7 +29,7 @@ public class QuestionnaireCompletedEventBuilder {
     @Setter
     private EventId eventId = EventId.of("eventId");
     @Setter
-    private Attendee attendee = Attendee.of("firstname", "lastname");
+    private Attendee attendee = Attendee.of(new MemberId());
 
     private List<AnsweredQuestion> defaultAnsweredQuestions = ImmutableList.of(
             AnsweredQuestion.of(
@@ -58,8 +59,8 @@ public class QuestionnaireCompletedEventBuilder {
         return this;
     }
 
-    public QuestionnaireCompletedEvent build() {
-        return QuestionnaireCompletedEvent.of(
+    public QuestionnaireEvents.CompletedByAttendee build() {
+        return QuestionnaireEvents.CompletedByAttendee.of(
                 eventId,
                 attendee,
                 answeredQuestions.isEmpty() ? defaultAnsweredQuestions : answeredQuestions

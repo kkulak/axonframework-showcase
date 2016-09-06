@@ -1,7 +1,10 @@
 package knbit.memberquestions.bc;
 
+import knbit.events.bc.auth.config.AAConfig;
 import knbit.events.bc.common.config.CorsFilter;
+import knbit.events.bc.common.config.BasicRabbitMQConfig;
 import knbit.events.bc.common.config.SwaggerConfig;
+import knbit.events.bc.common.dispatcher.MessageDispatcher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -13,7 +16,10 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 @Import({
         CorsFilter.class,
-        SwaggerConfig.class
+        SwaggerConfig.class,
+        AAConfig.class,
+        BasicRabbitMQConfig.class,
+        MessageDispatcher.class
 })
 public class Application {
 

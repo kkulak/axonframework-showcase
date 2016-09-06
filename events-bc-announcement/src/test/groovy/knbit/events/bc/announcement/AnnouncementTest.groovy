@@ -1,6 +1,6 @@
 package knbit.events.bc.announcement
 
-import knbit.events.bc.AnnouncementBuilder
+import knbit.events.bc.announcement.builders.AnnouncementBuilder
 import spock.lang.Specification
 
 /**

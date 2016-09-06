@@ -1,6 +1,5 @@
 package knbit.events.bc.eventproposal.web.forms;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Created by novy on 05.05.15.
@@ -29,6 +29,6 @@ public class EventProposalDto {
     private EventType eventType;
 
     @NotNull
-    private EventFrequency eventFrequency;
+    private Optional<String> imageUrl;
 
 }

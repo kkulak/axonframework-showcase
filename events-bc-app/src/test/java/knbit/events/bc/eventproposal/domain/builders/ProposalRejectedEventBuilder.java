@@ -2,7 +2,7 @@ package knbit.events.bc.eventproposal.domain.builders;
 
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -19,7 +19,7 @@ public class ProposalRejectedEventBuilder {
     private EventProposalId eventProposalId = EventProposalId.of("id");
     private ProposalState state = ProposalState.REJECTED;
 
-    public ProposalRejectedEvent build() {
-        return new ProposalRejectedEvent(eventProposalId, state);
+    public EventProposalEvents.ProposalRejected build() {
+        return new EventProposalEvents.ProposalRejected(eventProposalId, state);
     }
 }

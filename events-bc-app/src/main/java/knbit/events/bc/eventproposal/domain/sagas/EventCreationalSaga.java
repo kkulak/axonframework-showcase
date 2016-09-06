@@ -1,16 +1,14 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
-import knbit.events.bc.common.domain.enums.EventFrequency;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.saga.annotation.AbstractAnnotatedSaga;
 import org.axonframework.saga.annotation.EndSaga;
@@ -28,31 +26,32 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
     private Name proposalName;
     private Description proposalDescription;
     private EventType proposalType;
-    private EventFrequency eventFrequency;
+    private URL imageUrl;
 
     private transient CommandGateway commandGateway;
 
     @StartSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(EventProposed event) {
+    public void handle(EventProposalEvents.EventProposed event) {
         this.eventProposalId = event.eventProposalId();
         this.proposalName = event.name();
         this.proposalDescription = event.description();
         this.proposalType = event.eventType();
-        this.eventFrequency = event.eventFrequency();
+        this.imageUrl = event.imageUrl().orElse(null);
     }
 
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(ProposalAcceptedEvent event) {
+    public void handle(EventProposalEvents.ProposalAccepted event) {
         commandGateway.send(
-                new CreateBacklogEventCommand(
-                        new EventId(),
+                BacklogEventCommands.Create.of(
+                        IdFactory.eventId(),
                         EventDetails.of(
                                 proposalName,
                                 proposalDescription,
                                 proposalType,
-                                eventFrequency
+                                imageUrl,
+                                null
                         )
                 )
         );
@@ -60,7 +59,7 @@ public class EventCreationalSaga extends AbstractAnnotatedSaga {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "eventProposalId")
-    public void handle(ProposalRejectedEvent event) {
+    public void handle(EventProposalEvents.ProposalRejected event) {
     }
 
     @Autowired

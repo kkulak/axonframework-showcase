@@ -1,6 +1,10 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
@@ -25,7 +29,7 @@ dependencies {
 
     // spring-boot
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:1.2.5.RELEASE'
 
     // spring-websocket
     compile("org.springframework.boot:spring-boot-starter-websocket")
@@ -34,6 +38,7 @@ dependencies {
     // spring-data
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
     compile 'hsqldb:hsqldb:1.8.0.10'
+    compile 'org.postgresql:postgresql:9.4-1203-jdbc42'
 }
 
 docker {
@@ -51,19 +56,30 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/notification-bc-*.jar', 'notification-bc.jar'
     runCommand 'bash -c "touch /notification-bc.jar"'
-    entryPoint 'java', '-jar', '/notification-bc.jar'
+    entryPoint '/bin/sh', '-c', 'java -Xmx$HEAP_SIZE -jar /notification-bc.jar'
     exposePort 5672
 }
 
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'knbiteventsbc/notification-bc' + ':' + version
+    tag = 'knbitevents/notification-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/notification-bc'
+    imageId = 'knbitevents/notification-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
 task pushImage(type: DockerPushImage) {
-    dependsOn buildImage
-    imageName 'knbiteventsbc/notification-bc'
+    dependsOn tagImage
+    imageName = 'knbitevents/notification-bc'
+}
+
+task runApp() {
+    dependsOn bootRun
 }
 
 bootRun {

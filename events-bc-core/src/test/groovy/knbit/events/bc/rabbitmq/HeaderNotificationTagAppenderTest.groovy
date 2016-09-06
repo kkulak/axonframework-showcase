@@ -1,11 +1,11 @@
 package knbit.events.bc.rabbitmq
 
-import knbit.events.bc.common.rabbitmq.HeaderNotificationTagAppender
+import knbit.events.bc.common.dispatcher.HeaderNotificationTagAppender
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessagePropertiesBuilder
 import spock.lang.Specification
 
-import static knbit.events.bc.common.rabbitmq.HeaderNotificationTagAppender.NOTIFICATION_TYPE_KEY
+import static knbit.events.bc.common.dispatcher.HeaderNotificationTagAppender.NOTIFICATION_TYPE_KEY
 
 /**
  * Created by novy on 30.06.15.

@@ -1,6 +1,10 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 apply plugin: 'spring-boot'
@@ -30,7 +34,6 @@ dependencies {
     // spring
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-mail:1.2.3.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
 
     compile 'commons-validator:commons-validator:1.4.0'
 
@@ -54,20 +57,30 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/member-questions-bc-*.jar', 'member-questions-bc.jar'
     runCommand 'bash -c "touch /member-questions-bc.jar"'
-    entryPoint 'java', '-jar', '/member-questions-bc.jar'
+    entryPoint '/bin/sh', '-c', 'java -Xmx$HEAP_SIZE -jar /member-questions-bc.jar'
 }
 
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'knbiteventsbc/member-questions-bc' + ':' + version
+    tag = 'knbitevents/member-questions-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/member-questions-bc'
+    imageId = 'knbitevents/member-questions-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
 task pushImage(type: DockerPushImage) {
-    dependsOn buildImage
-    imageName 'knbiteventsbc/member-questions-bc'
+    dependsOn tagImage
+    imageName = 'knbitevents/member-questions-bc'
 }
 
+task runApp() {
+    dependsOn bootRun
+}
 
 springBoot {
     requiresUnpack = ['org.ajar:swagger-spring-mvc-ui']

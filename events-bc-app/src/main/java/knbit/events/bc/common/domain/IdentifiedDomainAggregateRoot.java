@@ -1,5 +1,6 @@
 package knbit.events.bc.common.domain;
 
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 
@@ -33,4 +34,6 @@ public abstract class IdentifiedDomainAggregateRoot<ID extends DomainIdentifier>
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+
 }

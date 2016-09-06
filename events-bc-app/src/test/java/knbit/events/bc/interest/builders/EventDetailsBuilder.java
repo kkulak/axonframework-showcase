@@ -1,10 +1,7 @@
 package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.common.domain.valueobjects.Description;
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,11 +18,15 @@ public class EventDetailsBuilder {
     private Name name = Name.of("name");
     private Description description = Description.of("desc");
     private EventType type = EventType.WORKSHOP;
-    private EventFrequency frequency = EventFrequency.ONE_OFF;
-
+    private URL imageUrl = URL.of("https://www.google.pl/");
+    private Section section = Section.of("0", "Idea Factory");
 
     public EventDetails build() {
-        return EventDetails.of(name, description, type, frequency);
+        return EventDetails.of(name, description, type, imageUrl, section);
+    }
+
+    public static EventDetails defaultEventDetails() {
+        return EventDetailsBuilder.instance().build();
     }
 
 }

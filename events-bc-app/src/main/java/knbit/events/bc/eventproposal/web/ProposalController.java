@@ -1,9 +1,9 @@
 package knbit.events.bc.eventproposal.web;
 
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.AcceptProposalCommand;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.ProposeEventCommand;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand;
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import knbit.events.bc.eventproposal.web.forms.EventProposalDto;
 import knbit.events.bc.eventproposal.web.forms.ProposalStateDto;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -32,15 +32,16 @@ public class ProposalController {
     @RequestMapping(method = RequestMethod.POST)
     public void proposeAnEvent(@RequestBody @Valid EventProposalDto proposalDto) {
         commandGateway.send(
-                new ProposeEventCommand(
+                new EventProposalCommands.ProposeEvent(
                         new EventProposalId(), proposalDto.getName(),
                         proposalDto.getDescription(), proposalDto.getEventType(),
-                        proposalDto.getEventFrequency()
+                        proposalDto.getImageUrl()
                 )
         );
 
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public void changeProposalState(@PathVariable String id, @RequestBody @Valid ProposalStateDto proposalStateDto) {
         final ProposalStateDto.ProposalState proposalState = proposalStateDto.getState();
@@ -55,13 +56,13 @@ public class ProposalController {
 
     private void acceptProposal(EventProposalId eventProposalId) {
         commandGateway.send(
-                new AcceptProposalCommand(eventProposalId)
+                new EventProposalCommands.AcceptProposal(eventProposalId)
         );
     }
 
     private void rejectProposal(EventProposalId eventProposalId) {
         commandGateway.send(
-                new RejectProposalCommand(eventProposalId)
+                new EventProposalCommands.RejectProposal(eventProposalId)
         );
     }
 }

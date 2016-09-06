@@ -22,6 +22,7 @@ $RECYCLE.BIN/
 
 ### Gradle template
 .gradle
+gradle/wrapper/gradle-wrapper.properties
 build/
 events-bc-core/build
 events-bc-announcement/build
@@ -31,6 +32,8 @@ events-bc-app/build
 events-bc-app/logs
 notification-bc/logs
 events-bc-announcement/logs
+events-bc-core/logs
+member-questions-bc/logs
 
 # Axon temporary eventstore directory
 events-bc-app/data

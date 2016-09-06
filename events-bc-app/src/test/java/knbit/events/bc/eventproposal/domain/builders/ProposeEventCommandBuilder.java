@@ -1,15 +1,20 @@
 package knbit.events.bc.eventproposal.domain.builders;
 
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.ProposeEventCommand;
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.util.Optional;
 
 /**
  * Created by novy on 05.05.15.
  */
 
+@Accessors(fluent = true)
+@Setter
 @NoArgsConstructor(staticName = "newProposeEventCommand")
 public class ProposeEventCommandBuilder {
 
@@ -17,34 +22,9 @@ public class ProposeEventCommandBuilder {
     private String name = "name";
     private String description = "description";
     private EventType eventType = EventType.LECTURE;
-    private EventFrequency eventFrequency = EventFrequency.ONE_OFF;
+    private Optional<String> imageUrl = Optional.of("https://www.google.pl/");
 
-    public ProposeEventCommandBuilder eventProposalId(EventProposalId eventProposalId) {
-        this.eventProposalId = eventProposalId;
-        return this;
-    }
-
-    public ProposeEventCommandBuilder name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public ProposeEventCommandBuilder description(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public ProposeEventCommandBuilder eventType(EventType eventType) {
-        this.eventType = eventType;
-        return this;
-    }
-
-    public ProposeEventCommandBuilder eventFrequency(EventFrequency frequency) {
-        this.eventFrequency = frequency;
-        return this;
-    }
-
-    public ProposeEventCommand build() {
-        return new ProposeEventCommand(eventProposalId, name, description, eventType, eventFrequency);
+    public EventProposalCommands.ProposeEvent build() {
+        return new EventProposalCommands.ProposeEvent(eventProposalId, name, description, eventType, imageUrl);
     }
 }

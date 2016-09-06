@@ -7,13 +7,11 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.QuestionDataBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
-import knbit.events.bc.interest.domain.exceptions.AlreadyHasQuestionnaireException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
-import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
-import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireAddedEvent;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.exceptions.*;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.QuestionnaireEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import knbit.events.bc.interest.domain.valueobjects.question.Question;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionData;
 import knbit.events.bc.interest.domain.valueobjects.question.QuestionFactory;
@@ -36,14 +34,9 @@ public class AddingQuestionnaireTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
-        soleQuestionData = QuestionDataBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
+        soleQuestionData = QuestionDataBuilder.defaultQuestionData();
         soleQuestion = QuestionFactory.newQuestion(soleQuestionData);
-
     }
 
     @Test
@@ -51,7 +44,7 @@ public class AddingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -61,13 +54,12 @@ public class AddingQuestionnaireTest {
                                 .build()
                 )
                 .when(
-                        AddQuestionnaireCommand.of(
+                        QuestionnaireCommands.Add.of(
                                 eventId,
                                 ImmutableList.of(soleQuestionData)
                         )
                 )
                 .expectException(SurveyingInterestAlreadyInProgressException.class);
-
     }
 
     @Test
@@ -75,7 +67,7 @@ public class AddingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
@@ -84,10 +76,10 @@ public class AddingQuestionnaireTest {
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
-                        AddQuestionnaireCommand.of(
+                        QuestionnaireCommands.Add.of(
                                 eventId,
                                 ImmutableList.of(soleQuestionData)
                         )
@@ -96,21 +88,62 @@ public class AddingQuestionnaireTest {
     }
 
     @Test
+    public void shouldNotBeAbleToAddQuestionnaireIfCancelled() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+                        InterestAwareEvents.CancelledBeforeSurveyStarted.of(eventId)
+                )
+                .when(
+                        QuestionnaireCommands.Add.of(
+                                eventId,
+                                ImmutableList.of(soleQuestionData)
+                        )
+                )
+                .expectException(
+                        InterestAwareEventAlreadyCancelledException.class
+                );
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddQuestionnaireIfEventAlreadyTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(
+                                eventId, eventDetails
+                        ),
+
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        QuestionnaireCommands.Add.of(
+                                eventId,
+                                ImmutableList.of(soleQuestionData)
+                        )
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
+    }
+
+    @Test
     public void shouldBeAbleToAddQuestionnaireOnlyOnce() throws Exception {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         ),
 
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         )
                 )
                 .when(
-                        AddQuestionnaireCommand.of(
+                        QuestionnaireCommands.Add.of(
                                 eventId,
                                 ImmutableList.of(soleQuestionData)
                         )
@@ -123,18 +156,18 @@ public class AddingQuestionnaireTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(
+                        InterestAwareEvents.Created.of(
                                 eventId, eventDetails
                         )
                 )
                 .when(
-                        AddQuestionnaireCommand.of(
+                        QuestionnaireCommands.Add.of(
                                 eventId,
                                 ImmutableList.of(soleQuestionData)
                         )
                 )
                 .expectEvents(
-                        QuestionnaireAddedEvent.of(
+                        QuestionnaireEvents.Added.of(
                                 eventId,
                                 ImmutableList.of(soleQuestion)
                         )

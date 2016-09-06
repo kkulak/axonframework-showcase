@@ -1,9 +1,12 @@
 package knbit.events.bc.interest.web;
 
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.DeactivateBacklogEventCommand;
+import knbit.events.bc.auth.Authorized;
+import knbit.events.bc.auth.Role;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.AddQuestionnaireCommand;
-import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import knbit.events.bc.interest.web.forms.QuestionDataDTO;
 import knbit.events.bc.interest.web.forms.SurveyForm;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -26,6 +29,7 @@ public class InterestAwareEventController {
         this.gateway = gateway;
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
     @RequestMapping(value = "/{eventId}/survey", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createSurvey(@PathVariable("eventId") String eventId,
@@ -37,25 +41,33 @@ public class InterestAwareEventController {
         startSurveying(id, form);
     }
 
+    @Authorized(Role.EVENTS_MANAGEMENT)
+    @RequestMapping(value = "/{eventId}/survey", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void cancel(@PathVariable("eventId") String eventId) {
+        final EventId id = EventId.of(eventId);
+
+        gateway.send(InterestAwareEventCommands.Cancel.of(id));
+    }
+
     private void transitFromBacklog(EventId id) {
-        gateway.sendAndWait(DeactivateBacklogEventCommand.of(id));
+        gateway.sendAndWait(BacklogEventCommands.TransitToInterestAwareEventCommand.of(id));
     }
 
     private void addQuestionnaireIfAnyQuestionsPresent(EventId id, SurveyForm form) {
         final List<QuestionDataDTO> questions = form.getQuestions();
         if (!questions.isEmpty()) {
             gateway.sendAndWait(
-                    AddQuestionnaireCommand.of(id, toQuestionData(questions))
+                    QuestionnaireCommands.Add.of(id, toQuestionData(questions))
             );
         }
     }
 
     private void startSurveying(EventId id, SurveyForm form) {
         gateway.sendAndWait(
-                StartSurveyingInterestCommand.of(
+                SurveyCommands.Start.of(
                         id, form.getMinimalInterestThreshold(), form.getEndOfSurveying()
                 )
         );
     }
-
 }

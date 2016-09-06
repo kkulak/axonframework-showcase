@@ -5,7 +5,7 @@ import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingTimeExceededEventBuilder;
-import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -51,7 +51,7 @@ public class EndingSurveyingAutomaticallyTest {
                                 .build()
                 )
                 .expectDispatchedCommandsEqualTo(
-                        EndSurveyingInterestCommand.of(eventId)
+                        QuestionnaireCommands.End.of(eventId)
                 );
     }
 }

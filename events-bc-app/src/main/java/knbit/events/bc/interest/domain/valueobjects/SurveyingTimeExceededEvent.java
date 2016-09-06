@@ -1,5 +1,6 @@
 package knbit.events.bc.interest.domain.valueobjects;
 
+import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 @Value(staticConstructor = "of")
 public class SurveyingTimeExceededEvent {
 
-    private final EventId eventId;
-    private final DateTime surveyingEndDate;
+    EventId eventId;
+    EventDetails eventDetails;
+    DateTime surveyingEndDate;
 }

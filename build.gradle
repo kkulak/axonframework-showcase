@@ -1,7 +1,7 @@
 ext.dockerRegistryProperties = [
-        username: '',
-        password: '',
-        email: ''
+        username: 'knbitevents',
+        password: 'zaq123edc',
+        email: 'knbiteventsbc@gmail.com'
 ]
 
 subprojects {

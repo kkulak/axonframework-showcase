@@ -5,4 +5,5 @@ include 'events-bc-announcement'
 include 'events-bc-app'
 include 'member-questions-bc'
 include 'notification-bc'
+include 'rs-integration-bc'
 

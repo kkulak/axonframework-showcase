@@ -5,8 +5,7 @@ import knbit.events.bc.eventproposal.domain.builders.EventProposedBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalAcceptedEventBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalRejectedEventBuilder;
 import knbit.events.bc.eventproposal.domain.builders.RejectProposalCommandBuilder;
-import knbit.events.bc.eventproposal.domain.exceptions.CannotRejectAcceptedProposalException;
-import knbit.events.bc.eventproposal.domain.exceptions.ProposalAlreadyRejectedException;
+import knbit.events.bc.eventproposal.domain.exceptions.EventProposalExceptions;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
@@ -47,7 +46,7 @@ public class RejectingProposalTest {
                                 .build()
 
                 )
-                .expectException(CannotRejectAcceptedProposalException.class);
+                .expectException(EventProposalExceptions.CannotRejectAcceptedProposal.class);
 
     }
 
@@ -74,7 +73,7 @@ public class RejectingProposalTest {
                                 .build()
 
                 )
-                .expectException(ProposalAlreadyRejectedException.class);
+                .expectException(EventProposalExceptions.ProposalAlreadyRejected.class);
 
     }
 

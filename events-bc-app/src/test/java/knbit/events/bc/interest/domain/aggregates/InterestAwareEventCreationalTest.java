@@ -1,14 +1,10 @@
 package knbit.events.bc.interest.domain.aggregates;
 
 import knbit.events.bc.FixtureFactory;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
-import knbit.events.bc.common.domain.valueobjects.Description;
-import knbit.events.bc.common.domain.valueobjects.EventDetails;
-import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.common.domain.valueobjects.Name;
-import knbit.events.bc.interest.domain.valueobjects.commands.CreateInterestAwareEventCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
+import knbit.events.bc.common.domain.valueobjects.*;
+import knbit.events.bc.interest.domain.valueobjects.commands.InterestAwareEventCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +29,18 @@ public class InterestAwareEventCreationalTest {
                 Name.of("name"),
                 Description.of("desc"),
                 EventType.WORKSHOP,
-                EventFrequency.ONE_OFF
+                URL.of("https://www.google.pl/"),
+                Section.of("0", "Idea Factory")
         );
 
 
         fixture
                 .givenNoPriorActivity()
                 .when(
-                        CreateInterestAwareEventCommand.of(eventId, eventDetails)
+                        InterestAwareEventCommands.Create.of(eventId, eventDetails)
                 )
                 .expectEvents(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 );
 
     }

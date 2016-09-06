@@ -5,14 +5,18 @@ import knbit.events.bc.common.domain.valueobjects.EventDetails;
 import knbit.events.bc.common.domain.valueobjects.EventId;
 import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyCancelledException;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestNotYetStartedException;
-import knbit.events.bc.interest.domain.valueobjects.commands.EndSurveyingInterestCommand;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.commands.QuestionnaireCommands;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 /**
  * Created by novy on 28.05.15.
@@ -27,10 +31,7 @@ public class EndingInterestSurveyingTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
-
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -38,7 +39,7 @@ public class EndingInterestSurveyingTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
@@ -46,10 +47,10 @@ public class EndingInterestSurveyingTest {
                                 .build()
                 )
                 .when(
-                        EndSurveyingInterestCommand.of(eventId)
+                        QuestionnaireCommands.End.of(eventId)
                 )
                 .expectEvents(
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 );
 
     }
@@ -59,26 +60,67 @@ public class EndingInterestSurveyingTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
-                        EndSurveyingInterestCommand.of(eventId)
+                        QuestionnaireCommands.End.of(eventId)
                 )
                 .expectException(SurveyingInterestNotYetStartedException.class);
     }
 
     @Test
-    public void shouldThrowAnExceptionTryingToEndEndedSurvey() throws Exception {
-
+    public void shouldThrowAnExceptionIfEventWasCancelledInMeantime() throws Exception {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
-                        SurveyingInterestEndedEvent.of(eventId)
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+
+                        SurveyingInterestStartedEventBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build(),
+
+                        InterestAwareEvents.CancelledDuringOrAfterSurveying.of(
+                                eventId,
+                                Collections.emptyList()
+                        )
                 )
                 .when(
-                        EndSurveyingInterestCommand.of(eventId)
+                        QuestionnaireCommands.End.of(eventId)
+                )
+                .expectException(
+                        InterestAwareEventAlreadyCancelledException.class
+                );
+    }
+
+    @Test
+    public void shouldThrowAnExceptionTryingToEndEndedSurvey() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+                        SurveyEvents.Ended.of(eventId)
+                )
+                .when(
+                        QuestionnaireCommands.End.of(eventId)
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+    }
+
+    @Test
+    public void shouldThrowAnExceptionTryingToEndEventTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        QuestionnaireCommands.End.of(eventId)
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
     }
 }

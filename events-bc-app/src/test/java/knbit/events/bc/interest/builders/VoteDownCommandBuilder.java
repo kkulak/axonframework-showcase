@@ -1,8 +1,9 @@
 package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.VoteDownCommand;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,10 +18,12 @@ import lombok.experimental.Accessors;
 public class VoteDownCommandBuilder {
 
     private EventId eventId = EventId.of("eventId");
-    private Attendee attendee = Attendee.of("firstname", "lastname");
+    private Attendee attendee = Attendee.of(
+            MemberId.of("memberId")
+    );
 
-    public VoteDownCommand build() {
-        return new VoteDownCommand(eventId, attendee);
+    public SurveyCommands.VoteDown build() {
+        return new SurveyCommands.VoteDown(eventId, attendee);
     }
 
 }

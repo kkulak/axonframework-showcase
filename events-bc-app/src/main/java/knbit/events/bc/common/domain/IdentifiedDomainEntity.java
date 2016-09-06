@@ -8,11 +8,7 @@ import org.axonframework.eventsourcing.annotation.AbstractAnnotatedEntity;
 public class IdentifiedDomainEntity<ID extends DomainIdentifier> extends AbstractAnnotatedEntity
         implements DomainIdentifier<ID> {
 
-    protected final ID id;
-
-    protected IdentifiedDomainEntity(ID id) {
-        this.id = id;
-    }
+    protected ID id;
 
     @Override
     public ID value() {

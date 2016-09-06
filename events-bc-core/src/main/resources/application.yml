@@ -1,0 +1,15 @@
+aa-bc:
+  obtainTokenEndpoint: http://knbitaa:8080/request-token
+  authenticationEndpoint: http://knbitaa:8080/authenticate
+  authorizationEndpoint: http://knbitaa:8080/authorize
+  authHeaderKey: knbit-aa-auth
+
+notification-bc:
+  knbitServiceId: d8ddac8f-dad4-48e5-88d8-8dabd63ac2e7m
+  knbitPassword: =NxC=mGPUt)h9S:@>+%K-sTeTSK3r*/ZW.6Et)+B[4&vJ$Ru
+  notifyMembersEndpoint: http://notificationbc:8080/mail
+  notifyAllMembersEndpoint: http://notificationbc:8080/mail?sendToAllBitMembers=true
+
+spring:
+  profiles:
+    active: development

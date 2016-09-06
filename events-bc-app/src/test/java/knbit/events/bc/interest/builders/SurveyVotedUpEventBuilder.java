@@ -1,8 +1,9 @@
 package knbit.events.bc.interest.builders;
 
-import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyVotedUpEvent;
 import knbit.events.bc.common.domain.valueobjects.Attendee;
+import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.enrollment.domain.valueobjects.MemberId;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -17,11 +18,13 @@ import lombok.experimental.Accessors;
 public class SurveyVotedUpEventBuilder {
 
     private EventId eventId = EventId.of("eventId");
-    private Attendee attendee = Attendee.of("firstname", "lastname");
+    private Attendee attendee = Attendee.of(
+            MemberId.of("memberId")
+    );
 
 
-    public SurveyVotedUpEvent build() {
-        return SurveyVotedUpEvent.of(eventId, attendee);
+    public SurveyEvents.VotedUp build() {
+        return SurveyEvents.VotedUp.of(eventId, attendee);
     }
 
 }

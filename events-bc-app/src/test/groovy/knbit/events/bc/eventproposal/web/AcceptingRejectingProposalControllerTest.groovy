@@ -1,7 +1,6 @@
 package knbit.events.bc.eventproposal.web
 
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.AcceptProposalCommand
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands
 import knbit.events.bc.eventproposal.web.forms.ProposalStateDto
 import org.axonframework.commandhandling.gateway.CommandGateway
 import spock.lang.Specification
@@ -24,7 +23,7 @@ class AcceptingRejectingProposalControllerTest extends Specification {
         )
 
         then:
-        1 * commandGatewayMock.send(_ as AcceptProposalCommand)
+        1 * commandGatewayMock.send(_ as EventProposalCommands.AcceptProposal)
 
     }
 
@@ -40,7 +39,7 @@ class AcceptingRejectingProposalControllerTest extends Specification {
         )
 
         then:
-        1 * commandGatewayMock.send(_ as RejectProposalCommand)
+        1 * commandGatewayMock.send(_ as EventProposalCommands.RejectProposal)
 
     }
 }

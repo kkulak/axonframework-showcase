@@ -7,10 +7,12 @@ import knbit.events.bc.interest.builders.EventDetailsBuilder;
 import knbit.events.bc.interest.builders.StartSurveyingInterestCommandBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestStartedEventBuilder;
 import knbit.events.bc.interest.builders.SurveyingInterestWithEndingDateStartedEventBuilder;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyCancelledException;
+import knbit.events.bc.interest.domain.exceptions.InterestAwareEventAlreadyTransitedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyEndedException;
 import knbit.events.bc.interest.domain.exceptions.SurveyingInterestAlreadyInProgressException;
-import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEventCreated;
-import knbit.events.bc.interest.domain.valueobjects.events.SurveyingInterestEndedEvent;
+import knbit.events.bc.interest.domain.valueobjects.events.InterestAwareEvents;
+import knbit.events.bc.interest.domain.valueobjects.events.SurveyEvents;
 import org.axonframework.test.FixtureConfiguration;
 import org.joda.time.DateTime;
 import org.junit.Before;
@@ -31,9 +33,7 @@ public class StartingInterestSurveyingTest {
     public void setUp() throws Exception {
         fixture = FixtureFactory.interestAwareEventFixtureConfiguration();
         eventId = EventId.of("eventId");
-        eventDetails = EventDetailsBuilder
-                .instance()
-                .build();
+        eventDetails = EventDetailsBuilder.defaultEventDetails();
     }
 
     @Test
@@ -41,7 +41,7 @@ public class StartingInterestSurveyingTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
                         StartSurveyingInterestCommandBuilder
@@ -66,7 +66,7 @@ public class StartingInterestSurveyingTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails)
+                        InterestAwareEvents.Created.of(eventId, eventDetails)
                 )
                 .when(
                         StartSurveyingInterestCommandBuilder
@@ -85,11 +85,30 @@ public class StartingInterestSurveyingTest {
     }
 
     @Test
+    public void shouldNotBeAbleToStartInCancelledInMeantime() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+                        InterestAwareEvents.CancelledBeforeSurveyStarted.of(eventId)
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(
+                        InterestAwareEventAlreadyCancelledException.class
+                );
+    }
+
+    @Test
     public void shouldNotBeAbleToStartSurveyBeingAlreadyInProgress() throws Exception {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
@@ -111,14 +130,14 @@ public class StartingInterestSurveyingTest {
 
         fixture
                 .given(
-                        InterestAwareEventCreated.of(eventId, eventDetails),
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
 
                         SurveyingInterestStartedEventBuilder
                                 .instance()
                                 .eventId(eventId)
                                 .build(),
 
-                        SurveyingInterestEndedEvent.of(eventId)
+                        SurveyEvents.Ended.of(eventId)
                 )
                 .when(
                         StartSurveyingInterestCommandBuilder
@@ -127,6 +146,27 @@ public class StartingInterestSurveyingTest {
                                 .build()
                 )
                 .expectException(SurveyingInterestAlreadyEndedException.class);
+
+    }
+
+    @Test
+    public void shouldNotBeAbleToStartSurveyTransitedToUnderChoosingTermEvent() throws Exception {
+
+        fixture
+                .given(
+                        InterestAwareEvents.Created.of(eventId, eventDetails),
+
+                        InterestAwareEvents.TransitedToUnderChoosingTerm.of(
+                                eventId, eventDetails
+                        )
+                )
+                .when(
+                        StartSurveyingInterestCommandBuilder
+                                .instance()
+                                .eventId(eventId)
+                                .build()
+                )
+                .expectException(InterestAwareEventAlreadyTransitedException.class);
 
     }
 }

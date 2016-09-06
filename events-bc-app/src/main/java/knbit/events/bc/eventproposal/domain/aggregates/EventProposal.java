@@ -1,19 +1,14 @@
 package knbit.events.bc.eventproposal.domain.aggregates;
 
 import knbit.events.bc.common.domain.IdentifiedDomainAggregateRoot;
-import knbit.events.bc.common.domain.enums.EventFrequency;
 import knbit.events.bc.common.domain.enums.EventType;
 import knbit.events.bc.common.domain.valueobjects.Description;
 import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.URL;
 import knbit.events.bc.eventproposal.domain.enums.ProposalState;
-import knbit.events.bc.eventproposal.domain.exceptions.CannotAcceptRejectedProposalException;
-import knbit.events.bc.eventproposal.domain.exceptions.CannotRejectAcceptedProposalException;
-import knbit.events.bc.eventproposal.domain.exceptions.ProposalAlreadyAcceptedException;
-import knbit.events.bc.eventproposal.domain.exceptions.ProposalAlreadyRejectedException;
+import knbit.events.bc.eventproposal.domain.exceptions.*;
 import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposed;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalAcceptedEvent;
-import knbit.events.bc.eventproposal.domain.valueobjects.events.ProposalRejectedEvent;
+import knbit.events.bc.eventproposal.domain.valueobjects.events.EventProposalEvents;
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler;
 
 /**
@@ -27,64 +22,64 @@ public class EventProposal extends IdentifiedDomainAggregateRoot<EventProposalId
     private Name name;
     private Description description;
     private EventType eventType;
-    private EventFrequency eventFrequency;
     private ProposalState state;
+    private URL imageUrl;
 
     EventProposal(
-            EventProposalId eventProposalId, Name name, Description description, EventType eventType, EventFrequency eventFrequency) {
-        apply(new EventProposed(
-                        eventProposalId, name, description, eventType, eventFrequency, ProposalState.PENDING
+            EventProposalId eventProposalId, Name name, Description description, EventType eventType, URL imageUrl) {
+        apply(new EventProposalEvents.EventProposed(
+                        eventProposalId, name, description, eventType, imageUrl, ProposalState.PENDING
                 )
         );
     }
 
     public void accept() {
         if (state == ProposalState.ACCEPTED) {
-            throw new ProposalAlreadyAcceptedException(id.value());
+            throw new EventProposalExceptions.ProposalAlreadyAccepted(id.value());
         }
 
         if (state == ProposalState.REJECTED) {
-            throw new CannotAcceptRejectedProposalException(id.value());
+            throw new EventProposalExceptions.CannotAcceptRejectedProposal(id.value());
         }
 
         apply(
-                new ProposalAcceptedEvent(id, eventType, ProposalState.ACCEPTED)
+                new EventProposalEvents.ProposalAccepted(id, eventType, ProposalState.ACCEPTED)
         );
 
     }
 
     @EventSourcingHandler
-    private void on(ProposalAcceptedEvent event) {
+    private void on(EventProposalEvents.ProposalAccepted event) {
         this.state = event.state();
     }
 
     public void reject() {
         if (state == ProposalState.REJECTED) {
-            throw new ProposalAlreadyRejectedException(id.value());
+            throw new EventProposalExceptions.ProposalAlreadyRejected(id.value());
         }
 
         if (state == ProposalState.ACCEPTED) {
-            throw new CannotRejectAcceptedProposalException(id.value());
+            throw new EventProposalExceptions.CannotRejectAcceptedProposal(id.value());
         }
 
         apply(
-                new ProposalRejectedEvent(id, ProposalState.REJECTED)
+                new EventProposalEvents.ProposalRejected(id, ProposalState.REJECTED)
         );
     }
 
-
     @EventSourcingHandler
-    private void on(ProposalRejectedEvent event) {
+    private void on(EventProposalEvents.ProposalRejected event) {
         this.state = event.state();
     }
 
     @EventSourcingHandler
-    private void on(EventProposed event) {
+    private void on(EventProposalEvents.EventProposed event) {
         this.id = event.eventProposalId();
         this.name = event.name();
         this.description = event.description();
         this.eventType = event.eventType();
-        this.eventFrequency = event.eventFrequency();
+        this.imageUrl = event.imageUrl().orElse(null);
         this.state = event.proposalState();
     }
+
 }

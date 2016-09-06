@@ -2,7 +2,7 @@ package knbit.events.bc.interest.builders;
 
 
 import knbit.events.bc.common.domain.valueobjects.EventId;
-import knbit.events.bc.interest.domain.valueobjects.commands.StartSurveyingInterestCommand;
+import knbit.events.bc.interest.domain.valueobjects.commands.SurveyCommands;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -23,8 +23,8 @@ public class StartSurveyingInterestCommandBuilder {
     private Optional<Integer> minimalInterestThreshold = Optional.empty();
     private Optional<DateTime> endingSurveyDate = Optional.empty();
 
-    public StartSurveyingInterestCommand build() {
-        return StartSurveyingInterestCommand.of(eventId, minimalInterestThreshold, endingSurveyDate);
+    public SurveyCommands.Start build() {
+        return SurveyCommands.Start.of(eventId, minimalInterestThreshold, endingSurveyDate);
     }
 
 }

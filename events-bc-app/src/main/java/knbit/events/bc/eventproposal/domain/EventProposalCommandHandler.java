@@ -2,9 +2,7 @@ package knbit.events.bc.eventproposal.domain;
 
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposal;
 import knbit.events.bc.eventproposal.domain.aggregates.EventProposalFactory;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.AcceptProposalCommand;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.ProposeEventCommand;
-import knbit.events.bc.eventproposal.domain.valueobjects.commands.RejectProposalCommand;
+import knbit.events.bc.eventproposal.domain.valueobjects.commands.EventProposalCommands;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +24,23 @@ public class EventProposalCommandHandler {
     }
 
     @CommandHandler
-    public void handle(ProposeEventCommand command) {
+    public void handle(EventProposalCommands.ProposeEvent command) {
         repository.add(
                 EventProposalFactory.newEventProposal(
-                        command.eventProposalId(), command.name(), command.description(), command.eventType(), command.eventFrequency()
+                        command.eventProposalId(), command.name(), command.description(),
+                        command.eventType(), command.imageUrl()
                 )
         );
     }
 
     @CommandHandler
-    public void handle(AcceptProposalCommand command) {
+    public void handle(EventProposalCommands.AcceptProposal command) {
         final EventProposal eventProposal = repository.load(command.eventProposalId());
         eventProposal.accept();
     }
 
     @CommandHandler
-    public void handle(RejectProposalCommand command) {
+    public void handle(EventProposalCommands.RejectProposal command) {
         final EventProposal eventProposal = repository.load(command.eventProposalId());
         eventProposal.reject();
     }

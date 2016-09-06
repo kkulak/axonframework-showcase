@@ -1,8 +1,12 @@
 package knbit.events.bc.eventproposal.domain.sagas;
 
-import com.google.common.collect.ImmutableList;
 import knbit.events.bc.backlogevent.domain.builders.CreateBacklogEventCommandBuilder;
+import knbit.events.bc.common.domain.IdFactory;
 import knbit.events.bc.common.domain.enums.EventType;
+import knbit.events.bc.common.domain.valueobjects.Description;
+import knbit.events.bc.common.domain.valueobjects.EventId;
+import knbit.events.bc.common.domain.valueobjects.Name;
+import knbit.events.bc.common.domain.valueobjects.Section;
 import knbit.events.bc.eventproposal.domain.builders.EventProposedBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalAcceptedEventBuilder;
 import knbit.events.bc.eventproposal.domain.builders.ProposalRejectedEventBuilder;
@@ -10,13 +14,20 @@ import knbit.events.bc.eventproposal.domain.valueobjects.EventProposalId;
 import org.axonframework.test.saga.AnnotatedSagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import static knbit.events.bc.eventproposal.domain.sagas.WithoutIdentifierMatcher.matchesExactlyOmittingId;
+import java.util.Optional;
 
 /**
  * Created by novy on 07.05.15.
  */
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(IdFactory.class)
 public class EventCreationalSagaTest {
 
     private AnnotatedSagaTestFixture fixture;
@@ -74,9 +85,11 @@ public class EventCreationalSagaTest {
     public void shouldProduceCreateEventCommandWhenCorrespondingProposalIsAccepted() throws Exception {
 
         final EventProposalId eventProposalId = EventProposalId.of("anId");
-        final String proposalName = "proposalName";
-        final String proposalDescription = "proposalDescription";
+        final Name proposalName = Name.of("proposalName");
+        final Description proposalDescription = Description.of("proposalDescription");
         final EventType proposalType = EventType.LECTURE;
+        final EventId randomEventId = EventId.of("eventId");
+        makeIdFactoryReturn(randomEventId);
 
         fixture
                 .givenAggregate(eventProposalId)
@@ -95,19 +108,20 @@ public class EventCreationalSagaTest {
                                 .eventProposalId(eventProposalId)
                                 .build()
                 )
-                .expectDispatchedCommandsMatching(
-                        matchesExactlyOmittingId(
-                                ImmutableList.of(
-                                        CreateBacklogEventCommandBuilder
-                                                .newCreateBacklogEventCommand()
-                                                .name(proposalName)
-                                                .description(proposalDescription)
-                                                .eventType(proposalType)
-                                                .build()
-
-                                )
-                        )
-
+                .expectDispatchedCommandsEqualTo(
+                        CreateBacklogEventCommandBuilder
+                                .newCreateBacklogEventCommand()
+                                .eventId(randomEventId)
+                                .name(proposalName)
+                                .description(proposalDescription)
+                                .eventType(proposalType)
+                                .section(null)
+                                .build()
                 );
+    }
+
+    private void makeIdFactoryReturn(EventId eventId) {
+        PowerMockito.mockStatic(IdFactory.class);
+        Mockito.when(IdFactory.eventId()).thenReturn(eventId);
     }
 }

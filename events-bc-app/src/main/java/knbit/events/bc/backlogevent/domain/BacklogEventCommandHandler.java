@@ -2,8 +2,7 @@ package knbit.events.bc.backlogevent.domain;
 
 import knbit.events.bc.backlogevent.domain.aggregates.BacklogEvent;
 import knbit.events.bc.backlogevent.domain.aggregates.EventFactory;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.CreateBacklogEventCommand;
-import knbit.events.bc.backlogevent.domain.valueobjects.commands.DeactivateBacklogEventCommand;
+import knbit.events.bc.backlogevent.domain.valueobjects.commands.BacklogEventCommands;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class BacklogEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(CreateBacklogEventCommand command) {
+    public void handle(BacklogEventCommands.Create command) {
         final BacklogEvent event = EventFactory.newEvent(
                 command.eventId(), command.eventDetails()
         );
@@ -28,9 +27,27 @@ public class BacklogEventCommandHandler {
     }
 
     @CommandHandler
-    public void handle(DeactivateBacklogEventCommand command) {
+    public void handle(BacklogEventCommands.ChangeDetails command) {
         final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
-        backlogEvent.deactivate();
+        backlogEvent.changeDetails(command.newEventDetails());
+    }
+
+    @CommandHandler
+    public void handle(BacklogEventCommands.Cancel command) {
+        final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
+        backlogEvent.cancel();
+    }
+
+    @CommandHandler
+    public void handle(BacklogEventCommands.TransitToInterestAwareEventCommand command) {
+        final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
+        backlogEvent.transitToSurveyInterestAwareEvent();
+    }
+
+    @CommandHandler
+    public void handle(BacklogEventCommands.TransitToUnderChoosingTermEventCommand command) {
+        final BacklogEvent backlogEvent = backlogEventRepository.load(command.eventId());
+        backlogEvent.transitToUnderChoosingTermEvent();
     }
 
 }

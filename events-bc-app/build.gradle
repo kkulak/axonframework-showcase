@@ -1,6 +1,10 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 apply plugin: 'spring-boot'
 apply plugin: 'com.bmuschko.docker-java-application'
@@ -25,7 +29,6 @@ dependencies {
 
     // spring-boot
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-amqp:1.2.3.RELEASE'
     testCompile 'org.springframework.boot:spring-boot-starter-test:1.2.3.RELEASE'
 
     // jackson-modules
@@ -38,26 +41,34 @@ dependencies {
     runtime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
     // axon
-    compile 'org.axonframework:axon-core:2.4'
+    compile 'org.axonframework:axon-core:2.4.4'
+    compile 'org.axonframework:axon-mongo:2.4.4'
     compile 'org.springframework:spring-tx:4.1.6.RELEASE'
     compile 'org.hibernate:hibernate-entitymanager:4.3.9.Final'
     compile 'org.springframework:spring-context-support:4.1.6.RELEASE'
     compile 'org.quartz-scheduler:quartz:2.2.1'
-    testCompile 'org.axonframework:axon-test:2.4'
-
-    // view-model persistence
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.2.3.RELEASE'
-    compile 'hsqldb:hsqldb:1.8.0.10'
+    testCompile 'org.axonframework:axon-test:2.4.4'
 
     // groovy
     compile 'org.codehaus.groovy:groovy-all:2.4.3'
     compile 'com.gmongo:gmongo:1.5'
     compile 'com.github.fakemongo:fongo:1.6.2'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
 
     // others:
     compile 'com.codepoetics:protonpack:1.7'
+    compile 'commons-validator:commons-validator:1.4.1'
+    compile 'org.apache.kafka:kafka_2.10:0.8.2.2'
+    compile 'com.google.protobuf:protobuf-java:3.0.0-beta-1'
+    compile 'org.freemarker:freemarker:2.3.23'
+
     testCompile 'org.apache.commons:commons-lang3:3.3.1'
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.3'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.3'
+    testCompile 'pl.pragmatists:JUnitParams:1.0.4'
+    testCompile 'com.jayway.jsonpath:json-path'
+    testCompile 'org.freemarker:freemarker:2.3.23'
 
 }
 
@@ -76,19 +87,30 @@ task createDockerfile(type: Dockerfile) {
     volume '/tmp'
     addFile 'libs/events-bc-app-*.jar', 'events-bc.jar'
     runCommand 'bash -c "touch /events-bc.jar"'
-    entryPoint 'java', '-jar', '/events-bc.jar'
+    entryPoint '/bin/sh', '-c', 'java -Xmx$HEAP_SIZE -jar /events-bc.jar'
     exposePort 5672
 }
 
 task buildImage(type: DockerBuildImage) {
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'knbiteventsbc/events-bc' + ':' + version
+    tag = 'knbitevents/events-bc:latest'
+}
+
+task tagImage(type: DockerTagImage) {
+    dependsOn buildImage
+    repository = 'knbitevents/events-bc'
+    imageId = 'knbitevents/events-bc'
+    tag = version + '-' + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss"))
 }
 
 task pushImage(type: DockerPushImage) {
-    dependsOn buildImage
-    imageName 'knbiteventsbc/events-bc'
+    dependsOn tagImage
+    imageName = 'knbitevents/events-bc'
+}
+
+task runApp() {
+    dependsOn bootRun
 }
 
 springBoot {
